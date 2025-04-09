@@ -1,0 +1,628 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'امکانات', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminAutomation/FormElementsManagement/GetListOfFormElements',
+                createAction: '/AdminAutomation/FormElementsManagement/AddToFormElements',
+                updateAction: '/AdminAutomation/FormElementsManagement/UpdateFormElements',
+                deleteAction: '/AdminAutomation/FormElementsManagement/CompleteDeleteFormElements'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                FormElementId: {
+                    key: true,
+                    list: false
+                },
+                FormElementTitle: {
+                    title: 'عنوان',
+                    inputclass: 'validate[required]',
+                },
+                ElementTypeId: {
+                    title: 'نوع&nbsp;المان',
+                    options: elementTypesList,
+                    sorting: false,
+                },
+                DefaultValue: {
+                    title: 'مقدار&nbsp;پیش&nbsp;فرض',
+                    sorting: false,
+                },
+                FormElementSize: {
+                    title: 'اندازه',
+                    sorting: false,
+                    options: {
+                        '1': '1',
+                        '2': '2',
+                        '3': '3',
+                        '4': '4',
+                        '5': '5',
+                        '6': '6',
+                        '7': '7',
+                        '8': '8',
+                        '9': '9',
+                        '10': '10',
+                        '11': '11',
+                        '12': '12'
+                    }
+                },
+                IsRequired: {
+                    title: 'اجباری',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsRequired" name="IsRequired">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsRequired" name="IsRequired">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsRequired" name="IsRequired">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        if (data.record.IsRequired)
+                            return '<div class="isRequired""><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isRequired""><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                FormElementOrder: {
+                    title: 'اولویت',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.FormElementOrder != '') {
+                                return '<input id="Edit-FormElementOrder" name="FormElementOrder" value="' + data.record.FormElementOrder + '">';
+                            }
+                            else {
+                                return '<input id="Edit-FormElementOrder" name="FormElementOrder" value="0">';
+                            }
+                        }
+                        else {
+                            return '<input id="Edit-FormElementOrder" name="FormElementOrder" value="0">';
+                        }
+                    },
+                },
+                FormElementOptions: {
+                    title: 'آیتمها',
+                    sorting: false,
+                    create: false,
+                    update: false,
+                    display: function (data) {
+                        if ((data.record.ElementTypeId == 2) ||
+                            (data.record.ElementTypeId == 3))
+                            return '<div class="formElementOptions pointer" data-FormElementId="' + data.record.FormElementId + '"><i class="fa fa-list-alt"></i></div>';
+                    }
+                },
+
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<input type="hidden" id="Edit-FormId" name="FormId" value="' + formVM.FormId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<input type="hidden" id="Edit-FormId" name="FormId" value="' + formVM.FormId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<input type="hidden" id="Edit-FormId" name="FormId" value="' + formVM.FormId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-FormElementId="' +
+                                data.record.FormElementId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-FormElementId="' +
+                                data.record.FormElementId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-FormElementId="' + data.record.FormElementId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-FormElementId="' + data.record.FormElementId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function (event, data) {
+
+                data.form.find('input[name="FormElementTitle"]').addClass(
+                    'validate[required]');
+
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                    //prettySelect: true,
+                    //useSuffix: "chosen-"
+                    //updatePromptsPosition: true,
+                    //autoPositionUpdate: true,
+                    //updatePromptsPosition: true,
+                    //inlineValidation: true,
+                    //prettySelect: true,
+                    //useSuffix: "_chosen"
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                if (formName == 'edit') {
+
+                    //$('#Edit-PropertyTypeId').chosen({
+                    //    placeholder_text_single: ' ',
+                    //    placeholder_text_multiple: ' ',
+                    //    search_contains: true,
+                    //    max_shown_results: numberOfChosenItemsShow,
+                    //    rtl: rtl
+                    //});
+                    //$('#Edit-PropertyTypeId').val(data.record.PropertyTypeId + '').trigger("chosen:updated");
+
+                    //$('#Edit-ElementTypeId').chosen({
+                    //    placeholder_text_single: ' ',
+                    //    placeholder_text_multiple: ' ',
+                    //    search_contains: true,
+                    //    max_shown_results: numberOfChosenItemsShow,
+                    //    rtl: rtl
+                    //});
+                    //$('#Edit-ElementTypeId').val(data.record.ElementTypeId + '').trigger("chosen:updated");
+
+                    $('#Edit-IsRequired').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsRequired').val(data.record.IsRequired + '').trigger("chosen:updated");
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+                        //$('#Edit-PropertyTypeId').chosen({
+                        //    placeholder_text_single: ' ',
+                        //    placeholder_text_multiple: ' ',
+                        //    search_contains: true,
+                        //    max_shown_results: numberOfChosenItemsShow,
+                        //    rtl: rtl
+                        //});
+                        //$('#Edit-PropertyTypeId').trigger("chosen:updated");
+
+                        $('#Edit-ElementTypeId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-ElementTypeId').trigger("chosen:updated");
+
+                        $('#Edit-IsRequired').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsRequired').trigger("chosen:updated");
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+                    }
+
+            },
+            formSubmitting: function (event, data) {
+
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', {
+            'formId': formVM.FormId
+        });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.formElementOptions', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var formElementId = _this.attr('data-FormElementId');
+            window.location.href = '/AdminAutomation/FormElementOptionsManagement/Index/' + formElementId;
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var formElementId = _this.attr('data-FormElementId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminAutomation/FormElementsManagement/ToggleActivationFormElements",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'FormElementId': formElementId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        debugger;
+                        //var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+                        //var txtFeatureTitleSearch = $('#txtFeatureTitleSearch').val();
+
+                        //if ((slcPropertyTypeId != '') &&
+                        //    (txtFeatureTitleSearch != '')) {
+
+                        //    $('#listContainer').jtable('load', {
+                        //        currentPage: $('#listContainer').jtable('getCurrentPage'),
+                        //        'PropertyTypeId': slcPropertyTypeId,
+                        //        'FeatureTitleSearch': txtFeatureTitleSearch,
+                        //    });
+
+                        //}
+                        //else {
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'FormId': formVM.FormId,
+                        });
+
+                        //}
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var formElementId = _this.attr('data-FormElementId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminAutomation/FormElementsManagement/TemporaryDeleteFormElements",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'FormElementId': formElementId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        //var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+                        //var txtFeatureTitleSearch = $('#txtFeatureTitleSearch').val();
+
+                        //if ((slcPropertyTypeId != '') &&
+                        //    (txtFeatureTitleSearch != '')) {
+
+                        //    $('#listContainer').jtable('load', {
+                        //        currentPage: $('#listContainer').jtable('getCurrentPage'),
+                        //        'PropertyTypeId': slcPropertyTypeId,
+                        //        'FeatureTitleSearch': txtFeatureTitleSearch,
+                        //    });
+
+                        //}
+                        //else {
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'FormId': formVM.FormId,
+                        });
+
+                        //}
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+
+        //Re-load records when user click 'load records' button.
+        $('#btnSearch').click(function (e) {
+
+            e.preventDefault();
+            //var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+            //var txtFeatureTitleSearch = $('#txtFeatureTitleSearch').val();
+
+            //if ((slcPropertyTypeId != '') &&
+            //    (txtFeatureTitleSearch != '')) {
+
+            //    $('#listContainer').jtable('load', {
+            //        currentPage: $('#listContainer').jtable('getCurrentPage'),
+            //        'formId': formVM.FormId
+            //    });
+
+            //}
+            //else {
+
+            $('#listContainer').jtable('load', {
+                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                'formId': formVM.FormId
+            });
+
+            //}
+        });
+
+        $('#btnReload').click(function (e) {
+            e.preventDefault();
+
+            //$('#slcPropertyTypeId').val(null);
+            //$('#txtFeatureTitleSearch').val(null);
+            $('#btnSearch').click();
+
+        });
+        $('#btnReset').click(function (e) {
+            e.preventDefault();
+
+            //$('#slcPropertyTypeId').val(null);
+            //$('#txtFeatureTitleSearch').val(null);
+            $('#btnSearch').click();
+
+        });
+
+
+    });
+
+
+</script>

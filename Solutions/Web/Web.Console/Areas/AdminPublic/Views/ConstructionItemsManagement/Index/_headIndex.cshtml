@@ -1,0 +1,101 @@
+﻿@using VM.Public;
+@using Newtonsoft.Json
+
+<script type="text/javascript">
+    @{
+        List<UnitsOfMeasurementVM> unitsOfMeasurementVMList = new List<UnitsOfMeasurementVM>();
+
+        @Html.Raw("var unitsOfMeasurementList = [];")
+        ;
+
+        if (ViewData["UnitsOfMeasurementList"] != null)
+        {
+            unitsOfMeasurementVMList = (List<UnitsOfMeasurementVM>)ViewData["UnitsOfMeasurementList"];
+
+            var unitsOfMeasurementVMListData = unitsOfMeasurementVMList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.UnitOfMeasurementTitle}",
+                Value = c.UnitOfMeasurementId
+            });
+
+            @Html.Raw(" unitsOfMeasurementList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(unitsOfMeasurementVMListData)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ConstructionItemsVM> constructionItemsVMList = new List<ConstructionItemsVM>();
+
+        @Html.Raw("var constructionItemsList = [];")
+        ;
+
+        if (ViewData["ConstructionItemsList"] != null)
+        {
+            constructionItemsVMList = (List<ConstructionItemsVM>)ViewData["ConstructionItemsList"];
+
+            var constructionItemsVMListData = constructionItemsVMList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.ConstructionItemTitle}",
+                Value = c.ConstructionItemId
+            });
+
+            @Html.Raw(" constructionItemsList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(constructionItemsVMListData)) + "; ")
+            ;
+        }
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(8),
+    div.jtable-main-container table.jtable thead th:nth-child(9),
+    div.jtable-main-container table.jtable thead th:nth-child(10),
+    div.jtable-main-container table.jtable thead th:nth-child(11),
+    div.jtable-main-container table.jtable thead th:nth-child(12),
+    div.jtable-main-container table.jtable thead th:nth-child(13) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(10),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(11),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(12),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(13) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    textarea {
+        resize: none;
+    }
+</style>

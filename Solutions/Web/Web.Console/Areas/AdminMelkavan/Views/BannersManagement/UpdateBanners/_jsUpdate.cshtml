@@ -1,0 +1,106 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#error-alert').hide(100);
+
+        if (bannersVM.IsActivated) {
+            $('#IsActivated').prop('checked', true);
+            $('#IsActivatedLabel').addClass("selected");
+        }
+        if (bannersVM.IsDeleted) {
+            $('#IsDeleted').prop('checked', true);
+            $('#IsDeletedLabel').addClass("selected");
+        }
+
+        $('#BannerTitle').val(bannersVM.BannerTitle);
+        $('#BannerFileOrder').val(bannersVM.BannerFileOrder);
+        $('#BannerLink').val(bannersVM.BannerLink);
+        $("#image").attr("src", "/Files/BannerFiles/" + domainName + "/" + bannersVM.BannerId + "/Image/" + bannersVM.BannerFilePath);
+
+
+        $('body').on('click', '#btnSubmit', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var filesElm = $('input[type=file]');
+            var file = filesElm[0];
+            var formData = new FormData();
+            if (file != null) {
+                debugger;
+                if (file.files[0] != null) {
+                    if (file.files[0].size > 0) {
+                        formData.append('File', file.files[0]);
+
+                    }
+                }
+            }
+            debugger;
+
+
+            var bannerTitle = $('#BannerTitle').val();
+            var bannerFileOrder = $('#BannerFileOrder').val();
+            var bannerLink = $('#BannerLink').val();
+
+            if (
+                (bannerTitle == undefined) ||
+                (bannerTitle == null) ||
+                (bannerTitle.length == "") ||
+                (bannerTitle.length < 1) ||
+                (bannerFileOrder == undefined) ||
+                (bannerFileOrder == null) ||
+                (bannerFileOrder.length == "") ||
+                (bannerFileOrder.length < 1)
+            ) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('لطفا فیلد های لازم را پر کنید');
+                $('#my-warning-modal').modal("show");
+                return;
+            }
+
+            formData.append('BannersVM.BannerTitle', bannerTitle);
+            formData.append('BannersVM.BannerFileOrder', bannerFileOrder);
+            formData.append('BannersVM.BannerLink', bannerLink);
+            formData.append('BannersVM.IsActivated', $('#IsActivated').prop('checked'));
+            formData.append('BannersVM.IsDeleted', $('#IsDeleted').prop('checked'));
+
+            formData.append('BannersVM.BannerFilePath', bannersVM.BannerFilePath);
+            formData.append('BannersVM.BannerFileExt', bannersVM.BannerFileExt);
+            formData.append('BannersVM.BannerId', bannersVM.BannerId);
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/BannersManagement/UpdateBanners",
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                success: function(result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message);
+                        $('#error-alert').show(500);
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+
+
+        });
+
+        $('body').on('click', '#btnCancel', function(e) {
+            e.preventDefault();
+            window.location.href = '/AdminMelkavan/BannersManagement/Index';
+        });
+    });
+</script>

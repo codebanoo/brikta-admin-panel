@@ -1,0 +1,316 @@
+﻿@using VM.Console
+@using VM.Melkavan;
+@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        List<PersonsVM> buyersList = new List<PersonsVM>();
+
+        @Html.Raw("var buyersList  = [];")
+        ;
+
+        if (ViewData["BuyersList"] != null)
+        {
+            buyersList = (List<PersonsVM>)ViewData["BuyersList"];
+
+            var buyersListData = buyersList.Select(c =>
+            new
+            {
+
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.Phone}",
+                Value = c.PersonId
+            });
+
+
+            @Html.Raw("debugger; buyersList  = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(buyersListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<PropertyTypesVM> propertyTypesList = new List<PropertyTypesVM>();
+
+        @Html.Raw("var propertyTypesList = [];")
+        ;
+
+        if (ViewData["PropertyTypesList"] != null)
+        {
+            propertyTypesList = (List<PropertyTypesVM>)ViewData["PropertyTypesList"];
+
+            var propertyTypesListData = propertyTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.PropertyTypeTilte}",
+                Value = c.PropertyTypeId
+            });
+
+            @Html.Raw("debugger; propertyTypesList = " +
+                     JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertyTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<TypeOfUsesVM> typeOfUsesList = new List<TypeOfUsesVM>();
+
+        @Html.Raw("var typeOfUsesList = [];")
+        ;
+
+        if (ViewData["TypeOfUsesList"] != null)
+        {
+            typeOfUsesList = (List<TypeOfUsesVM>)ViewData["TypeOfUsesList"];
+
+            var typeOfUsesListData = typeOfUsesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.TypeOfUseTitle}",
+                Value = c.TypeOfUseId
+            });
+
+            @Html.Raw("debugger; typeOfUsesList = " +
+                     JsonConvert.DeserializeObject(JsonConvert.SerializeObject(typeOfUsesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentTypesVM> documentTypesList = new List<DocumentTypesVM>();
+
+        @Html.Raw("var documentTypesList = [];")
+        ;
+
+        if (ViewData["DocumentTypesList"] != null)
+        {
+            documentTypesList = (List<DocumentTypesVM>)ViewData["DocumentTypesList"];
+
+            var documentTypesListData = documentTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentTypeTitle}",
+                Value = c.DocumentTypeId
+            });
+
+            @Html.Raw("debugger; documentTypesList = " +
+                     JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentOwnershipTypesVM> documentOwnershipTypesList = new List<DocumentOwnershipTypesVM>();
+
+        @Html.Raw("var documentOwnershipTypesList = [];")
+        ;
+
+        if (ViewData["DocumentOwnershipTypesList"] != null)
+        {
+            documentOwnershipTypesList = (List<DocumentOwnershipTypesVM>)ViewData["DocumentOwnershipTypesList"];
+
+            var documentOwnershipTypesListData = documentOwnershipTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentOwnershipTypeTitle}",
+                Value = c.DocumentOwnershipTypeId
+            });
+
+            @Html.Raw("debugger; documentOwnershipTypesList = " +
+                          JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentOwnershipTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentRootTypesVM> documentRootTypesList = new List<DocumentRootTypesVM>();
+
+        @Html.Raw("var documentRootTypesList = [];")
+        ;
+
+        if (ViewData["DocumentRootTypesList"] != null)
+        {
+            documentRootTypesList = (List<DocumentRootTypesVM>)ViewData["DocumentRootTypesList"];
+
+            var documentRootTypesListData = documentRootTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentRootTypeTitle}",
+                Value = c.DocumentRootTypeId
+            });
+
+            @Html.Raw("debugger; documentRootTypesList = " +
+                          JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentRootTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<PersonsVM> personsList = new List<PersonsVM>();
+
+        @Html.Raw("var personsList = [];")
+        ;
+
+        if (ViewData["PersonsList"] != null)
+        {
+            personsList = (List<PersonsVM>)ViewData["PersonsList"];
+
+            var personsListData = personsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.Phone}",
+                Value = c.PersonId
+            });
+
+            @Html.Raw("debugger; personsList = " +
+                     JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CustomUsersVM> agencyStaffsList = new List<CustomUsersVM>();
+
+        @Html.Raw("var agencyStaffsList = [];")
+        ;
+
+        if (ViewData["AgencyStaffsList"] != null)
+        {
+            agencyStaffsList = (List<CustomUsersVM>)ViewData["AgencyStaffsList"];
+
+            var agencyStaffsListData = agencyStaffsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.Mobile}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("debugger; agencyStaffsList = " +
+                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(agencyStaffsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<InvestorsVM> investorsList = new List<InvestorsVM>();
+
+        @Html.Raw("var investorsList  = [];")
+        ;
+
+        if (ViewData["InvestorsList"] != null)
+        {
+            investorsList = (List<InvestorsVM>)ViewData["InvestorsList"];
+
+            var investorsListData = investorsList.Select(c =>
+            new
+            {
+
+                DisplayText = $"{c.CustomUsersVM?.Name + " " + c.CustomUsersVM?.Family + " - " + c.CustomUsersVM?.Mobile}",
+                Value = c.UserId
+            });
+
+
+            @Html.Raw("debugger; investorsList  = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(investorsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+
+        List<PersonTypesVM> personTypesList = new List<PersonTypesVM>();
+
+        @Html.Raw("var personTypesList = [];")
+        ;
+
+        if (ViewData["PersonTypesList"] != null)
+        {
+            /*List<DomainsSettingsVM> */
+            personTypesList = (List<PersonTypesVM>)ViewData["PersonTypesList"];
+
+            var personTypesListData = personTypesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.PersonTypeTitle}",
+                          Value = c.PersonTypeId
+                      });
+
+            @Html.Raw("debugger; personTypesList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personTypesListData)) + "; debugger;")
+            ;
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<BuildingLifesVM> buildingLifesList = new List<BuildingLifesVM>();
+
+        @Html.Raw("var buildingLifesList = [];")
+        ;
+
+        if (ViewData["BuildingLifesList"] != null)
+        {
+            buildingLifesList = (List<BuildingLifesVM>)ViewData["BuildingLifesList"];
+
+            var buildingLifesListData = buildingLifesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.BuildingLifeTitle}",
+                Value = c.BuildingLifeId
+            });
+
+            @Html.Raw("debugger; buildingLifesList = " +
+                  JsonConvert.DeserializeObject(JsonConvert.SerializeObject(buildingLifesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<style type="text/css">
+    #PropertyDescriptions,
+    #PropertyAddressVM_Address {
+        height: 70px !important;
+    }
+
+    .lblNewPerson {
+        margin-bottom: 0;
+        display: inline-flex;
+    }
+
+    .board {
+        padding: 5px;
+    }
+
+        .board img {
+            width: 64px;
+            height: 64px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .board .board-title {
+            text-align: center;
+            margin-top: 5px;
+        }
+</style>

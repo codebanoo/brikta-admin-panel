@@ -1,0 +1,685 @@
+﻿@using VM.Console
+@using VM.Melkavan
+@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        List<PropertyTypesVM> propertyTypesList = new List<PropertyTypesVM>();
+
+        @Html.Raw("var propertyTypesList = [];")
+        ;
+
+        if (ViewData["PropertyTypesList"] != null)
+        {
+            propertyTypesList = (List<PropertyTypesVM>)ViewData["PropertyTypesList"];
+
+            var propertyTypesListData = propertyTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.PropertyTypeTilte}",
+                Value = c.PropertyTypeId
+            });
+
+            @Html.Raw("debugger; propertyTypesList = " +
+                                         JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertyTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<TypeOfUsesVM> typeOfUsesList = new List<TypeOfUsesVM>();
+
+        @Html.Raw("var typeOfUsesList = [];")
+        ;
+
+        if (ViewData["TypeOfUsesList"] != null)
+        {
+            typeOfUsesList = (List<TypeOfUsesVM>)ViewData["TypeOfUsesList"];
+
+            var typeOfUsesListData = typeOfUsesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.TypeOfUseTitle}",
+                Value = c.TypeOfUseId
+            });
+
+            @Html.Raw("debugger; typeOfUsesList = " +
+                                         JsonConvert.DeserializeObject(JsonConvert.SerializeObject(typeOfUsesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentTypesVM> documentTypesList = new List<DocumentTypesVM>();
+
+        @Html.Raw("var documentTypesList = [];")
+        ;
+
+        if (ViewData["DocumentTypesList"] != null)
+        {
+            documentTypesList = (List<DocumentTypesVM>)ViewData["DocumentTypesList"];
+
+            var documentTypesListData = documentTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentTypeTitle}",
+                Value = c.DocumentTypeId
+            });
+
+            @Html.Raw("debugger; documentTypesList = " +
+                                         JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentOwnershipTypesVM> documentOwnershipTypesList = new List<DocumentOwnershipTypesVM>();
+
+        @Html.Raw("var documentOwnershipTypesList = [];")
+        ;
+
+        if (ViewData["DocumentOwnershipTypesList"] != null)
+        {
+            documentOwnershipTypesList = (List<DocumentOwnershipTypesVM>)ViewData["DocumentOwnershipTypesList"];
+
+            var documentOwnershipTypesListData = documentOwnershipTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentOwnershipTypeTitle}",
+                Value = c.DocumentOwnershipTypeId
+            });
+
+            @Html.Raw("debugger; documentOwnershipTypesList = " +
+                                              JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentOwnershipTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentRootTypesVM> documentRootTypesList = new List<DocumentRootTypesVM>();
+
+        @Html.Raw("var documentRootTypesList = [];")
+        ;
+
+        if (ViewData["DocumentRootTypesList"] != null)
+        {
+            documentRootTypesList = (List<DocumentRootTypesVM>)ViewData["DocumentRootTypesList"];
+
+            var documentRootTypesListData = documentRootTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentRootTypeTitle}",
+                Value = c.DocumentRootTypeId
+            });
+
+            @Html.Raw("debugger; documentRootTypesList = " +
+                                              JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentRootTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+
+        @Html.Raw("var statesList = [];")
+        ;
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            //var statesListData = statesList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.StateName}",
+            //    Value = c.StateId
+            //});
+
+            @Html.Raw("debugger; statesList = " +
+                                         JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+
+        @Html.Raw("var citiesList = [];")
+        ;
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            //var citiesListData = citiesList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.CityName}",
+            //    Value = c.CityId,
+            //    Data_StateId = c.StateId
+            //});
+
+            @Html.Raw("debugger; citiesList = " +
+                                         JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+        @Html.Raw("var zonesList = [];")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            //var zonesListData = zonesList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.Abbreviation + " " + c.VillageName + " " + c.ZoneName + " " + c.TownName}",
+            //    Value = c.ZoneId,
+            //    Data_CityId = c.CityId
+            //});
+
+
+            var zonesListData = zonesList.Select(c =>
+          new
+          {
+              DisplayText = $"{c.ZoneName}",
+              Value = c.ZoneId,
+              Data_CityId = c.CityId
+          });
+
+            @Html.Raw("debugger; zonesList = " +
+                                         JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DistrictsVM> districtsList = new List<DistrictsVM>();
+
+        @Html.Raw("var districtsList = [];")
+        ;
+
+        if (ViewData["DistrictsList"] != null)
+        {
+            districtsList = (List<DistrictsVM>)ViewData["DistrictsList"];
+
+            //var districtsListData = districtsList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.DistrictName}",
+            //    Value = c.DistrictId,
+            //    Data_ZoneId = c.ZoneId
+            //});
+
+            @Html.Raw("debugger; districtsList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(districtsList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<PersonsVM> personsList = new List<PersonsVM>();
+
+        @Html.Raw("var personsList = [];")
+        ;
+
+        if (ViewData["PersonsList"] != null)
+        {
+            personsList = (List<PersonsVM>)ViewData["PersonsList"];
+
+            var personsListData = personsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family}",
+                Value = c.PersonId
+            });
+
+            @Html.Raw("debugger; personsList = " +
+                                         JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<BuildingLifesVM> buildingLifesList = new List<BuildingLifesVM>();
+
+        @Html.Raw("var buildingLifesList = [];")
+        ;
+
+        if (ViewData["BuildingLifesList"] != null)
+        {
+            buildingLifesList = (List<BuildingLifesVM>)ViewData["BuildingLifesList"];
+
+            var buildingLifesListData = buildingLifesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.BuildingLifeTitle}",
+                Value = c.BuildingLifeId
+            });
+
+            @Html.Raw("debugger; buildingLifesList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(buildingLifesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<AdvertisementTypesVM> advertisementTypeList = new List<AdvertisementTypesVM>();
+
+        @Html.Raw("var advertisementTypeList = [];")
+        ;
+
+        if (ViewData["AdvertisementTypesList"] != null)
+        {
+            advertisementTypeList = (List<AdvertisementTypesVM>)ViewData["AdvertisementTypesList"];
+
+            var advertisementTypeListData = advertisementTypeList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.AdvertisementTypeTilte}",
+                Value = c.AdvertisementTypeId
+            });
+
+            @Html.Raw("debugger; advertisementTypeList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(advertisementTypeListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CustomUsersVM> agencyStaffsList = new List<CustomUsersVM>();
+
+        @Html.Raw("var agencyStaffsList = [];")
+        ;
+
+        if (ViewData["AgencyStaffsList"] != null)
+        {
+            agencyStaffsList = (List<CustomUsersVM>)ViewData["AgencyStaffsList"];
+
+            var agencyStaffsListData = agencyStaffsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.Mobile}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("debugger; agencyStaffsList = " +
+                                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(agencyStaffsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CustomUsersVM> ownerUsersList = new List<CustomUsersVM>();
+
+        @Html.Raw("var ownerUsersList = [];")
+        ;
+
+        if (ViewData["OwnerUsers"] != null)
+        {
+            ownerUsersList = (List<CustomUsersVM>)ViewData["OwnerUsers"];
+
+            var ownerUsersListData = ownerUsersList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.Mobile}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("debugger; ownerUsersList = " +
+                                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ownerUsersListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<InvestorsVM> investorsList = new List<InvestorsVM>();
+
+        @Html.Raw("var investorsList  = [];")
+        ;
+
+        if (ViewData["InvestorsList"] != null)
+        {
+            investorsList = (List<InvestorsVM>)ViewData["InvestorsList"];
+
+            var investorsListData = investorsList.Select(c =>
+            new
+            {
+
+                DisplayText = $"{c.CustomUsersVM?.Name + " " + c.CustomUsersVM?.Family + " - " + c.CustomUsersVM?.Mobile}",
+                Value = c.UserId
+            });
+
+
+            @Html.Raw("debugger; investorsList  = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(investorsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<link href="~/lib/jquery-aschoice-master/dist/css/aschoice.css" rel="stylesheet" />
+@* <link href="~/lib/jqrangeslider-master/css/classic.css" rel="stylesheet" /> *@
+<link href="~/gentelella_theme/vendors/ion.rangeslider/css/ion.rangeslider.skinflat.css" rel="stylesheet" />
+<link href="~/gentelella_theme/vendors/ion.rangeslider/css/ion.rangeslider.css" rel="stylesheet" />
+
+<link href="~/lib/openlayers-v6.9.0/css/ol.css" rel="stylesheet" />
+<script src="~/lib/openlayers-v6.9.0/build/ol.js"></script>
+
+<style type="text/css">
+
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+
+    #listContainer .material-symbols-outlined {
+        font-size: 24px;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(1),
+    div.jtable-main-container table.jtable thead th:nth-child(3),
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(9),
+    div.jtable-main-container table.jtable thead th:nth-child(10),
+    div.jtable-main-container table.jtable thead th:nth-child(11),
+    div.jtable-main-container table.jtable thead th:nth-child(12),
+    div.jtable-main-container table.jtable thead th:nth-child(13),
+    div.jtable-main-container table.jtable thead th:nth-child(14),
+    div.jtable-main-container table.jtable thead th:nth-child(16),
+    div.jtable-main-container table.jtable thead th:nth-child(17),
+    div.jtable-main-container table.jtable thead th:nth-child(18),
+    div.jtable-main-container table.jtable thead th:nth-child(19),
+    div.jtable-main-container table.jtable thead th:nth-child(20),
+    div.jtable-main-container table.jtable thead th:nth-child(21),
+    div.jtable-main-container table.jtable thead th:nth-child(22),
+    div.jtable-main-container table.jtable thead th:nth-child(23),
+    div.jtable-main-container table.jtable thead th:nth-child(24) {
+        min-width: 5rem;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(2) {
+        min-width: 10rem;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(10),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(11),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(12),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(13),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(17),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(24),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(26),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(27),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(25),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(28) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(14),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(15),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(18),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(19),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(20),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(21),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(22),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(23),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(25) {
+        width: 1% !important;
+    }
+
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3) {
+        width: 1% !important;
+        padding-right: 15px;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7) {
+        min-width: 12.5rem !important;
+        /* padding-right: 40px; */
+    }
+
+
+
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    .maps,
+    .features,
+    .location,
+    .media,
+    .docs {
+        width: 47px;
+        height: 35px;
+        text-align: center;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+
+    .details {
+        width: 38px;
+        height: 35px;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+
+    .numberCircle {
+        /* font: 18px Arial, sans-serif; */
+        /* width: 1em; */
+        /* height: 1em; */
+        /* box-sizing: initial; */
+        background: #417bb5;
+        /* border: 0.1em solid #417bb5; */
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        font-size: 12px;
+        /* box-sizing: content-box; */
+        margin: auto;
+        /* margin-top: 11px; */
+        width: 22px;
+        height: 22px;
+        position: absolute;
+        vertical-align: middle;
+        line-height: 12px;
+        left: 5px;
+        bottom: -10px;
+        /* z-index: 999;*/
+    }
+
+    .fade:not(.show) {
+        opacity: 1;
+    }
+
+    .not_validated {
+        box-shadow: 0 0 2px 2px #ffa1a1 !important;
+    }
+
+    #slcPropertyTypeId {
+        padding: 0;
+    }
+
+    .irs {
+        direction: ltr;
+    }
+
+    .asChoice {
+        padding: 0 !important;
+    }
+
+        .asChoice > li > span {
+            border-right: none !important;
+        }
+
+        .asChoice > li {
+            background: #26B99A !important;
+        }
+
+            .asChoice > li.asChoice-selected {
+                background: #1e7e34 !important;
+            }
+
+    .irs-line-left,
+    .irs-line-mid,
+    .irs-line-right {
+        background: none !important;
+        background-color: #26B99A !important;
+    }
+
+    .irs-bar {
+        background: none !important;
+        background-color: #1e7e34 !important;
+    }
+
+    /* .irs-slider.from,
+                            .irs-slider.to{
+                                        background: none !important;
+                                background-color: #169F85 !important;
+                            } */
+
+    .irs-from, .irs-to, .irs-single {
+        background: none !important;
+        background-color: #169F85 !important;
+        font-size: 12px;
+    }
+
+    .irs-single, .irs-from, .irs-to {
+        z-index: 999;
+    }
+
+    #priceBlock .asChoice {
+        position: absolute;
+        z-index: 998;
+    }
+
+        #priceBlock .asChoice li {
+            margin: 0;
+            padding: 0;
+            margin-top: -10px;
+            z-index: 999;
+            background-color: #17a2b8 !important;
+        }
+
+        #priceBlock .asChoice > li.asChoice-selected {
+            background: #138496 !important;
+        }
+
+    .asChoice li span {
+        width: 75px;
+    }
+
+    #priceBlock .asChoice li span {
+        z-index: 999;
+    }
+
+    #areaBlock .asChoice {
+        position: absolute;
+        z-index: 998;
+    }
+
+        #areaBlock .asChoice li {
+            margin: 0;
+            padding: 0;
+            margin-top: -10px;
+            z-index: 999;
+            background-color: #17a2b8 !important;
+        }
+
+        #areaBlock .asChoice > li.asChoice-selected {
+            background: #138496 !important;
+        }
+
+        #areaBlock .asChoice li span {
+            z-index: 999;
+        }
+
+    #priceBlock span.irs, #areaBlock span.irs {
+        opacity: 0.5;
+    }
+
+    .asChoice li:nth-child(3) span {
+        margin-left: 13px !important;
+    }
+
+    /* sina styles */
+    .jtable-column-header-container {
+        display: flex;
+        align-items: center;
+    }
+
+    div.jtable-main-container > table.jtable > thead th.jtable-column-header div.jtable-column-header-container {
+        padding-left: 0px !important;
+    }
+
+</style>

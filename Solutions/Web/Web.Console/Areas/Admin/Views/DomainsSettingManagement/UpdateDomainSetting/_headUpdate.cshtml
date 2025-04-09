@@ -1,0 +1,20 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<script type="text/javascript">
+    @{
+        if (ViewData["CustomUsersVMList"] != null)
+        {
+            List<CustomUsersVM> customUsersVMList =
+                (List<CustomUsersVM>)ViewData["CustomUsersVMList"];
+
+            @Html.Raw("var customUsersVMList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(customUsersVMList)) + ";");
+        }
+    }
+</script>

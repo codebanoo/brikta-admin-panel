@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Language" content="fa" />
+    <meta name="author" content="مهندس کاظمی - arashcms.ir">
+    <meta name="description" content="">
+    <meta name="keywords" content="" />
+    <title>@ViewData["Title"]</title>
+    <environment include="Development">
+
+    </environment>
+
+    @{
+        await Html.RenderPartialAsync("RequireCssJs");
+    }
+
+    @RenderSection("head", required: false)
+
+</head>
+<body>
+    @RenderBody()
+
+@*    <div id="AjaxLoading">
+        <div id="loading-overlay"></div>
+        <div id="loading">
+            <span class="message">
+                صبر کنید
+            </span>
+        </div>
+    </div>*@
+
+    <cache>
+
+    </cache>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <environment include="Development">
+        @*<cache>*@
+        <script type="text/javascript">
+            //$(window).load(function () { $('#AjaxLoading').hide(); });
+        </script>
+        @*</cache>*@
+    </environment>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,134 @@
+﻿@using VM.Automation;
+@model StaffVM
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    <input asp-for="StaffId" type="hidden" value="@Model.StaffId" />
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row">
+        <div class="form-group col col-md-12">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    PersonalCode
+                </label>
+            </div>
+            <input asp-for="PersonalCode" class="form-control input-sm"
+                   placeholder="PersonalCode" />
+            <span asp-validation-for="PersonalCode" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>ContractImage</label>
+            </div>
+            <input type="file" asp-for="ContractImage" class="form-control input-sm"
+                   onchange="ImageCheck(this,NoImageSelectedMessage,ErrorSelectedFileMessage,badImageSizeMessage,1500);"
+                   placeholder="ContractImage" />
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>CertificateImage</label>
+            </div>
+            <input type="file" asp-for="CertificateImage" class="form-control input-sm"
+                   onchange="ImageCheck(this,NoImageSelectedMessage,ErrorSelectedFileMessage,badImageSizeMessage,1500);"
+                   placeholder="CertificateImage" />
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>NationalCodeImage</label>
+            </div>
+            <input type="file" asp-for="NationalCodeImage" class="form-control input-sm"
+                   onchange="ImageCheck(this,NoImageSelectedMessage,ErrorSelectedFileMessage,badImageSizeMessage,1500);"
+                   placeholder="NationalCodeImage" />
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    JobTitle
+                </label>
+            </div>
+            <input asp-for="JobTitle" class="form-control input-sm"
+                   placeholder="ArticleFileTitle" />
+            <span asp-validation-for="JobTitle" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>Skill</label>
+            </div>
+            <input asp-for="Skill" class="form-control input-sm"
+                   placeholder="Skill" />
+            <span asp-validation-for="Skill" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>Dependants</label>
+            </div>
+            <input asp-for="Dependants" class="form-control input-sm"
+                   placeholder="Dependants" />
+            <span asp-validation-for="Dependants" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>IsMarried</label>
+            </div>
+            <select asp-for="IsMarried" class="form-control input-sm"
+                    placeholder="IsMarried">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>IsActivated</label>
+            </div>
+            <select asp-for="IsActivated" class="form-control input-sm"
+                    placeholder="IsActivated">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>IsDeleted</label>
+            </div>
+            <select asp-for="IsDeleted" class="form-control input-sm"
+                    placeholder="IsDeleted">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    UserId
+                </label>
+            </div>
+            <select asp-for="UserId" class="form-control input-sm"
+                    placeholder="UserId">
+            </select>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div class="empty-block">&nbsp;</div>
+            <button class="btn btn-default input-sm" type="submit">
+                Submit
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="BtnResetTitle">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+    </div>
+</form>

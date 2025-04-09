@@ -1,0 +1,706 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'لیست', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/Admin/DomainsSettingManagement/GetListOfDomainsSetting',
+                /*createAction: '/Admin/DomainsSettingManagement/AddToDomainsSetting',
+                updateAction: '/Admin/DomainsSettingManagement/UpdateDomainSetting',*/
+                deleteAction: '/Admin/DomainsSettingManagement/CompleteDeleteDomainSetting'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function () {
+                            window.location.href = '/Admin/DomainsSettingManagement/AddToDomainsSetting';
+                        }
+                    },
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                DomainSettingId: {
+                    key: true,
+                    list: false
+                },
+                DomainName: {
+                    title: 'دامنه',
+                    inputClass: 'validate[required]'
+                },
+                UserIdCreator: {
+                    title: 'تعریف&nbsp;کننده',
+                    options: customUsersVMList,
+                    sorting: false,
+                },
+                BackGroundImagePath: {
+                    title: 'تصویر&nbsp;پس&nbsp;زمینه',
+                    sorting: false,
+                    display: function (data) {
+                        //debugger;
+                        if (data.record.BackGroundImagePath != null) {
+                            if (data.record.BackGroundImagePath != '') {
+                                return '<div style="position: relative; display: inline-block;" class="hoverable">' +
+                                    '<img class="domainThumbImage" src="/Files/UserFiles/' +
+                                    data.record.DomainName + '/' +
+                                    data.record.BackGroundImagePath + '" alt="" />' +
+                                    '<i class="fa fa-2x fa-trash-o hide pointer removeClick" ' +
+                                    'data-href="/Admin/DomainsSettingManagement/RemoveBackGroundImage" ' +
+                                    'data-Id="' + data.record.DomainSettingId + '"></i></div>';
+                            }
+                        }
+                        return '';
+                    }
+                },
+                BackGroundImageType: {
+                    title: 'نوع&nbsp;نمایش&nbsp;تصویر',
+                    sorting: false,
+                    display: function (data) {
+                        //debugger;
+                        if (data.record.BackGroundImageType != null) {
+                            switch (data.record.BackGroundImageType) {
+                                case 'Fill':
+                                    return Fill;
+                                    break;
+                                case 'Fit':
+                                    return Fit;
+                                    break;
+                                case 'Stretch':
+                                    return Stretch;
+                                    break;
+                                case 'Tile':
+                                    return Tile;
+                                    break;
+                                case 'Center':
+                                    return Center;
+                                    break;
+                            }
+                        }
+                        return '';
+                    }
+                },
+                LogoImagePath: {
+                    title: 'تصویر&nbsp;لوگو',
+                    sorting: false,
+                    display: function (data) {
+                        //debugger;
+                        if (data.record.LogoImagePath != null) {
+                            if (data.record.LogoImagePath != '') {
+                                return '<div style="position: relative; display: inline-block;" class="hoverable">' +
+                                    '<img class="domainThumbImage" src="/Files/UserFiles/' +
+                                    data.record.DomainName + '/' +
+                                    data.record.LogoImagePath + '" alt="" />' +
+                                    '<i class="fa fa-2x fa-trash-o hide pointer removeClick" ' +
+                                    'data-href="/Admin/DomainsSettingManagement/RemoveLogoImage" ' +
+                                    'data-Id="' + data.record.DomainSettingId + '"></i></div>';
+                            }
+                        }
+                        return '';
+                    }
+                },
+                TypeOfLoadDataForSubUsers: {
+                    title: 'نحوه&nbsp;بارگذاری&nbsp;داده&nbsp;ها',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        switch (data.record.TypeOfLoadDataForSubUsers) {
+                            case "All":
+                                return All;
+                            case "TheSiteAdminOnly":
+                                return TheSiteAdminOnly;
+                            case "TheParentUserOnly":
+                                return TheParentUserOnly;
+                            case "TheParentUserAndSubUsers":
+                                return TheParentUserAndSubUsers;
+                            case "TheUserHimself":
+                                return TheUserHimself;
+                            case "TheSameLevel":
+                                return TheSameLevel;
+                            case "TheUserHimselfAndSubUsers":
+                                return TheUserHimselfAndSubUsers;
+                            case "TheSubUsersOnly":
+                                return TheSubUsersOnly;
+                        }
+                    }
+                },
+                CreateSubDomainPerNewUser: {
+                    title: 'ایجاد&nbsp;زیر&nbsp;دامنه',
+                    //inputClass: 'validate[required]',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CreateSubDomainPerNewUser)
+                            return '<div class="createSubDomainPerNewUser"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="createSubDomainPerNewUser"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                ShortCutKeysIsActivated: {
+                    title: 'کلیدهای&nbsp;میانبر',
+                    //inputClass: 'validate[required]',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.ShortCutKeysIsActivated)
+                            return '<div class="shortCutKeysIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="shortCutKeysIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                VoiceCommandsIsActivated: {
+                    title: 'فرمان&nbsp;صوتی',
+                    //inputClass: 'validate[required]',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.VoiceCommandsIsActivated)
+                            return '<div class="voiceCommandsIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="voiceCommandsIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                PushNotificationsIsActivated: {
+                    title: 'نوتیفیکیشن',
+                    //inputClass: 'validate[required]',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.PushNotificationsIsActivated)
+                            return '<div class="pushNotificationsIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="pushNotificationsIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                RightMenuIsActivated: {
+                    title: 'منوی&nbsp;راست',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.RightMenuIsActivated)
+                            return '<div class="rightMenuIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="rightMenuIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                TopMenuIsActivated: {
+                    title: 'منوی&nbsp;بالا',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.TopMenuIsActivated)
+                            return '<div class="topMenuIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="topMenuIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                CircleMenuIsActivated: {
+                    title: 'منوهای&nbsp;دایره&nbsp;ای',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CircleMenuIsActivated)
+                            return '<div class="circleMenuIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="circleMenuIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                RightClickMenuIsActivated: {
+                    title: 'راست&nbsp;کلیک',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.RightClickMenuIsActivated)
+                            return '<div class="rightClickMenuIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="rightClickMenuIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                DashboardBoxesIsActivated: {
+                    title: 'داشبورد',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.DashboardBoxesIsActivated)
+                            return '<div class="dashboardBoxesIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="dashboardBoxesIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                ReportBoxesIsActivated: {
+                    title: 'باکسهای&nbsp;گزارش',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.ReportBoxesIsActivated)
+                            return '<div class="reportBoxesIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="reportBoxesIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                AlertIsActivated: {
+                    title: 'هشدارها',
+                    //inputClass: 'validate[required]',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.AlertIsActivated)
+                            return '<div class="alertIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="alertIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                ToolTipIsActivated: {
+                    title: 'tooltip',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.ToolTipIsActivated)
+                            return '<div class="toolTipIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="toolTipIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                RegisterPageIsActivated: {
+                    title: 'ثبت&nbsp;نام',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.RegisterPageIsActivated)
+                            return '<div class="registerPageIsActivated"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="registerPageIsActivated"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                DefaultRegisterPage: {
+                    title: 'پیش&nbsp;فرض&nbsp;ثبت&nbsp;نام',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        return data.record.DefaultRegisterPageTitle;
+                    }
+                },
+                CreateMenuAutomatically: {
+                    title: 'ساخت&nbsp;اتوماتیک&nbsp;منو',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CreateMenuAutomatically)
+                            return '<div class="createMenuAutomatically"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="createMenuAutomatically"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                NumberOfUsers: {
+                    title: 'تعداد&nbsp;کاربران',
+                    sorting: false,
+                },
+                RemainNumberOfUsers: {
+                    title: 'کاربران&nbsp;باقیمانده',
+                    sorting: false,
+                },
+                NumberOfChosenItemsShow: {
+                    title: 'تعداد&nbsp;آیتمهای&nbsp;نمایشی',
+                    sorting: false,
+                },
+                CheckAllChosenItemsShow: {
+                    title: 'نمایش&nbsp;همه',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CheckAllChosenItemsShow)
+                            return '<div class="checkAllChosenItemsShow"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="checkAllChosenItemsShow"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                ShowLevelPageAfterLogin: {
+                    title: 'نمایش&nbsp;صفحه&nbsp;انتخاب&nbsp;دسترسی',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.ShowLevelPageAfterLogin)
+                            return '<div class="showLevelPageAfterLogin"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="showLevelPageAfterLogin"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                ShowColoredRowsInList: {
+                    title: 'نمایش&nbsp;رنگی&nbsp;لیست',
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.ShowColoredRowsInList)
+                            return '<div class="showColoredRowsInList"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="showColoredRowsInList"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                CountOfEnterWrongPassword: {
+                    title: 'تعداد&nbsp;رمزهای&nbsp;اشتباه&nbsp;برای&nbsp;کپچا',
+                    sorting: false,
+                },
+                CountOfEnterWrongPasswordForUserLocked: {
+                    title: 'تعداد&nbsp;اشتباه&nbsp;برای&nbsp;قفل&nbsp;شدن',
+                    sorting: false,
+                },
+                ChangePasswordAfterFirstLogin: {
+                    title: 'تغییر&nbsp;رمز&nbsp;بعد&nbsp;از&nbsp;اولین&nbsp;ورود',
+                    list: true,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.ChangePasswordAfterFirstLogin)
+                            return '<div class="changePasswordAfterFirstLogin"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="changePasswordAfterFirstLogin"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                DateFaForChangePassword: {
+                    title: 'تاریخ&nbsp;تغییر&nbsp;رمز',
+                    sorting: false,
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-DomainSettingId="' + data.record.DomainSettingId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-DomainSettingId="' + data.record.DomainSettingId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    //input: function (data) {
+                    //    if (data.record != undefined) {
+                    //        if (data.record.IsDeleted == true) {
+                    //            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                    //        '<option value="true" selected>بله</option>' +
+                    //        '<option value="false">خیر</option>' +
+                    //        '</select>';
+                    //        }
+                    //        else {
+                    //            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                    //        '<option value="true">بله</option>' +
+                    //        '<option value="false" selected>خیر</option>' +
+                    //        '</select>';
+                    //        }
+                    //    }
+                    //    else {
+                    //        return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                    //        '<option value="true">بله</option>' +
+                    //        '<option value="false">خیر</option>' +
+                    //        '</select>';
+                    //    }
+                    //},
+                    sorting: false,
+                    //options: {
+                    //    true: 'بله',
+                    //    false: 'خیر'
+                    //},
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-DomainSettingId="' + data.record.DomainSettingId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-DomainSettingId="' + data.record.DomainSettingId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsFree: {
+                    title: 'آزاد',
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsFree)
+                            return '<div class="isFree"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isFree"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditDomainSetting: {
+                    title: 'ویرایش',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editDomainSetting pointer" data-DomainSettingId="' + data.record.DomainSettingId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                }
+            },
+            formCreated: function (event, data) {
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                data.form.find('input[name="DomainName"]').addClass(
+                    'validate[required]');
+                data.form.validationEngine();
+
+                //$('.ui-button').text('');
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+            },
+            formSubmitting: function (event, data) {
+                return data.form.validationEngine('validate');
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                debugger;
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+            debugger;
+            var txtDomainNameSearch = $('#txtDomainNameSearch').val();
+            if (txtDomainNameSearch != '') {
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    'domainNameSearch': txtDomainNameSearch
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('راهنمایی');
+                $('#my-warning-modal').find('#error').html(DomainNameSearchErrorMessage);
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(2) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(2) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.editDomainSetting', function (e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var domainSettingId = _this.attr('data-DomainSettingId');
+            window.location.href = '/Admin/DomainsSettingManagement/UpdateDomainSetting/' + domainSettingId;
+        });
+
+        $('#btnReload').click(function () {
+            $('#btnReset').click();
+            $('#txtDomainNameSearch').val('');
+            $('#listContainer').jtable('load');
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            ////debugger;
+            var _this = $(this);
+            var domainSettingId = _this.attr('data-DomainSettingId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/DomainsSettingManagement/ToggleActivationDomainSetting",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'DomainSettingId': domainSettingId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var txtDomainNameSearch = $('#txtDomainNameSearch').val();
+                        if (txtDomainNameSearch != '') {
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'domainNameSearch': txtDomainNameSearch
+                            });
+                        }
+                        else {
+                            $('#listContainer').jtable('load');
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            var _this = $(this);
+            var domainSettingId = _this.attr('data-DomainSettingId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/DomainsSettingManagement/TemporaryDeleteDomainSetting",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'DomainSettingId': domainSettingId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var txtDomainNameSearch = $('#txtDomainNameSearch').val();
+                        if (txtDomainNameSearch != '') {
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'domainNameSearch': txtDomainNameSearch
+                            });
+                        }
+                        else {
+                            $('#listContainer').jtable('load');
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+    });
+</script>

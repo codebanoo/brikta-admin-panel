@@ -1,0 +1,142 @@
+﻿@using VM.Console
+@using VM.Projects;
+@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        List<InvestorsVM> investorsList = new List<InvestorsVM>();
+
+        @Html.Raw("var investorsList  = [];")
+        ;
+
+        if (ViewData["InvestorsList"] != null)
+        {
+            investorsList = (List<InvestorsVM>)ViewData["InvestorsList"];
+
+            var investorsListData = investorsList.Select(c =>
+            new
+            {
+
+                // DisplayText = $"{c.CustomUsersVM?.UserName + " - " + c.CustomUsersVM?.Name + " " + c.CustomUsersVM?.Family + " - " + c.CustomUsersVM?.Mobile}",
+                DisplayText = $"{c.CustomUsersVM?.Name + " " + c.CustomUsersVM?.Family + " - " + c.CustomUsersVM?.Mobile}",
+                Value = c.UserId
+            });
+
+
+            @Html.Raw("debugger; investorsList  = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(investorsListData)) + "; debugger;");
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<CustomUsersVM> usersList = new List<CustomUsersVM>();
+
+        @Html.Raw("var usersList = [];")
+        ;
+
+        if (ViewData["CustomUsersList"] != null)
+        {
+            usersList = (List<CustomUsersVM>)ViewData["CustomUsersList"];
+
+            var usersListData = usersList.Select(c =>
+            new
+            {
+
+                DisplayText = $"{c.UserName + "  " + c.Name + " " + c.Family + "  " + c.Mobile}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("debugger; usersList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(usersListData)) + "; debugger;");
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+
+        List<PropertiesVM> propertiesList = new List<PropertiesVM>();
+
+        @Html.Raw("var propertiesList = [];")
+        ;
+
+        if (ViewData["PropertiesList"] != null)
+        {
+            propertiesList = (List<PropertiesVM>)ViewData["PropertiesList"];
+
+            var propertiesListData = propertiesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.PropertyCodeName}",
+                          Value = c.PropertyId
+                      });
+
+            @Html.Raw("debugger; propertiesList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertiesListData)) + "; debugger;");
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+
+        List<ConstructionProjectTypesVM> constructionProjectTypesList = new List<ConstructionProjectTypesVM>();
+
+        @Html.Raw("var constructionProjectTypesList = [];")
+        ;
+
+        if (ViewData["ConstructionProjectTypesList"] != null)
+        {
+            constructionProjectTypesList = (List<ConstructionProjectTypesVM>)ViewData["ConstructionProjectTypesList"];
+
+            var constructionProjectTypesListData = constructionProjectTypesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.ConstructionProjectTypeTitle}",
+                          Value = c.ConstructionProjectTypeId
+                      });
+
+            @Html.Raw("debugger; constructionProjectTypesList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(constructionProjectTypesListData)) + "; debugger;");
+        }
+
+    }
+</script>
+
+@* <script type="text/javascript">
+    @{
+        List<InvestorsVM> investorsList = new List<InvestorsVM>();
+
+        @Html.Raw("var investorsList  = [];")
+        ;
+
+        if (ViewData["InvestorsList"] != null)
+        {
+            investorsList = (List<InvestorsVM>)ViewData["InvestorsList"];
+
+            var investorsListData = investorsList.Select(c =>
+            new
+            {
+
+                DisplayText = $"{c.PersonsVM?.Name + " " + c.PersonsVM?.Family + " - " + c.PersonsVM?.Phone}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("debugger; investorsList  = " +
+                     JsonConvert.DeserializeObject(JsonConvert.SerializeObject(investorsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script> *@
+
+
+<style>
+
+    .chosen-container {
+        width: 88% !important;
+    }
+</style>

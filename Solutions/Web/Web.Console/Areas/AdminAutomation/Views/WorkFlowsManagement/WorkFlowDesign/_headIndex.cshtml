@@ -1,0 +1,173 @@
+﻿@using VM.Console;
+@using VM.Automation;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        //List<OrgChartNodesVM> orgChartNodesVMList = new List<OrgChartNodesVM>();
+
+        //@Html.Raw("var orgChartNodesVMList = [];");
+
+        //if (ViewData["AllOrgChartNodesList"] != null)
+        //{
+        //    orgChartNodesVMList = (List<OrgChartNodesVM>)ViewData["AllOrgChartNodesList"];
+
+        //    @Html.Raw("debugger; orgChartNodesVMList = " +
+        //        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(orgChartNodesVMList)) + "; debugger;");
+        //}
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<link href="~/lib/jquery.fancytree/dist/skin-win7/ui.fancytree.css" rel="stylesheet" />
+<script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>
+
+<script src="/lib/drawflow/drawflow.js"></script>
+<script src="/lib/drawflow/sweetalert2@9.js"></script>
+<script src="/lib/drawflow/micromodal.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/lib/drawflow/drawflow.css" />
+<link rel="stylesheet" type="text/css" href="/lib/drawflow/beautiful.css" />
+
+<style type="text/css">
+    #drawflow {
+        width: 100%;
+        height: 100%;
+        top: inherit;
+    }
+
+    #treeBlock {
+        height: 400px;
+        overflow-y: scroll;
+    }
+
+    /*    #diamond-narrow {
+            width: 0;
+            height: 0;
+            border: 50px solid transparent;
+            border-bottom: 70px solid red;
+            position: relative;
+            top: -50px;
+        }
+
+            #diamond-narrow:after {
+                content: '';
+                position: absolute;
+                left: -50px;
+                top: 70px;
+                width: 0;
+                height: 0;
+                border: 50px solid transparent;
+                border-top: 70px solid red;
+            }*/
+
+    /*    #diamond-narrow {
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-bottom: 15px solid red;
+            position: relative;
+            top: -5px;
+        }
+
+            #diamond-narrow:after {
+                content: '';
+                position: absolute;
+                left: -10px;
+                top: 15px;
+                width: 0;
+                height: 0;
+                border: 10px solid transparent;
+                border-top: 14px solid red;
+            }*/
+
+    /*    .menu-item {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        transform: translateY(100px)
+    }
+
+    .diamond {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: rotate3d(0,0,1,45deg) skew(15deg,15deg);
+    }
+
+        .diamond.chrome {
+            overflow: hidden;
+        }
+
+            .diamond.chrome:before {
+                content: '';
+                position: absolute;
+                background: url(http://placekitten.com/200/200);
+                background-size: 100% 100%;
+                width: 200%;
+                height: 200%;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%,-50%) skew(-15deg,-15deg) rotate3d(0,0,1,-45deg);
+                z-index: -1;
+            }
+
+            .diamond.chrome:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                box-shadow: 0 0 0 20px rgba(255,255,255,.5) inset;
+                transition: all 0.4s ease-in-out;
+            }
+
+    .menu-item:hover .chrome:after {
+        box-shadow: 0 0 0 0px rgba(255,255,255,.5) inset;
+    }
+
+    .menu-item:hover .content {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    .menu-item .content {
+        color: white;
+        opacity: 0;
+        font-size: 20px;
+        transition: all 0.4s ease-in-out;
+        transform: scale(0);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .menu-item .clipper {
+        overflow: hidden;
+    }
+
+    .menu-item .inner-content {
+        background: teal;
+        position: absolute;
+        text-align: center;
+        width: 200%;
+        height: 200%;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%) skew(-15deg,-15deg) rotate3d(0,0,1,-45deg);
+    }
+
+        .menu-item .inner-content:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }*/
+</style>

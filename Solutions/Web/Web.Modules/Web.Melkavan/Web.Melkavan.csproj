@@ -1,0 +1,196 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <MvcRazorExcludeViewFilesFromBuild>false</MvcRazorExcludeViewFilesFromBuild>
+    <MvcRazorExcludeViewFilesFromPublish>true</MvcRazorExcludeViewFilesFromPublish>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ApiCallers.BaseApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.BaseApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.MelkavanApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.MelkavanApiCaller\bin\Debug\net6.0\ApiCallers.MelkavanApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.PublicApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.PublicApiCaller\bin\Debug\net6.0\ApiCallers.PublicApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.TeniacoApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.TeniacoApiCaller\bin\Debug\net6.0\ApiCallers.TeniacoApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomAttributes">
+      <HintPath>..\..\..\..\AllRef\CustomAttributes.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Aspnet.Core">
+      <HintPath>..\..\..\..\AllRef\Microsoft.Aspnet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Models">
+      <HintPath>..\..\..\..\AllRef\Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\..\AllRef\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Business">
+      <HintPath>..\..\..\..\AllRef\Services.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Public">
+      <HintPath>..\..\..\..\AllRef\Services.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Xml">
+      <HintPath>..\..\..\..\AllRef\Services.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\..\AllRef\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\..\AllRef\VM.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Melkavan">
+      <HintPath>..\..\..\..\AllRef\VM.Melkavan.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Teniaco">
+      <HintPath>..\..\..\..\AllRef\VM.Teniaco.dll</HintPath>
+    </Reference>
+    <Reference Include="Web.Core">
+      <HintPath>..\..\..\..\AllRef\Web.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\AdminMelkavan\Views\AdvertisementFeaturesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\AdvertisementFeaturesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\AdvertisementFeaturesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\AddToBanners\_headAddTo.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\AddToBanners\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\AddToBanners\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\UpdateBanners\_headUpdate.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\UpdateBanners\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\BannersManagement\UpdateBanners\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\MelkavanPanel\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\MelkavanPanel\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\MelkavanPanel\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\Shared\Components\AdminDashboard\sb_admin_2AdminDashboard.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\Shared\Components\AdminNavigation\sb_admin_2AdminNavigation.cshtml" />
+    <None Include="Areas\AdminMelkavan\Views\_ViewImports.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AboutMelkavan\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AboutMelkavan\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AboutMelkavan\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AdvertisementDetails\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AdvertisementDetails\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AdvertisementDetails\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AdvertisementRegistration\_headAddTo.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AdvertisementRegistration\_htmlAddTo.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\AdvertisementRegistration\_jsAddTo.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\EditMelkavanProfile\_headUpdate.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\EditMelkavanProfile\_htmlUpdate.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\EditMelkavanProfile\_jsUpdate.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Login\_headLogin.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Login\_headLogin2.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Login\_htmlLogin.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Login\_htmlLogin2.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Login\_jsLogin.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Login\_jsLogin2.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\MyAdvertisements\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\MyAdvertisements\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\MyAdvertisements\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\MelkavanProfile\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\MelkavanProfile\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\MelkavanProfile\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\PropertyDetails\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\PropertyDetails\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\PropertyDetails\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Rules\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Rules\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\Rules\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\ViewChart\_headIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\ViewChart\_htmlIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\MelkavanPanel\ViewChart\_jsIndex.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\Shared\Components\UserDashboard\sb_admin_2UserDashboard.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\Shared\Components\UserNavigation\sb_admin_2UserNavigation.cshtml" />
+    <None Include="Areas\UserMelkavan\Views\_ViewImports.cshtml" />
+    <None Include="Views\MelkavanHome\ErrorInPanel.cshtml" />
+    <None Include="Views\MelkavanHome\HandleErrorCode.cshtml" />
+    <None Include="Views\MelkavanHome\Index\_headIndex.cshtml" />
+    <None Include="Views\MelkavanHome\Index\_htmlIndex.cshtml" />
+    <None Include="Views\MelkavanHome\Index\_jsIndex.cshtml" />
+    <None Include="Views\MelkavanHome\LockedUser.cshtml" />
+    <None Include="Views\MelkavanHome\Login\_headLogin.cshtml" />
+    <None Include="Views\MelkavanHome\Login\_htmlLogin.cshtml" />
+    <None Include="Views\MelkavanHome\Login\_jsLogin.cshtml" />
+    <None Include="Views\MelkavanHome\NotAccessible.cshtml" />
+    <None Include="Views\MelkavanHome\PropertyDetails\_headIndex.cshtml" />
+    <None Include="Views\MelkavanHome\PropertyDetails\_htmlIndex.cshtml" />
+    <None Include="Views\MelkavanHome\PropertyDetails\_jsIndex.cshtml" />
+    <None Include="Views\PropertyDetails\_headIndex.cshtml" />
+    <None Include="Views\PropertyDetails\_htmlIndex.cshtml" />
+    <None Include="Views\PropertyDetails\_jsIndex.cshtml" />
+    <None Include="Views\Shared\_MobileLayout.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\MelkavanHome\Index\_headIndex.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\MelkavanHome\Index\_htmlIndex.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\MelkavanHome\Index\_jsIndex.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\MelkavanHome\Login\_headLogin.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\MelkavanHome\Login\_htmlLogin.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\MelkavanHome\Login\_jsLogin.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\Web\Web.Console\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminMelkavan&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminMelkavan&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserMelkavan&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserMelkavan&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminMelkavan\Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminMelkavan\Views&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserMelkavan\Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserMelkavan\Views&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Melkavan\Areas\AdminMelkavan\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminMelkavan\Accesses.xml&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Melkavan\Areas\UserMelkavan\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserMelkavan\Accesses.xml&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Melkavan\Areas\AdminMelkavan\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminMelkavan\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Melkavan\Areas\UserMelkavan\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserMelkavan\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Melkavan\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Melkavan\wwwroot&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\wwwroot&quot;" />
+  </Target>
+
+</Project>

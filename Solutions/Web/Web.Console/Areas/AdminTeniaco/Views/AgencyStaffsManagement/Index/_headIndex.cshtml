@@ -1,0 +1,113 @@
+﻿@using VM.Console
+@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        AgenciesVM agency = new AgenciesVM();
+        @Html.Raw("var agency ;")
+        ;
+
+        if (ViewData["Agency"] != null)
+        {
+            agency = (AgenciesVM)ViewData["Agency"];
+
+            @Html.Raw("debugger; agency =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(agency))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+<script>
+    @{
+        List<PositionsVM> positionsList = new List<PositionsVM>();
+
+        @Html.Raw("var positionsList;")
+        ;
+
+        if (ViewData["PositionsList"] != null)
+        {
+            positionsList = (List<PositionsVM>)ViewData["PositionsList"];
+
+            var positionsListData = positionsList.Select(p =>
+
+            new
+            {
+                DisplayText = $"{p.PositionName}",
+                Value = p.PositionId
+            });
+
+            @Html.Raw("debugger; positionsList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(positionsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script>
+    @{
+        List<AgencyStaffsVM> agencyStaffsList = new List<AgencyStaffsVM>();
+
+        @Html.Raw("var agencyStaffsList;")
+        ;
+
+        if (ViewData["AgencyStaffs"] != null)
+        {
+            agencyStaffsList = (List<AgencyStaffsVM>)ViewData["AgencyStaffs"];
+
+            var agencyStaffsListData = agencyStaffsList.Select(p =>
+
+            new
+            {
+                DisplayText = $"{p.CustomUsersVM.Name}" + "  " + $"{p.CustomUsersVM.Family}" + " - "+  $"{p.CustomUsersVM.Mobile}",
+                Value = p.UserId,
+                //UserId = p.UserId
+            });
+
+            @Html.Raw("debugger; agencyStaffsList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(agencyStaffsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7) {
+        width: 1% !important;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+</style>

@@ -1,0 +1,39 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+
+<link href="~/lib/Jit/css/base.css" rel="stylesheet" />
+<link href="~/lib/Jit/css/Spacetree.css" rel="stylesheet" />
+<script src="~/lib/Jit/jit.js"></script>
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<link href="~/lib/profile-cards/kl_profile_cards.min.css" rel="stylesheet" />
+
+<style type="text/css">
+    .error {
+        color: red;
+    }
+
+    input, select {
+        width: 150px;
+    }
+
+    .with-select > span,
+    .with-select > label.error {
+        vertical-align: top;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+    #infovis-label .col {
+        padding: 0;
+    }
+
+    #page-wrapper {
+        min-height: 660px !important;
+    }
+</style>
+

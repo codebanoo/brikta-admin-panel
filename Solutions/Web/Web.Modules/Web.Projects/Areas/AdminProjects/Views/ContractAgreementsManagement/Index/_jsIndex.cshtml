@@ -1,0 +1,850 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#searchBlock').hide(1000);
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            // title: 'لیست قرارداد های پیمان', toolbarType: 'both',
+            title: 'لیست قرارداد های پروژه',
+            toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminProjects/ContractAgreementsManagement/GetListOfContractAgreements',
+                //createAction: '/AdminProjects/ContractAgreementsManagement/AddToContractAgreements',
+                updateAction: '/AdminProjects/ContractAgreementsManagement/UpdateContractAgreements',
+                deleteAction: '/AdminProjects/ContractAgreementsManagement/CompleteDeleteContractAgreements'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function () {
+                            window.location.href = '/AdminProjects/ContractAgreementsManagement/AddToContractAgreements/' + constructionProjectId;
+                        }
+                    }
+                ]
+            },
+            fields: {
+                ContractAgreementId: {
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false,
+                },
+                ContractAgreementTitle: {
+                    title: 'عنوان&nbsp;قرارداد',
+                    sorting: true,
+                },
+                // ContractAgreementFilePath: {
+                //     title: 'فایل',
+                //     sorting: false,
+                //     edit: false,
+                //     display: function(data) {
+
+                //         switch (data.record.ContractAgreementFileExt) {
+                //             case ".jpeg":
+                //             case ".jpg":
+                //             case ".png":
+                //             case ".gif":
+                //             case ".bmp":
+                //                 return '<div style="position: relative; display: inline-block;">' +
+                //                     '<a class="fancybox mediaThumbImage" href="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/'+
+                //                     data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-fancybox-group="gallery" ' +
+                //                     'title=""><img src="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/'+
+                //                     data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" alt="" ' +
+                //                     'data-caption="' + data.record.ContractAgreementTitle + '" data-url="#" /></a>' + '</div>'
+                //                 break;
+                //             case ".pdf":
+                //                 return '<div class="pdfThumbImage pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/'+
+                //                     data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '"><img src="/images/pdf.png" /></div>';
+                //                 break;
+                //             default:
+                //                 return '<div class="pdfThumbImage pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/'+
+                //                     data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '"><img src="/images/File.png" /></div>';
+                //         }
+                //     }/*fileThumbImage*/
+                // },
+
+                ContractAgreementFilePath: {
+                    title: 'فایل',
+                    sorting: false,
+                    edit: false,
+                    display: function (data) {
+
+                        switch (data.record.ContractAgreementFileExt) {
+                            case ".jpeg":
+                            case ".jpg":
+                            case ".png":
+                                return '<div style="position: relative; display: inline-block;">' +
+                                    '<a class="fancybox mediaThumbImage" href="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-fancybox-group="gallery" ' +
+                                    'title=""><img class="downloadFile" src="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" alt="" ' +
+                                    'data-caption="' + data.record.ContractAgreementTitle + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '" data-constructionProjectId="' + data.record.ConstructionProjectId + '" data-url="#" /></a>' + '</div>'
+                                break;
+
+                            case ".mp4":
+                            case ".mkv":
+                            case ".mov":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/Video.png" /></div>';
+                                break;
+
+                            case ".pptx":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/powerPoint.png" /></div>';
+                                break;
+
+                            case ".xls":
+                            case ".xlsx":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/xls.png" /></div>';
+                                break;
+
+                            case ".docx":
+                            case ".doc":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/word.png" /></div>';
+                                break;
+
+                            case ".mpp":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/mpp.jpg" /></div>';
+                                break;
+
+                            case ".pdf":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/pdf.png" /></div>';
+                                break;
+
+                            case ".txt":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/txt.png" /></div>';
+                                break;
+                            case ".rar":
+                            case ".zip":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/DWG.png" /></div>';
+                                break;
+
+                            default:
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractAgreementFiles/' +
+                                    data.record.ContractAgreementId + '/Image/' + data.record.ContractAgreementFilePath + '" data-FileId ="' + data.record.ContractAgreementId + '" data-filename ="' + data.record.ContractAgreementFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/File.png" /></div>';
+                        }
+                    }
+                },
+                ContractAgreementFileExt: {
+                    title: 'فرمت&nbsp;فایل',
+                    edit: false,
+                    create: false,
+                    sorting: false,
+                },
+                ContractAgreementFileOrder: {
+                    title: 'اولویت&nbsp;فایل',
+                    sorting: false,
+                },
+                ContractAgreementNumber: {
+                    title: 'شماره&nbsp;قرارداد',
+                    sorting: false,
+                },
+                NewContractAgreementDescription: {
+                    title: 'توضیحات',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.ContractAgreementDescription != null) {
+                                return '<textarea class="form-control" id="ContractAgreementDescription" rows="10" placeholder="توضیحات تکمیلی" name="ContractAgreementDescription">' +
+                                    data.record.ContractAgreementDescription +
+                                    '</textarea>';
+
+                            } else {
+                                return '<textarea class="form-control" id="ContractAgreementDescription" rows="10" placeholder="توضیحات تکمیلی" name="ContractAgreementDescription"></textarea>';
+                            }
+                        }
+                        else {
+                            return '<textarea class="form-control" id="ContractAgreementDescription" rows="10" placeholder="توضیحات تکمیلی" name="ContractAgreementDescription"></textarea>';
+
+
+                        }
+                    },
+                    display: function (data) {
+                        return '<span class="description" data-Description="' + data.record.ContractAgreementDescription + '">' + data.record.NewContractAgreementDescription + '</span>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                Attachement: {
+                    title: 'پیوست&nbsp;ها',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+
+                        return '<div class="redirect-icon"><div class="Viewcount">' + data.record.AttachementsCount + '</div><i class="material-symbols-outlined attachments"  style="margin-bottom: 22px;" data-TableName="ContractAgreements" data-ParentId="' + data.record.ContractAgreementId + '"  data-constructionProjectId="' +
+                            data.record.ConstructionProjectId + '">Article</i></div>';
+
+
+                        // return '<i class="material-symbols-outlined redirect-icon  px-4" '
+                        // + 'data-TableName="ContractAgreements" data-ParentId="'+data.record.ContractAgreementId+'" data-ConstructionProjectId="' + data.record.ConstructionProjectId + '">Article</i>';
+                    }
+                },
+                Visibility: {
+                    title: 'دیده&nbsp;شده',
+                    create: false,
+                    edit: false,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsView != null) {
+                            debugger;
+                            if (data.record.IsView == true) {
+                                return '<div class ="font-medium text-xs mt-0.5"><i  style="margin-top: 1rem;" data-Agreementid ="' + data.record.ContractAgreementId + '"   class="agreementIco  material-symbols-outlined visibility_off contractsIcons ">visibility</i></div>';
+                            } else {
+                                return '<div class ="font-medium text-xs mt-0.5"><i  style="margin-top: 1rem;" data-Agreementid ="' + data.record.ContractAgreementId + '"   class="agreementIco  material-symbols-outlined visibility_off contractsIcons ">visibility_off</i></div>';
+                            }
+                        } else {
+                            return '<div class ="font-medium text-xs mt-0.5"><i  style="margin-top: 1rem;" data-Agreementid ="' + data.record.ContractAgreementId + '"   class="agreementIco  material-symbols-outlined visibility_off contractsIcons ">visibility_off</i></div>';
+                        }
+
+
+                    }
+                },
+                Confirmation: {
+                    title: 'وضعیت',
+                    create: false,
+                    edit: false,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsConfirm != null) {
+                            if (data.record.IsConfirm == true) {
+                                return '<div class="font-medium text-xs mt-0.5"><a class="flex items-center justify-center text-success"><i  style="margin-top: 1rem;" class="material-symbols-outlined check_circle contractsIcons">check_circle</i></a></div>';
+                            } else {
+                                return '<div class="font-medium text-xs mt-0.5"><a class="flex items-center justify-center isConfirmToggle"  data-constructionprojectid="' + data.record.ConstructionProjectId + '" data-contracttype="ContractAgreements" data-targetid="' + data.record.ContractAgreementId + '"><i  style="margin-top: 1rem;" class="material-symbols-outlined check_circle contractsIcons">check_circle</i></a></div>';
+                            }
+                        } else {
+                            return '<div class="font-medium text-xs mt-0.5"><a class="flex items-center justify-center isConfirmToggle"  data-constructionprojectid="' + data.record.ConstructionProjectId + '" data-contracttype="ContractAgreements" data-targetid="' + data.record.ContractAgreementId + '"><i   style="margin-top: 1rem;" class="material-symbols-outlined check_circle contractsIcons">check_circle</i></a></div>';
+                        }
+                    }
+                },
+
+                Chat: {
+                    title: 'مکاتبه',
+                    create: false,
+                    edit: false,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        // return '<div class="font-medium text-xs mt-0.5"><a data-contracttype="ContractAgreements" data-agreementId ="'+data.record.ContractAgreementId+'" class="contractConversationModalButton pointer"><i class="material-symbols-outlined speaker_notes contractsIcons">speaker_notes</i><div data-agreementId ="'+data.record.ContractAgreementId+'" class="Viewcount1">' + data.record.ConversationIsReadCount + '</div></a></div>';
+
+
+                        return '<div class="redirect-icon pointer" style="margin-bottom: 1rem;"><div data-agreementId ="' + data.record.ContractAgreementId + '" class="Viewcount">' + data.record.ConversationIsReadCount + '</div><i class="contractConversationModalButton pointer material-symbols-outlined speaker_notes contractsIcons" data-agreementId ="' + data.record.ContractAgreementId + '" data-contracttype="ContractAgreement" >speaker_notes</i></div>';
+
+                    }
+                },
+
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-ContractAgreementId="' +
+                                data.record.ContractAgreementId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-ContractAgreementId="' +
+                                data.record.ContractAgreementId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-ContractAgreementId="' + data.record.ContractAgreementId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-ContractAgreementId="' + data.record.ContractAgreementId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                //EditProperty: {
+                //    title: 'ویرایش',
+                //    sorting: false,
+                //    display: function(data) {
+                //        return '<div class="editBanner pointer" data-BannerId="' + data.record.BannerId + '"><i class="fa fa-edit"></i></div>';
+                //    }
+                //}
+            },
+            formCreated: function (event, data) {
+                debugger;
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                $("#Edit-IsDeleted").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+                $("#Edit-IsActivated").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+
+
+
+                data.form.find('input[name="ContractAgreementTitle"]').addClass(
+                    'validate[required]');
+
+
+                // data.form.find('input[name="ContractAgreementNumber"]').addClass(
+                //     'validate[required]');
+                // data.form.find('#ContractAgreementDescription').addClass(
+                //     'validate[required]');
+
+                // data.form.find('input[name="ContractAgreementFileOrder"]').addClass(
+                //     'validate[required]');
+
+
+                $("#ContractAgreementDescription").parent().parent().addClass("w-100")
+                data.form.find('input[name="ContractAgreementFileOrder"]').attr("type", "number");
+                data.form.find('input[name="ContractAgreementNumber"]').attr("type", "number");
+                data.form.validationEngine();
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                //$('#listContainer').jtable('reload');
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', { 'ConstructionProjectId': constructionProjectId });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var contractAgreementId = _this.attr('data-ContractAgreementId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ContractAgreementsManagement/ToggleActivationContractAgreements",
+
+                data: { 'contractAgreementId': contractAgreementId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var contractAgreementId = _this.attr('data-ContractAgreementId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ContractAgreementsManagement/TemporaryDeleteContractAgreements",
+
+                data: { 'contractAgreementId': contractAgreementId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+        //#region DownloadFile ACtion
+        $('body').on('click', '.downloadFile', function (e) {
+            debugger;
+            var _this = $(this);
+            var FileId = _this.attr('data-FileId');
+            var FileName = _this.attr('data-filename');
+            var ConstructionProjectId = _this.attr('data-constructionProjectId');
+            var Type = "ContractAgreement";
+
+            var url = '/AdminProjects/ContractAgreementsManagement/Download?fileName=' + FileName +
+                '&constructionProjectId=' + ConstructionProjectId +
+                '&fileId=' + FileId +
+                '&type=' + Type;
+            window.open(url, '_parent');
+            $('.agreementIco[data-AgreementId="' + FileId + '"]').html('visibility')
+        });
+        //#endregion
+
+        $('body').on('click', '.pdfThumbImage', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var fileUrl = _this.attr('data-file-url');
+
+            window.open(fileUrl, '_blank').focus();
+        });
+
+
+        $('body').on('click', '.description', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            var description = $('<div/>').html(_this.attr('data-Description')).text();
+            description = description.replace(/\n/g, '<br/>').replace(/\r/g, '<br/>');
+
+            //var description = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + description + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            var contractAgreementTitle = $('#contractAgreementTitleSearch').val();
+
+            if (
+                (contractAgreementTitle != null) &&
+                (contractAgreementTitle != "")
+            ) {
+
+                $('#listContainer').jtable('load', {
+                    'contractAgreementTitle': contractAgreementTitle,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            e.preventDefault();
+            $('#contractAgreementTitleSearch').val("");
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            $('#contractAgreementTitleSearch').val("");
+            e.preventDefault();
+        });
+
+
+        $('body').on('click', '.attachments', function (e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var ParentId = _this.attr('data-ParentId');
+            var TableName = _this.attr('data-TableName');
+            var ConstructionProjectId = _this.attr('data-ConstructionProjectId');
+            window.location.href = '/AdminProjects/AttachementFilesManagement/Index?ParentId=' + ParentId + '&TableName=' + TableName + '&ConstructionProjectId=' + ConstructionProjectId;
+        });
+
+
+        $('body').on('click', '.contractConversationModalButton', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            debugger;
+            $('#Chat-modal').modal("show");
+
+            var AgreementId = _this.attr('data-AgreementId');
+            var Type = _this.attr('data-ContractType');
+
+            getConversation(AgreementId, Type);
+
+
+        });
+
+
+        //#region Function For Get Conversation
+        function getConversation(recordId, contractType) {
+            debugger;
+
+            $('.chat').remove();
+            //$('.chat').html('');
+            $('.chat chat-left').html('');
+            $('.modal-footer').html('');
+            $('.text-slate-500').html('');
+
+            debugger;
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "/AdminProjects/ContractAgreementsManagement/GetConversationDataByAgreementTypeAndRecordId",
+                data: { 'recordId': recordId, 'contractType': contractType },
+                success: function (result) {
+                    if (result === null || result === '' || result === undefined || result.length <= 0) {
+                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                        $('#my-warning-modal').find('#error').html('خطا');
+                        return $('#warningModal').click();
+                    }
+
+                    let contractsConversations = '';
+                    if (result.Records.length > 0) {
+                        debugger;
+                        $('.ChatHeader').append(' - ' + result.Records[0].RecordTitle);
+                        for (var j = 0; j < result.Records.length; j++) {
+                            if (result.Records[j].UserIdCreator == userId) {   // چت خود فرد
+                                debugger;
+                                var name = result.Records[j].CustomUsersVM.Name;
+                                var family = result.Records[j].CustomUsersVM.Family;
+                                var description = result.Records[j].ConversationLogDescription.replace(/\r\n|\n/g, "<br>");
+                                contractsConversations +=
+                                    '<div class="chat">' +
+                                    '<div class="chat-avatar">' +
+                                    '<a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right">' +
+                                    '<img alt="Midone - HTML Admin Template" class="rounded-full" src="/images/profileImage.png">' +
+                                    '<i></i>' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '<div class="chat-body">' +
+                                    '<div class="chat-content">' +
+                                    '<p class="name">' + name + ' ' + family + '</p>' +
+                                    '<p>' +
+                                    (description || "").replace(/(\r\n|\r|\n)/g, "<br>")
+                                    + '</p>' +
+                                    '<span>' + result.Records[j].OperationDateFa + '</span>' + ' ' + '<span>' + result.Records[j].OperationTime + '</span>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>';
+
+
+
+                            } else { //چت طرف مقابل
+                                var name = result.Records[j].CustomUsersVM.Name;
+                                var family = result.Records[j].CustomUsersVM.Family;
+                                var description = result.Records[j].ConversationLogDescription.replace(/\r\n|\n/g, "<br>");
+                                contractsConversations +=
+                                    '<div class="chat chat-left">' +
+                                    '<div class="chat-avatar">' +
+                                    '<a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="left" title="" data-original-title="Edward Fletcher">' +
+                                    '<img alt="Midone - HTML Admin Template" class="rounded-full" src="/images/profileImage.png">' +
+                                    '<i></i>' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '<div class="chat-body">' +
+                                    '<div class="chat-content">' +
+                                    '<p class="other">' + name + ' ' + family + '</p>' +
+                                    '<p>' +
+                                    (description || "").replace(/(\r\n|\r|\n)/g, "<br>")
+                                    + '</p>' +
+                                    '<span>' + result.Records[j].OperationDateFa + '</span>' + ' ' + '<span>' + result.Records[j].OperationTime + '</span>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>';
+                            }
+
+
+                        }
+
+
+
+                    } else {
+                        debugger;
+                        contractsConversations = '<div class="NullMessage" data-RecordId="' + recordId + '" style="text-align: center;margin-top:14rem;"><p class=" mt-5 h-48 font-medium"></div><div class="text-slate-500 mt-1" style="font-size:medium !important; text-align:center">در حال حاضر هیچ پیامی ندارید</p></div>';
+
+
+                    }
+
+
+                    //textArea for type the message
+                    var typeChat =
+                        '<textarea data-agreementid="' + recordId + '"  class="messageClass TextArea chat__box__input form-control dark:bg-darkmode-600 h resize-none border-transparent px-5 py-3 shadow-none focus:border-transparent focus:ring-0 height46" rows="1" placeholder="پیام خود را تایپ کنید..." data-contractType="ContractAgreement"></textarea>';
+
+
+                    $('.modal-footer').append(typeChat);
+                    $('.mainMessages').after(contractsConversations);
+                    $('.Viewcount[data-agreementid="' + recordId + '"]').html('0');
+                }
+
+            });
+
+
+        }
+
+
+        //#endregion
+
+
+
+        //#region SendMessage
+
+        $('body').on('keydown', '.messageClass', function (event) {
+            var _this = $(this);
+
+            if (event.which === 13 && !event.shiftKey) {
+                debugger;
+                var formData = new FormData();
+                var chatMessage = $('.messageClass').val();
+                var contractType = _this.attr('data-contractType');
+                var agreementId = _this.attr('data-AgreementId');
+
+
+                formData.append('ConversationLogsVM.RecordId', agreementId);
+                formData.append('ConversationLogsVM.TableTitle', contractType);
+                formData.append('ConversationLogsVM.ConversationLogDescription', chatMessage);
+
+
+                $.ajax({
+
+                    cache: false,
+                    type: "POST",
+                    url: "/AdminProjects/ContractAgreementsManagement/AddToConversationLogs",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        if (result === null || result === '' || result === undefined || result.length <= 0) {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            return $('#warningModal')[0].click();
+                        } else {
+                            debugger;
+                            var name = result.Record.CustomUsersVM.Name;
+                            var family = result.Record.CustomUsersVM.Family;
+                            var description = result.Record.ConversationLogDescription.replace(/\r\n|\n/g, "<br>");
+                            var newChat =
+                                '<div class="chat">' +
+                                '<div class="chat-avatar">' +
+                                '<a class="avatar avatar-online" data-toggle="tooltip" href="#" data-placement="right">' +
+                                '<img alt="Midone - HTML Admin Template" class="rounded-full" src="/images/profileImage.png">' +
+                                '<i></i>' +
+                                '</a>' +
+                                '</div>' +
+                                '<div class="chat-body">' +
+                                '<div class="chat-content">' +
+                                '<p class="name">' + name + ' ' + family + '</p>' +
+                                '<p>' + 
+                                (description || "").replace(/(\r\n|\r|\n)/g, "<br>")
+                                + '</p>' +
+                                '<span>' + result.Record.OperationDateFa + '</span>' + ' ' + '<span>' + result.Record.OperationTime + '</span>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+
+                            if ($('.chat').length > 0) {
+
+                                $(newChat).insertAfter($('.chat').last());
+                            } else {
+                                //$('.NullMessage').html('');
+                                $('.NullMessage').remove();
+                                $('.text-slate-500').html('');
+                                $('.text-slate-500').remove();
+                                //$('.chat').html('');
+                                $(newChat).insertAfter($('.mainMessages'));
+                            }
+
+
+                            $('.messageClass').val('');
+                            //$('.conversatioBlock[data-AgreementId="' + agreementId + '"]').append(newChat);
+
+
+                        }
+                    }
+                });
+
+                debugger;
+            }
+        });
+
+
+        //#endregion
+
+    });
+
+
+</script>

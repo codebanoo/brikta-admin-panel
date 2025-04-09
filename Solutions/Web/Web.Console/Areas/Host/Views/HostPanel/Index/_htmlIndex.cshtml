@@ -1,0 +1,45 @@
+﻿@using VM.Console;
+
+@{
+    List<UserShortCutImagesVM> userShortCutImages = new List<UserShortCutImagesVM>();
+    if (ViewData["UserShortCutImages"] != null)
+    {
+        userShortCutImages = (List<UserShortCutImagesVM>)ViewData["UserShortCutImages"];
+    }
+
+    List<LevelShortCutImagesVM> levelShortCutImages = new List<LevelShortCutImagesVM>();
+    if (ViewData["LevelShortCutImages"] != null)
+    {
+        levelShortCutImages = (List<LevelShortCutImagesVM>)ViewData["LevelShortCutImages"];
+    }
+}
+
+@{
+    foreach (var icon in levelShortCutImages)
+    {
+        <div class="col col-md-3 col-xs-3 col-sm-3 col-lg-3">
+            <div class="shortcutIcon boxShadow">
+                <a href="@icon.Link">
+                    <i class="fa fa-3x @icon.CssClass"></i>
+                    <br />
+                    @icon.Title
+                </a>
+            </div>
+        </div>
+    }
+    if (userShortCutImages.Count > 0)
+    {
+        foreach (var icon in userShortCutImages)
+        {
+            <div class="col col-md-3 col-xs-3 col-sm-3 col-lg-3">
+                <div class="shortcutIcon boxShadow">
+                    <a href="@icon.Link">
+                        <i class="fa fa-3x @icon.CssClass"></i>
+                        <br />
+                        @icon.Title
+                    </a>
+                </div>
+            </div>
+        }
+    }
+}

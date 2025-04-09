@@ -1,0 +1,80 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+        
+        var zoneId = zonesList.ZoneId;
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            var formData = new FormData();
+
+            var filesElm = $('input[type=file]');
+
+            var zoneFileUploadPVMList = [];
+
+            if (filesElm.length > 0) {
+                for (var i = 0; i < filesElm.length; i++) {
+                    var file = filesElm[i];
+                    if (file != null)
+                        if (file.files[0] != null)
+                            if (file.files[0].size > 0) {
+                                zoneFileUploadPVMList.push({
+                                    ZoneFileTitle: $('#ZoneFileTitle' + (i + 1)).val(),
+                                    File: file.files[0]
+                                });
+
+                                formData.append("ZoneFileUploadPVMList[" + i + "].ZoneFileTitle", $('#ZoneFileTitle' + (i + 1)).val());
+                                formData.append("ZoneFileUploadPVMList[" + i + "].ZoneFileOrder", $('#ZoneFileOrder' + (i + 1)).val());
+                                formData.append("ZoneFileUploadPVMList[" + i + "].File", file.files[0]);
+                                
+                            }
+                }
+
+                if (zoneFileUploadPVMList.length > 0) {
+
+                    formData.append('ZoneId', zoneId);
+
+                    $.ajax({
+                        url: '/AdminPublic/ZonesMapsManagement/AddToZoneFiles',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                            $('#error-alert').show(500);
+                            
+                        },
+                        error: function (jqXHR) {
+                            $('#error-alert').removeClass('alert-success');
+                            $('#error-alert').addClass('alert-danger');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message);
+                            $('#error-alert').show(500);
+                            
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا فایلهای مورد نظر را انتخاب کنید');
+                }
+            }
+        });
+
+    });
+</script>

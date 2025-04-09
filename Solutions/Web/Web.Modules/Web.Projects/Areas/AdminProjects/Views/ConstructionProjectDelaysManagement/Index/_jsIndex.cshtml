@@ -1,0 +1,624 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+
+        //let constructionProjectId = window.location.href.split("/").filter(Boolean).pop();
+        debugger;
+        constructionProjectId;
+
+        $('#listContainer').jtable({
+            title: 'لایحه تاخیرات',
+            toolbarType: 'both',
+            paging: true,
+            pageSize: 10,
+            selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminProjects/ConstructionProjectDelaysManagement/GetListOfConstructionProjectDelays',
+                deleteAction: '/AdminProjects/ConstructionProjectDelaysManagement/CompleteDeleteConstructionProjectDelays'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                    {
+                        icon: '/jtable/themes/lightcolor/add.png',
+                        text: 'افزودن لایحه تاخیرات',
+                        click: function () {
+                            $('#create-delay-modal').modal('show');
+                        }
+                    }]
+
+            },
+            fields: {
+                ConstructionProjectsDelayId: {
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false,
+                },
+                // ConstructionProjectTitle: {
+                //     title: 'نام پروژه',
+                //     sorting: false,
+                // },
+                ConstructionProjectBillDelayTitle: {
+                    title: 'علت تاخیر',
+                    sorting: false,
+                },
+                ConstructionProjectsDelayDates: {
+                    title: 'تعداد روزهای تاخیرات',
+                    sorting: false,
+                    display: function (data) {
+                        return data.record.ConstructionProjectsDelayDates.split(',').length;
+                    }
+                },
+                CreateEnDate: {
+                    title: 'تاریخ ایجاد',
+                    sorting: false,
+                    display: function (data) {
+                        const date = new Date(data.record.CreateEnDate);
+                        const persianDate = jalaali.toJalaali(date.getFullYear(), date.getMonth() + 1, date.getDate());
+                        const formattedPersianDate = `${persianDate.jy}/${persianDate.jm.toString().padStart(2, '0')}/${persianDate.jd.toString().padStart(2, '0')}`;
+                        return '<span>' + formattedPersianDate + '</span>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد کننده',
+                    sorting: false,
+                },
+                Edit: {
+                    title: 'ویرایش',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editProjectDelay pointer" data-ConstructionProjectDelayId="' + data.record.ConstructionProjectsDelayId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-ConstructionProjectDelayId="' +
+                                data.record.ConstructionProjectsDelayId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-ConstructionProjectDelayId="' +
+                                data.record.ConstructionProjectsDelayId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-ConstructionProjectDelayId ="' + data.record.ConstructionProjectsDelayId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-ConstructionProjectDelayId ="' + data.record.ConstructionProjectsDelayId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+
+                    $('.jtable').basictable({
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+
+
+                $('.test').tooltip({
+                    content: "This is my content"
+                });
+            }
+        });
+
+        $('#listContainer').jtable('load', { 'ConstructionProjectId': constructionProjectId });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+
+        let selectedDates = [];
+
+        $('#newDelayDate').MdPersianDateTimePicker({
+            format: 'DD/MM/YYYY',
+            EnableTimePicker: false,
+            multidate: true
+        });
+
+        $("#newDelayDate").on("change", function () {
+
+            if (preventChangeEvent) {
+                console.log('Change event prevented');
+                return;
+            }
+
+            var selectedDate = $(this).val();
+
+            let dates = $('#delayDates').val();
+            if (!dates.includes(selectedDate)) {
+                $('#delayDates').val(dates + selectedDate + '\n');
+            }
+        });
+
+
+
+        $('#modal-btn-clearDates').on('click', function () {
+            $('#delayDates').val('');
+        });
+
+        $('#modal-btn-editClearDates').on('click', function () {
+            $('#editDelayDates').val('');
+        })
+
+        $('#addBill').on('click', function () {
+            $('#create-ProjectBill-modal').modal('show');
+        });
+
+        $('#modal-btn-addBill').on('click', function () {
+
+            debugger;
+            var formData = new FormData();
+
+            let reason = $('#txtBillName').val();
+
+            formData.append('ConstructionProjectBillDelayTitle', reason);
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ConstructionProjectBillDelaysManagement/AddToConstructionProjectBillDelays",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        //window.location.reload();
+                        $('#billDelay, #editBillDelay')
+                            .append($("<option></option>")
+                                .attr("value", result.Id)
+                                .text(reason));
+
+                        $('#billDelay, #editBillDelay').trigger('chosen:updated');
+                        $('#closeAddBillModal').trigger('click');
+                    }
+                }
+            });
+
+        });
+
+
+        $('#editDelayDate').MdPersianDateTimePicker({
+            format: 'DD/MM/YYYY',
+            EnableTimePicker: false,
+        });
+
+
+
+        $("#editDelayDate").on("change", function () {
+
+            if (preventChangeEvent) {
+                console.log('Change event prevented');
+                return;
+            }
+
+            let addedDate = $('#editDelayDate').val();
+            let dates = $('#editDelayDates').val();
+            if (!dates.includes(addedDate)) {
+                $('#editDelayDates').val(dates + '\n' + addedDate);
+            }
+        });
+
+
+
+        $('#modal-btn-CreateDelay').on('click', function (e) {
+
+            e.preventDefault();
+            const delayDates = $('#demo-mobile-picker-mobiscroll').val();
+
+            var billDelayId = parseInt($('#billDelay').val());
+
+            var formData = new FormData();
+            formData.append("ConstructionProjectBillDelayId", billDelayId);
+            formData.append("ConstructionProjectsDelayDates", delayDates);
+            formData.append("ConstructionProjectId", constructionProjectId);
+
+            if (!delayDates) {
+                alert('لطفا یک تاریخ وارد نمایید');
+                return;
+            }
+            debugger
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ConstructionProjectDelaysManagement/AddToConstructionProjectDelays",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        $('#listContainer').jtable('reload');
+                        $('#closeCreateDelayModal').trigger('click');
+                        $('#demo-mobile-picker-mobiscroll').mobiscroll('setVal', '', true);
+                    }
+                }
+            });
+
+
+        });
+
+
+        let constructionProjectDelayId = "";
+
+        $('body').on('click', '.editProjectDelay', function (e) {
+
+            let projectDelayId = $(this).attr('data-ConstructionProjectDelayId');
+            constructionProjectDelayId = $(this).attr('data-ConstructionProjectDelayId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ConstructionProjectDelaysManagement/GetConstructionProjectDelayById",
+                data: { 'ConstructionProjectsDelayId': projectDelayId },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        $('#editBillDelay').val(result.Record.ConstructionProjectBillDelayId);
+                        $('#editBillDelay').trigger("chosen:updated");
+                        $('#demo-mobile-picker-mobiscroll-edit').val(result.Record.ConstructionProjectsDelayDates);
+
+                        $('#edit-delay-modal').modal('show');
+                    }
+                }
+
+            });
+
+        });
+
+
+
+        $('#modal-btn-EditDelay').on('click', function (e) {
+
+            debugger;
+            e.preventDefault();
+            const delayDates = $('#demo-mobile-picker-mobiscroll-edit').val();
+
+            var billDelayId = $('#editBillDelay').val();
+
+
+            var formData = new FormData();
+            formData.append("ConstructionProjectBillDelayId", billDelayId);
+            formData.append("ConstructionProjectsDelayDates", delayDates);
+            formData.append("ConstructionProjectsDelayId", constructionProjectDelayId);
+
+            if (!delayDates) {
+                alert('لطفا یک تاریخ وارد نمایید');
+                return;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ConstructionProjectDelaysManagement/UpdateConstructionProjectDelays",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        $('#listContainer').jtable('reload');
+                        $('#closeEditDelayModal').trigger('click');
+                    }
+                }
+            });
+
+
+        });
+
+
+
+        let editBillId = "";
+        $('#editBill').on('click', function () {
+            let reason = $('#editBillDelay option:selected').text();
+            editBillId = $('#editBillDelay').val();
+            $('#txtEditBillName').val(reason);
+            $('#edit-ProjectBill-modal').modal('show');
+        });
+
+        $('#modal-btn-editBill').on('click', function () {
+
+            debugger;
+            var formData = new FormData();
+
+            let reason = $('#txtEditBillName').val();
+
+            formData.append('ConstructionProjectBillDelayId', editBillId);
+            formData.append('ConstructionProjectBillDelayTitle', reason);
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ConstructionProjectBillDelaysManagement/UpdateConstructionProjectBillDelays",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        //window.location.reload();
+                        //#editBillDelay
+                        $('#editBillDelay option[value="' + editBillId + '"] ,#billDelay option[value="' + editBillId + '"]').text(reason);
+                        $('#editBillDelay ,#billDelay').trigger('chosen:updated');
+                        $('#closeEditBillModal').trigger('click');
+                        $('#listContainer').jtable('reload');
+
+                    }
+                }
+            });
+
+        });
+
+
+        for (var i = 0; i < constructionProjectBillDelaysList.length; i++) {
+            debugger;
+            var item = constructionProjectBillDelaysList[i];
+            $('#billDelay, #editBillDelay,#SlcbillDelay')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+
+        $('#billDelay ,#editBillDelay,#SlcbillDelay').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+
+
+
+        //mobiscroll persian date
+        mobiscroll.setOptions({
+            locale: mobiscroll.localeFa,
+            theme: 'ios',
+            themeVariant: 'light'
+        });
+
+
+        $('#demo-mobile-picker-mobiscroll').mobiscroll().datepicker({
+            controls: ['calendar'],
+            selectMultiple: true,
+            selectMin: 1,
+            selectCounter: true
+        });
+
+
+        $('#demo-mobile-picker-mobiscroll-edit').mobiscroll().datepicker({
+            controls: ['calendar'],
+            selectMultiple: true,
+            selectMin: 1,
+            selectCounter: true
+        });
+
+
+        // Function to convert Persian dates to Gregorian dates
+        function jalaliToGregorianArray(jalaliDates) {
+            return jalaliDates.split(',').map(date => {
+                const [jy, jm, jd] = date.trim().split('/').map(Number);
+                const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd);
+                return new Date(gy, gm - 1, gd); // Convert to JavaScript Date object
+            });
+        }
+
+        // Function to set dates on the Mobiscroll calendar
+        function setDatesFromInput(value) {
+            const gregorianDates = jalaliToGregorianArray(value);
+            $('#demo-mobile-picker-mobiscroll-edit').mobiscroll('setVal', gregorianDates, true);
+        }
+
+        $('#demo-mobile-picker-mobiscroll-edit').on('click', function () {
+            const inputValue = $(this).val();
+            if (inputValue)
+                setDatesFromInput(inputValue);
+        });
+
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var ConstructionProjectDelayId = _this.attr('data-ConstructionProjectDelayId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ConstructionProjectDelaysManagement/ToggleActivationConstructionProjectDelays",
+
+                data: { 'ConstructionProjectsDelayId': ConstructionProjectDelayId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var ConstructionProjectDelayId = _this.attr('data-ConstructionProjectDelayId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ConstructionProjectDelaysManagement/TemporaryDeleteConstructionProjectDelays",
+
+                data: { 'ConstructionProjectsDelayId': ConstructionProjectDelayId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+        $('body').on('click', '#btnSearch', function () {
+
+            debugger;
+
+            var billDelayId = $('#SlcbillDelay').val();
+
+            $('#listContainer').jtable('load', {
+                'constructionProjectBillDelayId': billDelayId,
+            });
+        });
+
+
+    });
+
+
+</script>

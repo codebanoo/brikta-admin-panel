@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\APIs.Automation.Models\APIs.Automation.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Models">
+      <HintPath>..\..\..\..\..\AllRef\Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\..\..\AllRef\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Automation">
+      <HintPath>..\..\..\..\..\AllRef\VM.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\..\..\AllRef\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\..\..\AllRef\VM.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Teniaco">
+      <HintPath>..\..\..\..\..\AllRef\VM.Teniaco.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;" />
+  </Target>
+
+</Project>

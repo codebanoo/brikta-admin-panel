@@ -1,0 +1,780 @@
+﻿
+<div class="x_panel" id="searchBlock">
+
+    <div class="x_content">
+        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="row">
+                <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                    <div>
+                        نوع ملک
+                    </div>
+                    <select id="slcPropertyTypeId" name="slcPropertyTypeId" class="form-control ml-3"
+                            placeholder="نوع ملک">
+                        <option value="" selected>---</option>
+                    </select>
+
+                </div>
+
+
+                <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                    <div class="mx-2">
+                        عنوان
+                    </div>
+                    <input type='text' class="form-control" id="txtFeatureTitleSearch" name="txtFeatureTitleSearch" />
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-12 col-lg-4 col-xl-3 pt-5">
+                    <button id="btnSearch" name="btnSearch" class="btn btn-success btn-sm">
+                        جستجو
+                    </button>
+                    <button id="btnReload" name="btnReload" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top"
+                            title="بارگذاری مجدد">
+                        <i class="fa fa-refresh"></i>
+                    </button>
+                    <button id="btnReset" name="btnReset" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top"
+                            title="پاک کردن فرم">
+                        <i class="fa fa-undo"></i>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="clearefix"></div>
+            <div id="Compare">
+                <div class="row">
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                        @*PropertyLeftId == slcFirstPropertyId*@
+                        <select id="slcFirstPropertyId" name="slcFirstPropertyId" class="form-control  chosen-select ml-3" placeholder="ملک">
+                            <option value="" selected> -- انتخاب -- </option>
+                        </select>
+                    </div>
+
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                        @*PropertyMiddleId = slcSecondPropertyId*@
+                        <select id="slcSecondPropertyId" name="slcSecondPropertyId" class="form-control  chosen-select ml-3" placeholder="ملک">
+                            <option value="" selected> -- انتخاب -- </option>
+                        </select>
+                    </div>
+
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                        @*PropertyRightId = slcThirdPropertyId*@
+                        <select id="slcThirdPropertyId" name="slcThirdPropertyId" class="form-control  chosen-select ml-3" placeholder="ملک">
+                            <option value="" selected> -- انتخاب -- </option>
+                        </select>
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                        @*PropertyFourId = slcFourthPropertyId*@
+                        <select id="slcFourthPropertyId" name="slcFourthPropertyId" class="form-control  chosen-select ml-3" placeholder="ملک">
+                            <option value="" selected> -- انتخاب -- </option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr class="full-splitter" />
+                <div class="panel">
+                    <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h4 class="panel-title">اطلاعات پایه</h4>
+                    </a>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">نام ملک</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12 with-select">
+                                    <span id="L_PropertyCodeName" class="L_Val">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_PropertyCodeName" class="M_Val">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_PropertyCodeName" class="R_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_PropertyCodeName" class="R_Val">--</span>
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">نوع ملک</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="L_PropertyTypesName" class="L_Val">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_PropertyTypesName" class="M_Val">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_PropertyTypesName" class="R_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_PropertyTypesName" class="R_Val">--</span>
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">نوع کاربری  </span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="L_DocumentTypes" class="L_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_DocumentTypes" class="M_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_DocumentTypes" class="R_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_DocumentTypes" class="R_Val">--</span>
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">مساحت</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="L_Area" class="L_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_Area" class="M_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_Area" class="R_Val">--</span>
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_Area" class="R_Val">--</span>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <a class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <h4 class="panel-title">  ویژگی ها</h4>
+                    </a>
+
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="panel-body ">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <a class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                        <h4 class="panel-title"> موقعیت</h4>
+                    </a>
+
+                    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="panel-body">
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">استان</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12 with-select">
+                                    <span id="L_State">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_State">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_State">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_State">--</span>
+
+
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">شهر</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="L_City">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_City" class="M_Val">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_City" class="R_Val">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_City" class="R_Val">--</span>
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">منطقه</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="L_Zone">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_Zone">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_Zone">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_Zone">--</span>
+                                </div>
+                            </div>
+                                    <div id="map" class="map"></div>
+
+@*                            <div class="row feat">
+                                <div class="form-group col col-md-12 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">لوکیشن</span>
+                                </div>
+
+
+                                <div class="form-group col col-md-12 col-lg-2 col-xs-12 col-sm-12">
+                                    <div id="map" class="map"></div>
+                                </div>
+
+                            </div>*@
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <a class="panel-heading" role="tab" id="headingFive" data-toggle="collapse" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                        <h4 class="panel-title"> قیمت</h4>
+                    </a>
+
+                    <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFive">
+                        <div class="panel-body">
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">بهار</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12 with-select">
+                                    <span id="L_spring">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_spring">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_spring">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_spring">--</span>
+
+
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">تابستان</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="L_summer">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_summer">--</span>
+
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_summer">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_summer">--</span>
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">پاییز</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="L_fall">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="M_fall">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="R_fall">--</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span id="F_fall">--</span>
+                                </div>
+                            </div>
+
+                            <div class="row feat">
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <span style="float:right;font-weight:bold">زمستان</span>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <div id="L_winter">--</div>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <div id="M_winter">--</div>
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <div id="R_winter">--</div>
+
+                                </div>
+                                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                    <div id="F_winter">--</div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*
+<div id="searchBlock">
+    <div class="row">
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                <label>
+                    نوع ملک
+                </label>
+            </div>
+            <select class="form-control input-sm" id="slcPropertyTypeId" name="slcPropertyTypeId"
+                    placeholder="نوع ملک">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                <label>
+                    عنوان
+                </label>
+            </div>
+            <input class="form-control input-sm" id="txtFeatureTitleSearch" name="txtFeatureTitleSearch"
+                   placeholder="عنوان" />
+        </div>
+
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div class="empty-block">&nbsp;</div>
+            <button id="btnSearch" name="btnSearch" class="btn btn-default input-sm">
+                جستجو
+            </button>
+            <button id="btnReload" name="btnReload" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="بارگذاری مجدد">
+                <i class="fa fa-refresh"></i>
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="خالی کردن فرم">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+        <div class="col col-md-2 col-xs-2 col-sm-2 col-lg-2">
+            &nbsp;
+        </div>
+    </div>
+</div>
+<hr class="full-splitter" />
+
+<div id="Compare">
+  <div class="row">
+      <div class="col col-lg-2 col-md-2 col-xs-12 col-sm-12">
+
+       </div>
+       <div class="col col-lg-2 col-md-2 col-xs-12 col-sm-12">
+             <select id="PropertyLeftId" name="PropertyLeftId" class="form-control input-sm chosen-select" placeholder="ملک">
+                <option value="" selected> -- انتخاب -- </option>
+            </select>
+       </div>
+
+       <div class="col col-lg-2 col-md-2 col-xs-12 col-sm-12">
+           <select id="PropertyMiddleId" name="PropertyMiddleId" class="form-control input-sm chosen-select" placeholder="ملک">
+                <option value="" selected> -- انتخاب -- </option>
+            </select>
+       </div>
+
+       <div class="col col-lg-2 col-md-2 col-xs-12 col-sm-12">
+           <select id="PropertyRightId" name="PropertyRightId" class="form-control input-sm chosen-select" placeholder="ملک">
+                <option value="" selected> -- انتخاب -- </option>
+            </select>
+       </div>
+       <div class="col col-lg-2 col-md-2 col-xs-12 col-sm-12">
+          <select id="PropertyFourId" name="PropertyFour" class="form-control input-sm chosen-select" placeholder="ملک">
+              <option value="" selected> -- انتخاب -- </option>
+          </select>
+       </div>
+   </div>
+  <hr class="full-splitter" />
+            <div class="panel-group" id="accordion" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                                   aria-controls="collapseOne">
+                                   اطلاعات پایه
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">نوع ملک</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12 with-select">
+                                        <span id="L_PropertyCodeName" class="L_Val">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_PropertyCodeName" class="M_Val">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_PropertyCodeName" class="R_Val">--</span>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_PropertyCodeName" class="R_Val">--</span>
+                                    </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">نوع کاربری</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="L_PropertyTypesName" class="L_Val">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_PropertyTypesName" class="M_Val">--</span>
+
+
+                                    </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_PropertyTypesName" class="R_Val">--</span>
+                                     </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_PropertyTypesName" class="R_Val">--</span>
+                                     </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">نوع سند</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="L_DocumentTypes" class="L_Val">--</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_DocumentTypes" class="M_Val">--</span>
+                                     </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_DocumentTypes" class="R_Val">--</span>
+                                    </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_DocumentTypes" class="R_Val">--</span>
+                                    </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">مساحت</span>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="L_Area" class="L_Val">--</span>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_Area" class="M_Val">--</span>
+                                      </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_Area" class="R_Val">--</span>
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_Area" class="R_Val">--</span>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                                   aria-expanded="false" aria-controls="collapseTwo">
+                                    ویژگی ها
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
+                                   aria-expanded="false" aria-controls="collapseThree">
+                                    موقعیت
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                   <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">استان</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12 with-select">
+                                        <span id="L_State">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_State">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_State">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_State">--</span>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">شهر</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="L_City">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_City" class="M_Val">--</span>
+
+
+                                    </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_City" class="R_Val">--</span>
+                                     </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_City" class="R_Val">--</span>
+                                     </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">منطقه</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="L_Zone">--</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_Zone">--</span>
+                                     </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_Zone">--</span>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_Zone">--</span>
+                                    </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">لوکیشن</span>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="L_Map"></div>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="M_Map"></div>
+                                      </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="R_Map"></div>
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="F_Map"></div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour"
+                                   aria-expanded="false" aria-controls="collapseFour">
+                                    قیمت
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                   <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">بهار</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12 with-select">
+                                        <span id="L_Bahar">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_Bahar">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_Bahar">--</span>
+
+
+                                    </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_Bahar">--</span>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">تابستان</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="L_summer">--</span>
+
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_summer">--</span>
+
+
+                                    </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_summer">--</span>
+                                     </div>
+                                      <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_summer">--</span>
+                                     </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">پاییز</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="L_paeez">--</span>
+                                     </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="M_paeez">--</span>
+                                     </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="R_paeez">--</span>
+                                    </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span id="F_paeez">--</span>
+                                    </div>
+                                </div>
+
+                                <div class="row feat">
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <span style="float:right;font-weight:bold">زمستان</span>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="L_Zem">--</div>
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="M_Zem">--</div>
+                                      </div>
+                                     <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="R_Zem">--</div>
+
+                                    </div>
+                                    <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                                        <div id="F_Zem">--</div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+           </div>
+  </div>
+  *@

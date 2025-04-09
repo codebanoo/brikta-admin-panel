@@ -1,0 +1,62 @@
+﻿@using VM.Console
+@using Services.Xml.Entities
+
+@{
+    Layout = "_OutterLayout";
+
+    List<ShortCutKeysVM> shortCutKeys = new List<ShortCutKeysVM>();
+    if (ViewData["ShortCutKeys"] != null)
+    {
+        shortCutKeys = ViewData["ShortCutKeys"] as List<ShortCutKeysVM>;
+    }
+}
+
+@section head{
+@*    <link href="~/lib/jquery-chosen/chosen.css" rel="stylesheet" />
+
+    <link href="~/lib/wickedpicker/dist/wickedpicker.min.css" rel="stylesheet" />*@
+
+    @RenderSection("head", required: false)
+
+@*    <link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>*@
+}
+
+@RenderBody()
+
+@section Scripts{
+
+    <link href="/fonts/Material.css" rel="stylesheet">
+
+    @*<script src="/Gentelella_theme/vendors/Chart.js/dist/Chart.js"></script>*@
+    <script src="/Enigma v1.0.5/dist/js/app_2.js"></script>
+    @* <script src="/Gentelella_theme/vendors/jquery/dist/jquery.js"></script> *@
+
+@*            <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
+    <script src="~/lib/jquery-chosen/chosen.jquery.js"></script>
+
+    <link href="~/lib/jQuery-Validation-Engine-master/css/validationEngine.jquery.css" rel="stylesheet" />
+    <script src="~/lib/jQuery-Validation-Engine-master/js/jquery.validationEngine.js"></script>
+    <script src="~/lib/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-fa.js"></script>
+
+    <script src="~/lib/wickedpicker/dist/wickedpicker.min.js"></script>
+
+    <link href="~/lib/jqueryloading/jquery.loading.css" rel="stylesheet" />
+    <script src="~/lib/jqueryloading/jquery.loading.js"></script>
+
+    <script src="~/js/public.js"></script>*@
+
+    @RenderSection("scripts", required: false)
+
+    @*<script type="text/javascript" src="~/lib/jquery.nicescroll.min.js"></script>*@
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            var i = 0;
+            //$(document).Loading();
+            debugger;
+        });
+                //]]>
+    </script>
+}

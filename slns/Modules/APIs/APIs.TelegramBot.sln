@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34302.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIs.TelegramBot", "..\..\..\ArashCmsSolution\APIs\APIs.Modules\APIs.TelegramBot\APIs.TelegramBot\APIs.TelegramBot.csproj", "{A331079C-3CA9-4933-8855-584DCBAC2854}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIs.TelegramBot.Models", "..\..\..\ArashCmsSolution\APIs\APIs.Modules\APIs.TelegramBot\APIs.TelegramBot.Models\APIs.TelegramBot.Models.csproj", "{FD043313-D508-41DC-8A4A-91ED5DD12D69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIs.TelegramBot.Models.Business", "..\..\..\ArashCmsSolution\APIs\APIs.Modules\APIs.TelegramBot\APIs.TelegramBot.Models.Business\APIs.TelegramBot.Models.Business.csproj", "{AB560DE2-1FD2-417E-8086-DDB5E12FC7DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A331079C-3CA9-4933-8855-584DCBAC2854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A331079C-3CA9-4933-8855-584DCBAC2854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A331079C-3CA9-4933-8855-584DCBAC2854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A331079C-3CA9-4933-8855-584DCBAC2854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD043313-D508-41DC-8A4A-91ED5DD12D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD043313-D508-41DC-8A4A-91ED5DD12D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD043313-D508-41DC-8A4A-91ED5DD12D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD043313-D508-41DC-8A4A-91ED5DD12D69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB560DE2-1FD2-417E-8086-DDB5E12FC7DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB560DE2-1FD2-417E-8086-DDB5E12FC7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB560DE2-1FD2-417E-8086-DDB5E12FC7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB560DE2-1FD2-417E-8086-DDB5E12FC7DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {127B5AB2-2A32-4706-A28E-C65F475A3C70}
+	EndGlobalSection
+EndGlobal

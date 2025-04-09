@@ -1,0 +1,125 @@
+﻿<div class="d-flex align-items-center justify-content-between mb-auto p-3 osahan-header bg-white shadow-sm osahan-header">
+
+    <div class="d-flex align-items-center gap-2">
+        <a class="toggle bg-white shadow rounded-circle icon d-flex align-items-center justify-content-center"
+           href="#"><i class="bi bi-list text-primary fs-5 d-flex"></i></a>
+        <a href="notification.html" class="bg-white shadow rounded-circle icon">
+            <span class="mdi mdi-share-variant-outline mdi-18px text-primary"></span>
+        </a>
+
+        <a href="favorite-doctor.html" class="bg-white shadow rounded-circle icon">
+            <span class="mdi mdi-bookmark-outline  mdi-18px text-primary"></span>
+        </a>
+    </div>
+    <h6 class="mb-0 ms-3 me-auto fw-bold">جزییات ملک </h6>
+    <a href="home.html" class="text-dark bg-white shadow rounded-circle icon">
+        <span class="mdi mdi-arrow-left mdi-18px"></span>
+    </a>
+</div>
+
+<!-- body -->
+<div class="vh-100 my-auto overflow-auto bg-white">
+    <!-- banner -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100" src="~/dactorapp/img/OIP (1).jpg" alt="First slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="~/dactorapp/img/R.jpg" alt="Second slide">
+            </div>
+            <div class="carousel-item">
+                <img class="d-block w-100" src="~/dactorapp/img/cmmt_naslovna.jpg" alt="Third slide">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <div class="p-3 bg-white">
+        <div class="col-12 ps-2 mb-3">
+            <a> <i class="bi bi-chevron-right ms-1"></i>ویلا</a>
+        </div>
+        <div class="mb-3">
+            <h6 class="mb-1">ویلا  کلارآباد350 متر استخر دار نزدیک دریا</h6>
+            <p class="small">سه روز پیش </p>
+        </div>
+
+    </div>
+    <div class="bg-white border p-2">
+        قیمت کل
+        <span class="float-start">  5 میلیارد </span>
+    </div>
+    <div class="bg-white border p-2">
+        قیمت هرمتر
+        <span class="float-start">  30 میلیون </span>
+    </div>
+    <div class="bg-white border p-2">
+        تعداد اتاق
+        <span class="float-start">3</span>
+    </div>
+    <div class="bg-white border p-2">
+        توضیحات
+        <p style="text-align:justify;">
+            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+        </p>
+    </div>
+    <div class="bg-white border py-2 px-3 mb-3">
+        <h6 class="mb-2 pb-1 fw-bold px-3 text-black"> موقعیت</h6>
+
+        <div class="col-12 property-map-bg " style="height:200px;">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <h6 class="mb-2 pb-1 fw-bold px-3 text-black"> آگهی های مشابه</h6>
+        <div class="top-doctors ps-2 ms-1">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <div class="top-doctor-item">
+                    <a asp-action="Detail" class="link-dark">
+                        <div class="card bg-white border-0 rounded-4 shadow-sm overflow-hidden">
+                            <img src="~/dactorapp/img/R.jpg" class="card-img-top top-doctor-img" alt="...">
+                            <div class="card-body small p-3 osahan-card-body">
+                                <p class="card-title fw-semibold mb-0 text-truncate fs-14">ویلا ساحلی محمودآباد</p>
+                                <p class="card-text text-muted small m-0"> 7 میلیارد تومان</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-12  p-2 border border-1">
+        <a> <i class="bi bi-question-circle-fill ms-3"></i>راهنمای خرید امن </a>
+        <span class="float-start">
+            <i class="bi bi-chevron-left"></i>
+        </span>
+    </div>
+    <div class="col-12 p-2 border border-1 ">
+        <a><i class="bi bi-exclamation-octagon-fill ms-3"></i>ثبت تخلف و مشکل آگهی  </a>
+        <span class="float-start">
+            <i class="bi bi-chevron-left"></i>
+        </span>
+    </div>
+
+</div>
+<!-- footer -->
+<div class="footer d-grid mt-auto p-3">
+    <div class="d-flex gap-2">
+        <a href="request-appointment.html" class="btn  btn-outline-info bg-light border  btn-lg col">چت</a>
+        <a href="call-doctor.html" class="btn btn-info btn-lg col"><i class="bi  bi-telephone-fill ml-2"></i> تماس</a>
+
+    </div>
+</div>

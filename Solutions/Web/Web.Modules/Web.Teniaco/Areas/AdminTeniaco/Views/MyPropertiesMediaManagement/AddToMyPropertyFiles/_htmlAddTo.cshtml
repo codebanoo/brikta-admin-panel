@@ -1,0 +1,454 @@
+﻿@using VM.Teniaco;
+<form class="col-12"  data-ajax-complete="OnComplete" 
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+      <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="PropertyFileTitle1" name="PropertyFileTitle1" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+               فایل 1
+            </div>
+            <input type="file" id="file1" name="file1"
+                   placeholder="فایل 1"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="PropertyFileOrder1" name="PropertyFileOrder1" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="PropertyFileTitle2" name="PropertyFileTitle2" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                 فایل 2
+            </div>
+            <input type="file" id="file2" name="file2"
+                   placeholder="فایل 2"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="PropertyFileOrder2" name="PropertyFileOrder2" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="PropertyFileTitle3" name="PropertyFileTitle3" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+               فایل 3
+            </div>
+            <input type="file" id="file3" name="file3"
+                   placeholder="فایل 3"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="PropertyFileOrder3" name="PropertyFileOrder3" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="PropertyFileTitle4" name="PropertyFileTitle4" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                 فایل 4
+            </div>
+            <input type="file" id="file4" name="file4"
+                   placeholder="فایل 4"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="PropertyFileOrder4" name="PropertyFileOrder4" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="PropertyFileTitle5" name="PropertyFileTitle5" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                 فایل 5
+            </div>
+            <input type="file" id="file5" name="file5"
+                   placeholder="فایل 5"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="PropertyFileOrder5" name="PropertyFileOrder5" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+        </div>
+    </div>
+</form>
+@*
+<form onsubmit="return false;">
+    <div class="row">
+        <div class="row">
+            <div class="form-group col col-md-12">
+                @{
+                    <div id='error-alert' class="form-group alert alert-danger">
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle1">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle1" name="PropertyFileTitle1" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file1">
+                        فایل 1
+                    </label>
+                </div>
+                <input type="file" id="file1" name="file1" class="form-control input-sm"
+                       placeholder="فایل 1"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder1">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder1" name="PropertyFileOrder1" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle2">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle2" name="PropertyFileTitle2" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file2">
+                        فایل 2
+                    </label>
+                </div>
+                <input type="file" id="file2" name="file2" class="form-control input-sm"
+                       placeholder="فایل 2"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder2">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder2" name="PropertyFileOrder2" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle3">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle3" name="PropertyFileTitle3" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file3">
+                        فایل 3
+                    </label>
+                </div>
+                <input type="file" id="file3" name="file3" class="form-control input-sm"
+                       placeholder="فایل 3"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder3">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder3" name="PropertyFileOrder3" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle4">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle4" name="PropertyFileTitle4" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file4">
+                        فایل 4
+                    </label>
+                </div>
+                <input type="file" id="file4" name="file4" class="form-control input-sm"
+                       placeholder="فایل 4"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder4">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder4" name="PropertyFileOrder4" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle5">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle5" name="PropertyFileTitle5" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file5">
+                        فایل 5
+                    </label>
+                </div>
+                <input type="file" id="file5" name="file5" class="form-control input-sm"
+                       placeholder="فایل 5"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder5">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder5" name="PropertyFileOrder5" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle6">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle6" name="PropertyFileTitle6" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file6">
+                        فایل 6
+                    </label>
+                </div>
+                <input type="file" id="file6" name="file6" class="form-control input-sm"
+                       placeholder="فایل 6"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder6">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder6" name="PropertyFileOrder6" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle7">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle7" name="PropertyFileTitle7" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file7">
+                        فایل 7
+                    </label>
+                </div>
+                <input type="file" id="file7" name="file7" class="form-control input-sm"
+                       placeholder="فایل 7"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder7">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder7" name="PropertyFileOrder7" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle8">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle8" name="PropertyFileTitle8" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file8">
+                        فایل 8
+                    </label>
+                </div>
+                <input type="file" id="file8" name="file8" class="form-control input-sm"
+                       placeholder="فایل 8"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder8">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder8" name="PropertyFileOrder8" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle9">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle9" name="PropertyFileTitle9" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file9">
+                        فایل 9
+                    </label>
+                </div>
+                <input type="file" id="file9" name="file9" class="form-control input-sm"
+                       placeholder="فایل 9"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder9">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder9" name="PropertyFileOrder9" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileTitle10">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="PropertyFileTitle10" name="PropertyFileTitle10" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file10">
+                        فایل 10
+                    </label>
+                </div>
+                <input type="file" id="file10" name="file10" class="form-control input-sm"
+                       placeholder="فایل 10"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyFileOrder10">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="PropertyFileOrder10" name="PropertyFileOrder10" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <label class="col-lg-12">
+                &nbsp;
+            </label>
+            <button id="btnSubmit" name="btnSubmit" class="btn btn-default input-sm" type="button">
+                آپلود
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="پاک کردن فرم">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+    </div>
+
+</form>*@

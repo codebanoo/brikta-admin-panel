@@ -1,0 +1,77 @@
+﻿@using VM.Automation;
+@using VM.Console;
+@using Newtonsoft.Json;
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<script type="text/javascript">
+    @{
+        List<OrganizationalPositionsVM> organizationalPositionsList = new List<OrganizationalPositionsVM>();
+        @Html.Raw("var organizationalPositionsList =[];")
+        ;
+
+        if (ViewData["OrganizationalPositionsList"] != null)
+        {
+            organizationalPositionsList = (List<OrganizationalPositionsVM>)ViewData["OrganizationalPositionsList"];
+
+            var organizationalPositionsListData = organizationalPositionsList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.OrganizationalPositionName}",
+                Value = a.OrganizationalPositionId
+            });
+
+            @Html.Raw("debugger; organizationalPositionsList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(organizationalPositionsListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(3),
+    div.jtable-main-container table.jtable thead th:nth-child(4) {
+        width: 1% !important;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    .location {
+        width: 32px;
+        height: 32px;
+        text-align: center;
+        display: inline-flex;
+    }
+
+
+    .custom_horizontal_form_field div.jtable-input-field-container {
+        color: red;
+    }
+</style>

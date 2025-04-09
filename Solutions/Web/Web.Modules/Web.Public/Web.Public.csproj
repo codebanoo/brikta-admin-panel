@@ -1,0 +1,230 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <MvcRazorExcludeViewFilesFromBuild>false</MvcRazorExcludeViewFilesFromBuild>
+    <MvcRazorExcludeViewFilesFromPublish>true</MvcRazorExcludeViewFilesFromPublish>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\AdminPublic\Controllers\DistrictsDocsManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\DistrictsManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\DistrictsMapsManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\DistrictsMediaManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\ZoneFeaturesManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\ZonesDocsManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\ZonesManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\ZonesMapsManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Controllers\ZonesMediaManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Views\CommentsManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Views\MainSlidersManagement\**" />
+    <Compile Remove="Areas\AdminPublic\Views\PublicPanel\metis\**" />
+    <Compile Remove="Areas\AdminPublic\Views\PublicPanel\robust\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\DistrictsDocsManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\DistrictsManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\DistrictsMapsManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\DistrictsMediaManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\ZoneFeaturesManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\ZonesDocsManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\ZonesManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\ZonesMapsManagement\**" />
+    <Content Remove="Areas\AdminPublic\Controllers\ZonesMediaManagement\**" />
+    <Content Remove="Areas\AdminPublic\Views\CommentsManagement\**" />
+    <Content Remove="Areas\AdminPublic\Views\MainSlidersManagement\**" />
+    <Content Remove="Areas\AdminPublic\Views\PublicPanel\metis\**" />
+    <Content Remove="Areas\AdminPublic\Views\PublicPanel\robust\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\DistrictsDocsManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\DistrictsManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\DistrictsMapsManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\DistrictsMediaManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\ZoneFeaturesManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\ZonesDocsManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\ZonesManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\ZonesMapsManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Controllers\ZonesMediaManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Views\CommentsManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Views\MainSlidersManagement\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Views\PublicPanel\metis\**" />
+    <EmbeddedResource Remove="Areas\AdminPublic\Views\PublicPanel\robust\**" />
+    <None Remove="Areas\AdminPublic\Controllers\DistrictsDocsManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\DistrictsManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\DistrictsMapsManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\DistrictsMediaManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\ZoneFeaturesManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\ZonesDocsManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\ZonesManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\ZonesMapsManagement\**" />
+    <None Remove="Areas\AdminPublic\Controllers\ZonesMediaManagement\**" />
+    <None Remove="Areas\AdminPublic\Views\CommentsManagement\**" />
+    <None Remove="Areas\AdminPublic\Views\MainSlidersManagement\**" />
+    <None Remove="Areas\AdminPublic\Views\PublicPanel\metis\**" />
+    <None Remove="Areas\AdminPublic\Views\PublicPanel\robust\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ApiCallers.BaseApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.BaseApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.PublicApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.PublicApiCaller\bin\Debug\net6.0\ApiCallers.PublicApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomAttributes">
+      <HintPath>..\..\..\..\AllRef\CustomAttributes.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Aspnet.Core">
+      <HintPath>..\..\..\..\AllRef\Microsoft.Aspnet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\..\AllRef\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Business">
+      <HintPath>..\..\..\..\AllRef\Services.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Public">
+      <HintPath>..\..\..\..\AllRef\Services.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Xml">
+      <HintPath>..\..\..\..\AllRef\Services.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\..\AllRef\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\..\AllRef\VM.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Teniaco">
+      <HintPath>..\..\..\..\AllRef\VM.Teniaco.dll</HintPath>
+    </Reference>
+    <Reference Include="Web.Core">
+      <HintPath>..\..\..\..\AllRef\Web.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\AdminPublic\Views\CitiesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\CitiesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\CitiesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ConstructionItemsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ConstructionItemsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ConstructionItemsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ConstructionSubItemsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ConstructionSubItemsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ConstructionSubItemsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\DrawOnTheMap\_headAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\DrawOnTheMap\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\DrawOnTheMap\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\ReDrawOnTheMap\_headUpdate.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\ReDrawOnTheMap\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsManagement\ReDrawOnTheMap\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminPublic\Views\FormUsagesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\FormUsagesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\FormUsagesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\IndicesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\IndicesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\IndicesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\IndicesManagement\PricesListIndices\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\IndicesManagement\PricesListIndices\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\IndicesManagement\PricesListIndices\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\PersonsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\PersonsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\PersonsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\PricesListIndicesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\PricesListIndicesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\PricesListIndicesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\SmsSendersManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\SmsSendersManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\SmsSendersManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZoneFeaturesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZoneFeaturesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZoneFeaturesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMediaManagement\AddToZoneFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMediaManagement\AddToZoneFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMediaManagement\AddToZoneFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMediaManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMediaManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMediaManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMapsManagement\AddToZoneFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMapsManagement\AddToZoneFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMapsManagement\AddToZoneFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMapsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMapsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesMapsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesDocsManagement\AddToZoneFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesDocsManagement\AddToZoneFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesDocsManagement\AddToZoneFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesDocsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesDocsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\ZonesDocsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsDocsManagement\AddToDistrictFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsDocsManagement\AddToDistrictFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsDocsManagement\AddToDistrictFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsDocsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsDocsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsDocsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMapsManagement\AddToDistrictFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMapsManagement\AddToDistrictFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMapsManagement\AddToDistrictFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMapsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMapsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMapsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMediaManagement\AddToDistrictFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMediaManagement\AddToDistrictFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMediaManagement\AddToDistrictFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMediaManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMediaManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminPublic\Views\DistrictsMediaManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserPublic\Views\PublicPanel\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserPublic\Views\PublicPanel\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserPublic\Views\PublicPanel\Index\_jsIndex.cshtml" />
+    <None Include="Views\PublicHome\ErrorInPanel.cshtml" />
+    <None Include="Views\PublicHome\HandleErrorCode.cshtml" />
+    <None Include="Views\PublicHome\Index\_headIndex.cshtml" />
+    <None Include="Views\PublicHome\Index\_htmlIndex.cshtml" />
+    <None Include="Views\PublicHome\Index\_jsIndex.cshtml" />
+    <None Include="Views\PublicHome\LockedUser.cshtml" />
+    <None Include="Views\PublicHome\Login\_headLogin.cshtml" />
+    <None Include="Views\PublicHome\Login\_htmlLogin.cshtml" />
+    <None Include="Views\PublicHome\Login\_jsLogin.cshtml" />
+    <None Include="Views\PublicHome\NotAccessible.cshtml" />
+    <None Include="Views\PublicHome\PropertyDetails\_headIndex.cshtml" />
+    <None Include="Views\PublicHome\PropertyDetails\_htmlIndex.cshtml" />
+    <None Include="Views\PublicHome\PropertyDetails\_jsIndex.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\Web\Web.Console\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminPublic&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminPublic&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserPublic&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserPublic&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminPublic\Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminPublic\Views&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserPublic\Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserPublic\Views&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Public\Areas\AdminPublic\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminPublic\Accesses.xml&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Public\Areas\UserPublic\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserPublic\Accesses.xml&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Public\Areas\AdminPublic\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminPublic\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Public\Areas\UserPublic\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserPublic\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Public\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Public\wwwroot&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\wwwroot&quot;" />
+  </Target>
+
+</Project>

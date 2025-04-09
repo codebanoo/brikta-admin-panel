@@ -1,0 +1,520 @@
+﻿@using VM.Melkavan
+@using VM.Teniaco;
+@Html.AntiForgeryToken()
+@Html.ValidationSummary()
+
+@model AdvertisementVM
+
+@{
+    AdvertisementFeaturesValuesVM advertisementFeaturesValuesVM = new AdvertisementFeaturesValuesVM();
+
+    if (ViewData["AdvertisementFeaturesValuesVM"] != null)
+    {
+        advertisementFeaturesValuesVM = ViewData["AdvertisementFeaturesValuesVM"] as AdvertisementFeaturesValuesVM;
+    }
+
+}
+
+
+<form id="formCreateProperty" class="col-12">
+
+    <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+            //<input type="hidden" asp-for="AdvertisementId" />
+            //<input type="hidden" asp-for="StrPropertyOwnersVM" />
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                نوع آگهی
+            </div>
+            <select id="slcAdvertisementTypeId" asp-for="AdvertisementDetailsVM.AdvertisementTypeId" class="form-control ml-3"
+                    placeholder=" نوع آگهی">
+                <option value="" selected></option>
+            </select>
+        </div>
+
+
+        <div id="ownerDiv" class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3 d-none">
+            <div style="margin-bottom:-5px;">
+                <label class="lblNewOwner pointer" data-modal-title="مالک">
+                    <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+                         class="" data-original-title="جدید">
+                </label>
+                مالک
+            </div>
+            <select class="form-control ml-3 OwnerId">
+                <option value="">---</option>
+            </select>
+        </div>
+
+
+        <div id="consultantDiv" class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3 d-none">
+            <div style="margin-bottom:-5px;">
+                <label class="lblNewConsultant pointer" data-modal-title="مشاور">
+                    <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+                         class="" data-original-title="جدید">
+                </label>
+                مشاور
+            </div>
+            <select class="form-control ml-3 ConsultantId">
+                <option value="">---</option>
+            </select>
+        </div>
+
+    </div>
+
+
+    <div class="row d-none" id="adInfo1">
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                <span style="color:red">*</span>
+                عنوان آگهی
+            </div>
+            <input id="AdvertisementTitle" class="form-control" asp-for="AdvertisementTitle" type="text" />
+            <span class="text-danger" asp-validation-for="AdvertisementTitle"></span>
+
+        </div>
+
+
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                <span style="color:red">*</span>
+                نوع ملک
+            </div>
+
+            <select id="slcPropertyTypeId" asp-for="PropertyTypeId" class="form-control ml-3"
+                    placeholder=" نوع ملک">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                <span style="color:red">*</span>
+                نوع کاربری
+            </div>
+            <select id="slcTypeOfUseId" asp-for="TypeOfUseId" class="form-control ml-3"
+                    placeholder=" نوع کاربری">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+
+    </div>
+
+
+
+    <div id="adInfo8" class="row d-none">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                نوع سند
+            </div>
+            <select id="slcDocumentTypeId" asp-for="DocumentTypeId" class="form-control ml-3"
+                    placeholder=" نوع سند">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                نوع ریشه سند
+            </div>
+            <select id="slcDocumentRootTypeId" asp-for="DocumentRootTypeId" class="form-control ml-3"
+                    placeholder=" نوع ریشه سند">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                <span style="color:red">*</span>
+                نوع مالکیت سند
+            </div>
+            <select id="slcDocumentOwnershipTypeId" asp-for="DocumentOwnershipTypeId" class="form-control ml-3"
+                    placeholder=" نوع مالکیت سند">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+    </div>
+
+    <div id="adInfo3" class="row d-none">
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                <span style="color:red">*</span>
+                مساحت (متر مربع)
+            </div>
+
+            <input id="Area" class="form-control" asp-for="Area" type="number" />
+
+        </div>
+
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                زیربنا (متر مربع)
+            </div>
+
+            <input id="Foundation" class="form-control" asp-for="AdvertisementDetailsVM.Foundation" type="number" />
+
+        </div>
+
+
+        <div id="SaleadInfo5" class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 d-none'>
+            <div class="mx-2">
+                قیمت (تومان)
+            </div>
+
+            <input id="OfferPrice" class="form-control" asp-for="OfferPrice" type="text" />
+            <span class="resultOfOfferPrice" asp-validation-for="OfferPrice" id="resultOfOfferPrice"></span>
+        </div>
+
+
+    </div>
+
+
+    <div id="RentadInfo4" class="row d-none">
+
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div class="mx-2">
+                <span style="color:red">*</span>
+                قیمت اجاره (تومان)
+            </div>
+
+            <input id="RentPrice" class="form-control" asp-for="RentPrice" type="text" />
+            <span class="resultOfRentPrice" asp-validation-for="RentPrice" id="resultOfRentPrice" style="margin-top: 1.5rem;margin-left: 5px"></span>
+        </div>
+
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div class="mx-2">
+                <span style="color:red">*</span>
+                قیمت ودیعه (تومان)
+            </div>
+
+            <input id="DepositPrice" class="form-control" asp-for="DepositPrice" type="text" />
+            <span class="resultOfDepositPrice" asp-validation-for="DepositPrice" id="resultOfDepositPrice" style="margin-top: 1.5rem;margin-left: 5px"></span>
+        </div>
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div class="mx-2">
+                وضعیت تاهل
+            </div>
+
+            <select id="slcMaritalStatusId" asp-for="AdvertisementDetailsVM.MaritalStatusId" class="form-control ml-3">
+                <option value="0">هردو</option>
+                <option value="1">متاهل</option>
+                <option value="2">مجرد</option>
+            </select>
+
+        </div>
+
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 mt-5'>
+            <div style="display: inline-flex; align-items: center;">
+                <input id="Convertable" class="form-control" type="checkbox" style="opacity: 1; margin-right: 5px;" asp-for="AdvertisementDetailsVM.Convertable" />
+                <span style="margin-right:9px !important">قابل تبدیل</span>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <div id="adInfo10" class="row d-none">
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                عمر بنا
+            </div>
+
+            <select id="slcBuildingLifeId" asp-for="AdvertisementDetailsVM.BuildingLifeId" class="form-control ml-3">
+                <option value="" selected></option>
+            </select>
+
+        </div>
+
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                سال بازسازی
+            </div>
+
+            <input min="1300" pattern="\d*" maxlength="4" id="RebuiltInYearFa" class="form-control" asp-for="RebuiltInYearFa" type="text" />
+
+        </div>
+
+
+        <div id="tagDiv" class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 d-none'>
+            <div class="mx-2">
+                برچسب آگهی
+            </div>
+
+            <select multiple id="slcTagId" asp-for="AdvertisementDetailsVM.TagId" class="form-control ml-3">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <div id="adInfo9" class="row d-none">
+
+
+
+        <div class='col-12  mb-3'>
+            <div class="mx-2">
+                توضیحات تکمیلی
+            </div>
+            <textarea style=" resize: none;" id="AdvertisementDescriptions" asp-for="AdvertisementDescriptions" class="form-control " rows="4"
+                      placeholder="توضیحات تکمیلی"></textarea>
+        </div>
+    </div>
+
+
+    <div id="adInfoAddress" class="row d-none">
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div class="mx-2">
+                <span style="color:red">*</span>
+                استان
+            </div>
+
+            <select id="slcStateId" asp-for="AdvertisementAddressVM.StateId" class="form-control ml-3"
+                    placeholder="استان">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div class="mx-2">
+                <span style="color:red">*</span>
+                شهرستان
+            </div>
+
+            <select id="slcCityId" asp-for="AdvertisementAddressVM.CityId" class="form-control ml-3"
+                    placeholder="شهرستان">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div class="mx-2">
+                شهر/ منطقه
+            </div>
+
+            <select id="slcZoneId" asp-for="AdvertisementAddressVM.ZoneId" class="form-control ml-3"
+                    placeholder="  شهر/ منطقه">
+                <option value="" selected disabled></option>
+            </select>
+        </div>
+
+
+        <div class='col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div class="mx-2">
+                محله
+            </div>
+
+            <input id="TownName" asp-for="AdvertisementAddressVM.TownName" class="form-control ml-3" />
+        </div>
+
+
+        <div class='col-12 my-3'>
+            <div id="mapLeft" class="" style="height:400px !important; width: 100% !important;"></div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="d-none" id="adOptions">
+        <h3>امکانات</h3>
+        <hr />
+
+        <div class="bg-white rounded-4 p-3 border" id="features">
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="d-none p-5 my-4" id="adInfo7" style="border: 2px solid #d6dbdf82; border-radius:20px;">
+
+        <div class="row mt-5">
+            <label style="margin-bottom: 1rem;color:gray;">آگهی‌های دارای عکس تا «4 برابر» بیشتر توسط کاربران دیده می‌شوند.</label>
+        </div>
+
+        <div class="row bg-white rounded-4 border-primary-dotted py-3 ps-3 upload-file mb-3 pe-3 mt-4" style="padding-bottom:0px !important;">
+
+
+            @*<label for="exampleFormControlName" class="form-label mb-1 titles">فایل عکس</label>*@
+
+            <div id="dz-main" class="drop-zone">
+                <label class="form-label mb-1 titles" style="color: gray; cursor:pointer;" id="mainImage">عکس اصلی</label>
+                <span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="drop-zone__prompt"></span>
+                <input accept=".png, .jpg, .jpeg, .webp" type="file" name="myFile" class="main-Image d-none" id="main-img-input">
+                <span class="text-danger"></span>
+            </div>
+            <div class="upload__box">
+                <label class="form-label mb-1 titles" style="color: gray; cursor:pointer;">عکس فرعی</label>
+                <label class="upload__btn">
+                    <span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="addMultipleImage"></span>
+                </label>
+
+
+
+                <input type="file" multiple data-max_length="9" id="other-Images">
+                <span class="text-danger"></span>
+
+            </div>
+
+
+
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="upload__img-wrap" @* style="margin-top:2rem;" *@></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <div id="largeImagePreview" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000;">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; height: 50%; background-size: contain; background-repeat: no-repeat; background-position: center;" id="largeImageContainer"></div>
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="ln_solid"></div>
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button id="saveButton" type="submit" class="btn btn-success btn-md" onclick="return false;">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset" id="btnReset">پاک کردن فرم</button>
+        </div>
+    </div>
+
+
+</form>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="create-owner-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title col-12" id="myModalLabel">تعریف مالک</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نام
+                        </div>
+
+                        <input type='text' class="form-control" id="txtOwnerName" name="txtName" />
+                    </div>
+
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نام خانوادگی
+                        </div>
+
+                        <input type='text' class="form-control" id="txtOwnerFamily" name="txtFamily" />
+                    </div>
+
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            شماره تماس
+                        </div>
+
+                        <input type='text' class="form-control" id="txtOwnerPhone" name="txtPhone" />
+                    </div>
+
+                    <input id="txtLevelName" type="hidden" value="مالک" />
+
+
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-create-owner btn-sm" id="modal-btn-yes">ثبت</button>
+                <button type="button" class="btn btn-primary btn-md">لغو</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="create-consultant-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title col-12" id="myModalLabel">تعریف مالک</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نام
+                        </div>
+
+                        <input type='text' class="form-control" id="txtConsultantName" name="txtName" />
+                    </div>
+
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نام خانوادگی
+                        </div>
+
+                        <input type='text' class="form-control" id="txtConsultantFamily" name="txtFamily" />
+                    </div>
+
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            شماره تماس
+                        </div>
+
+                        <input type='text' class="form-control" id="txtConsultantPhone" name="txtPhone" />
+                    </div>
+
+                    <input id="txtLevelName" type="hidden" value="مالک" />
+
+
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-create-consultant btn-sm" id="modal-btn-yes">ثبت</button>
+                <button type="button" class="btn btn-primary btn-md">لغو</button>
+            </div>
+        </div>
+    </div>
+</div>

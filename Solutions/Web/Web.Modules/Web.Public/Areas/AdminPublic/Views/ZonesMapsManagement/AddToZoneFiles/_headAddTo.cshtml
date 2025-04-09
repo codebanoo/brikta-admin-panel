@@ -1,0 +1,23 @@
+﻿@using VM.Public;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        ZonesVM zonesList = new ZonesVM();
+
+        @Html.Raw("var zonesList;")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = ViewData["ZonesList"] as ZonesVM;
+
+            @Html.Raw("debugger; zonesList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<style type="text/css">
+</style>

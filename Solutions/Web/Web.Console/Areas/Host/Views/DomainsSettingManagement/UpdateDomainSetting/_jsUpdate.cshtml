@@ -1,0 +1,310 @@
+﻿@using VM.Console;
+
+@model DomainsSettingsVM
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+            for (var i = 0; i < customUsersVMList.length; i++) {
+                debugger;
+                var item = customUsersVMList[i];
+                var userName = '';
+                userName = item.Name != null ? item.Name + ' - ' : '';
+                userName += item.Family != null ? item.Family + ' - ' : '';
+                userName += item.UserName;
+                $('#UserIdCreator')
+                    .append($("<option></option>")
+                        .attr("value", item.UserId)
+                        .text(userName));
+            }
+
+            $('#UserIdCreator').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+
+            $('#UserIdCreator').val('@Model.UserIdCreator').trigger("chosen:updated");
+
+            $('#CheckAllChosenItemsShow').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CheckAllChosenItemsShow').val('@Model.CheckAllChosenItemsShow').trigger("chosen:updated");
+
+            $('#BackGroundImageType').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#BackGroundImageType').val('@Model.BackGroundImageType').trigger("chosen:updated");
+
+            $('#TypeOfLoadDataForSubUsers').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#TypeOfLoadDataForSubUsers').val('@Model.TypeOfLoadDataForSubUsers').trigger("chosen:updated");
+
+            $('#CreateSubDomainPerNewUser').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CreateSubDomainPerNewUser').val('@Model.CreateSubDomainPerNewUser').trigger("chosen:updated");
+
+            $('#RegisterPageIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#RegisterPageIsActivated').val('@Model.RegisterPageIsActivated').trigger("chosen:updated");
+
+            $('#CreateMenuAutomatically').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CreateMenuAutomatically').val('@Model.CreateMenuAutomatically').trigger("chosen:updated");
+
+            $('#CreateMenuAutomatically').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CreateMenuAutomatically').val('@Model.CreateMenuAutomatically').trigger("chosen:updated");
+
+            $('#ShortCutKeysIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ShortCutKeysIsActivated').val('@Model.ShortCutKeysIsActivated').trigger("chosen:updated");
+
+            $('#VoiceCommandsIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#VoiceCommandsIsActivated').val('@Model.VoiceCommandsIsActivated').trigger("chosen:updated");
+
+            $('#PushNotificationsIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#PushNotificationsIsActivated').val('@Model.PushNotificationsIsActivated').trigger("chosen:updated");
+
+            $('#RightMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#RightMenuIsActivated').val('@Model.RightMenuIsActivated').trigger("chosen:updated");
+
+            $('#TopMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#TopMenuIsActivated').val('@Model.TopMenuIsActivated').trigger("chosen:updated");
+
+            $('#CircleMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CircleMenuIsActivated').val('@Model.CircleMenuIsActivated').trigger("chosen:updated");
+
+            $('#RightClickMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#RightClickMenuIsActivated').val('@Model.RightClickMenuIsActivated').trigger("chosen:updated");
+
+            $('#DashboardBoxesIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#DashboardBoxesIsActivated').val('@Model.DashboardBoxesIsActivated').trigger("chosen:updated");
+
+            $('#ReportBoxesIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ReportBoxesIsActivated').val('@Model.ReportBoxesIsActivated').trigger("chosen:updated");
+
+            $('#AlertIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#AlertIsActivated').val('@Model.AlertIsActivated').trigger("chosen:updated");
+
+            $('#ToolTipIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ToolTipIsActivated').val('@Model.ToolTipIsActivated').trigger("chosen:updated");
+
+            $('#IsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsActivated').val('@Model.IsActivated').trigger("chosen:updated");
+
+            $('#IsDeleted').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsDeleted').val('@Model.IsDeleted').trigger("chosen:updated");
+
+            $('#ShowLevelPageAfterLogin').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ShowLevelPageAfterLogin').val('@Model.ShowLevelPageAfterLogin').trigger("chosen:updated");
+
+            $('#ChangePasswordAfterFirstLogin').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ChangePasswordAfterFirstLogin').val('@Model.ChangePasswordAfterFirstLogin').trigger("chosen:updated");
+
+            $('#DefaultRegisterPage').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#DefaultRegisterPage').val('@Model.DefaultRegisterPage').trigger("chosen:updated");
+
+            $('#ShowColoredRowsInList').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ShowColoredRowsInList').val('@Model.ShowColoredRowsInList').trigger("chosen:updated");
+        });
+
+        function OnBegin(e) {
+            debugger;
+            //$('#AjaxLoading').show();
+            return true;
+        }
+
+        function OnSuccess(response, status, xhr) {
+            debugger;
+            if (response.Result == 'OK') {
+                if (document.getElementById("BackGroundImagePath").value != "" ||
+                    document.getElementById("LogoImagePath").value != "") {
+                    var domainSettingId = response.DomainSettingId;
+
+                    var formData = new FormData();
+                    formData.append('backgroundImage', $('#BackGroundImagePath')[0].files[0]);
+                    formData.append('logoImage', $('#LogoImagePath')[0].files[0]);
+                    formData.append('DomainSettingId', domainSettingId);
+
+                    var _url = '@Url.Action("UploadFile", "DomainsSettingManagement")';
+
+                    $.ajax({
+                        url: _url,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                            $('#error-alert').show(500);
+                            //$('#AjaxLoading').hide();
+                        },
+                        error: function (jqXHR) {
+                            $('#error-alert').removeClass('alert-success');
+                            $('#error-alert').addClass('alert-danger');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(response.Message + '. ' + result.Message);
+                            $('#error-alert').show(500);
+                            //$('#AjaxLoading').hide();
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+                else {
+                    $('#error-alert').removeClass('alert-danger');
+                    $('#error-alert').addClass('alert-success');
+
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html(response.Message);
+                    $('#error-alert').show(500);
+                    //$('#AjaxLoading').hide();
+                }
+            }
+            else {
+                $('#error-alert').removeClass('alert-success');
+                $('#error-alert').addClass('alert-danger');
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+
+        function OnComplete() {
+            clearValidationSummary();
+        };
+
+        function OnFailed(context) {
+            debugger;
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+            $('#error-alert').html(context.Message);
+            $('#error-alert').show(500);
+            //$('#AjaxLoading').hide();
+        };
+</script>

@@ -1,0 +1,703 @@
+﻿@using System.Linq;
+@using VM.Console;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<DataAccessTypesVM> dataAccessTypesList = new List<DataAccessTypesVM>();
+
+        if (ViewData["DataAccessTypesList"] != null)
+        {
+            dataAccessTypesList = (List<DataAccessTypesVM>)ViewData["DataAccessTypesList"];
+
+            var dataAccessTypesListData = dataAccessTypesList.Select(c => new
+            {
+                DisplayText = $"{c.DataAccessTypeTitle}",
+                Value = c.DataAccessTypeId,
+            });
+
+            @Html.Raw("debugger; var dataAccessTypesList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dataAccessTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+@model LevelDetailsVM
+
+@{
+    string direction = "rtl";
+    if (ViewData["Direction"] != null)
+    {
+        direction = (string)ViewData["Direction"];
+    }
+
+    string source = "";
+    if (Model.AreasVMList != null)
+    {
+        string strDataAccessTypes = "<select class='slcDataAccessType'>";
+        foreach (var dataAccessTypes in dataAccessTypesList)
+        {
+            string dataAccessTypeTitle = "";
+            switch (dataAccessTypes.DataAccessTypeId)
+            {
+                case 1://selfandchilds == ok
+                    dataAccessTypeTitle = "خود کاربر و زیر گروهها";
+                    break;
+                case 2://justself == ok
+                    dataAccessTypeTitle = "فقط خود کاربر";
+                    break;
+                case 3://justchilds == ok
+                    dataAccessTypeTitle = "فقط زیر گروهها";
+                    break;
+                case 4://justparent == ok
+                    dataAccessTypeTitle = "فقط کاربر بالایی";
+                    break;
+                case 5://parentandchilds == ok
+                    dataAccessTypeTitle = "کاربر بالایی و زیر گروهها";
+                    break;
+                case 6://departments
+                    dataAccessTypeTitle = "کاربران واحد";
+                    break;
+                case 7://domainadmin == ok
+                    dataAccessTypeTitle = "مدیر دامنه";
+                    break;
+                case 8://domainadminandchilds == ok
+                    dataAccessTypeTitle = "مدیر دامنه و زیر گروهها";
+                    break;
+                case 9://samelevel == ok
+                    dataAccessTypeTitle = "دسترسی یکسان";
+                    break;
+                case 10://samelevelsandchilds == ok
+                    dataAccessTypeTitle = "";
+                    break;
+                case 11://all == ok
+                    dataAccessTypeTitle = "همه";
+                    break;
+            }
+            strDataAccessTypes += "<option value='" + dataAccessTypes.DataAccessTypeId + "'>" + dataAccessTypeTitle + "</option>";
+        }
+        strDataAccessTypes += "</select>";
+
+        source += " { ";
+        source += " title: \"" + "Host" + "\", folder: true, expanded: true, ";
+        source += " children: [ ";
+        foreach (var area in Model.AreasVMList.Where(a => a.AreaName.StartsWith("Host")))
+        {
+            source += " { ";
+            source += " title: \"" + area.OtherAreaName + "\", folder: true, expanded: true, ";
+
+            var controllers = Model.ControllersVMList.Where(c => c.AreaId.Equals(area.AreaId));
+            if (controllers.Count() > 0)
+            {
+                source += " children: [ ";
+                foreach (var controller in controllers)
+                {
+                    source += " { title: \"" + controller.OtherControllerName + "\", folder: true, ";
+
+                    var actions = Model.ActionsVMList.Where(a => a.ControllerId.Equals(controller.ControllerId));
+                    if (actions.Count() > 0)
+                    {
+                        source += " children: [ ";
+                        //source += " title: \"" + controller.OtherControllerName + "\", folder: true, ";
+                        foreach (var action in actions)
+                        {
+                            if (!action.ActionName.StartsWith("Index"))
+                            {
+                                if (Model.AccessesIdsVMList.Any(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)))
+                                {
+                                    //if (action.ActionId.Equals(89706))
+                                    //{
+                                    //    int i = 0;
+                                    //}
+                                    int dataAccessTypeId = Model.AccessesIdsVMList.Where(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)).FirstOrDefault().DataAccessTypeId;
+
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", dataAccessTypeId: \"" + dataAccessTypeId + "\", title: \"" +
+                                        action.OtherActionName + "\", selected: true, ";
+
+                                    source += " children: [ { id: \"\", key: \"\", checkbox: false, selected: true, title: \"<span data-dataAccessTypeId='" +
+                                    dataAccessTypeId + "' data-actionId='" + action.ActionId + "'></span>" + strDataAccessTypes + "\" ";
+
+                                    source += " } ] , ";
+
+                                    source += " }, ";
+
+                                    //source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", title: \"" +
+                                    //    action.OtherActionName + "\", selected: true, children: [{ id: \"\", key: \"\", title: \"a\", checkbox: false, selected: true }] }, ";
+                                }
+                                else
+                                {
+                                    //int dataAccessTypeId = Model.AccessesIdsVMList.Where(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)).FirstOrDefault().DataAccessTypeId;
+
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", dataAccessTypeId: \"1\", title: \"" +
+                                        action.OtherActionName + "\", ";
+
+                                    source += " children: [ { id: \"\", key: \"\", checkbox: false, title: \"<span  data-dataAccessTypeId='1' data-actionId='" +
+                                    action.ActionId + "'></span>" + strDataAccessTypes + "\" ";
+
+                                    source += " } ] , ";
+
+                                    source += " }, ";
+
+                                    //source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", dataAccessTypeId: \"1\", title: \"" +
+                                    //    action.OtherActionName + "\" }, ";
+                                }
+                            }
+                            else
+                            {
+                                if (Model.AccessesIdsVMList.Any(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)))
+                                {
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", title: \"" +
+                                        action.OtherActionName + "\", selected: true, }, ";
+                                }
+                                else
+                                {
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", title: \"" +
+                                        action.OtherActionName + "\" }, ";
+                                }
+                            }
+                        }
+                        source += " ] , ";
+                    }
+
+                    source += " }, ";
+                }
+                source += " ], ";
+            }
+            source += " }, ";
+        }
+        source += " ], ";
+        source += " }, ";
+
+        source += " { ";
+        source += " title: \"" + "Admin" + "\", folder: true, expanded: true, ";
+        source += " children: [ ";
+        foreach (var area in Model.AreasVMList.Where(a => a.AreaName.StartsWith("Admin")))
+        {
+            source += " { ";
+            source += " title: \"" + area.OtherAreaName + "\", folder: true, expanded: true, ";
+
+            var controllers = Model.ControllersVMList.Where(c => c.AreaId.Equals(area.AreaId));
+            if (controllers.Count() > 0)
+            {
+                source += " children: [ ";
+                foreach (var controller in controllers)
+                {
+                    source += " { title: \"" + controller.OtherControllerName + "\", folder: true, ";
+
+                    var actions = Model.ActionsVMList.Where(a => a.ControllerId.Equals(controller.ControllerId));
+                    if (actions.Count() > 0)
+                    {
+                        source += " children: [ ";
+                        //source += " title: \"" + controller.OtherControllerName + "\", folder: true, ";
+                        foreach (var action in actions)
+                        {
+                            if (!action.ActionName.StartsWith("Index"))
+                            {
+                                if (Model.AccessesIdsVMList.Any(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)))
+                                {
+                                    //if (action.ActionId.Equals(89706))
+                                    //{
+                                    //    int i = 0;
+                                    //}
+                                    int dataAccessTypeId = Model.AccessesIdsVMList.Where(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)).FirstOrDefault().DataAccessTypeId;
+
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", dataAccessTypeId: \"" + dataAccessTypeId + "\", title: \"" +
+                                        action.OtherActionName + "\", selected: true, ";
+
+                                    source += " children: [ { id: \"\", key: \"\", checkbox: false, selected: true, title: \"<span  data-dataAccessTypeId='" +
+                                    dataAccessTypeId + "' data-actionId='" + action.ActionId + "'></span>" + strDataAccessTypes + "\" ";
+
+                                    source += " } ] , ";
+
+                                    source += " }, ";
+
+                                    //source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", title: \"" +
+                                    //    action.OtherActionName + "\", selected: true, children: [{ id: \"\", key: \"\", title: \"a\", checkbox: false, selected: true }] }, ";
+                                }
+                                else
+                                {
+                                    //int dataAccessTypeId = Model.AccessesIdsVMList.Where(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)).FirstOrDefault().DataAccessTypeId;
+
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", dataAccessTypeId: \"1\", title: \"" +
+                                        action.OtherActionName + "\", ";
+
+                                    source += " children: [ { id: \"\", key: \"\", checkbox: false, title: \"<span  data-dataAccessTypeId='1' data-actionId='" +
+                                    action.ActionId + "'></span>" + strDataAccessTypes + "\" ";
+
+                                    source += " } ] , ";
+
+                                    source += " }, ";
+
+                                    //source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", dataAccessTypeId: \"1\", title: \"" +
+                                    //    action.OtherActionName + "\" }, ";
+                                }
+                            }
+                            else
+                            {
+                                if (Model.AccessesIdsVMList.Any(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)))
+                                {
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", title: \"" +
+                                        action.OtherActionName + "\", selected: true, }, ";
+                                }
+                                else
+                                {
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", title: \"" +
+                                        action.OtherActionName + "\" }, ";
+                                }
+                            }
+                        }
+                        source += " ] , ";
+                    }
+
+                    source += " }, ";
+                }
+                source += " ], ";
+            }
+            source += " }, ";
+        }
+        source += " ], ";
+        source += " }, ";
+
+        source += " { ";
+        source += " title: \"" + "User" + "\", folder: true, expanded: true, ";
+        source += " children: [ ";
+        foreach (var area in Model.AreasVMList.Where(a => a.AreaName.StartsWith("User")))
+        {
+            source += " { ";
+            source += " title: \"" + area.OtherAreaName + "\", folder: true, expanded: true, ";
+
+            var controllers = Model.ControllersVMList.Where(c => c.AreaId.Equals(area.AreaId));
+            if (controllers.Count() > 0)
+            {
+                source += " children: [ ";
+                foreach (var controller in controllers)
+                {
+                    source += " { title: \"" + controller.OtherControllerName + "\", folder: true, ";
+
+                    var actions = Model.ActionsVMList.Where(a => a.ControllerId.Equals(controller.ControllerId));
+                    if (actions.Count() > 0)
+                    {
+                        source += " children: [ ";
+                        //source += " title: \"" + controller.OtherControllerName + "\", folder: true, ";
+                        foreach (var action in actions)
+                        {
+                            if (!action.ActionName.StartsWith("Index"))
+                            {
+                                if (Model.AccessesIdsVMList.Any(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)))
+                                {
+                                    //if (action.ActionId.Equals(89706))
+                                    //{
+                                    //    int i = 0;
+                                    //}
+                                    int dataAccessTypeId = Model.AccessesIdsVMList.Where(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)).FirstOrDefault().DataAccessTypeId;
+
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", dataAccessTypeId: \"" + dataAccessTypeId + "\", title: \"" +
+                                        action.OtherActionName + "\", selected: true, ";
+
+                                    source += " children: [ { id: \"\", key: \"\", checkbox: false, selected: true, title: \"<span  data-dataAccessTypeId='" +
+                                    dataAccessTypeId + "' data-actionId='" + action.ActionId + "'></span>" + strDataAccessTypes + "\" ";
+
+                                    source += " } ] , ";
+
+                                    source += " }, ";
+
+                                    //source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", title: \"" +
+                                    //    action.OtherActionName + "\", selected: true, children: [{ id: \"\", key: \"\", title: \"a\", checkbox: false, selected: true }] }, ";
+                                }
+                                else
+                                {
+                                    //int dataAccessTypeId = Model.AccessesIdsVMList.Where(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)).FirstOrDefault().DataAccessTypeId;
+
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", actionId: \"" + action.ActionId + "\", dataAccessTypeId: \"1\", title: \"" +
+                                        action.OtherActionName + "\", ";
+
+                                    source += " children: [ { id: \"\", key: \"\", checkbox: false, title: \"<span  data-dataAccessTypeId='1' data-actionId='" +
+                                    action.ActionId + "'></span>" + strDataAccessTypes + "\" ";
+
+                                    source += " } ] , ";
+
+                                    source += " }, ";
+
+                                    //source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", dataAccessTypeId: \"1\", title: \"" +
+                                    //    action.OtherActionName + "\" }, ";
+                                }
+                            }
+                            else
+                            {
+                                if (Model.AccessesIdsVMList.Any(a => a.ActionId.Equals(action.ActionId) && a.LevelId.Equals(Model.LevelId)))
+                                {
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", title: \"" +
+                                        action.OtherActionName + "\", selected: true, }, ";
+                                }
+                                else
+                                {
+                                    source += " { id: \"" + action.ActionId + "\", key: \"" + action.ActionId + "\", title: \"" +
+                                        action.OtherActionName + "\" }, ";
+                                }
+                            }
+                        }
+                        source += " ] , ";
+                    }
+
+                    source += " }, ";
+                }
+                source += " ], ";
+            }
+            source += " }, ";
+        }
+        source += " ], ";
+        source += " }, ";
+    }
+}
+
+<script type="text/javascript">
+
+        var selectedActions = [];
+
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+        for (var i = 0; i < dataAccessTypesList.length; i++) {
+            var item = dataAccessTypesList[i];
+
+            var title = 'کاربر و زیرگروهها';
+
+            switch (item.Value + '') {
+                case "1":
+                    title = 'کاربر و زیرگروهها';
+                    break;
+                case "2"://justself == ok
+                    title = 'فقط خود کاربر';
+                    break;
+                case "3"://justchilds == ok
+                    title = 'فقط زیرگروهها';
+                    break;
+                case "4"://justparent == ok
+                    title = 'والد';
+                    break;
+                case "5"://parentandchilds == ok
+                    title = 'والد و زیرگروهها';
+                    break;
+                case "6"://departments
+                    break;
+                case "7"://domainadmin == ok
+                    title = 'مدیر سایت';
+                    break;
+                case "8"://domainadminandchilds == ok
+                    title = 'مدیر سایت و زیرگروهها';
+                    break;
+                case "9"://samelevel == ok
+                    title = 'دسترسی های یکسان';
+                    break;
+                case "10"://samelevelsandchilds == ok
+                    title = 'دسترسی های یکسان و زیرگروهها';
+                    break;
+                case "11"://all == ok
+                    title = 'همه';
+                    break;
+            }
+
+            $('#mainSlcDataAccessType')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(title));
+        }
+
+        $('#mainSlcDataAccessType').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+            $('#btnToggle').click(function (e) {
+                e.preventDefault();
+                var _this = $(this);
+                if (_this.find('i').hasClass('fa-toggle-on')) {
+                    _this.find('i').removeClass('fa-toggle-on');
+                    _this.find('i').addClass('fa-toggle-off');
+                    $("#tree").fancytree("getRootNode").visit(function (node) {
+                        node.setExpanded(true);
+                    });
+                }
+                else {
+                    _this.find('i').removeClass('fa-toggle-off');
+                    _this.find('i').addClass('fa-toggle-on');
+                    $("#tree").fancytree("getRootNode").visit(function (node) {
+                        node.setExpanded(false);
+                    });
+                }
+            });
+
+            $('#btnToggleSelect').click(function (e) {
+                e.preventDefault();
+                var _this = $(this);
+                if (_this.find('i').hasClass('fa-check')) {
+                    _this.find('i').removeClass('fa-check');
+                    _this.find('i').addClass('fa-remove');
+                    $("#tree").fancytree("getTree").visit(function (node) {
+                        node.setSelected(true);
+                    });
+                    return false;
+                }
+                else {
+                    _this.find('i').removeClass('fa-remove');
+                    _this.find('i').addClass('fa-check');
+                    $("#tree").fancytree("getTree").visit(function (node) {
+                        node.setSelected(false);
+                    });
+                    return false;
+                }
+            });
+
+            $("#tree").fancytree({
+                checkbox: true,
+                selectMode: 3,
+                rtl: @{
+                    if (direction == "rtl")
+                    {
+                    @Html.Raw("true");
+                }
+                else
+                {
+                    @Html.Raw("false");
+                }
+                },
+                source: [
+                    @Html.Raw(source)
+                ],
+                init: function (event, data) {
+                    data.tree.getRootNode().visit(function (node) {
+                        if (node.data.preselected) node.setSelected(true);
+                    });
+                },
+                select: function (event, data) {
+                    selectedActions = [];
+
+                    debugger;
+
+                    var selectedNodes = data.tree.getSelectedNodes();
+                    if (selectedNodes !== undefined)
+                        if (selectedNodes.length > 0) {
+
+                        var mainSlcDataAccessTypeId = $('#mainSlcDataAccessType').val();
+
+                            for (var i = 0; i < selectedNodes.length; i++) {
+                                var selectedNode = selectedNodes[i];
+                                if (selectedNode.data.hasOwnProperty("id")) {
+                                    //if (selectedNode.data.actionId = '96254') {
+                                    //    var j = 0;
+                                    //}
+                                    if (selectedNode.data.id == '') { }
+                                    else {
+                                        var dataAccessTypeId = 1;
+
+                                        dataAccessTypeId = $('span[data-actionId="' + selectedNode.data.id + '"]').next().val();
+
+                                        if (dataAccessTypeId === undefined)
+                                            dataAccessTypeId = 1;
+
+                                    if (mainSlcDataAccessTypeId > 0)
+                                        dataAccessTypeId = mainSlcDataAccessTypeId;
+
+                                    var index = selectedActions.findIndex((item) => item.ActionId == selectedNode.data.id);
+
+                                    if (index != -1)
+                                        selectedActions[index].DataAccessTypeId = parseInt(dataAccessTypeId);//node.data.dataAccessTypeId
+                                    else
+                                        selectedActions.push({
+                                            ActionId: selectedNode.data.id,
+                                            DataAccessTypeId: parseInt(dataAccessTypeId)//node.data.dataAccessTypeId
+                                        });
+                                    }
+                                }
+                            }
+
+                            $('#strAccessesWithDataAccessTypesVMList').val(JSON.stringify(selectedActions));
+                        }
+
+                    //var selKeys = $.map(data.tree.getSelectedNodes(), function (node) {
+                    //    //debugger;
+                    //    if (node.data.id != undefined) {
+                    //        if (node.data.hasOwnProperty("dataAccessTypeId")) {
+                    //            var dataAccessTypeId = 1;
+
+                    //            dataAccessTypeId = $('span[data-actionId="' + node.data.id + '"]').next().val();
+
+                    //            if (dataAccessTypeId === undefined)
+                    //                dataAccessTypeId = 1;
+
+                    //            selectedActions.push({
+                    //                ActionId: node.data.id,
+                    //                DataAccessTypeId: parseInt(dataAccessTypeId)//node.data.dataAccessTypeId
+                    //            });
+                    //        }
+                    //        else {
+                    //            selectedActions.push({
+                    //                ActionId: node.data.id,
+                    //                DataAccessTypeId: 1
+                    //            });
+                    //        }
+                    //        return node.data.id;
+                    //    }
+                    //});
+                    //debugger;
+                    //var accesses = '';
+                    //for (var i in selKeys) {
+                    //    var nodeKey = selKeys[i];
+                    //    accesses += nodeKey + ',';
+                    //}
+                    //$('#strAccesses').val(accesses);
+                    //$('#strAccessesWithDataAccessTypesVMList').val(JSON.stringify(selectedActions));
+                },
+                cookieId: "fancytree-Cb3",
+                idPrefix: "fancytree-Cb3-",
+                expand: function (event, data) {
+                    //debugger;
+
+                    if (data.node.data.hasOwnProperty("dataAccessTypeId")) {
+                        $('.slcDataAccessType').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: 20,
+                            rtl: rtl
+                        });
+                    }
+
+                    //if (data.node.children != null)
+                    //    if (data.node.children.length > 0)
+                    //        if ($(data.node.children[0].title).length > 0) {
+                    //            var value = $($(data.node.children[0].title)[0]).attr('data-htmlReplacement');
+                    //            //$($(data.node.children[0].title)[0]).html(window[value]);
+                    //            var dataAccessTypeId = $($(data.node.children[0].title)[0]).attr("data-dataAccessTypeId");
+                    //            data.node.children[0].title = "<span  data-dataAccessTypeId='" + dataAccessTypeId + "'>" + window[value] + "</span>" + $($(data.node.title)[1]).html();
+                    //        }
+                },
+                renderNode: function (event, data) {
+                    //debugger;
+                },
+                renderTitle: function (event, data) {
+                    //debugger;
+                    if ($(data.node.title).length > 0) {
+                        var value = $($(data.node.title)[0]).attr('data-htmlReplacement');
+                        //$($(data.node.title)[0]).html(window[value]);
+                        var dataAccessTypeId = $($(data.node.title)[0]).attr("data-dataAccessTypeId");
+                        var actionId = $($(data.node.title)[0]).attr("data-actionId");
+
+                        var select = $($(data.node.title)[1]);
+                        $(select).find('option[value="' + dataAccessTypeId + '"]').attr('selected', 'true');
+
+                        var options = $(select).find('option');
+                        if (options.length > 0) {
+                            for (var i = 0; i < options.length; i++) {
+                                var option = options[i];
+                                var optionValue = $(option).attr('data-htmlReplacement');
+                                $(option).html(window[optionValue]);
+                            }
+                        }
+
+                        //$(select).find('option[value="3"]').attr('selected', 'true');
+
+                        data.node.title = "<span style='color: #939393 !important;' data-dataAccessTypeId='" + dataAccessTypeId + "' data-actionId='" + actionId + "'>دسترسی</span>" +
+                            select.clone().prop('outerHTML');
+                        //$($($(data.node.title)[1]).clone()[0]).prop('outerHTML');
+                    }
+                },
+            });
+
+            $('body').on('change', '.slcDataAccessType', function (e) {
+                e.preventDefault();
+
+                var _this = $(this);
+
+                debugger;
+
+            var mainSlcDataAccessTypeId = $('#mainSlcDataAccessType').val();
+
+                var dataAccessTypeId = _this.val();
+
+                if (dataAccessTypeId !== undefined) {
+                    _this.prev().attr('data-dataaccesstypeid', dataAccessTypeId);
+
+                    var selectedNodes = $.ui.fancytree.getTree("#tree").getSelectedNodes();
+                    if (selectedNodes !== undefined)
+                        if (selectedNodes.length > 0) {
+                            for (var i = 0; i < selectedNodes.length; i++) {
+                                var selectedNode = selectedNodes[i];
+                                if (selectedNode.data.hasOwnProperty("id")) {
+                                    //if (selectedNode.data.actionId = '96254') {
+                                    //    var j = 0;
+                                    //}
+                                    if (selectedNode.data.id == '') { }
+                                    else {
+                                        var dataAccessTypeId = 1;
+
+                                        dataAccessTypeId = $('span[data-actionId="' + selectedNode.data.id + '"]').next().val();
+
+                                        if (dataAccessTypeId === undefined)
+                                            dataAccessTypeId = 1;
+
+                                    if (mainSlcDataAccessTypeId > 0)
+                                        dataAccessTypeId = mainSlcDataAccessTypeId;
+
+                                    var index = selectedActions.findIndex((item) => item.ActionId == selectedNode.data.id);
+
+                                    if (index != -1)
+                                        selectedActions[index].DataAccessTypeId = parseInt(dataAccessTypeId);//node.data.dataAccessTypeId
+                                    else
+                                        selectedActions.push({
+                                            ActionId: selectedNode.data.id,
+                                            DataAccessTypeId: parseInt(dataAccessTypeId)//node.data.dataAccessTypeId
+                                        });
+                                    }
+                                }
+                            }
+
+                            $('#strAccessesWithDataAccessTypesVMList').val(JSON.stringify(selectedActions));
+                        }
+                }
+            });
+        });
+
+    function OnBegin() {
+            debugger;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+        if (response.Result == 'OK') {
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+        }
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $('#error-alert').show(1000);
+        $('#error-alert').html(response.Message);
+        $('#error-alert').show(500);
+        window.setTimeout(function () {
+            location.reload();
+            }, 2000);
+        //$('#AjaxLoading').hide();
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        debugger;
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+        window.setTimeout(function () {
+            location.reload();
+            }, 2000);
+        //$('#AjaxLoading').hide();
+    };
+</script>

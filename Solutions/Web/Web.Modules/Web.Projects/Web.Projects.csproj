@@ -1,0 +1,195 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+		<PreserveCompilationContext>true</PreserveCompilationContext>
+		<RazorCompileOnBuild>false</RazorCompileOnBuild>
+		<RazorCompileOnPublish>false</RazorCompileOnPublish>
+		<MvcRazorExcludeViewFilesFromBuild>false</MvcRazorExcludeViewFilesFromBuild>
+		<MvcRazorExcludeViewFilesFromPublish>true</MvcRazorExcludeViewFilesFromPublish>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Areas\AdminTeniaco\**" />
+		<Compile Remove="Areas\UserTeniaco\**" />
+		<Content Remove="Areas\AdminTeniaco\**" />
+		<Content Remove="Areas\UserTeniaco\**" />
+		<EmbeddedResource Remove="Areas\AdminTeniaco\**" />
+		<EmbeddedResource Remove="Areas\UserTeniaco\**" />
+		<None Remove="Areas\AdminTeniaco\**" />
+		<None Remove="Areas\UserTeniaco\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="Areas\UserProjects\Views\RepresentativesProjectsManagement\Index\_headIndex.cshtml" />
+	  <Content Remove="Areas\UserProjects\Views\RepresentativesProjectsManagement\Index\_htmlIndex.cshtml" />
+	  <Content Remove="Areas\UserProjects\Views\RepresentativesProjectsManagement\Index\_jsIndex.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="ApiCallers.BaseApiCaller">
+			<HintPath>..\..\..\..\AllRef\ApiCallers.BaseApiCaller.dll</HintPath>
+		</Reference>
+		<Reference Include="ApiCallers.ProjectsApiCaller">
+		  <HintPath>..\..\..\ApiCallers\ApiCallers.ProjectsApiCaller\bin\Debug\net6.0\ApiCallers.ProjectsApiCaller.dll</HintPath>
+		</Reference>
+		<Reference Include="ApiCallers.PublicApiCaller">
+			<HintPath>..\..\..\..\AllRef\ApiCallers.PublicApiCaller.dll</HintPath>
+		</Reference>
+		<Reference Include="ApiCallers.TeniacoApiCaller">
+			<HintPath>..\..\..\..\AllRef\ApiCallers.TeniacoApiCaller.dll</HintPath>
+		</Reference>
+		<Reference Include="CustomAttributes">
+			<HintPath>..\..\..\..\AllRef\CustomAttributes.dll</HintPath>
+		</Reference>
+		<Reference Include="FrameWork">
+			<HintPath>..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+		</Reference>
+		<Reference Include="Microsoft.Aspnet.Core">
+			<HintPath>..\..\..\..\AllRef\Microsoft.Aspnet.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Models">
+			<HintPath>..\..\..\..\AllRef\Models.dll</HintPath>
+		</Reference>
+		<Reference Include="Models.Business">
+			<HintPath>..\..\..\..\AllRef\Models.Business.dll</HintPath>
+		</Reference>
+		<Reference Include="Services.Business">
+			<HintPath>..\..\..\..\AllRef\Services.Business.dll</HintPath>
+		</Reference>
+		<Reference Include="Services.Public">
+			<HintPath>..\..\..\..\AllRef\Services.Public.dll</HintPath>
+		</Reference>
+		<Reference Include="Services.Xml">
+			<HintPath>..\..\..\..\AllRef\Services.Xml.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Automation">
+			<HintPath>..\..\..\..\AllRef\VM.Automation.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Base">
+			<HintPath>..\..\..\..\AllRef\VM.Base.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Console">
+			<HintPath>..\..\..\..\AllRef\VM.Console.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Projects">
+		  <HintPath>..\..\..\..\AllRef\VM.Projects.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Public">
+			<HintPath>..\..\..\..\AllRef\VM.Public.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Teniaco">
+			<HintPath>..\..\..\..\AllRef\VM.Teniaco.dll</HintPath>
+		</Reference>
+		<Reference Include="Web.Core">
+			<HintPath>..\..\..\..\AllRef\Web.Core.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Areas\AdminProjects\Views\AttachementFilesManagement\AddToAttachementFiles\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\AttachementFilesManagement\AddToAttachementFiles\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\AttachementFilesManagement\AddToAttachementFiles\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\AttachementFilesManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\AttachementFilesManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\AttachementFilesManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConfirmationAgreementsManagement\AddToConfirmationAgreements\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConfirmationAgreementsManagement\AddToConfirmationAgreements\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConfirmationAgreementsManagement\AddToConfirmationAgreements\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConfirmationAgreementsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConfirmationAgreementsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConfirmationAgreementsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\AddToConstructionProjects\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\AddToConstructionProjects\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\AddToConstructionProjects\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\UpdateConstructionProjects\_headUpdate.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\UpdateConstructionProjects\_htmlUpdate.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ConstructionProjectsManagement\UpdateConstructionProjects\_jsUpdate.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractAgreementsManagement\AddToContractAgreements\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractAgreementsManagement\AddToContractAgreements\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractAgreementsManagement\AddToContractAgreements\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractAgreementsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractAgreementsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractAgreementsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractorsAgreementsManagement\AddToContractorsAgreements\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractorsAgreementsManagement\AddToContractorsAgreements\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractorsAgreementsManagement\AddToContractorsAgreements\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractorsAgreementsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractorsAgreementsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ContractorsAgreementsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ExcelSheetConfigHistoriesManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ExcelSheetConfigHistoriesManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ExcelSheetConfigHistoriesManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ExcelSheetConfigsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ExcelSheetConfigsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ExcelSheetConfigsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\GoogleSheetConfigsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\GoogleSheetConfigsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\GoogleSheetConfigsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\InitialPlansManagement\AddToInitialPlans\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\InitialPlansManagement\AddToInitialPlans\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\InitialPlansManagement\AddToInitialPlans\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\InitialPlansManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\InitialPlansManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\InitialPlansManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\MeetingBoardsManagement\AddToMeetingBoards\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\MeetingBoardsManagement\AddToMeetingBoards\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\MeetingBoardsManagement\AddToMeetingBoards\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\MeetingBoardsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\MeetingBoardsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\MeetingBoardsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PartnershipAgreementsManagement\AddToPartnershipAgreements\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PartnershipAgreementsManagement\AddToPartnershipAgreements\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PartnershipAgreementsManagement\AddToPartnershipAgreements\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PartnershipAgreementsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PartnershipAgreementsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PartnershipAgreementsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PitchDecksManagement\AddToPitchDecks\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PitchDecksManagement\AddToPitchDecks\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PitchDecksManagement\AddToPitchDecks\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PitchDecksManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PitchDecksManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\PitchDecksManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProgressPicturesManagement\AddToProgressPictures\_headAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProgressPicturesManagement\AddToProgressPictures\_htmlAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProgressPicturesManagement\AddToProgressPictures\_jsAddTo.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProgressPicturesManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProgressPicturesManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProgressPicturesManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProjectsPanel\Index\_headIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProjectsPanel\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\ProjectsPanel\Index\_jsIndex.cshtml" />
+		<None Include="Areas\AdminProjects\Views\_ViewImports.cshtml" />
+		<None Include="Areas\UserProjects\Views\RepresentativesProjectsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\RepresentativesProjectsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\RepresentativesProjectsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\MyProjectsManagement\Index\_headIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\MyProjectsManagement\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\MyProjectsManagement\Index\_jsIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\ProjectsPanel\Index\_headIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\ProjectsPanel\Index\_htmlIndex.cshtml" />
+		<None Include="Areas\UserProjects\Views\ProjectsPanel\Index\_jsIndex.cshtml" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\Web\Web.Console\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminProjects&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminProjects&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserProjects&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserProjects&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminProjects/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminProjects\Views&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserProjects/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserProjects\Views&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Projects\Areas\AdminProjects\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminProjects\Accesses.xml&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Projects\Areas\UserProjects\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserProjects\Accesses.xml&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Projects\Areas\AdminProjects\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminProjects\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Projects\Areas\UserProjects\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserProjects\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Projects\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Projects\wwwroot&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\wwwroot&quot;" />
+	</Target>
+
+</Project>

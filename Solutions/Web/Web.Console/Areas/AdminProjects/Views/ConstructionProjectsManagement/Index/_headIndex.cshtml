@@ -1,0 +1,251 @@
+﻿@using Newtonsoft.Json
+@using VM.Console
+@using VM.Projects;
+@using VM.Public
+@using VM.Teniaco
+
+
+<script type="text/javascript">
+    @{
+        List<CustomUsersVM> usersList = new List<CustomUsersVM>();
+
+        @Html.Raw("var usersList = [];")
+        ;
+
+        if (ViewData["CustomUsersList"] != null)
+        {
+            usersList = (List<CustomUsersVM>)ViewData["CustomUsersList"];
+
+            var usersListData = usersList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.UserName + "  " + c.Name + " " + c.Family + "  " + c.Mobile}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("debugger; usersList = " +
+                                                                       JsonConvert.DeserializeObject(JsonConvert.SerializeObject(usersListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<PropertiesVM> propertiesList = new List<PropertiesVM>();
+        @Html.Raw("var propertiesList =[];")
+        ;
+
+        if (ViewData["PropertiesList"] != null)
+        {
+            propertiesList = (List<PropertiesVM>)ViewData["PropertiesList"];
+
+            var propertiesListData = propertiesList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.PropertyCodeName}",
+                Value = a.PropertyId
+            }).ToList();
+            propertiesListData.Insert(0, new { DisplayText = "---", Value = (long)0 });
+
+            @Html.Raw("debugger; propertiesList =" + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertiesListData)) + " ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<ConstructionProjectTypesVM> constructionProjectTypesList = new List<ConstructionProjectTypesVM>();
+        @Html.Raw("var constructionProjectTypesList =[];")
+        ;
+
+        if (ViewData["ConstructionProjectTypesList"] != null)
+        {
+            constructionProjectTypesList = (List<ConstructionProjectTypesVM>)ViewData["ConstructionProjectTypesList"];
+
+            var constructionProjectTypesListData = constructionProjectTypesList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.ConstructionProjectTypeTitle}",
+                Value = a.ConstructionProjectTypeId
+            }).ToList();
+
+
+            @Html.Raw("debugger; constructionProjectTypesList =" + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(constructionProjectTypesList)) + " ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+@{
+
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    #listContainer .material-symbols-outlined {
+        font-size: 24px;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(1),
+    /* div.jtable-main-container table.jtable thead th:nth-child(2), */
+    /*     div.jtable-main-container table.jtable thead th:nth-child(3), */
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8),
+    div.jtable-main-container table.jtable thead th:nth-child(9),
+    div.jtable-main-container table.jtable thead th:nth-child(10),
+    div.jtable-main-container table.jtable thead th:nth-child(11),
+    div.jtable-main-container table.jtable thead th:nth-child(12),
+    div.jtable-main-container table.jtable thead th:nth-child(13),
+    div.jtable-main-container table.jtable thead th:nth-child(14),
+    div.jtable-main-container table.jtable thead th:nth-child(15),
+    div.jtable-main-container table.jtable thead th:nth-child(16),
+    div.jtable-main-container table.jtable thead th:nth-child(17),
+    div.jtable-main-container table.jtable thead th:nth-child(18),
+    div.jtable-main-container table.jtable thead th:nth-child(19),
+    div.jtable-main-container table.jtable thead th:nth-child(20),
+    div.jtable-main-container table.jtable thead th:nth-child(21),
+    div.jtable-main-container table.jtable thead th:nth-child(22) {
+        min-width: 5rem;
+        /*  text-align: center;  */
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(2) {
+        min-width: 10px !important
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3) {
+        width: 100% !important;
+    }
+
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(1),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(10),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(11),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(12),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(13),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(17) {
+        width: 1% !important;
+        /* text-align: center; */
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(14),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(15),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(16),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(18) {
+        text-align: center;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(19),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(20),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(21),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(22) {
+        min-width: 5rem !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted,
+    .redirect-icon,
+    .description {
+        cursor: pointer;
+    }
+
+    .supInformation {
+        margin-top: 5px;
+        color: #160acf !important;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .numberCircle {
+        /* width: 1rem !important; */
+        /* height: 1em; */
+        /* box-sizing: initial; */
+        /* background: #417bb5; */
+        /* border: 0.1em solid #417bb5 !important; */
+        /* color: #f7f9fb; */
+        /* text-align: center; */
+        /* border-radius: 50%; */
+        /* line-height: 0.5em; */
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        /* font-size: 12px; */
+        /* box-sizing: content-box; */
+        /* margin: auto; */
+        /* margin-top: 11px; */
+        /* width: 19px !important; */
+        /* height: 19px !important; */
+        position: relative !important;
+        vertical-align: middle;
+        line-height: 12px !important;
+        left: 15px !important;
+        left: 48px !important;
+        bottom: -33px !important;
+        right: -22px !important;
+        background: #417bb5;
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        font-size: 12px;
+        margin: auto;
+        width: 22px;
+        height: 22px;
+        /* position: absolute; */
+        vertical-align: middle;
+        line-height: 12px;
+        left: 5px;
+        bottom: -10px;
+    }
+
+
+
+    /* sina styles */
+    .jtable-column-header-container {
+        display: flex;
+        align-items: center;
+    }
+
+    div.jtable-main-container > table.jtable > thead th.jtable-column-header div.jtable-column-header-container {
+        padding-left: 0px !important;
+    }
+</style>

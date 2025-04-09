@@ -1,0 +1,29 @@
+﻿@using VM.Teniaco;
+
+@{
+    EvaluationsVM evaluation = new EvaluationsVM();
+
+    if (ViewData["Evaluation"] != null)
+    {
+        evaluation = (EvaluationsVM)ViewData["Evaluation"];
+
+    }
+
+}
+
+
+<div id="searchBlock" class="col-12">
+    <div class="row">
+        <div class="col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                نام ارزیابی:
+                @Html.Raw(evaluation.EvaluationTitle)
+            </div>
+        </div>
+    </div>
+    <div id="treeBlock" class="col-12">
+        <div id="tree"></div>
+    </div>
+</div>
+
+<hr class="full-splitter" />

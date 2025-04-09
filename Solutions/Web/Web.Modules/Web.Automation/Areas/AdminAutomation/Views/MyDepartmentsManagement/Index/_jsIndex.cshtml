@@ -1,0 +1,509 @@
+﻿@using VM.Automation;
+@using Newtonsoft.Json;
+@using VM.Console;
+
+@{ 
+}
+<script type="text/javascript">
+    @{
+        List<MyCompaniesVM> myCompaniesList = new List<MyCompaniesVM>();
+        if (ViewData["MyCompaniesList"] != null)
+        {
+            /*List<DomainsSettingsVM> */myCompaniesList =
+                (List<MyCompaniesVM>)ViewData["MyCompaniesList"];
+
+            var myCompaniesListData = myCompaniesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.MyCompanyName}",
+                          Value = c.MyCompanyId
+                      });
+
+            @Html.Raw("debugger; var myCompaniesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(myCompaniesListData)) + "; debugger;");
+        }
+    }
+</script>
+<script type="text/javascript">
+    @{
+
+        List<CustomUsersVM> usersList = new List<CustomUsersVM>();
+        if (ViewData["UsersList"] != null)
+        {
+            /*List<DomainsSettingsVM> */
+            usersList = (List<CustomUsersVM>)ViewData["UsersList"];
+
+            var usersListData = usersList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.UserName}",
+                          Value = c.UserId
+                      });
+
+            @Html.Raw("debugger; var usersList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(usersListData)) + "; debugger;");
+        }
+
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: ListTitle, toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminAutomation/MyDepartmentsManagement/GetListOfMyDepartments',
+                createAction: '/AdminAutomation/MyDepartmentsManagement/AddToMyDepartments',
+                updateAction: '/AdminAutomation/MyDepartmentsManagement/UpdateMyDepartments',
+                deleteAction: '/AdminAutomation/MyDepartmentsManagement/CompleteDeleteMyDepartments'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: ChangeViewMode,
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/User/UserPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                MyDepartmentId: {
+                    key: true,
+                    list: false
+                },
+                UserCreatorName: {
+                    title: UserIdCreatorName,
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                MyCompanyId: {
+                    title: MyCompanyId,
+                    options: myCompaniesList
+                },
+                MyDepartmentName: {
+                    title: MyDepartmentName,
+                },
+                MyDepartmentRealName: {
+                    title: MyDepartmentRealName,
+                },
+                DutiesDescriptions: {
+                    title: DutiesDescriptions,
+                },
+                MyDepartmentDirectorId: {
+                    title: MyDepartmentDirectorId,
+                    options: usersList
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                EstablishedDateTime: {
+                    title: EstablishedDateTime,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.EstablishedDateTime != '') {
+                                return '<input class="form-control input-sm" id="Edit-EstablishedDateTime" type="text" name="EstablishedDateTime" autocomplete="off" ' +
+                                    'data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom" ' +
+                                    ' placeholder="EstablishedDateTime" ' +
+                                    ' value="' + data.record.EstablishedDateTime + '" />';
+                            }
+                            else {
+                                return '<input class="form-control input-sm" id="Edit-EstablishedDateTime" type="text" name="EstablishedDateTime" autocomplete="off" ' +
+                                    'data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom" ' +
+                                    ' placeholder="EstablishedDateTime" ' +
+                                    ' />';
+                            }
+                        }
+                        else {
+                            return '<input class="form-control input-sm" id="Edit-EstablishedDateTime" type="text" name="EstablishedDateTime" autocomplete="off" ' +
+                                'data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom" ' +
+                                ' placeholder="EstablishedDateTime" ' +
+                                ' />';
+                        }
+                    },
+
+                },
+                IsActivated: {
+                    title: IsActivated,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-MyDepartmentId="' + data.record.MyDepartmentId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-MyDepartmentId="' + data.record.MyDepartmentId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: IsDeleted,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-MyDepartmentId="' + data.record.MyDepartmentId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-MyDepartmentId="' + data.record.MyDepartmentId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function (event, data) {
+                debugger;
+                //data.form.find('input[name="EducationalLevelName"]').addClass(
+                //    'validate[required]');
+                //data.form.validationEngine({
+                //    validateNonVisibleFields: true,
+                //    updatePromptsPosition: true,
+                //    autoPositionUpdate: true,
+                //});
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                        $('#Edit-EstablishedDateTime').MdPersianDateTimePicker({
+                            format: 'DD/MM/YYYY',
+                            EnableTimePicker: false
+                        });
+
+                $('#Edit-MyDepartmentDirectorId')
+                    .append($("<option></option>")
+                        .attr("value", 0)
+                        .text('---'));
+                if (formName == 'edit') {
+
+                    $('#Edit-MyCompanyId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-MyCompanyId').val(data.record.MyCompanyId + '').trigger("chosen:updated");
+
+                    $('#Edit-MyDepartmentDirectorId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-MyDepartmentDirectorId').val(data.record.MyDepartmentDirectorId + '').trigger("chosen:updated");
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+
+                        $('#Edit-MyCompanyId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-MyCompanyId').val('0').trigger("chosen:updated");
+
+                        $('#Edit-MyDepartmentDirectorId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-MyDepartmentDirectorId').val('0').trigger("chosen:updated");
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+                    }
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                //data.form.validationEngine('updatePromptsPosition');
+
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+
+                $('#listContainer').jtable('load');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+                $('#listContainer').jtable('load');
+            },
+            recordUpdated: function (event, data) {
+                $('#listContainer').jtable('load');
+            },
+            recordDeleted: function (event, data) {
+                $('#listContainer').jtable('load');
+            },
+            recordsLoaded(event, data) {
+                debugger;
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.isActivated', function () {
+            ////debugger;
+            var _this = $(this);
+            var MyDepartmentId = _this.attr('data-MyDepartmentId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminAutomation/MyDepartmentsManagement/ToggleActivationMyDepartments",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'myDepartmentId': MyDepartmentId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                            $('#my-warning-modal').find('#error').html(ErrorMessage);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                //    $('#my-warning-modal').find('#error').html(ErrorMessage);
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            var _this = $(this);
+            var MyDepartmentId = _this.attr('data-MyDepartmentId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminAutomation/MyDepartmentsManagement/TemporaryDeleteMyDepartments",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'myDepartmentId': MyDepartmentId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                            $('#my-warning-modal').find('#error').html(ErrorMessage);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                //    $('#my-warning-modal').find('#error').html(ErrorMessage);
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+    });
+</script>

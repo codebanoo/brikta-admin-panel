@@ -1,0 +1,75 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<EvaluationSubjectsVM> SubjectsList = new List<EvaluationSubjectsVM>();
+        @Html.Raw("var subjsList =[];")
+        ;
+
+        if (ViewData["Subjectlist"] != null)
+        {
+            SubjectsList = (List<EvaluationSubjectsVM>)ViewData["Subjectlist"];
+
+            var ListData = SubjectsList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.Title}",
+                Value = a.EvaluationSubjectId,
+            });
+
+            @Html.Raw(" subjsList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ListData))+" ;")
+            ;
+        }
+    }
+
+</script>
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8)
+    {
+        width: 1% !important;
+    }
+
+    
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8) 
+    {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+
+
+</style>

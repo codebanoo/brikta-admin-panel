@@ -1,0 +1,112 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+
+<script type="text/javascript">
+    @{
+        List<EvaluationItemValuesVM> evaluationItemValuesVMList = new List<EvaluationItemValuesVM>();
+        @Html.Raw("var evaluationItemValuesVMList =[];")
+        ;
+
+        if (ViewData["EvaluationItemValuesList"] != null)
+        {
+            evaluationItemValuesVMList = (List<EvaluationItemValuesVM>)ViewData["EvaluationItemValuesList"];
+
+            @Html.Raw("debugger; evaluationItemValuesVMList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationItemValuesVMList))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    @{
+        List<EvaluationsVM> evaluationsVMList = new List<EvaluationsVM>();
+        @Html.Raw("var evaluationsVMList =[];")
+        ;
+
+        if (ViewData["EvaluationsList"] != null)
+        {
+            evaluationsVMList = (List<EvaluationsVM>)ViewData["EvaluationsList"];
+
+            var evaluationsVMListData = evaluationsVMList.Select(s =>
+            new
+            {
+                DisplayText = $"{s.EvaluationTitle}   {s.PlanDate}   {s.Version}",
+                Value = s.EvaluationId,
+                SubjectId = s.EvaluationSubjectId,
+            });
+
+            @Html.Raw("debugger; evaluationsVMList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationsVMListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+<script>
+    
+
+    @{
+        var parentId = 0;
+
+        @Html.Raw(" var parentId = 0;");
+
+        if(ViewData["ParentId"] != null)
+        {
+             parentId = Convert.ToInt32(ViewData["ParentId"]);
+            @Html.Raw("parentId = "+parentId+";")
+            ;
+        }
+
+    }
+
+    
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    body {
+        direction: rtl;
+    }
+
+    .ui-tabs .ui-tabs-nav li {
+        float: right;
+    }
+
+    #tabs ul.ui-tabs-nav {
+        float: right;
+    }
+
+    #tabs .showAllChosenItem {
+        display: none;
+    }
+
+    #tabs li.ui-tabs-tab {
+        border: none;
+        direction: rtl;
+        text-align: center;
+    }
+
+    #tabs ul.ui-tabs-nav {
+        background-color: transparent;
+        border: none;
+    }
+
+    #tabs .head li {
+        border: none;
+        cursor: pointer;
+        font-size: 17px;
+        color: transparent !important;
+    }
+
+    #tabs {
+        font-size: 13px;
+    }
+</style>

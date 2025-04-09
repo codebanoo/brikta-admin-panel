@@ -1,0 +1,967 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+        for (var i = 0; i < statesList.length; i++) {
+            
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcDistrictId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        $('body').on('change', '#slcStateId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#slcCityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#slcCityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcCityId').trigger("chosen:updated");
+
+            $('#slcCityId').change();
+        });
+
+
+        $('body').on('change', '#slcCityId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#slcZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#slcZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcZoneId').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#slcZoneId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+            $('#slcDistrictId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                
+                var item = districtsList[i];
+                if (item.Data_ZoneId == zoneId)
+                    $('#slcDistrictId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcDistrictId').trigger("chosen:updated");
+        });
+
+
+        $('#listContainer').jtable({
+            title: 'ناحیه', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminPublic/DistrictsManagement/GetListOfDistricts',
+                createAction: '/AdminPublic/DistrictsManagement/AddToDistricts',
+                updateAction: '/AdminPublic/DistrictsManagement/UpdateDistricts',
+                deleteAction: '/AdminPublic/DistrictsManagement/CompleteDeleteDistricts'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'رسم روی نقشه',
+                        click: function () {
+                            window.location.href = '/AdminPublic/DistrictsManagement/DrawOnTheMap';
+                        }
+                    }]
+            },
+            fields: {
+                DistrictId: {
+                    key: true,
+                    list: false,
+                    edit: false,
+
+                },
+                StateId: {
+                    title: 'استان',
+                    options: statesList,
+                    sorting: false,
+
+                },
+                CityId: {
+                    title: 'بخش',
+                    options: citiesList,
+                    sorting: false,
+
+                },
+                ZoneId: {
+                    title: 'منطقه/شهر',
+                    options: zonesList,
+                    sorting: false,
+                },
+                DistrictName: {
+                    title: 'ناحیه',
+                    display: function (data) {
+                        if ((data.record.DistrictId !== null) || (data.record.DistrictName !== "")) {
+                            return data.record.DistrictName;
+                        }
+                    },
+                    sorting: false,
+                },
+                VillageName: {
+                    title: 'روستا',
+                    sorting: false,
+                    display: function (data) {
+                        if ((data.record.VillageName !== null) || (data.record.VillageName !== "")) {
+                            return data.record.VillageName;
+                        } else {
+                            return "";
+                        }
+                    }
+                },
+                TownName: {
+                    title: 'شهرک',
+                    sorting: false,
+                },
+                StrPolygon: {
+                    title: 'نقاط',
+                    sorting: false,
+                    list: false,
+                    type: 'textarea'
+                },
+                Description: {
+                    title: 'توضیحات&nbsp;تکمیلی',
+                     type: 'textarea',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.NewDescription != null)
+                            return '<div class="NewDescription pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.Description + '">' + data.record.NewDescription + '</div>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                Maps: {
+                    title: 'نقشه&nbsp;ها',
+                    edit:false,
+                    create:false,
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="maps pointer" data-DistrictId="' + data.record.DistrictId + '"><img src="/images/Cad.png" class="" /><div class="numberCircle" >' + data.record.CountOfMaps + '</div></div>';
+                    }
+                },
+                Docs: {
+                    title: 'اسناد',
+                    edit:false,
+                    create:false,
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="docs pointer" data-DistrictId="' + data.record.DistrictId + '"><img src="/images/sanad.png" class="" /><div class="numberCircle">' + data.record.CountOfDocs + '</div></div>';
+                    }
+                },
+                Media: {
+                    title: 'فیلم&nbsp;/&nbsp;عکس',
+                    sorting: false,
+                    edit:false,
+                    create:false,
+                    display: function (data) {
+                        return '<div class="media pointer" data-DistrictId="' + data.record.DistrictId + '"><img src="/images/Video.png" class="" /><div class="numberCircle">' + data.record.CountOfMedia + '</div></div>';
+                    }
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-DistrictId="' +
+                                data.record.DistrictId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-DistrictId="' +
+                                data.record.DistrictId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-DistrictId="' + data.record.DistrictId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-DistrictId="' + data.record.DistrictId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditDistrict: {
+                    title: 'ویرایش&nbsp;روی&nbsp;نقشه',
+                    sorting: false,
+                     edit:false,
+                    create:false,
+                    display: function (data) {
+                        return '<div class="editDistrict pointer" data-DistrictId="' + data.record.DistrictId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                }
+            },
+            formCreated: function (event, data) {
+
+                data.form.find('select[name="StateId"]').addClass(
+                    'validate[required]');
+
+                data.form.find('select[name="CityId"]').addClass(
+                    'validate[required]');
+
+
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+
+
+                var latlonBlock;
+
+                
+                if (formName == 'edit') {
+
+                    latlonBlock = $(".jtable-dialog-form .jtable-input-field-container:nth-child(8)");
+
+                    $('#Edit-StateId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-StateId').val(data.record.StateId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-CityId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-CityId').val(data.record.CityId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-ZoneId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-ZoneId').val(data.record.ZoneId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+
+                    $('#Edit-StrPolygon').val(data.record.StrPolygon);
+                }
+                else
+                    if (formName == 'create') {
+
+                        latlonBlock = $(".jtable-dialog-form .jtable-input-field-container:nth-child(7)");
+
+                        $('#Edit-StateId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-StateId').val('').trigger("chosen:updated");
+                        $('#Edit-StateId').trigger("chosen:updated");
+
+
+                        $('#Edit-CityId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-CityId').val('').trigger("chosen:updated");
+                        $('#Edit-CityId').trigger("chosen:updated");
+
+
+                        $('#Edit-ZoneId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-ZoneId').val('').trigger("chosen:updated");
+                        $('#Edit-ZoneId').trigger("chosen:updated");
+
+
+                        $('#Edit-DistrictId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-DistrictId').val('').trigger("chosen:updated");
+                        $('#Edit-DistrictId').trigger("chosen:updated");
+
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+
+                        $('#Edit-StateId').change();
+                    }
+
+                latlonBlock.removeAttr('class');
+                latlonBlock.attr('class', 'jtable-input-field-container col col-md-12 col-sm-12 col-xs-12');
+                latlonBlock.css('width', '100%');
+                latlonBlock.css('height', '90px');
+                latlonBlock.find('textarea').css('width', '100%');
+                latlonBlock.find('textarea').css('height', '165px !important');
+            },
+            formSubmitting: function (event, data) {
+
+                
+                var strPolygon = data.form.find('textarea[name="StrPolygon"]').val();
+                var districtName = data.form.find('input[name="DistrictName"]').val();
+                var villageName = data.form.find('input[name="VillageName"]').val();
+                var townName = data.form.find('input[name="TownName"]').val();
+                var selectedState = false;
+                var selectedCity = false;
+                var SelectedZone = false;
+
+                var getStateSelctedText = $("#Edit-StateId option:selected").text();
+                var getCitySelctedText = $("#Edit-CityId option:selected").text();
+                var getZoneSelctedText = $("#Edit-ZoneId option:selected").text();
+
+                if (getStateSelctedText != null && getStateSelctedText != "---" && getStateSelctedText != "")
+                    selectedState = true;
+                if (getCitySelctedText != null && getCitySelctedText != "---")
+                    selectedCity = true;
+                if (getZoneSelctedText != null && getZoneSelctedText != "---")
+                    SelectedZone = true;
+
+
+                 if (selectedState ==false) {
+                    var error = $('#my-warning-modal').find('#error').html('لطفا استان را وارد کنید');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                }else  if (selectedCity ==false) {
+                    var error = $('#my-warning-modal').find('#error').html('لطفا بخش را وارد کنید');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                }else if (SelectedZone ==false) {
+                    var error = $('#my-warning-modal').find('#error').html('لطفا شهر را وارد کنید');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                 } else if ((strPolygon == "") || (strPolygon == " ") || (strPolygon == null)) {
+                    var error = $('#my-warning-modal').find('#error').html('لطفا نقاط را وارد کنید');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                }else if ((districtName !== "") && (villageName !== "")) {
+                    var error = $('#my-warning-modal').find('#error').html('فقط یکی از فیلدهای ناحیه،روستا،شهرک میتواند پر باشد');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                } else if ((districtName !== "") && (townName !== "")) {
+                    var error = $('#my-warning-modal').find('#error').html('فقط یکی از فیلدهای ناحیه،روستا،شهرک میتواند پر باشد');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                } else if ((townName !== "") && (villageName !== "")) {
+                    var error = $('#my-warning-modal').find('#error').html('فقط یکی از فیلدهای ناحیه،روستا،شهرک میتواند پر باشد');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                } else if ((districtName !== "") && (villageName !== "") && (townName !== "")) {
+                    var error = $('#my-warning-modal').find('#error').html('فقط یکی از فیلدهای ناحیه،روستا،شهرک میتواند پر باشد');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                } else if ((districtName == "") && (villageName == "") && (townName == "")) {
+                    var error = $('#my-warning-modal').find('#error').html(' یکی از فیلدهای ناحیه،روستا،شهرک باید پر باشد');
+                    $('#my-warning-modal').modal("show");
+                    event.preventDefault();
+                    return error;
+                }
+                //}else{
+                //   var success = $('#my-success-modal').find('.modal-title').html('ثبت شد');
+                //    $('#my-success-modal').modal("show");
+                //    return success;
+                //}
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+                //window.location.reload();
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        debugger;
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.editDistrict', function (e) {
+            
+            e.preventDefault();
+            var _this = $(this);
+            var districtId = _this.attr('data-DistrictId');
+            window.location.href = '/AdminPublic/DistrictsManagement/ReDrawOnTheMap/' + districtId;
+        });
+
+        $('body').on('change', '#Edit-StateId', function (e) {
+            e.preventDefault();
+            
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#Edit-CityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="">---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#Edit-CityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-CityId').trigger("chosen:updated");
+            $('#Edit-CityId').change();
+        });
+
+        $('body').on('change', '#Edit-CityId', function (e) {
+            e.preventDefault();
+            
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#Edit-ZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="">---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#Edit-ZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-ZoneId').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#Edit-ZoneId', function (e) {
+            e.preventDefault();
+            
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+            $('#Edit-DistrictId').find('option')
+                .remove()
+                .end()
+                .append('<option value="">---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                var item = districtsList[i];
+                if (item.Data_ZoneId == zoneId)
+                    $('#Edit-DistrictId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-DistrictId').trigger("chosen:updated");
+        });
+
+
+        $('body').on('click', '.maps', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var DistrictId = _this.attr('data-DistrictId');
+            window.open("/AdminPublic/DistrictsMapsManagement/Index/" + DistrictId, '_blank').focus();
+        });
+
+
+        $('body').on('click', '.docs', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var DistrictId = _this.attr('data-DistrictId');
+            window.open("/AdminPublic/DistrictsDocsManagement/Index/" + DistrictId, '_blank').focus();
+        });
+
+        $('body').on('click', '.media', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var DistrictId = _this.attr('data-DistrictId');
+            window.open("/AdminPublic/DistrictsMediaManagement/Index/" + DistrictId, '_blank').focus();
+        });
+
+        
+        $('body').on('click', '.NewDescription', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var Description = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + Description + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+
+
+        $('body').on('click', '.isActivated', function () {
+            
+            var _this = $(this);
+            var districtId = _this.attr('data-DistrictId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/DistrictsManagement/ToggleActivationDistricts",
+                data: { 'DistrictId': districtId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+                        var slcDistrictId = $('#slcDistrictId').val();
+
+                        if ((slcStateId != null) &&
+                            (slcCityId != null) &&
+                            (slcZoneId != null) &&
+                            (slcDistrictId != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+                                'DistrictId': slcDistrictId
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            
+            var _this = $(this);
+            var districtId = _this.attr('data-DistrictId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/DistrictsManagement/TemporaryDeleteDistricts",
+                data: { 'DistrictId': districtId },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+                        var slcDistrictId = $('#slcDistrictId').val();
+
+                        if ((slcStateId != null) &&
+                            (slcCityId != null) &&
+                            (slcZoneId != null) &&
+                            (slcDistrictId != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+                                'DistrictId': slcDistrictId,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            var slcStateId = $('#slcStateId').val();
+            var slcCityId = $('#slcCityId').val();
+            var slcZoneId = $('#slcZoneId').val();
+            var slcDistrictId = $('#slcDistrictId').val();
+            var txtDistrictName = $( "#slcDistrictId option:selected" ).text();;
+            
+            if ((slcStateId != null)) {
+                if ((txtDistrictName != null) && txtDistrictName != "---") {
+                    $('#listContainer').jtable('load', {
+                         'StateId': slcStateId,
+                    'CityId': slcCityId,
+                    'ZoneId': slcZoneId,
+                    'DistrictName': txtDistrictName,
+                    });
+                }
+                else {
+                     $('#listContainer').jtable('load', {
+                    'StateId': slcStateId,
+                    'CityId': slcCityId,
+                    'ZoneId': slcZoneId,
+                    'DistrictName': null,
+                });
+                }
+               
+
+            }
+            if ((slcStateId != null) &&
+                (slcCityId != null) &&
+                (slcZoneId != null) &&
+                (slcDistrictId != null)) {
+
+                $('#listContainer').jtable('load', {
+                    'StateId': slcStateId,
+                    'CityId': slcCityId,
+                    'ZoneId': slcZoneId,
+                    'DistrictId': slcDistrictId
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+            $('#slcDistrictId').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+            $('#slcDistrictId').val(null);
+
+            e.preventDefault();
+        });
+    });
+
+
+</script>

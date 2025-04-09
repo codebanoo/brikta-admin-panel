@@ -1,0 +1,94 @@
+﻿ef Core
+--------------------------------------------------------------------------------------------
+Microsoft.EntityFrameworkCore 3.1
+Microsoft.EntityFrameworkCore.Abstractions 3.1
+Microsoft.EntityFrameworkCore.Analyzers 3.1
+Microsoft.EntityFrameworkCore.Design 3.1
+Microsoft.EntityFrameworkCore.Proxies 3.1
+Microsoft.EntityFrameworkCore.Relational 3.1
+Microsoft.EntityFrameworkCore.SqlServer 3.1
+Microsoft.EntityFrameworkCore.Tools 3.1
+Z.EntityFramework.Extensions.EFCore 3.1
+
+
+
+web.console
+--------------------------------------------------------------------------------------------
+AutoMapper 7.0.1
+Microsoft.ApplicationInsights.AspNetCore 2.12.1
+-- Microsoft.AspNetCore.Hosting 2.2.7
+Microsoft.AspNetCore.Mvc.NewtonsoftJson 3.1.0
+Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation 3.1.0
+Microsoft.AspNetCore.Owin 3.1.0
+Microsoft.Extensions.Hosting 3.1.0
+Microsoft.Extensions.Hosting.Abstractions 3.1.0
+Microsoft.TypeScript.MSBuild 3.7.4
+Microsoft.VisualStudio.Web.CodeGeneration.Design 3.1.1
+Microsoft.Web.Administration 11.1.0
+Microsoft.Web.LibraryManager.Build 2.1.76
+SixLabors.ImageSharp 1.0.0-beta0007
+SixLabors.ImageSharp.Drawing 1.0.0-beta0007
+SixLabors.ImageSharp.Web 1.0.0-beta0009
+System.Drawing.Common 4.7.0
+Microsoft.AspNetCore.Mvc.Abstractions 3.1.0
+Microsoft.AspNetCore.Authorization 3.1.0
+Microsoft.AspNetCore.Mvc.NewtonsoftJson 3.1.0
+Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation 3.1.0
+Microsoft.AspNetCore.Mvc.NewtonsoftJson
+
+
+Microsoft.AspNetCore.Mvc 3.1.0
+Microsoft.AspNetCore.Mvc.Filters 3.1.0
+Microsoft.AspNetCore.Mvc.Infrastructure 3.1.0
+--Microsoft.AspNetCore.Mvc.Authorization 3.1.0
+
+
+
+Microsoft.AspNetCore.App 3.1.3
+Microsoft.NETCore.App 3.1.0
+
+
+
+
+
+
+
+
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Castle.Core" Version="4.4.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.12.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.0" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.7.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.76" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0007" />
+    <PackageReference Include="SixLabors.ImageSharp.Web" Version="1.0.0-beta0009" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="3.0.85" />
+  </ItemGroup>

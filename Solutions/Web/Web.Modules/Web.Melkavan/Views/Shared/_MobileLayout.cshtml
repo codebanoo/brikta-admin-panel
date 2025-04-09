@@ -1,0 +1,650 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    @*<link rel="icon" href="favicon.ico" type="image/png">*@
+
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-title" content="Add to Home">
+    <link rel="shortcut icon" sizes="16x16" href="~/malkavan.png">
+    <link rel="shortcut icon" sizes="196x196" href="~/malkavan.png">
+    <link rel="apple-touch-icon-precomposed" href="~/malkavan.png">
+    <link rel="icon" href="malkavan.png" type="image/png">
+
+
+
+
+    <title>ملکاوان -@ViewData["Title"]</title>
+    <link href="~/dactorapp/vender/jquery-ui-themes-1.13.2/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="~/dactorapp/vender/bootstrap/css/bootstrap.min.css">
+    <!-- Bootstrap icon -->
+    <link href="~/dactorapp/vender/bootstrap/css/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Slick slider css -->
+    <link rel="stylesheet" href="~/dactorapp/vender/slick/slick/slick.css" />
+    <link rel="stylesheet" href="~/dactorapp/vender/slick/slick/slick-theme.css" />
+    <!-- Sidebar css -->
+    <link rel="stylesheet" href="~/dactorapp/vender/sidebar/demo.css">
+    <!-- Matrial Icons -->
+    <link rel="stylesheet" href="~/dactorapp/vender/materialdesign/css/materialdesignicons.min.css">
+
+    <meta name="fontiran.com:license" content="5VM66X">
+    <link href="/Gentelella_theme/build/css/iranyekan/fontiran.css" rel="stylesheet">
+    <link href="/Gentelella_theme/build/css/iranyekan/iranyekan.css" rel="stylesheet">
+
+    @*    <link rel="apple-touch-icon" href="favicon.ico">
+    <link rel="icon" href="favicon.ico">*@
+
+    <!-- Custom css -->
+    <link rel="stylesheet" href="~/dactorapp/css/style.css">
+
+    <style type="text/css">
+        .resendCodeBlock {
+            display: none;
+        }
+    </style>
+
+    @RenderSection("head", required: false)
+
+</head>
+<body class="bg-light" dir="rtl">
+    <!-- navbar -->
+    <div class="d-flex flex-column vh-100">
+        <button id="install-button" style="display: none;">Add to Home Screen</button>
+        @RenderBody()
+        <!-- footer -->
+
+    </div>
+    <!-- Modals -->
+    <!-- Filters Modal -->
+    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title float-end" id="exampleModalLabel"> جستجوی پیشرفته</h5>
+                </div>
+                <div class="modal-body">
+
+
+                    <div style=" padding-bottom: 4rem!important;!important;" class="p-3">
+                        <form method="post">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary()
+
+                            <div class="bg-white rounded-4 p-3 border">
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles  text-muted">نوع آگهی</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcAdvertisementTypeId">
+                                            <option value="" selected></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-4 p-3 border d-none mt-2" id="adInfo1">
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">نوع ملک</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcPropertyTypeId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">نوع کاربری</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcTypeOfUseId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="bg-white rounded-4 p-3 border d-none mt-2" id="adInfoAddress">
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">استان</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcStateId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">شهرستان</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcCityId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">شهر/منطقه</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcZoneId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="exampleFormControlName" class="form-label mb-1 titles text-muted">نام محله</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <span class="input-group-text bg-transparent rounded-0 border-0">
+                                            <span class="mdi mdi-subtitles-outline mdi-18px"></span>
+                                        </span>
+                                        <input class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="لطفا نام محله را وارد کنید" id="TownName" />
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="bg-white rounded-4 p-3 border d-none mt-2" id="adInfo3">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlName" class="form-label mb-1 titles text-muted">مساحت</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <span class="input-group-text bg-transparent rounded-0 border-0">
+                                            <span class="mdi mdi-subtitles-outline mdi-18px"></span>
+                                        </span>
+                                        <input class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="لطفا مساحت را وارد کنید" id="Area" type="text" />
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="exampleFormControlName" class="form-label mb-1 titles text-muted">زیر بنا</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <span class="input-group-text bg-transparent rounded-0 border-0">
+                                            <span class="mdi mdi-subtitles-outline mdi-18px"></span>
+                                        </span>
+                                        <input class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="لطفا زیر بنا را وارد کنید" id="Foundation" type="text" />
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="bg-white rounded-4 p-3 border d-none mt-2" id="RentadInfo4">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlName" class="form-label mb-1 titles text-muted">قیمت اجاره</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <span class="input-group-text bg-transparent rounded-0 border-0">
+                                            <span class="mdi mdi-subtitles-outline mdi-18px"></span>
+                                        </span>
+                                        <input class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="لطفا قیمت اجاره را وارد کنید" type="text" id="RentPrice" />
+                                        <span class="resultOfRentPrice" id="resultOfRentPrice" style="margin-top: 1.5rem;margin-left: 5px"></span>
+
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlName" class="form-label mb-1 titles text-muted">قیمت ودیعه</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <span class="input-group-text bg-transparent rounded-0 border-0">
+                                            <span class="mdi mdi-subtitles-outline mdi-18px"></span>
+                                        </span>
+                                        <input class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="لطفا قیمت ودیعه را وارد کنید" type="text" id="DepositPrice" />
+                                        <span class="resultOfDepositPrice" id="resultOfDepositPrice" style="margin-top: 1.5rem;margin-left: 5px"></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">وضعیت تاهل</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcMaritalStatusId">
+                                            <option value="0">هردو</option>
+                                            <option value="1">متاهل</option>
+                                            <option value="2">مجرد</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input ms-3" type="checkbox" name="Convertable" id="Convertable" value="0">
+                                        <label class="form-check-label titles text-muted" for="Convertable">
+                                            قابل تبدیل
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-4 p-3 border d-none mt-2" id="SaleadInfo5">
+
+
+                                <div class="mb-3">
+                                    <label for="exampleFormControlName" class="form-label mb-1 titles text-muted">قیمت</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <span class="input-group-text bg-transparent rounded-0 border-0">
+                                            <span class="mdi mdi-subtitles-outline mdi-18px"></span>
+                                        </span>
+                                        <input class="form-control bg-transparent rounded-0 border-0 px-0" placeholder="لطفا قیمت پیشنهادی را وارد کنید" type="text" id="OfferPrice" />
+                                        <span class="resultOfOfferPrice" id="resultOfOfferPrice"></span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="bg-white rounded-4 p-3 border d-none mt-2" id="adInfo10">
+
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">عمر بنا</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcBuildingLifeId">
+                                            <option value="" selected></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="exampleFormControlName" class="form-label mb-1 titles text-muted">سال بازسازی</label>
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <span class="input-group-text bg-transparent rounded-0 border-0">
+                                            <span class="mdi mdi-subtitles-outline mdi-18px"></span>
+                                        </span>
+                                        <input class="form-control bg-transparent rounded-0 border-0 px-0" type="text" placeholder="لطفا سال بازسازی را وارد کنید"
+                                               id="RebuiltInYearFa" min="1300" pattern="\d*" maxlength="4" />
+                                        <span class="text-danger"></span>
+                                        <span class="RebuiltInYearFa text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-4 p-3 border d-none mt-2" id="adInfo8">
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">نوع سند</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcDocumentTypeId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">نوع ریشه سند</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcDocumentRootTypeId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label mb-1 titles text-muted">نوع مالکیت سند</label>
+
+                                    <div class="input-group border bg-white rounded-3 py-1">
+                                        <label class="input-group-text bg-transparent rounded-0 border-0"><span class="mdi mdi-city-variant-outline mdi-18px"></span></label>
+                                        <select class="form-select bg-transparent rounded-0 border-0 px-3" id="slcDocumentOwnershipTypeId">
+                                            <option value="" selected disabled></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class=" p-3 " id="saveButton">
+                                <button type="button" id="saveButton" class="btn btn-info btn-lg w-100 rounded-4 btnSave">جستجو</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- login modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title float-end" id="exampleModalLabel"> ورود</h5>
+                </div>
+                <div class="modal-body">
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="exampleFormControlEmail" class="form-label mb-1">شماره موبایل</label>
+                            <div class="input-group border bg-white rounded-3" id="exampleFormControlEmail">
+                                <span class="input-group-text bg-transparent rounded-0 border-0" id="mail">
+                                    <span class="mdi mdi-cellphone mdi-18px text-muted"></span>
+                                </span>
+                                <input type="text" inputmode="numeric" class="form-control bg-transparent rounded-0 border-0 px-0" name="mobileNumber" id="mobileNumber"
+                                       placeholder="لطفا شماره موبایل خود را وارد کنید" aria-label="لطفا شماره موبایل خود را وارد کنید" aria-describedby="mobileNumber" />
+                            </div>
+                        </div>
+                        @* <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Remember Me</label>
+                        </div>*@
+                        <div class="footer  m-4">
+                            <button type="button" class="btn btn-info btn-lg w-100 rounded-4 mb-2" id="sendVerificationCode" data-ajax-method="get" data-toggle="ajax-modal"
+                                    data-url="@Url.Action("MelkavanVerify", "MelkavanPanel")">
+                                بعدی
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                @* <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>*@
+            </div>
+        </div>
+    </div>
+    <!--  verify modal -->
+    <div class="modal fade" id="verifyModal" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title float-end" id="exampleModalLabel"> کد تایید</h5>
+                </div>
+                <div class="modal-body">
+                    <form class="otpForm" method="post">
+                        <input id="verifyUserName" type="hidden" />
+                        <div class="d-flex align-items-start justify-content-center text-center mb-4">
+                            <div>
+                                <span class="mdi mdi-account-check-outline display-1 text-primary"></span>
+                                <h2 class="my-3 fw-bold"> </h2>
+                                <p class="text-muted mb-0 text">لطفا کد 4 رقمی را وارد کنید</p>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row-reverse justify-content-center gap-1 mb-2" dir="rtl">
+                            <div class="col-2">
+                                <input id="num_1" type="text" inputmode="numeric" class="form-control form-control-lg text-center py-2 1 activation-code-input" maxlength="1">
+                            </div>
+                            <div class="col-2">
+                                <input id="num_2" type="text" inputmode="numeric" class="form-control form-control-lg text-center py-2 2 activation-code-input" maxlength="1">
+                            </div>
+                            <div class="col-2">
+                                <input id="num_3" type="text" inputmode="numeric" class="form-control form-control-lg text-center py-2 3 activation-code-input" maxlength="1">
+                            </div>
+                            <div class="col-2">
+                                <input id="num_4" type="text" inputmode="numeric" class="form-control form-control-lg text-center py-2 4 activation-code-input" maxlength="1">
+                            </div>
+                        </div>
+                        @* <p class="text-muted text-center mt-4">کد را دریافت نکرده اید؟ <a href="javascript:void(0);" id="#resendLink" class="ml-2 text-primary"> ارسال مجدد</a></p> *@
+                        <p class="text-muted text-center mt-4 resendCodeBlock">کد را دریافت نکرده اید؟ <a id="resendLink" class="ml-2 text-primary"> ارسال مجدد</a></p>
+                        <p class="text-muted text-center mt-4 timer">
+
+                        </p>
+                        <div class="footer  m-4">
+                            <button type="button" class="btn btn-info btn-lg w-100 rounded-4 mb-2" id="confirmCode">
+                                تایید
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- loading modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                @*<div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>*@
+                <div class="modal-body">
+                    <div class="d-flex align-items-center justify-content-center text-center mb-4" style=" min-height: 150px;">
+                        <div>
+                            <div class="spinner-border text-primary my-4" role="status" style="font-size: 20px;width: 60px;height: 60px;">
+                                <span class="sr-only"></span>
+                            </div>
+                            <p class="text-muted mb-0 text">لطفا صبر کنید...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- alert modal-->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group border pt-3 bg-white rounded-3">
+                            <p type="text" class="form-control bg-transparent rounded-0 border-0 px-0" id="alertText" style="text-align: center;">خطا</p>
+                        </div>
+                    </div>
+                    <div class="footer d-flex round m-4" style="justify-content: center;">
+                        <button type="button" class="btn btn-info btn-lg rounded-4 mb-2" data-bs-dismiss="modal" style="">
+                            بستن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap bundle js -->
+    <script src="~/dactorapp/vender/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Jquery js -->
+    <script src="~/dactorapp/vender/jquery/jquery.min.js"></script>
+    <script src="~/dactorapp/vender/jquery-ui-1.13.2/jquery-ui.js"></script>
+    <!-- Slick slider js -->
+    <script src="~/dactorapp/vender/slick/slick/slick.min.js"></script>
+    <!-- Sidebar js -->
+    <script src="~/dactorapp/vender/sidebar/hc-offcanvas-nav.js"></script>
+    <!-- Custom js -->
+    <script src="~/dactorapp/js/script.js"></script>
+    <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
+    <script src="~/js/num2persian-min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+
+        var showTimer;
+        var tempVerify;
+        $(document).ready(function () {
+
+            $("#melkavan-icon").click(function (e) {
+                e.preventDefault();
+                //e.stopProg
+                $.removeCookie('OnlyFavorite', { path: '/' });
+                $.removeCookie('searchString', { path: '/' });
+                //window.location.href = '/UserMelkavan/MelkavanPanel/Index';
+                window.location.href = '/';
+            });
+
+            $("#chat-icon").click(function (e) {
+                e.preventDefault();
+                $('#alertText').text('هیچ پیام جدیدی ندارید!');
+                $('#alertModal').modal('show');
+            });
+
+            $('#resendLink').click(function (e) {
+                e.preventDefault();
+                sendVerificationCode();
+            });
+
+            $("#sendVerificationCode").click(function (e) {
+                e.preventDefault();
+                sendVerificationCode();
+            });
+
+            $('#confirmCode').click(function (event) {
+                event.preventDefault();
+                $('#verifyModal').modal('hide');
+                $('#loadingModal').modal('show');
+                var phone = $('#verifyUserName').val();
+                var captchaCode = tempVerify;
+                var num1 = $('#num_1').val();
+                var num2 = $('#num_2').val();
+                var num3 = $('#num_3').val();
+                var num4 = $('#num_4').val();
+                var confirmCode = num1 + num2 + num3 + num4;
+
+                debugger;
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/UserMelkavan/MelkavanPanel/MelkavanVerify",
+                    data: { 'UserName': phone, 'Password': confirmCode, 'RememberMe': false, 'CaptchaCode': captchaCode },
+                    success: function (response) {
+                        if (response.Result == "OK") {
+                            window.location.reload();
+                        } else {
+                            $('#alertText').text('عملیات با خطا رو‌به‌رو شد...');
+                            $('#alertModal').modal('show');
+                            window.setTimeout(function () { $('#loadingModal').modal('hide'); }, 1000);
+                            clearInterval(showTimer);
+
+                        }
+                        //debugger;
+
+                        //$('#verifyModal').modal('hide');
+                        //var $url = '/UserMelkavan/MelkavanPanel/Index';
+                    },
+                    error: function () {
+                        $('#alertText').text('عملیات با خطا رو‌به‌رو شد...');
+                        $('#alertModal').modal('show');
+                        window.setTimeout(function () { $('#loadingModal').modal('hide'); }, 1000);
+                        clearInterval(showTimer);
+
+                    }
+                });
+            });
+
+            $('body').on('keyup', '.activation-code-input', function (e) {
+                debugger;
+                e.preventDefault();
+
+                var id = parseInt($(this).attr('id').split('_')[1]);
+                if ($(this).val() != "") {
+                    $('#num_' + (id + 1)).focus();
+                }
+            });
+
+            $('body').on('click', '#backButton', function (e) {
+                e.preventDefault();
+                history.back();
+            });
+
+            $('#verifyModal').on('shown.bs.modal', function (e) {
+                $("#num_1").val("");
+                $("#num_2").val("");
+                $("#num_3").val("");
+                $("#num_4").val("");
+            })
+
+            function sendVerificationCode() {
+                debugger;
+                var phone = $('#mobileNumber').val();
+                if (phone != '') {
+                    debugger;
+                    if ((phone.length < 11) || (!phone.startsWith('09'))) {
+                        $('#alertText').text('شماره موبایل را صحیح وارد کنید');
+                        $('#alertModal').modal('show');
+                        return;
+                    }
+
+                    $('#loginModal').modal('hide');
+                    $('#loginModal').removeClass('show');
+                    $('#loginModal').hide();
+                    $('#loadingModal').modal('show');
+
+                    phone = phone.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+
+                    $('.timer').show();
+                    $('.resendCodeBlock').hide();
+
+                    var start = 120;
+                    showTimer = setInterval(function () {
+
+                        if (start != 0) {
+                            $('.timer').text(start + " ثانیه");
+                            start--;
+                        }
+                        else {
+                            $('.timer').hide();
+                            $('.resendCodeBlock').show();
+                            clearInterval(showTimer);
+                        }
+
+                    }, 1000);
+
+                    $.ajax({
+                        cache: false,
+                        type: "Post",
+                        url: "/UserMelkavan/MelkavanPanel/MelkavanLogin",
+                        data: { 'UserName': phone, 'Password': "pass", 'RememberMe': false, 'CaptchaCode': "" },
+                        success: function (response) {
+
+                            const showverifyModal = setInterval(() => {
+                                $('#loadingModal').modal('hide');
+                                $('#loadingModal').hide();
+                                $('#loadingModal').removeClass('show');
+                                $('#verifyModal').modal('show');
+
+                                clearInterval(showverifyModal);
+                            }, "1000");
+                            debugger;
+                            $('#verifyUserName').val(response.userName);
+                            tempVerify = response.verify;
+                            //$('#verifyUserName').val(response.userName);
+                        },
+                        error: function () {
+                            $('#loadingModal').modal('hide');
+                            $('#loadingModal').hide();
+                            $('#loadingModal').removeClass('show');
+                            $('#alertText').text('خطا');
+                            $('#alertModal').modal('show');
+                            clearInterval(showTimer);
+                        }
+                    });
+                }
+                else {
+                    $('#alertText').text('شماره موبایل را وارد کنید');
+                    $('#alertModal').modal('show');
+                }
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>

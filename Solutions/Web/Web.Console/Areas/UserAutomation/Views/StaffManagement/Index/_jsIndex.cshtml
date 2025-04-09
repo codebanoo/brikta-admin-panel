@@ -1,0 +1,431 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+       
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: ListTitle, toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/usercrm/StaffManagement/GetListOfStaff',
+                //createAction: '/usercrm/StaffManagement/AddToStaff',
+                //updateAction: '/usercrm/StaffManagement/UpdateStaff',
+                deleteAction: '/usercrm/StaffManagement/CompleteDeleteStaff'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: ChangeViewMode,
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/user/userPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: CreateNewStaffTitle,
+                        click: function () {
+                            window.location.href = '/userCrm/StaffManagement/AddToStaff';
+                        }
+                    }
+                ]
+            },
+            fields: {
+                StaffId: {
+                    key: true,
+                    list: false
+                },
+                ContractImage: {
+                    title: ContractImage,
+                    display: function (data) {
+                        if (data.record.ContractImage != null) {
+                            if (data.record.ContractImage != '') {
+                                return '<div><img src="/Files/Staff/localhost/' + data.record.StaffId + '/thumb_' + data.record.ContractImage + '"/></div>';
+                            }
+                        }
+                    }
+                },
+                CertificateImage: {
+                    title: CertificateImage,
+                    display: function (data) {
+
+                        if (data.record.CertificateImage != null) {
+                            if (data.record.CertificateImage != '') {
+                                return '<img src="/Files/Staff/localhost/' + data.record.StaffId + '/thumb_' + data.record.CertificateImage + '"/></div>';
+                            }
+                        }
+                    }
+                },
+                NationalCodeImage: {
+                    title: NationalCodeImage,
+                    display: function (data) {
+
+                        if (data.record.NationalCodeImage != null) {
+                            if (data.record.NationalCodeImage != '') {
+                                return '<img src="/Files/Staff/localhost/' + data.record.StaffId + '/thumb_' + data.record.NationalCodeImage + '"/></div>';
+                            }
+                        }
+                    }
+                },
+                PersonalCode: {
+                    title: PersonalCode,
+                },
+                JobTitle: {
+                    title: JobTitle,
+                },
+                Skill: {
+                    title: Skill,
+                },
+                Dependants: {
+                    title: Dependants,
+                },                       
+                UserCreatorName: {
+                    title: UserIdCreatorName,
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsMarried: {
+                    title: IsMarried,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsMarried == true) {
+                                return '<select id="Edit-IsMarried" name="IsMarried">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsMarried" name="IsMarried">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsMarried" name="IsMarried">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsMarried)
+                            return '<div class="centralOffice" data-StaffId="' + data.record.StaffId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="centralOffice" data-StaffId="' + data.record.StaffId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsActivated: {
+                    title: IsActivated,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-StaffId="' + data.record.StaffId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-StaffId="' + data.record.StaffId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: IsDeleted,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-StaffId="' + data.record.StaffId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-StaffId="' + data.record.StaffId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditStaff: {
+                    title: EditStaff,
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editStaff pointer" data-StaffId="' + data.record.StaffId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                }           
+            },
+            formCreated: function (event, data) {
+
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                //if (formName == 'edit') {
+
+                //}
+                //else
+                //    if (formName == 'create') {
+
+                //    }
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                //data.form.validationEngine('updatePromptsPosition');
+
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.editStaff', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var myCompanyId = _this.attr('data-StaffId');
+            window.location.href = '/userCrm/StaffManagement/UpdateStaff/' + myCompanyId;
+
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            ////debugger;
+            var _this = $(this);
+            var StaffId = _this.attr('data-StaffId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/userCrm/StaffManagement/ToggleActivationStaff",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'StaffId': StaffId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                            $('#my-warning-modal').find('#error').html(ErrorMessage);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                //    $('#my-warning-modal').find('#error').html(ErrorMessage);
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            var _this = $(this);
+            var StaffId = _this.attr('data-StaffId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/userCrm/StaffManagement/TemporaryDeleteStaff",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'StaffId': StaffId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                            $('#my-warning-modal').find('#error').html(ErrorMessage);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                //    $('#my-warning-modal').find('#error').html(ErrorMessage);
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });    
+    });
+</script>

@@ -1,0 +1,61 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+        float: right;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(1),
+    div.jtable-main-container table.jtable thead th:nth-child(3),
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(14),
+    div.jtable-main-container table.jtable thead th:nth-child(15),
+    div.jtable-main-container table.jtable thead th:nth-child(16),
+    div.jtable-main-container table.jtable thead th:nth-child(17),
+    div.jtable-main-container table.jtable thead th:nth-child(18),
+    div.jtable-main-container table.jtable thead th:nth-child(19),
+    div.jtable-main-container table.jtable thead th:nth-child(20),
+    div.jtable-main-container table.jtable thead th:nth-child(21),
+    div.jtable-main-container table.jtable thead th:nth-child(22) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(1),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(14),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(15),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(16),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(17),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(18),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(19),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(20),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(21),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(22) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .isActivated,
+    .isDeleted,
+    .editUser {
+        cursor: pointer;
+    }
+</style>
+

@@ -1,0 +1,78 @@
+﻿@using VM.Teniaco;
+@{
+    MapLayerCategoriesVM mapLayerCategory = new MapLayerCategoriesVM();
+
+    if (ViewData["MapLayerCategoriesList"] != null)
+    {
+        mapLayerCategory = (MapLayerCategoriesVM)ViewData["MapLayerCategoriesList"];
+
+    }
+}
+
+<hr class="full-splitter" />
+<div id="listContainer"></div>
+
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="uploadModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">آپلود فایل جئوگرافیک</h4>
+                
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div>
+                            استان
+                        </div>
+                        <select id="slcStates" name="slcStates" class="form-control ml-3 chosen-select"
+                                placeholder="استان">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div>
+                            بخش
+                        </div>
+                        <select id="slcCities" name="slcCities" class="form-control ml-3 chosen-select"
+                                placeholder="بخش">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div>
+                            منطقه/شهر
+                        </div>
+                        <select id="slcZones" name="slcZones" class="form-control ml-3 chosen-select"
+                                placeholder="منطقه/شهر">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div>
+                            ناحیه
+                        </div>
+                        <select id="slcDistricts" name="slcDistricts" class="form-control input-sm chosen-select"
+                                placeholder="ناحیه">
+                            <option value="" selected>---</option>
+                        </select>
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 ">
+                        <div class="mx-2">
+                            انتخاب فابل
+                        </div>
+                        <input type='file' name='file' id='file'
+                               placeholder=" انتخاب فابل" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-Create-person btn-sm" id="btn_upload">ثبت</button>
+                <button type="button" class="btn btn-primary btn-sm" id="modal-btn-no" data-dismiss="modal">لغو</button>
+            </div>
+        </div>
+    </div>
+</div>

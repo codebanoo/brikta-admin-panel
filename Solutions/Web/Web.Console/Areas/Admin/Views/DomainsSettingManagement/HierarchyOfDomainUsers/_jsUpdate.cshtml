@@ -1,0 +1,155 @@
+﻿@{
+
+}
+
+<script src="/lib/ckeditor5/ckeditor.js" type="text/javascript" language="javascript"></script>
+@{
+    if (!"fa".Equals("en"))
+    {
+        <script src="~/lib/ckeditor5/translations/@("fa").js"></script>
+    }
+}
+
+<script>
+        ClassicEditor
+            .create(document.querySelector('#MainSliderDescription'), {
+                language: 'fa',
+                alignment: {
+                    options: ['left', 'center', 'right']
+                },
+                toolbar: { //Set the toolbar
+                    items: [
+                        'heading',
+                        '|',
+                        'bulletedList',
+                        'numberedList',
+                        'bold',
+                        'italic',
+                        'alignment',
+                        'textPartLanguage',
+                        'blockQuote',
+                        'insertTable',
+                        'undo',
+                        'redo'
+                    ]
+                }
+            })
+            .then(editor => {
+            })
+            .catch(error => {
+                console.error(error);
+            });
+</script>
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+            $('#IsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsActivated').val(@(Model.IsActivated.Equals(true) ? @Html.Raw("'True'") : @Html.Raw("'False'"))).trigger("chosen:updated");
+
+            $('#IsDeleted').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsDeleted').val(@(Model.IsDeleted.Equals(true) ? @Html.Raw("'True'") : @Html.Raw("'False'"))).trigger("chosen:updated");
+        });
+
+        function OnBegin(e) {
+            debugger;
+            //$('#AjaxLoading').show();
+            return true;
+        }
+
+        function OnSuccess(response, status, xhr) {
+            debugger;
+            if (response.Result == 'OK') {
+                if (document.getElementById("MainSliderImage").value != "") {
+                    var mainSliderId = response.MainSliderId;
+
+                    var formData = new FormData();
+                    formData.append('file', $('#MainSliderImage')[0].files[0]);
+                    formData.append('MainSliderId', mainSliderId);
+
+                    var _url = '@Url.Action("UploadFile", "MainSlidersManagement")';
+
+                    $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (result) {
+                                $('#error-alert').removeClass('alert-danger');
+                                $('#error-alert').addClass('alert-success');
+
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                                $('#error-alert').show(500);
+                                //$('#AjaxLoading').hide();
+                            },
+                            error: function (jqXHR) {
+                                $('#error-alert').removeClass('alert-success');
+                                $('#error-alert').addClass('alert-danger');
+
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(response.Message + '. ' + result.Message);
+                                $('#error-alert').show(500);
+                                //$('#AjaxLoading').hide();
+                            },
+                            complete: function (jqXHR, status) {
+                            }
+                        });
+                }
+                else {
+                    $('#error-alert').removeClass('alert-danger');
+                    $('#error-alert').addClass('alert-success');
+
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html(response.Message);
+                    window.setTimeout(function () { window.location.reload(); }, 2500);
+                    $('#error-alert').show(500);
+                    //$('#AjaxLoading').hide();
+                }
+            }
+            else {
+                $('#error-alert').removeClass('alert-success');
+                $('#error-alert').addClass('alert-danger');
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+
+        function OnComplete() {
+            debugger;
+            clearValidationSummary();
+            //var validationSummary = $('.validation-summary-errors');
+            //$('.validation-summary-errors').css('display', 'none');
+            //validationSummary.removeClass('validation-summary-errors').addClass('validation-summary-valid');
+        };
+
+        function OnFailed(context) {
+            debugger;
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+            $('#error-alert').html(context.Message);
+            $('#error-alert').show(500);
+            //$('#AjaxLoading').hide();
+        };
+</script>
+}

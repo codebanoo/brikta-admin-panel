@@ -1,0 +1,27 @@
+﻿@using VM.Public;
+@*@using VM.Melkavan;*@
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        long constructionId = 0;
+        @Html.Raw("var constructionProjectId = 0;")
+        ;
+
+        if (ViewData["ConstructionProjectId"] != null)
+        {
+            constructionId = (long)ViewData["ConstructionProjectId"];
+
+
+            @Html.Raw("debugger; constructionProjectId =" + constructionId.ToString() +" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+<style type="text/css">
+    .no-top-margin{
+        margin-top : 0px !important;
+    }
+</style>

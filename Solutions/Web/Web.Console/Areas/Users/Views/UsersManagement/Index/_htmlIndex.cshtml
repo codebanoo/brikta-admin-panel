@@ -1,0 +1,222 @@
+﻿<div id="searchBlock">
+    <div class="row">
+        <div class="clearfix"></div>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                           aria-controls="collapseOne">
+                           جستجو
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                                <div>
+                                    <label>
+                                        دامنه
+                                    </label>
+                                </div>
+                                <select class="form-control input-sm" id="slcDomainSearch" name="slcDomainSearch"
+                                        placeholder="دامنه"></select>
+                            </div>
+                            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                                <div>
+                                    <label>
+                                        نقش
+                                    </label>
+                                </div>
+                                <select class="form-control input-sm" id="slcRoleIdsSearch" name="slcRoleIdsSearch" multiple
+                                        placeholder="نقش"></select>
+                            </div>
+                            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                                <div>
+                                    <label>
+                                        دسترسی
+                                    </label>
+                                </div>
+                                <select class="form-control input-sm" id="slcLevelIdsSearch" name="slcLevelIdsSearch" multiple
+                                        placeholder="دسترسی"></select>
+                            </div>
+                            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                                <div>
+                                    <label>
+                                        والد
+                                    </label>
+                                </div>
+                                <select class="form-control input-sm" id="slcParentIdSearch" name="slcParentIdSearch"
+                                        placeholder="والد"></select>
+                            </div>
+                            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                                <div>
+                                    <label>
+                                        نام  کاربری
+                                    </label>
+                                </div>
+                                <input class="form-control input-sm" id="txtUserNameSearch" name="txtUserNameSearch"
+                                       placeholder="نام  کاربری" />
+                            </div>
+                            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                                <div>
+                                    <label>
+                                        تاریخ ثبت از
+                                    </label>
+                                </div>
+                                <input type="text" id="txtRegisterDateTimeFromSearch" name="txtRegisterDateTimeFromSearch"
+                                       class="form-control input-sm" data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom"
+                                       placeholder="تاریخ ثبت از" />
+                            </div>
+                            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                                <div>
+                                    <label>
+                                        تاریخ ثبت تا
+                                    </label>
+                                </div>
+                                <input type="text" id="txtRegisterDateTimeToSearch" name="txtRegisterDateTimeToSearch"
+                                       class="form-control input-sm" data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom"
+                                       placeholder="تاریخ ثبت تا" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                       aria-expanded="false" aria-controls="collapseTwo">
+                       پارامترهای بیشتر
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    نام
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtNameSearch" name="txtNameSearch"
+                                   placeholder="نام" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    نام خانوادگی
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtFamilySearch" name="txtFamilySearch"
+                                   placeholder="نام خانوادگی" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    ایمیل
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtEmailSearch" name="txtEmailSearch"
+                                   placeholder="ایمیل" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    تلفن
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtPhoneSearch" name="txtPhoneSearch"
+                                   placeholder="تلفن" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    همراه
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtMobileSearch" name="txtMobileSearch"
+                                   placeholder="همراه" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    آدرس
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtAddressSearch" name="txtAddressSearch"
+                                   placeholder="آدرس" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    شماره شناسنامه
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtCertificateIdSearch" name="txtCertificateIdSearch"
+                                   placeholder="شماره شناسنامه" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    کد ملی
+                                </label>
+                            </div>
+                            <input class="form-control input-sm" id="txtNationalCodeSearch" name="txtNationalCodeSearch"
+                                   placeholder="کد ملی" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    تاریخ تولد از
+                                </label>
+                            </div>
+                            <input type="text" id="txtBirthDateTimeFromSearch" name="txtBirthDateTimeFromSearch"
+                                   class="form-control input-sm" data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom"
+                                   placeholder="تاریخ تولد از" />
+                        </div>
+                        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                            <div>
+                                <label>
+                                    تاریخ تولد تا
+                                </label>
+                            </div>
+                            <input type="text" id="txtBirthDateTimeToSearch" name="txtBirthDateTimeToSearch"
+                                   class="form-control input-sm" data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom"
+                                   placeholder="تاریخ تولد تا" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+        <div class="empty-block">&nbsp;</div>
+        <button id="btnSearch" name="btnSearch" class="btn btn-default input-sm">
+            جستجو
+        </button>
+        <button id="btnReload" name="btnReload" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                title="بارگذاری مجدد">
+            <i class="fa fa-refresh"></i>
+        </button>
+        <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                title="پاک کردن فرم">
+            <i class="fa fa-undo"></i>
+        </button>
+        <button id="btnRemoveSelectedRows" name="btnRemoveSelectedRows" class="btn btn-danger input-sm"
+                data-toggle="tooltip" data-placement="top"
+                title="حذف سطرهای انتخاب شده"
+                data-href="/Admin/UsersManagement/CompleteDeleteUsers">
+            <i class="fa fa-remove"></i>
+        </button>
+    </div>
+    <div class="col col-md-2 col-xs-2 col-sm-2 col-lg-2">
+        &nbsp;
+    </div>
+</div>
+<hr class="full-splitter" />
+<div id="listContainer"></div>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Accesses>
+	<Access AreaNameFa="اطلاعات پایه" AreaName="UserPublic" AreaSort="0" AreaClass="fa-circle-o" RoleId="" RoleName="Users" ShowAreaNameInMenu="true" AreaImage="" ControllerNameFa="پنل" ControllerName="PublicPanel" ControllerClass="fa-list-ul" ControllerSort="100" ControllerImage="" ShowControllerNameInMenu="true" IsActivated="true" IsInstalledModule="false" IsDynamicView="false" ShowPublicErrorPage="false" IsStandAlone="true" HasCharts="false" HasNotifications="false">
+		<Action ActionNameFa="داشبورد" ActionName="Index" RelatedActions=""  DataAccessTypes="selfandchilds" QueryString="" QueryStringValues="" MenusGroups="" ActionSort="1000" ActionClass="fa-dashboard" Styles="" Scripts="" MetaTags="" DescTags="" IsActivated="true" ActionImage="" IsAjax="false"></Action>
+	</Access>
+</Accesses>

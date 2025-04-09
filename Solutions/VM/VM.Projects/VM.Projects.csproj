@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\AllRef&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\AllRef\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\AllRef\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PVM\Projects\ConstructionProjectDailyData\" />
+    <Folder Include="PVM\Projects\ConstructionProjectProgressData\" />
+    <Folder Include="PVM\Projects\PropertyProjectTypes\" />
+    <Folder Include="PVM\Projects\OperationsOnProperty\" />
+    <Folder Include="PVM\Projects\OperationOnPropertyProjects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VM.Public\VM.Public.csproj" />
+    <ProjectReference Include="..\VM.Teniaco\VM.Teniaco.csproj" />
+  </ItemGroup>
+
+</Project>

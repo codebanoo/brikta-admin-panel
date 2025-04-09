@@ -1,0 +1,130 @@
+﻿<script type="text/javascript">
+    function InvestChange() {
+        
+        $('select.myReplies option:selected').prop('selected', false).trigger("chosen:updated");
+       
+        let _invs = $("#drInvestorid").val();
+        console.log(_invs);
+
+        if (_invs) {
+            $("#btnSave").removeAttr('disabled');
+            GetData(_invs);
+        }
+        else {
+            $("#btnSave").attr("disabled", "disabled");
+        }
+    }
+    function getSelected() {
+
+        var arr = $('select.myReplies').map(function () {
+            if (this.value != "") return this.value
+        }).get();
+        console.log(arr);
+        $('select.myReplies option:selected').prop('selected', false);
+    }
+    function SaveAll(e) {
+
+        let _invs = parseInt($("#drInvestorid").val());
+        let _replies = $('select.myReplies').map(function () {
+            if (this.value != "") return this.value
+        }).get();
+
+        const _url = '/AdminTeniaco/InvestorsManagement/SaveAnswerSheetData';
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: {
+                'investorId': _invs,
+                'replies': _replies.join(',')
+            },
+            success: function (result) {
+                
+                if (result.Result == "OK") {
+                }
+                else
+                    if (result.Result == "ERROR") {
+
+                    }
+            }
+        });
+    }
+
+    function GetData(InversorId) {
+        const _url = '/AdminTeniaco/InvestorsManagement/GetAnswerSheetData';
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: {
+                'InvestorId': InversorId
+            },
+            success: function (result) {
+                
+                if (result.Result == "OK") {
+                    console.log(result.record)
+                    setanswer(result.record);
+                }
+                else
+                    if (result.Result == "ERROR") {
+                        alert("خطادر بازیابی")
+                    }
+            }
+        });
+
+    }
+    function setanswer(records) {
+        records.forEach(function (element) {
+            $('#item' + element.EvaluationQuestionId + '.myReplies', '#tabs').val(element.EvaluationItemId).trigger("chosen:updated");
+        });
+    }
+    function clearAll() {
+
+    if (confirm("پاسخ های قبلی، پاک شود ؟") == true) {
+        let activeTabs = $("#tabs .ui-tabs-panel:visible").attr("id");
+        let _context = '#' + activeTabs;
+        console.log(_context);
+        $('select.myReplies option:selected', _context).prop('selected', false).trigger("chosen:updated");
+    }
+}
+
+
+
+
+
+    $(document).ready(function () 
+    {
+        $("#tabs").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+        $("#tabs ul").removeClass('ui-widget-header');
+        
+        setTimeout(function() { 
+        $('.ui-corner-left').removeClass('ui-corner-left');
+        }, 300);
+        
+        
+       
+        $("#tabs li").removeClass("ui-corner-top").addClass("ui-corner-left");
+        $('.myReplies', '#tabs').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: 200,
+            rtl: rtl
+        });
+        $('#drInvestorid').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: 200,
+            rtl: rtl
+        });
+         if($(this).hasClass('inactive'))
+         { 
+           $('#tabs li a').addClass('inactive');           
+           $(this).removeClass('inactive');
+         }
+           
+    });
+    
+</script>
+

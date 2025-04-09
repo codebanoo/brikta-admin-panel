@@ -1,0 +1,18 @@
+﻿@using VM.Teniaco;
+@{
+    EvaluationQuestionsVM evaluationQuestionsVM = new EvaluationQuestionsVM();
+    if (ViewData["EvaluationQuestionsVM"] != null)
+    {
+        evaluationQuestionsVM = ViewData["EvaluationQuestionsVM"] as EvaluationQuestionsVM;
+    }
+}
+
+
+<div class="col-12">
+    <div>
+        سوال:
+        @Html.Raw(evaluationQuestionsVM.EvaluationQuestion)
+    </div>
+</div>
+<hr class="full-splitter" />
+<div id="listContainer"></div>

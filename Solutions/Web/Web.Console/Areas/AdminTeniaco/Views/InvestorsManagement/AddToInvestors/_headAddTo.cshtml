@@ -1,0 +1,149 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<FundsVM> fundsList = new List<FundsVM>();
+        @Html.Raw("var fundsList =[];")
+        ;
+
+        if (ViewData["FundsList"] != null)
+        {
+            fundsList = (List<FundsVM>)ViewData["FundsList"];
+
+            var fundsListData = fundsList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.FundName}",
+                Value = a.FundId,
+            });
+
+            @Html.Raw("debugger; fundsList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(fundsListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    @{
+        List<GuildCategoriesVM> guildCategoriesList = new List<GuildCategoriesVM>();
+        @Html.Raw("var guildCategoriesList=[];")
+        ;
+
+        if (ViewData["GuildCategoriesList"] != null)
+        {
+            guildCategoriesList = (List<GuildCategoriesVM>)ViewData["GuildCategoriesList"];
+
+            var guildCategoriesListData = guildCategoriesList.Select(s =>
+            new
+            {
+                DisplayText = $"{s.GuildCategoryName}",
+                Value = s.GuildCategoryId,
+
+            });
+
+            @Html.Raw("debugger; guildCategoriesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(guildCategoriesListData)) +" ;debugger;")
+            ;
+        }
+
+    }
+</script>
+
+<script>
+    @{
+        List<PersonsVM> personsList = new List<PersonsVM>();
+        @Html.Raw("var personsList =[];")
+        ;
+
+        if (ViewData["PersonsList"] != null)
+        {
+            personsList = (List<PersonsVM>)ViewData["PersonsList"];
+
+            var personsListData = personsList.Select(p =>
+
+            new
+            {
+                DisplayText = $"{p.Name}" + " " + $"{p.Family}" + " - " + $"{p.Phone}",
+                Value = p.PersonId
+            });
+
+            @Html.Raw("debugger; personsList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personsListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    @{
+
+        List<PersonTypesVM> personTypesList = new List<PersonTypesVM>();
+
+                                        @Html.Raw("var personTypesList = [];");
+
+        if (ViewData["PersonTypesList"] != null)
+        {
+            personTypesList = (List<PersonTypesVM>)ViewData["PersonTypesList"];
+
+            var personTypesListData = personTypesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.PersonTypeTitle}",
+                          Value = c.PersonTypeId
+                      });
+
+                                            @Html.Raw("debugger; personTypesList = " +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personTypesListData)) + "; debugger;");
+        }
+
+    }
+</script>
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(21),
+    div.jtable-main-container table.jtable thead th:nth-child(22) {
+        width: 1% !important;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(21),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(22) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+
+    .supInformation {
+        margin-top: 5px;
+        color: #160acf !important;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>

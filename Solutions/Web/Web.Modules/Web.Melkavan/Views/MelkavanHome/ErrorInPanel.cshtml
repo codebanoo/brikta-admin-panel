@@ -1,0 +1,61 @@
+﻿@using Services.Xml.Entities;
+
+@{
+    ViewData["Title"] = "PageTitle";
+
+    Layout = "_" + "Layout";
+
+    string errorInPanel = "";
+    if (ViewData["ErrorInPanel"] != null)
+    {
+        errorInPanel = (string)ViewData["ErrorInPanel"];
+    }
+}
+
+@section head {
+
+}
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    هشدار
+                </h3>
+            </div>
+            <div class="panel-body">
+                <fieldset>
+                    <div class="form-group">
+                        @{
+                            <div id='error-alert' class="form-group alert alert-danger">
+                                <h2>
+                                    @{
+                                        if (!string.IsNullOrEmpty(errorInPanel))
+                                        {
+                                            @Html.Raw(errorInPanel)
+                                        }
+                                    }
+                                </h2>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+        });
+    </script>
+}

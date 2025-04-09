@@ -1,0 +1,91 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Services.Xml.Entities;
+
+@model dynamic
+
+@{
+    string areaName = "";
+    if (ViewData["AreaName"] != null)
+    {
+        areaName = ViewData["AreaName"] as string;
+    }
+
+    string controllerName = "";
+    if (ViewData["ControllerName"] != null)
+    {
+        controllerName = ViewData["ControllerName"] as string;
+    }
+
+    string actionName = "";
+    if (ViewData["ActionName"] != null)
+    {
+        actionName = ViewData["ActionName"] as string;
+    }
+
+    Layout = "_" + "AdminLayout";
+
+    string dataBackUrl = "";
+    if (ViewData["DataBackUrl"] != null)
+    {
+        dataBackUrl = ViewData["DataBackUrl"] as string;
+    }
+}
+
+@section head{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_headAddTo.cshtml");
+    }
+
+}
+
+<div id="wrapper">
+    @await Component.InvokeAsync("HostNavigation")
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            @await Component.InvokeAsync("HostDashboard")
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span>
+                            افزودن
+                        </span>
+                        @{ if (!string.IsNullOrEmpty(dataBackUrl))
+                            { <button id="btnBackPage" class="btn btn-primary" name="btnBackPage"
+                                      data-back-url="@Html.Raw(dataBackUrl)"
+                                      title="بازگشت"
+                                      data-toggle="tooltip" data-placement="top">
+                                      <i class="fa fa-arrow-left"></i>
+                                </button>
+                            }
+                        }
+                    </div>
+                    <div class="panel-body">
+                        <div id="searchBlock">
+                            @{
+                                Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_htmlAddTo.cshtml");
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_jsAddTo.cshtml");
+    }
+
+}

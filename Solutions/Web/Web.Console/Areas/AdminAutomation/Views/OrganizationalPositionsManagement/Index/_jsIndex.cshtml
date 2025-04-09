@@ -1,0 +1,393 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+
+        $('#listContainer').jtable({
+            title: 'چارت سازمانی', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminAutomation/OrganizationalPositionsManagement/GetListOfOrganizationalPositions',
+                createAction: '/AdminAutomation/OrganizationalPositionsManagement/AddToOrganizationalPositions',
+                updateAction: '/AdminAutomation/OrganizationalPositionsManagement/UpdateOrganizationalPositions',
+                deleteAction: '/AdminAutomation/OrganizationalPositionsManagement/CompleteDeleteOrganizationalPositions'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                ]
+            },
+            fields: {
+                OrganizationalPositionId: {
+                    key: true,
+                    list: false
+                },
+                OrganizationalPositionName: {
+                    title: 'نام&nbsp;پست&nbsp;سازمانی',
+                    sorting: false,
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-OrganizationalPositionId="' +
+                                data.record.OrganizationalPositionId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-OrganizationalPositionId="' +
+                                data.record.OrganizationalPositionId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-OrganizationalPositionId="' + data.record.OrganizationalPositionId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-OrganizationalPositionId="' + data.record.OrganizationalPositionId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function (event, data) {
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+
+                if (formName == 'edit') {
+
+                    //$('form.jtable-dialog-form div.jtable-input-field-container:nth-child(3) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                    //$('form.jtable-dialog-form div.jtable-input-field-container:nth-child(7) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                    //$('form.jtable-dialog-form div.jtable-input-field-container:nth-child(9) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+
+                }
+                else
+                    if (formName == 'create') {
+
+                        //$('form.jtable-dialog-form div.jtable-input-field-container:nth-child(2) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true" data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                        //$('form.jtable-dialog-form div.jtable-input-field-container:nth-child(6) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                        //$('form.jtable-dialog-form div.jtable-input-field-container:nth-child(8) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+
+                    }
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+
+
+        });
+
+        $('#listContainer').jtable('load');
+
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+
+        $('body').on('click', '.isActivated', function () {
+            var _this = $(this);
+            var organizationalPositionId = _this.attr('data-OrganizationalPositionId');
+            debugger;
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminAutomation/OrganizationalPositionsManagement/ToggleActivationOrganizationalPositions",
+
+                data: { 'organizationalPositionId': organizationalPositionId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var txtOrganizationalPositionName = $('#txtOrganizationalPositionName').val();
+
+
+                        if (
+                            (txtOrganizationalPositionName != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'OrganizationalPositionName': txtOrganizationalPositionName
+
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var organizationalPositionId = _this.attr('data-organizationalPositionId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminAutomation/OrganizationalPositionsManagement/TemporaryDeleteOrganizationalPositions",
+
+                data: { 'organizationalPositionId': organizationalPositionId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var txtOrganizationalPositionName = $('#txtOrganizationalPositionName').val();
+
+                        if (
+                            (txtOrganizationalPositionName != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'OrganizationalPositionName': txtOrganizationalPositionName
+
+                            });
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            var txtOrganizationalPositionName = $('#txtOrganizationalPositionName').val();
+
+            if (
+                (txtOrganizationalPositionName != null)) {
+
+                $('#listContainer').jtable('load', {
+                    'OrganizationalPositionName': txtOrganizationalPositionName
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            $('#txtOrganizationalPositionName').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            $('#txtOrganizationalPositionName').val(null);
+            e.preventDefault();
+        });
+    });
+
+
+
+
+</script>

@@ -1,0 +1,217 @@
+﻿@using VM.Teniaco;
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+       <div class="row col-12">
+                    <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+                        <div>
+                            استان
+                        </div>
+                        <select id="slcStates2" name="slcStates2" class="form-control ml-3"
+                                placeholder="استان">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+                        <div>
+                            بخش
+                        </div>
+                        <select id="slcCities2" name="slcCities2" class="form-control ml-3"
+                                placeholder="بخش">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+                        <div>
+                            منطقه/شهر
+                        </div>
+                        <select id="slcZones2" name="slcZones2" class="form-control ml-3"
+                                placeholder="منطقه/شهر">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+                        <div>
+                            ناحیه
+                        </div>
+                        <select id="slcDistrictId" name="slcDistrictId" class="form-control input-sm chosen-select"
+                                placeholder="ناحیه">
+                            <option value="" selected>---</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="row col-12">
+        <div id="mapDistrict" class="col col-md-12 col-lg-12"></div>
+    </div>
+                 <div class="row">
+                    <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+                        <div>
+                            استان
+                        </div>
+                        <select id="slcStates" name="slcStates" class="form-control ml-3"
+                                placeholder="استان">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+                        <div>
+                            بخش
+                        </div>
+                        <select id="slcCities" name="slcCities" class="form-control ml-3"
+                                placeholder="بخش">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+                    <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+                        <div>
+                            منطقه/شهر
+                        </div>
+                        <select id="slcZones" name="slcZones" class="form-control ml-3"
+                                placeholder="منطقه/شهر">
+                            <option value="">---</option>
+                        </select>
+                    </div>
+   
+                </div>
+                 <div class="row col-12">
+        <div id="mapCity" class="col-md-6 col-lg-6"></div>
+        <div id="mapZone" class=" col-md-6 col-lg-6"></div>
+    </div>
+    <div class="row col-12">
+        <div id="mapLeft" class=" col-md-6 col-lg-6"></div>
+        <div id="mapRight" class=" col-md-6 col-lg-6"></div>
+    </div>
+    <div class="row col-12">
+        <div id="mapTempZone" class=" col-md-12 col-lg-12"></div>
+    </div>
+    <div id="popupZone" title="ROUTECAST" class="ol-popupZone">
+        <a href="#" id="popupcloserZone" class="ol-popup-closerZone"></a>
+        <div id="popupcontentZone"></div>
+    </div>
+    <div id="popupCity" title="ROUTECAST" class="ol-popupCity">
+        <a href="#" id="popupcloserCity" class="ol-popup-closerCity"></a>
+        <div id="popupcontentCity"></div>
+    </div>
+@* <div class="row col-12">
+        <div id="map" class="col-md-6 col-lg-6"></div>
+        <div id="mapSatellite" class="col-md-6 col-lg-6"></div>
+    </div>*@
+    
+
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+       @* <div class="col-md-9 col-sm-9  offset-md-3">
+             <button type="submit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+        </div>*@
+    </div>
+</form>
+@*
+<form onsubmit="return false;">
+    <div class="row">
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+                <label for="slcStates2">
+                    استان
+                </label>
+            </div>
+            <select id="slcStates2" name="slcStates2" class="form-control input-sm"
+                    placeholder="استان">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+                <label for="slcCities2">
+                    بخش
+                </label>
+            </div>
+            <select id="slcCities2" name="slcCities2" class="form-control input-sm"
+                    placeholder="بخش">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+                <label for="slcZones2">
+                    منطقه/شهر
+                </label>
+            </div>
+            <select id="slcZones2" name="slcZones2" class="form-control input-sm"
+                    placeholder="منطقه/شهر">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    ناحیه
+                </label>
+            </div>
+            <select id="slcDistrictId" name="slcDistrictId" class="form-control input-sm chosen-select"
+                    placeholder="ناحیه">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div id="mapDistrict" class="col col-md-12 col-lg-12"></div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+                <label for="slcStates">
+                    استان
+                </label>
+            </div>
+            <select id="slcStates" name="slcStates" class="form-control input-sm"
+                    placeholder="استان">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+                <label for="slcCities">
+                    بخش
+                </label>
+            </div>
+            <select id="slcCities" name="slcCities" class="form-control input-sm"
+                    placeholder="بخش">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+                <label for="slcZones">
+                    منطقه/شهر
+                </label>
+            </div>
+            <select id="slcZones" name="slcZones" class="form-control input-sm"
+                    placeholder="منطقه/شهر">
+                <option value="">---</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div id="mapCity" class="col col-md-6 col-lg-6"></div>
+        <div id="mapZone" class="col col-md-6 col-lg-6"></div>
+    </div>
+    <div class="row">
+        <div id="mapLeft" class="col col-md-6 col-lg-6"></div>
+        <div id="mapRight" class="col col-md-6 col-lg-6"></div>
+    </div>
+    <div class="row">
+        <div id="mapTempZone" class="col col-md-12 col-lg-12"></div>
+    </div>
+    <div id="popupZone" title="ROUTECAST" class="ol-popupZone">
+        <a href="#" id="popupcloserZone" class="ol-popup-closerZone"></a>
+        <div id="popupcontentZone"></div>
+    </div>
+    <div id="popupCity" title="ROUTECAST" class="ol-popupCity">
+        <a href="#" id="popupcloserCity" class="ol-popup-closerCity"></a>
+        <div id="popupcontentCity"></div>
+    </div>
+</form>*@

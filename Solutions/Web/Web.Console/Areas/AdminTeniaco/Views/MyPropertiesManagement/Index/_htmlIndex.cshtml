@@ -1,0 +1,138 @@
+﻿<div class="x_panel" id="searchBlock">
+
+    <div class="x_content">
+        <!-- start accordion -->
+        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel">
+              @*  <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <h4 class="panel-title">جستجو</h4>
+                </a>*@
+                <div id="collapseOne" class="panel-collapse  in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body row">
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع ملک
+                            </div>
+                            <select id="slcPropertyTypeId" name="slcPropertyTypeId" class="form-control ml-3"
+                                    placeholder="نوع ملک">
+                                <option value="" selected>---</option>
+                            </select>
+
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع کاربری
+                            </div>
+                            <select id="slcTypeOfUseId" name="slcTypeOfUseId" class="form-control ml-3"
+                                    placeholder="نوع کاربری">
+                                <option value="" selected>---</option>
+                            </select>
+
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع سند
+                            </div>
+                            <select id="slcDocumentTypeId" name="slcDocumentTypeId" class="form-control ml-3"
+                                    placeholder="نوع سند">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div class="mx-2">
+                                کد اختصاصی
+                            </div>
+                            <input id="txtPropertyCodeName" name="txtPropertyCodeName" class="form-control"
+                                   placeholder="کد اختصاصی" />
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                استان
+                            </div>
+                            <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                                    placeholder="استان">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                شهر
+                            </div>
+                            <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                                    placeholder="شهر">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                شهر/منطقه
+                            </div>
+                            <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                                    placeholder="شهر/منطقه">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                ناحیه
+                            </div>
+                            <select id="slcDistrictId" name="slcDistrictId" class="form-control ml-3"
+                                    placeholder="ناحیه">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نام/شماره تماس واسط
+                            </div>
+                            <select class="form-control ml-3" id="ConsultantUserId" name="ConsultantUserId"
+                                    placeholder="نام/شماره تماس واسط">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نام/شماره تماس مالک
+                            </div>
+                            <select class="form-control input-sm" id="OwnerId" name="OwnerId"
+                                    placeholder="نام/شماره تماس مالک">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="clearfix"></div>
+            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                <div class="empty-block">&nbsp;</div>
+                <button id="btnSearch" name="btnSearch" class="btn btn-success btn-sm">
+                    جستجو
+                </button>
+                <button id="btnReload" name="btnReload" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="بارگذاری مجدد">
+                    <i class="fa fa-refresh"></i>
+                </button>
+                <button id="btnReset" name="btnReset" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="پاک کردن فرم">
+                    <i class="fa fa-undo"></i>
+                </button>
+                <button id="btnRemoveSelectedRows" name="btnRemoveSelectedRows" class="btn btn-danger btn-sm"
+                        data-toggle="tooltip" data-placement="top"
+                        title="حذف سطرهای انتخاب شده"
+                        data-href="/Admin/UsersManagement/CompleteDeleteUsers">
+                    <i class="fa fa-remove "></i>
+                </button>
+            </div>
+        </div>
+        <!-- end of accordion -->
+
+
+    </div>
+</div>
+
+<hr class="full-splitter" />
+<div id="listContainer"></div>

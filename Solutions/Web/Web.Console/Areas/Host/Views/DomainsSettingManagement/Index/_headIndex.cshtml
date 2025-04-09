@@ -1,0 +1,129 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<script type="text/javascript">
+    @{
+        if (ViewData["CustomUsersVMList"] != null)
+        {
+            List<CustomUsersVM> customUsersVMList =
+            (List<CustomUsersVM>)ViewData["CustomUsersVMList"];
+
+            var customUsersVMListData = customUsersVMList.Select(c =>
+            new
+            {
+                /*text = c.FullNumber + " - " + c.FarsiName,
+                slug = c.FullNumber + " - " + c.FarsiName,
+                id = c.Id*/
+                DisplayText = (string.IsNullOrEmpty(c.Name) ? "" : c.Name + " - ") +
+            (string.IsNullOrEmpty(c.Family) ? "" : c.Family + " - ") +
+            c.UserName,
+                Value = c.UserId
+            });
+
+            @Html.Raw("var customUsersVMList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(customUsersVMListData)) + ";")
+            ;
+        }
+    }
+</script>
+
+<style type="text/css">
+    div.jtable-main-container table.jtable thead th {
+        text-align: left;
+    }
+
+        div.jtable-main-container table.jtable thead th:nth-child(2),
+        div.jtable-main-container table.jtable thead th:nth-child(3),
+        div.jtable-main-container table.jtable thead th:nth-child(4),
+        div.jtable-main-container table.jtable thead th:nth-child(5),
+        div.jtable-main-container table.jtable thead th:nth-child(6),
+        div.jtable-main-container table.jtable thead th:nth-child(7),
+        div.jtable-main-container table.jtable thead th:nth-child(8),
+        div.jtable-main-container table.jtable thead th:nth-child(9) {
+            width: 1% !important;
+        }
+
+    /*div.jtable-main-container table.jtable tbody > tr > td:nth-child(1) {
+                direction: ltr;
+            }*/
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(2),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(16),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(17),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(18),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(19),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(20),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(21),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(22),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(23),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(24),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(25),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(26),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(27),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(28),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(29),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(30),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(31),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(32),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(33) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    /*.jtable-dialog-form .jtable-input-field-container {
+                width: 50%;
+                float: right;
+            }*/
+
+    .rightMenuIsActivated,
+    .topMenuIsActivated,
+    .circleMenuIsActivated,
+    .rightClickMenuIsActivated,
+    .dashboardBoxesIsActivated,
+    .reportBoxesIsActivated,
+    .alertIsActivated,
+    .toolTipIsActivated,
+    .isActivated,
+    .isDeleted,
+    .isFree,
+    .editDomainSetting,
+    .createSubDomainPerNewUser,
+    .shortCutKeysIsActivated,
+    .voiceCommandsIsActivated,
+    .createMenuAutomatically,
+    .CheckAllChosenItemsShow,
+    .pushNotificationsIsActivated,
+    .showLevelPageAfterLogin,
+    .countOfEnterWrongPassword,
+    .countOfEnterWrongPasswordForUserLocked,
+    .changePasswordAfterFirstLogin,
+    .showColoredRowsInList,
+    .dateForChangePassword {
+        /*cursor: pointer;*/
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+</style>
+

@@ -1,0 +1,123 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+@using VM.Public;
+
+@{ //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs"); }
+
+<script type="text/javascript">
+    @{
+
+        List<MyPropertiesCompareTopicVM> MypropertiesCompareTopicVM = new List<MyPropertiesCompareTopicVM>();
+
+       @Html.Raw("var MypropertiesCompareTopicList = [];");
+
+        if (ViewData["PropertyTitle"] != null)
+        {
+            MypropertiesCompareTopicVM = (List<MyPropertiesCompareTopicVM>)ViewData["PropertyTitle"];
+
+            var _ListData = MypropertiesCompareTopicVM.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.Title}",
+                          Value = c.PropertyId,
+                          PropertyTypeId = c.PropertyTypeId
+                      });
+
+      @Html.Raw("debugger; MypropertiesCompareTopicList = " +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(_ListData)) + "; debugger;");
+        }
+
+    }
+</script>
+
+
+<link href="~/lib/openlayers-v6.9.0/css/ol.css" rel="stylesheet" />
+<script src="~/lib/openlayers-v6.9.0/build/ol.js"></script>
+
+<style type="text/css">
+  #Compare >  .col-lg-2 ,.col-md-2
+    {
+        padding:0;
+        vertical-align:middle;
+    }
+   .panel-heading
+    {
+        /*background-color:#6495ED !important;
+        vertical-align:middle;*/
+        
+    }
+   /*[data-toggle]
+    {
+        color:#FFFFFF !important;
+    }*/
+    .feat:nth-child(odd) {
+         background-color:#FFF5EE;
+         
+    }
+
+     .ol-viewport {
+            height: 400px !important;
+        }
+
+    #L_Map,#M_Map, #R_Map, #F_Map{
+        height: 400px;
+        overflow: hidden;
+        margin-right:4px;
+    }
+    span {
+        display: inline-block;
+        vertical-align: middle;
+        line-height: normal;
+    }
+    .form-group{
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    
+
+    #BasicInfo
+    {
+        margin-top : 20px;
+    }
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(1),
+    div.jtable-main-container table.jtable thead th:nth-child(3),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(1),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    /*div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+        div.jtable-main-container table.jtable tbody > tr > td:nth-child(6) {
+            direction: ltr;
+        }*/
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+</style>

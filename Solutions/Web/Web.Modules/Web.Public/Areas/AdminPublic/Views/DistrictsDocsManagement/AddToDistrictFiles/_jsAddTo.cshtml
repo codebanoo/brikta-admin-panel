@@ -1,0 +1,80 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+        
+        var districtId = districtsList.DistrictId;
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            var formData = new FormData();
+
+            var filesElm = $('input[type=file]');
+
+            var districtFileUploadPVMList = [];
+
+            if (filesElm.length > 0) {
+                for (var i = 0; i < filesElm.length; i++) {
+                    var file = filesElm[i];
+                    if (file != null)
+                        if (file.files[0] != null)
+                            if (file.files[0].size > 0) {
+                                districtFileUploadPVMList.push({
+                                    DistrictFileTitle: $('#DistrictFileTitle' + (i + 1)).val(),
+                                    File: file.files[0]
+                                });
+
+                                formData.append("DistrictFileUploadPVMList[" + i + "].DistrictFileTitle", $('#DistrictFileTitle' + (i + 1)).val());
+                                formData.append("DistrictFileUploadPVMList[" + i + "].DistrictFileOrder", $('#DistrictFileOrder' + (i + 1)).val());
+                                formData.append("DistrictFileUploadPVMList[" + i + "].File", file.files[0]);
+
+                            }
+                }
+
+                if (districtFileUploadPVMList.length > 0) {
+
+                    formData.append('DistrictId', districtId);
+
+                    $.ajax({
+                        url: '/AdminPublic/DistrictsDocsManagement/AddToDistrictFiles',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                            $('#error-alert').show(500);
+
+                        },
+                        error: function (jqXHR) {
+                            $('#error-alert').removeClass('alert-success');
+                            $('#error-alert').addClass('alert-danger');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message);
+                            $('#error-alert').show(500);
+
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا فایلهای مورد نظر را انتخاب کنید');
+                }
+            }
+        });
+
+    });
+</script>

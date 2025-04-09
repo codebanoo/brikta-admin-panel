@@ -1,0 +1,316 @@
+﻿@using Newtonsoft.Json
+@using VM.Public
+@using VM.Teniaco
+
+
+<script type="text/javascript">
+    @{
+        long constructionId = 0;
+        @Html.Raw("var constructionProjectId = 0;")
+        ;
+
+        if (ViewData["ConstructionProjectId"] != null)
+        {
+            constructionId = (long)ViewData["ConstructionProjectId"];
+
+
+            @Html.Raw("debugger; constructionProjectId =" + constructionId.ToString() + " ;debugger;")
+            ;
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    @{
+        string domainName = "";
+
+        @Html.Raw("var domainName;")
+        ;
+
+        if (ViewData["DomainName"] != null)
+        {
+            domainName = ViewData["DomainName"] as string;
+
+            @Html.Raw(" domainName = '" + domainName + "'; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        long userId = 0;
+        @Html.Raw("var userId;")
+        ;
+        if (ViewData["UserId"] != null)
+        {
+            userId = (long)ViewData["UserId"];
+            @Html.Raw(" userId = '" + userId + "'; ")
+            ;
+        }
+    }
+</script>
+
+
+
+@{
+
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    #listContainer .material-symbols-outlined {
+        font-size: 24px;
+    }
+
+
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(3),
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5) {
+        width: 1% !important;
+    }
+
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted,
+    .redirect-icon,
+    .description {
+        cursor: pointer;
+    }
+
+
+    .supInformation {
+        margin-top: 5px;
+        color: #160acf !important;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    #listContainer {
+        white-space: nowrap
+    }
+
+
+    // .chat {
+        // margin-right: 4rem;
+        // margin-top: 2rem;
+        // //
+    }
+
+    .chat-time-left {
+        display: block;
+        margin-top: 8px;
+        // color: rgba(255, 255, 255, .6);
+        color: black;
+        text-align: left;
+    }
+
+    .chat-box {
+        height: 100%;
+        width: 100%;
+        background-color: #fff;
+        overflow: hidden
+    }
+
+    .chats {
+        padding: 30px 15px
+    }
+
+    .chat-avatar {
+        float: right
+    }
+
+        .chat-avatar .avatar {
+            width: 30px;
+            -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2),0 6px 10px 0 rgba(0,0,0,0.3);
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2),0 6px 10px 0 rgba(0,0,0,0.3);
+        }
+
+    .chat-body {
+        display: block;
+        margin: 10px 30px 0 0;
+        overflow: hidden
+    }
+
+        .chat-body:first-child {
+            margin-top: 0
+        }
+
+    .chat-content {
+        position: relative;
+        display: block;
+        float: right;
+        padding: 8px 15px;
+        margin: 0 20px 10px 0;
+        clear: both;
+        color: #fff;
+        background-color: #62a8ea;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
+        width: auto;
+        height: auto;
+    }
+
+        .chat-content:before {
+            position: absolute;
+            top: 10px;
+            right: -10px;
+            width: 0;
+            height: 0;
+            content: '';
+            border: 5px solid transparent;
+            border-left-color: #62a8ea
+        }
+
+        .chat-content > p:last-child {
+            margin-bottom: 0
+        }
+
+        .chat-content + .chat-content:before {
+            border-color: transparent
+        }
+
+    .chat-time {
+        display: block;
+        margin-top: 8px;
+        color: rgba(255, 255, 255, .6)
+    }
+
+    .chat-left .chat-avatar {
+        float: left
+    }
+
+    .chat-left .chat-body {
+        margin-right: 0;
+        margin-left: 30px
+    }
+
+    .chat-left .chat-content {
+        float: left;
+        margin: 0 0 10px 20px;
+        color: #76838f;
+        background-color: #dfe9ef
+    }
+
+        .chat-left .chat-content:before {
+            right: auto;
+            left: -10px;
+            border-right-color: #dfe9ef;
+            border-left-color: transparent
+        }
+
+        .chat-left .chat-content + .chat-content:before {
+            border-color: transparent
+        }
+
+    .chat-left .chat-time {
+        color: #a3afb7
+    }
+
+    .panel-footer {
+        padding: 0 30px 15px;
+        background-color: transparent;
+        border-top: 1px solid transparent;
+        border-bottom-right-radius: 3px;
+        border-bottom-left-radius: 3px;
+    }
+
+    .avatar img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        border: 0 none;
+        border-radius: 1000px;
+    }
+
+    .chat-avatar .avatar {
+        width: 30px;
+    }
+
+    .avatar {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        white-space: nowrap;
+        border-radius: 1000px;
+        vertical-align: bottom;
+        cursor: auto;
+    }
+
+
+
+
+
+    .Viewcount {
+        width: 1rem !important;
+        height: 1em;
+        /* box-sizing: initial; */
+        background: #417bb5;
+        border: 0.1em solid #417bb5 !important;
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        font-size: 12px;
+        /* box-sizing: content-box; */
+        margin: auto;
+        /* margin-top: 11px; */
+        width: 19px !important;
+        height: 19px !important;
+        position: relative !important;
+        /* vertical-align: middle; */
+        // line-height: 12px !important;
+        line-height: 18px !important;
+        left: 15px !important;
+        bottom: -33px !important;
+    }
+
+
+    .name {
+        background: #4269a5;
+        border-right: 2px solid #fff;
+        padding-right: 12px;
+        display: flex;
+        line-height: 32px;
+    }
+
+    .other {
+        background: #f1f1f1;
+        border-left: 2px solid #fff;
+        padding-right: 12px;
+        display: flex;
+        line-height: 32px;
+    }
+
+</style>

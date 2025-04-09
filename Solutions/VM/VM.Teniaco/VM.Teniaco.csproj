@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\AllRef&quot;" />
+	</Target>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\VM.Public\VM.Public.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="FrameWork">
+			<HintPath>..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Base">
+		  <HintPath>..\..\..\AllRef\VM.Base.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Console">
+		  <HintPath>..\..\..\AllRef\VM.Console.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Melkavan">
+		  <HintPath>..\..\..\AllRef\VM.Melkavan.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Projects">
+		  <HintPath>..\..\..\AllRef\VM.Projects.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

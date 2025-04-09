@@ -1,0 +1,32 @@
+﻿@using VM.Console
+
+@{
+}
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-top-links">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">arashcms v1.0</a>
+    </div>
+    <ul class="nav navbar-top-links navbar-left" aria-expanded="true">
+        @Html.Raw(ViewData["TopMenu"] as string)
+    </ul>
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav in" id="side-menu">
+                @Html.Raw(ViewData["MainMenu"] as string)
+            </ul>
+        </div>
+    </div>
+</nav>

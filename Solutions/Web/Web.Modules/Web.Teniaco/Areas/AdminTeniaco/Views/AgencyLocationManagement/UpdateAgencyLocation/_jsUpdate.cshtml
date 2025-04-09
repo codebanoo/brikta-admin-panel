@@ -1,0 +1,160 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+        var raster = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+        var mapLeft = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+            layers: [raster],
+            target: 'mapLeft',
+            view: view
+        });
+
+        var mapRight = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+            target: 'mapRight',
+            view: view
+        });
+
+        var LocationLon = 51.24494;
+        var LocationLat = 36.66517;
+
+        debugger;
+        if (agenciesList != null) {
+            if ((agenciesList.LocationLat != '') && (agenciesList.LocationLon != '')) {
+                LocationLon = agenciesList.LocationLon;
+                LocationLat = agenciesList.LocationLat;
+            }
+        }
+
+        var tmpEvt = {
+            LocationLon: LocationLon,
+            LocationLat: LocationLat,
+        }
+
+        var iconGeometry = new ol.geom.Point(ol.proj.transform([LocationLon, LocationLat], 'EPSG:4326', 'EPSG:3857'));
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [
+                    new ol.Feature({
+                        geometry: iconGeometry
+                    })
+                ]
+            }),
+            style: new ol.style.Style({
+                image: new ol.style.Icon({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    src: '/images/mapmarker1.png'
+                })
+            })
+        });
+        mapLeft.addLayer(layer);
+
+        mapLeft.on('singleclick', function (evt) {
+            debugger;
+
+            var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+            tmpEvt = {
+                LocationLon: lonlat[0],
+                LocationLat: lonlat[1]
+            };
+            iconGeometry.setCoordinates(evt.coordinate);
+        });
+
+        mapRight.on('singleclick', function (evt) {
+            var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+            tmpEvt = {
+                LocationLon: lonlat[0],
+                LocationLat: lonlat[1]
+            };
+            iconGeometry.setCoordinates(evt.coordinate);
+        });
+
+       
+
+        //good satelite
+        var worldImagery = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                zoom: 12,
+                maxZoom: 17,
+                minZoom: 1,
+            })
+        });
+        mapRight.addLayer(worldImagery);
+
+        mapRight.addLayer(layer);
+
+        debugger;
+        var agencyId = agenciesList.AgencyId;
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            debugger;
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/AgencyLocationManagement/UpdateAgencylocation",
+                data: {
+                    'AgencyId': agencyId,
+                    'LocationLat': tmpEvt.LocationLat,
+                    'LocationLon': tmpEvt.LocationLon
+                },
+
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message); 
+                        $('#error-alert').show(500);
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+        });
+
+    });
+</script>

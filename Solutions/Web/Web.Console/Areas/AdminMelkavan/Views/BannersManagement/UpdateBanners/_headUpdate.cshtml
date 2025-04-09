@@ -1,0 +1,45 @@
+﻿@using VM.Public;
+@using VM.Melkavan;
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        BannersVM bannersVM = new BannersVM();
+
+        @Html.Raw("var bannersVM;")
+        ;
+
+        if (ViewData["BannersVM"] != null)
+        {
+            bannersVM = ViewData["BannersVM"] as BannersVM;
+
+            @Html.Raw("debugger; bannersVM = " +
+            JsonConvert.DeserializeObject(JsonConvert.SerializeObject(bannersVM)) + "; ")
+            ;
+        }
+
+    }
+</script>
+<script>
+    @{
+        string domainName = "";
+
+        @Html.Raw("var domainName;")
+        ;
+        if (ViewData["DomainName"] != null)
+        {
+            domainName = ViewData["DomainName"] as string;
+
+            @Html.Raw("debugger; domainName = '" +
+            JsonConvert.DeserializeObject(JsonConvert.SerializeObject(domainName)) + "'; ")
+            ;
+        }
+    }
+</script>
+
+<style type="text/css">
+    .no-top-margin {
+        margin-top: 0px !important;
+    }
+</style>

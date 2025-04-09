@@ -1,0 +1,146 @@
+﻿@{
+    string currentLanguage = "fa";
+    if (ViewData["CurrentLanguage"] != null)
+    {
+        currentLanguage = ViewData["CurrentLanguage"] as string;
+    }
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+        $('#IsActivated').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            rtl: rtl
+        });
+
+        $('#IsDeleted').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            rtl: rtl
+        });
+
+        $('#IsMarried').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            rtl: rtl
+        });
+
+        $('#UserId')
+            .append($("<option></option>")
+                .attr("value", 0)
+                .text('---'));
+
+        for (var i = 0; i < usersList.length; i++) {
+            var item = usersList[i];
+            $('#UserId')
+                .append($("<option></option>")
+                    .attr("value", item.UserId)
+                    .text(item.UserName));
+        }
+
+        $('#UserId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+    });
+        function OnBegin(e) {
+            //debugger;
+            //$('#AjaxLoading').show();
+            return true;
+        }
+
+        function OnSuccess(response, status, xhr) {
+            debugger;
+            if (response.Result == 'OK') {
+                if ((document.getElementById("ContractImage").value != "") || (document.getElementById("CertificateImage").value != "") || (document.getElementById("NationalCodeImage").value != "")) {
+                    var staffId = response.StaffId;
+                    var formData = new FormData();
+
+                    if (document.getElementById("ContractImage").value != "")
+                        formData.append('ContractImage', $('#ContractImage')[0].files[0]);
+
+                    if (document.getElementById("CertificateImage").value != "")
+                        formData.append('CertificateImage', $('#CertificateImage')[0].files[0]);
+
+                    if (document.getElementById("NationalCodeImage").value != "")
+                        formData.append('NationalCodeImage', $('#NationalCodeImage')[0].files[0]);
+
+                    formData.append('StaffId', staffId);
+
+                    var _url = '@Url.Action("UploadFile", "StaffManagement")';
+
+                    $.ajax({
+                        url: _url,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                            $('#error-alert').show(500);
+                            //$('#AjaxLoading').hide();
+                        },
+                        error: function (jqXHR) {
+                            $('#error-alert').removeClass('alert-success');
+                            $('#error-alert').addClass('alert-danger');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(response.Message + '. ' + result.Message);
+                            $('#error-alert').show(500);
+                            //$('#AjaxLoading').hide();
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+                else {
+                    $('#error-alert').removeClass('alert-danger');
+                    $('#error-alert').addClass('alert-success');
+
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html(response.Message);
+                    window.setTimeout(function () { window.location.reload(); }, 2500);
+                    $('#error-alert').show(500);
+                    //$('#AjaxLoading').hide();
+                }
+            }
+            else {
+                $('#error-alert').removeClass('alert-success');
+                $('#error-alert').addClass('alert-danger');
+
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+
+        function OnComplete() {
+            debugger;
+            clearValidationSummary();
+        };
+
+        function OnFailed(context) {
+            debugger;
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+            $('#error-alert').html(context.Message);
+            $('#error-alert').show(500);
+        };
+   
+</script>

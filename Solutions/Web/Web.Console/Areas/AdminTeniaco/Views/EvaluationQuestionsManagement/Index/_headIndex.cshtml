@@ -1,0 +1,100 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+
+<script type="text/javascript">
+    @{
+        EvaluationCategoriesVM evaluationCategory = new EvaluationCategoriesVM();
+        @Html.Raw("var evaluationCategory ;")
+        ;
+
+        if (ViewData["EvaluationCategoriesVM"] != null)
+        {
+            evaluationCategory = (EvaluationCategoriesVM)ViewData["EvaluationCategoriesVM"];
+
+            @Html.Raw("debugger; evaluationCategory =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationCategory))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8) {
+        width: 1% !important;
+    }
+
+
+    
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    .evaluationItems {
+        width: 47px;
+        height: 35px;
+        text-align: center;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+    .numberCircle {
+        /* font: 18px Arial, sans-serif; */
+        /* width: 1em; */
+        /* height: 1em; */
+        /* box-sizing: initial; */
+        background: #417bb5;
+        /* border: 0.1em solid #417bb5; */
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        font-size: 12px;
+        /* box-sizing: content-box; */
+        margin: auto;
+        /* margin-top: 11px; */
+        width: 22px;
+        height: 22px;
+        position: absolute;
+        vertical-align: middle;
+        line-height: 12px;
+        left: 5px;
+        bottom: -10px;
+        /* z-index: 999;*/
+    }
+</style>

@@ -1,0 +1,106 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+@model LevelDetailsVM
+
+<div class="row col-12">
+    <div class="col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+        <span>نقش</span> : @Model.RoleName -
+        <span>دسترسی</span> : @Model.LevelName
+    </div>
+</div>
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="LevelId" name="LevelId" value="@Model.LevelId" />
+    <input type="hidden" id="strAccesses" name="strAccesses" value="@Model.ActionIds" />
+    <input type="hidden" id="strAccessesWithDataAccessTypesVMList" name="strAccessesWithDataAccessTypesVMList" value="@JsonConvert.DeserializeObject(JsonConvert.SerializeObject(Model.AccessesWithDataAccessTypesVMList))" />
+    <div class="form-group col col-md-12">
+        @{
+            <div id='error-alert' class="form-group alert alert-danger">
+            </div>
+        }
+    </div>
+    <div class="row">
+
+
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mr-1">
+                ساخت مجدد منو
+            </div>
+            <div class="checkbox">
+                <label for="reCreateMenus">
+                    <input type="checkbox" id="reCreateMenus" name="reCreateMenus"
+                           value="true" class="form-control input-sm ml-2" />
+                    <span class="mr-5">فعال</span>
+                </label>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div class="mr-1">
+                ساخت مجدد منو برای کاربر
+            </div>
+            <div class="checkbox">
+                <label for="reCreateMenusForUsers">
+                    <input type="checkbox" id="reCreateMenusForUsers" name="reCreateMenusForUsers" value="true" class="form-control input-sm ml-2">
+                    <span class="mr-5">فعال</span>
+                </label>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div class="mr-1">
+                دسترسی دیتا
+            </div>
+            <div class="checkbox">
+                <select id="mainSlcDataAccessType" class="form-control ml-3">
+                    <option value="0">----</option>
+                </select>
+            </div>
+        </div>
+        <div class="row col-xl-2 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3">
+            <div class="col-xl-4 col-md-4 col-xs-6 col-sm-4 col-lg-4 my-3">
+                <div class="mr-1">
+                    &nbsp;
+                </div>
+                <button class="btn btn-app" id="btnAccess" name="btnAccess">
+                    انتساب
+                </button>
+            </div>
+            <div class="col-xl-4 col-md-4 col-xs-6 col-sm-4 col-lg-2 my-3">
+                <div class="mr-1">
+                    &nbsp;
+                </div>
+                <button class="btn btn-app" id="btnToggle" name="btnToggle"
+                        data-toggle="tooltip" data-placement="top"
+                        title="باز/بسته">
+                    <i class="fa fa-toggle-on"></i>
+                </button>
+            </div>
+            <div class="col-xl-4 col-md-4 col-xs-6 col-sm-4 col-lg-4 my-3">
+                <div class="mr-1">
+                    &nbsp;
+                </div>
+                <button class="btn btn-app" id="btnToggleSelect" name="btnToggleSelect"
+                        data-toggle="tooltip" data-placement="top"
+                        title="انتخاب/عدم انتخاب">
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="ln_solid"></div>
+@*    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" class="btn btn-success btn-md">ثبت</button>
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+
+
+        </div>
+    </div>*@
+</form>
+<div id="treeBlock" class="col-12">
+    <div id="tree" class="disable-select"></div>
+</div>

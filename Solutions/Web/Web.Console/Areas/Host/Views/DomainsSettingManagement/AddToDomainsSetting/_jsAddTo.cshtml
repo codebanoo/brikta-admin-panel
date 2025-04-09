@@ -1,0 +1,256 @@
+﻿<script type="text/javascript">
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+            for (var i = 0; i < customUsersVMList.length; i++) {
+                debugger;
+                var item = customUsersVMList[i];
+                var userName = '';
+                userName = item.Name != null ? item.Name + ' - ' : '';
+                userName += item.Family != null ? item.Family + ' - ' : '';
+                userName += item.UserName;
+                $('#UserIdCreator')
+                    .append($("<option></option>")
+                        .attr("value", item.UserId)
+                        .text(userName));
+            }
+
+            $('#UserIdCreator').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+
+            $('#CheckAllChosenItemsShow').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#BackGroundImageType').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#TypeOfLoadDataForSubUsers').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CreateSubDomainPerNewUser').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#RegisterPageIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CreateMenuAutomatically').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ShortCutKeysIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#VoiceCommandsIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#PushNotificationsIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#RightMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#TopMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#CircleMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#RightClickMenuIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#DashboardBoxesIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ReportBoxesIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#AlertIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ToolTipIsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsDeleted').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ShowLevelPageAfterLogin').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ChangePasswordAfterFirstLogin').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#DefaultRegisterPage').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#DefaultRegisterPage').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#ShowColoredRowsInList').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+        });
+
+        function OnBegin(e) {
+            debugger;
+            //$('#AjaxLoading').show();
+            return true;
+        }
+
+        function OnSuccess(response, status, xhr) {
+            debugger;
+            if (response.Result == 'OK') {
+                if (document.getElementById("BackGroundImagePath").value != "" ||
+                    document.getElementById("LogoImagePath").value != "") {
+                    var domainSettingId = response.DomainSettingId;
+
+                    var formData = new FormData();
+                    formData.append('backgroundImage', $('#BackGroundImagePath')[0].files[0]);
+                    formData.append('logoImage', $('#LogoImagePath')[0].files[0]);
+                    formData.append('DomainSettingId', domainSettingId);
+
+                    var _url = '@Url.Action("UploadFile", "DomainsSettingManagement")';
+
+                    $.ajax({
+                        url: _url,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                            $('#error-alert').show(500);
+                            //$('#AjaxLoading').hide();
+                        },
+                        error: function (jqXHR) {
+                            $('#error-alert').removeClass('alert-success');
+                            $('#error-alert').addClass('alert-danger');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(response.Message + '. ' + result.Message);
+                            $('#error-alert').show(500);
+                            //$('#AjaxLoading').hide();
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+                else {
+                    $('#error-alert').removeClass('alert-danger');
+                    $('#error-alert').addClass('alert-success');
+
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html(response.Message);
+                    $('#error-alert').show(500);
+                    //$('#AjaxLoading').hide();
+                }
+            }
+            else {
+                $('#error-alert').removeClass('alert-success');
+                $('#error-alert').addClass('alert-danger');
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+
+        function OnComplete() {
+            clearValidationSummary();
+        };
+
+        function OnFailed(context) {
+            debugger;
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+            $('#error-alert').html(context.Message);
+            $('#error-alert').show(500);
+            //$('#AjaxLoading').hide();
+        };
+</script>

@@ -1,0 +1,334 @@
+﻿@using VM.Teniaco;
+@using VM.Public
+@using Newtonsoft.Json;
+
+@model PropertiesVM
+
+@{
+    PropertyFeaturesValuesVM propertyFeaturesValuesVM = new PropertyFeaturesValuesVM();
+    if (ViewData["DataFeature"] != null)
+    {
+        propertyFeaturesValuesVM = ViewData["DataFeature"] as PropertyFeaturesValuesVM;
+    }
+}
+
+<div class="col-6">
+    <div class="row">
+        <label class="col-6">عنوان ملک من</label>
+        <input asp-for="PropertyCodeName" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6"> نوع ملک من</label>
+        <input asp-for="PropertyTypeTilte" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">نوع کاربری</label>
+        <input asp-for="TypeUseTitle" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">نوع سند</label>
+        <input asp-for="DocumentTypeTitle" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">نام واسط/شماره تماس</label>
+        <input asp-for="PropertyOwnersVM.FirstOrDefault().OwnerId" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">نام مالک/شماره تماس</label>
+        <input asp-for="ConsultantUserId" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">مساحت (متر مربع)</label>
+        <input asp-for="Area" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">قیمت</label>
+        <input asp-for="PropertiesPricesHistoriesVM.FirstOrDefault().OfferPrice" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">نوع قیمت</label>
+        <input asp-for="PropertiesPricesHistoriesVM.FirstOrDefault().OfferPriceType" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">قیمت محاسبه شده</label>
+        <input asp-for="PropertiesPricesHistoriesVM.FirstOrDefault().CalculatedOfferPrice" class="col-6 form-control-plaintext" readonly />
+    </div>
+    <div class="row">
+        <label class="col-6">توضیحات تکمیلی</label>
+        <input asp-for="PropertyDescriptions" class="col-6 form-control-plaintext" readonly rows="10" />
+    </div>
+</div>
+<div class="col-6">
+</div>
+
+<div class="col-12">
+    <ul class="nav nav-tabs row" id="home-estate">
+        <li class="active col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#Masters"><span>کارشناسی</span> </a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#Assessment"><span>ارزیابی</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#location"><span>موقعیت</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#Price"><span>قیمت</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#Possibilities"><span>امکانات</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#General"><span>عمومی</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#Offers"><span>پیشنهادات</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#map"><span>نقشه ها</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#documents"><span>اسناد</span></a></li>
+        <li class="col-3 col-sm-2 col-md-2 col-xl-1"><a data-toggle="tab" href="#picture"><span>تصاویر</span></a></li>
+    </ul>
+    <div class="tab-content">
+        <!-- Basic Masters section start -->
+        <div id="Masters" class="tab-pane tab-item fade in active">
+            <div class="form-title">
+                <h2>کارشناسی</h2>
+            </div>
+        </div>
+
+        <div id="Assessment" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>ارزیابی</h2>
+            </div>
+        </div>
+
+        <div id="location" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>موقعیت</h2>
+            </div>
+        </div>
+        <!-- location section end -->
+        <!-- file Price start -->
+        <div id="Price" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>قیمت</h2>
+            </div>
+            @if (Model.PropertiesPricesHistoriesVM.Count>0)
+            {
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">قیمت پیشنهادی</th>
+                            <th scope="col">نوع قیمت</th>
+                            <th scope="col">قیمت محاسبه شده</th>
+                            <th scope="col">تاریخ</th>
+                            <th scope="col">ثبت کننده</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var master in Model.PropertiesPricesHistoriesVM)
+                        {
+                            <tr>
+                                <td>@master.OfferPrice</td>
+                                <td>@master.OfferPriceType</td>
+                                <td>@master.CalculatedOfferPrice</td>
+                                <td>@master.CreateEnDate</td>
+                                <td>@master.UserCreatorName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>قیمت وجود ندارد</h3>
+            }
+        </div>
+        <!-- file Price end -->
+        <!-- map General start -->
+        <div id="General" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>عمومی</h2>
+            </div>
+        </div>
+        <!-- map General end -->
+        <!-- Possibilities section start -->
+        <div id="Possibilities" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>امکانات</h2>
+
+                <div class="row">
+                    @{
+                        string htmlResult = "";
+                        int i = 1;
+                        foreach (var feature in propertyFeaturesValuesVM.FeaturesVMList)
+                        {
+                            htmlResult += "<div class=\"diagram-item  col-xs-6 col-sm-6 col-lg-4\" style=\"padding: 18px 12px;border: 1px solid #f3f3f4;\" >" +
+                            "<div>" +
+                            feature.FeatureTitle +
+                            "</div>";
+                            string value = "";
+                            if (propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).Any())
+                            {
+                                value = propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).FirstOrDefault().FeatureValue;
+                            }
+                            switch (feature.ElementTypeId)
+                            {
+                                case 1://متنی
+                                    htmlResult +=  "<div>" + value + "</div>";
+                                    break;
+                                case 2://تک انتخابی
+                                    htmlResult +=  "<div>" + value + "</div>";
+
+                                    var featureOptions = propertyFeaturesValuesVM.FeaturesOptionsVMList.Where(fo => fo.FeatureId.Equals(feature.FeatureId)).ToList();
+                                    if (featureOptions != null)
+                                        if (featureOptions.Count > 0)
+                                        {
+                                            foreach (var featureOption in featureOptions)
+                                            {
+                                                htmlResult += featureOption.FeatureOptionText + "</br>" ;
+                                            }
+                                        }
+
+                                    break;
+                                case 3://چند انتخابی
+                                    htmlResult += feature.FeatureTitle;
+
+                                    var multiFeatureOptions = propertyFeaturesValuesVM.FeaturesOptionsVMList.Where(fo => fo.FeatureId.Equals(feature.FeatureId)).ToList();
+                                    if (multiFeatureOptions != null)
+                                        if (multiFeatureOptions.Count > 0)
+                                        {
+                                            foreach (var featureOption in multiFeatureOptions)
+                                            {
+                                                htmlResult += "<div>" + featureOption.FeatureOptionText + "</div>";
+                                            }
+                                        }
+                                    break;
+                            }
+
+                            htmlResult += "</div>";
+                            i++;
+                            //if ((i % 4) == 1)
+                            //{
+                            //    htmlResult += "</div>";
+                            //}
+                        }
+
+                        @Html.Raw(htmlResult)
+
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Possibilities section end -->
+        <!-- Offers section start -->
+        <div id="Offers" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>پیشنهادات</h2>
+            </div>
+        </div>
+        <!-- test Offers end -->
+        <!-- map section start -->
+        <div id="map" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>نقشه ها</h2>
+            </div>
+            @if (Model.PropertyFilesVM.Where(p => p.PropertyFileType=="maps")!=null)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">عنوان</th>
+                            <th scope="col">فایل</th>
+                            <th scope="col">فرمت</th>
+                            <th scope="col">تاریخ</th>
+                            <th scope="col">ثبت کننده</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var map in Model.PropertyFilesVM.Where(p => p.PropertyFileType=="maps"))
+                        {
+                            <tr>
+                                <td>@map.PropertyFileTitle</td>
+                                <td><img src="~/Files/PropertiesFiles/localhost/@map.PropertyId/Maps/@map.PropertyFilePath" width="100px" /></td>
+                                <td>@map.PropertyFileType</td>
+                                <td>@map.CreateEnDate</td>
+                                <td>@map.UserCreatorName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>قیمت وجود ندارد</h3>
+            }
+        </div>
+        <!-- test map end -->
+        <!-- documents section start -->
+        <div id="documents" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>اسناد</h2>
+
+            </div>
+
+            @if (Model.PropertyFilesVM.Where(p => p.PropertyFileType=="docs")!=null)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">عنوان</th>
+                            <th scope="col">فایل</th>
+                            <th scope="col">فرمت</th>
+                            <th scope="col">تاریخ</th>
+                            <th scope="col">ثبت کننده</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var doc in Model.PropertyFilesVM.Where(p => p.PropertyFileType=="docs"))
+                        {
+                            <tr>
+                                <td>@doc.PropertyFileTitle</td>
+                                <td><img src="~/Files/PropertiesFiles/localhost/@doc.PropertyId/Docs/@doc.PropertyFilePath" width="100px" /></td>
+                                <td>@doc.PropertyFileType</td>
+                                <td>@doc.CreateEnDate</td>
+                                <td>@doc.UserCreatorName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>قیمت وجود ندارد</h3>
+            }
+        </div>
+        <!-- test documents end -->
+        <!-- picture section start -->
+        <div id="picture" class="tab-pane tab-item fade">
+            <div class="form-title">
+                <h2>تصاویر</h2>
+            </div>
+
+            @if (Model.PropertyFilesVM.Where(p => p.PropertyFileType=="media")!=null)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">عنوان</th>
+                            <th scope="col">فایل</th>
+                            <th scope="col">فرمت</th>
+                            <th scope="col">تاریخ</th>
+                            <th scope="col">ثبت کننده</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var img in Model.PropertyFilesVM.Where(p => p.PropertyFileType=="media"))
+                        {
+                            <tr>
+                                <td>@img.PropertyFileTitle</td>
+                                <td><img src="~/Files/PropertiesFiles/localhost/@img.PropertyId/Media/@img.PropertyFilePath" width="100px" /></td>
+                                <td>@img.PropertyFileType</td>
+                                <td>@img.CreateEnDate</td>
+                                <td>@img.UserCreatorName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h3>قیمت وجود ندارد</h3>
+            }
+        </div>
+        <!-- test picture end -->
+
+    </div>
+</div>

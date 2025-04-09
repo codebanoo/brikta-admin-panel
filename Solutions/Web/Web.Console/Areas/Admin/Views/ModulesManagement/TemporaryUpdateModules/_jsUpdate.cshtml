@@ -1,0 +1,126 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        debugger;
+
+        $('#error-alert').hide(100);
+
+        for (var i = 0; i < domainsSettingsList.length; i++) {
+            debugger;
+            var item = domainsSettingsList[i];
+            $('#slcDomainSettingId')
+                .append($("<option></option>")
+                    .attr("value", item.DomainSettingId)
+                    .text(item.DomainName));
+        }
+
+        $('#slcDomainSettingId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcLevelIds').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < rolesList.length; i++) {
+            var item = rolesList[i];
+            //if (item.DomainSettingId == domainSettingId)
+            $('#slcRoleIds')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcRoleIds').change(function () {
+            debugger;
+            var _this = $(this);
+            var roleIds = _this.val();
+
+            //var level = levelsList.filter(level =>
+            //    level.RoleId == roleId);
+
+            //if (level.length > 0) {
+
+            $('#slcLevelIds').find('option')
+                .remove()
+                .end();
+            for (var j in roleIds) {
+                var roleId = roleIds[j];
+                for (var i = 0; i < levelsList.length; i++) {
+                    var item = levelsList[i];
+                    if (item.RoleId == roleId)
+                        $('#slcLevelIds')
+                            .append($("<option></option>")
+                                .attr("value", item.LevelId)
+                                .text(item.LevelName));
+                }
+            }
+            //}
+            $('#slcLevelIds').trigger("chosen:updated");
+        });
+
+        //for (var i = 0; i < rolesList.length; i++) {
+        //    var item = rolesList[i];
+        //    $('#slcRoleIds')
+        //        .append($("<option></option>")
+        //            .attr("value", item.RoleId)
+        //            .text(item.RoleName));
+        //}
+
+        $('#slcRoleIds').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcRoleIds').trigger("chosen:updated");
+    });
+
+    function OnBegin() {
+        //$('#AjaxLoading').show();
+        return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+        if (response.Result == 'OK') {
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+            window.setTimeout(function () {
+                location.reload(true);
+            }, 3000);
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+        }
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $('#error-alert').show(1000);
+        $('#error-alert').html(response.Message);
+        $('#error-alert').show(500);
+        //$('#AjaxLoading').hide();
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        debugger;
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+        //$('#AjaxLoading').hide();
+    };
+</script>

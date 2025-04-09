@@ -1,0 +1,1006 @@
+﻿<script src="~/lib/jit2/tether.min.js"></script>
+<script src="~/lib/jit2/jit2.js" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+    var boardMembers = [];
+
+    var currentNodaData = {};
+
+    //var jsonData = {
+    //    "name": "ساختار سازمانی",
+    //    "id": '-1',
+    //    "data": {
+    //        "code": '',
+    //        "type_id": -1,
+    //        "type": 'ساختار سازمانی',
+    //        "description": '',
+    //        "userId": 0,
+    //        "parentUserId": 0,
+    //        "staffName": ''
+    //    },
+    //    "children": [{
+    //        "name": "هیئت مدیره",
+    //        "id": '0',
+    //        "data": {
+    //            "code": '',
+    //            "type_id": 0,
+    //            "type": 'هیئت مدیره',
+    //            "description": '',
+    //            "userId": 0,
+    //            "parentUserId": 0,
+    //            "staffName": ''
+    //        },
+    //        "children": []
+    //    }]
+    //}
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+        console.log(jsonData);
+        //console.log(jsonData.children[0]);
+        //console.log(jsonData.children[0].data);
+        //console.log(jsonData.children[0].data.BoardMembersVMList);
+
+        //$('[data-toggle="tooltip"]').tooltip();
+
+        $("#add_member").click(function (e) {
+            ////Validate Form
+            //if (!$('#addNodeForm')[0].checkValidity()) {
+            //    $('#submit_add_node').click();
+            //    return false;
+            //}
+            e.preventDefault();
+
+            boardMembers = [];
+
+            $('.members-list').attr('title', 'اعضا<br />');
+            $('.members-list').attr('data-content', '');
+
+            var member_ids = $('#new_members').val();
+
+            for (var i = 0; i < member_ids.length; i++) {
+                
+                var memberId = member_ids[i];
+
+                var user = customUsersVMList.filter(function (item) {
+                    return memberId == item.UserId;
+                })[0];
+
+                var displayName = '';
+
+                if (user.Name != null)
+                    displayName = user.Name + ' ';
+
+                if (user.Family != null)
+                    displayName += user.Family + ' ';
+
+                boardMembers.push({
+                    UserId: memberId,
+                    DisplayName: displayName,
+                    CompanyId: null,
+                    IsCeo: false
+                });
+
+                $('.members-list').attr('data-content', $('.members-list').attr('data-content') + displayName + '<br />');
+            }
+
+            var ceo_id = $('#ceo_member').val();
+
+            var ceo_user = customUsersVMList.filter(function (item) {
+                return ceo_id == item.UserId;
+            })[0];
+
+            var displayName = '';
+
+            if (ceo_user.Name != null)
+                displayName = ceo_user.Name + ' ';
+
+            if (ceo_user.Family != null)
+                displayName += ceo_user.Family + ' ';
+
+            boardMembers.push({
+                UserId: ceo_id,
+                DisplayName: displayName,
+                CompanyId: null,
+                IsCeo: true
+            });
+
+            var title = 'مدیر عامل: ' + displayName;
+
+            $('.members-list').attr('data-content', title + '<br />' + $('.members-list').attr('data-content'));
+
+            $('#addMemberModal').modal('hide');
+            $('[data-toggle="tooltip"]').tooltip();
+
+            if (boardMembers.length > 0) {
+
+                var boardMembersVMList = [];
+                for (var i = 0; i < boardMembers.length; i++) {
+                    var item = boardMembers[i];
+                    boardMembersVMList.push({
+                        //OrgChartNodeId: OrgChartNodeId
+                        UserId: item.UserId,
+                        IsCeo: item.IsCeo
+                    });
+                }
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: '/AdminAutomation/OrgChartManagement/EditBoardMembers',
+                    data: {
+                        boardMembersVMList: boardMembersVMList
+                    },
+                    //dataType: "json",
+                    success: function (result) {
+                        
+
+                        if (result != undefined)
+                            if (result.Result == 'OK') {
+                                window.location.reload();
+                            }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $('#myModal').find('.modal-title').html('خطا');
+                        $('#myModal').find('#error').html(xhr.responseText);
+                        $('#myModal').modal("show");
+                    }
+                });
+            }
+        });
+
+        $("#add_node").click(function (e) {
+            //Validate Form
+            //if (!$('#addNodeForm')[0].checkValidity()) {
+            //    $('#submit_add_node').click();
+            //    return false;
+            //}
+            e.preventDefault();
+
+            
+
+            var node_name = $("#new_node_name").val();
+            var node_type_id = $("#new_node_type").val();
+            var node_type = $("#new_node_type option:selected").text();
+            var node_code = $("#new_node_code").val();
+            var node_description = $("#new_node_description").val();
+
+            if ((node_name == '') ||
+                (node_type_id == '')) {
+                alert('فیلدهای مربوطه را پر کنید');
+                return false;
+            }
+
+            var new_supervisor_id = '';
+            var new_supervisor;
+
+            var employee_ids = [];
+
+            switch (node_type_id) {
+                case '1':
+                    break;
+                case '2':
+                    break;
+                case '3':
+                    break;
+                case '4':
+                    if ($('#new_supervisor').val() == null) {
+                        alert('مدیر را انتخاب کنید');
+                        return;
+                    }
+                case '5':
+                    if ($('#new_supervisor').val() == null) {
+                        alert('مدیر را انتخاب کنید');
+                        return;
+                    }
+                case '6':
+                case '7':
+                    if ($('#new_supervisor').val() == null) {
+                        alert('مدیر را انتخاب کنید');
+                        return;
+                    }
+                case '9':
+                    if ($('#new_supervisor').val() == null) {
+                        alert('مدیر را انتخاب کنید');
+                        return;
+                    }
+
+                    new_supervisor_id = $('#new_supervisor').val();
+                    //new_supervisor = $("#new_supervisor option:selected").text();
+
+                    var user = customUsersVMList.filter(function (item) {
+                        return new_supervisor_id == item.UserId;
+                    })[0];
+
+                    //var displayName = '';
+
+                    if (user.Name != null)
+                        new_supervisor = user.Name + ' ';
+
+                    if (user.Family != null)
+                        new_supervisor += user.Family + ' ';
+
+                    var newId = Math.floor((Math.random() * 10000) + 1);
+
+                    debugger;
+                    new_node_object = {
+                        "id": parseInt(add_to_node_id),
+                        "children": [{
+                            "name": node_name,
+                            "id": newId,
+                            "data": {
+                                "code": node_code,
+                                "type_id": node_type_id,
+                                "type": node_type,
+                                "description": node_description,
+                                "userId": parseInt(new_supervisor_id),
+                                "parentUserId": parseInt(userId),
+                                "staffName": new_supervisor
+                            },
+                            "children": []
+                        }]
+                    };
+
+                    node = st.graph.getNode(add_to_node_id);
+
+                    //node.children = [{
+                    //    "name": node_name,
+                    //    "id": newId,
+                    //    "data": {
+                    //        "code": node_code,
+                    //        "type_id": node_type_id,
+                    //        "type": node_type,
+                    //        "description": node_description,
+                    //        "userId": parseInt(new_supervisor_id),
+                    //        "parentUserId": parseInt(userId),
+                    //        "staffName": new_supervisor
+                    //    },
+                    //    "children": []
+                    //}];
+
+                    if (node['collapsed'] == false)
+                        make_movement(node, function () {
+                            add_movement_tree();
+                        });
+                    else
+                        add_movement_tree();
+
+                    break;
+                case '8':
+                    if ($('#new_employees').val() == null) {
+                        alert('شخص را انتخاب کنید');
+                        return;
+                    }
+
+                    employee_ids = $('#new_employees').val();
+
+                    if (employee_ids.length > 0) {
+                        for (var i = 0; i < employee_ids.length; i++) {
+                            
+                            var empId = employee_ids[i];
+
+                            var user = customUsersVMList.filter(function (item) {
+                                return empId == item.UserId;
+                            })[0];
+
+                            var displayName = '';
+
+                            if (user.Name != null)
+                                displayName = user.Name + ' ';
+
+                            if (user.Family != null)
+                                displayName += user.Family + ' ';
+
+                            //displayName += user.UserName + ' ';
+
+                            new_node_object = {
+                                "id": parseInt(add_to_node_id),
+                                "children": [{
+                                    "name": node_name,
+                                    "id": Math.floor((Math.random() * 10000) + 1),
+                                    "data": {
+                                        "code": node_code,
+                                        "type_id": node_type_id,
+                                        "type": node_type,
+                                        "description": node_description,
+                                        "userId": parseInt(user.UserId),
+                                        "parentUserId": parseInt(userId),
+                                        "staffName": displayName
+                                    }
+                                }]
+                            };
+
+                            node = st.graph.getNode(add_to_node_id);
+
+                            if (node['collapsed'] == false)
+                                make_movement(node, function () {
+                                    add_movement_tree();
+                                });
+                            else
+                                add_movement_tree();
+                        }
+                    }
+                    
+                    if (employee_ids.length == 0)
+                        alert('شخص را انتخاب کنید');
+                    break;
+            }
+
+            
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: '/AdminAutomation/OrgChartManagement/AddToOrgChartNodes',
+                data: {
+                    'NodeTypeId': node_type_id,
+                    'NodeTitle': node_name,
+                    'NodeDescription': node_description,
+                    'ParentOrgChartNodeId': currentNodaData.OrgChartNodeId,
+                    'UserIdCreator': (new_supervisor_id != '' ? new_supervisor_id : 0),
+                    'UserIds': employee_ids
+                },
+                //dataType: "json",
+                success: function (result) {
+                    
+
+                    if (result != undefined)
+                        if (result.Result == 'OK') {
+                            //window.location.reload();
+                        }
+                        else
+                            alert(result.Message);
+
+                    window.location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#myModal').find('.modal-title').html('خطا');
+                    $('#myModal').find('#error').html(xhr.responseText);
+                    $('#myModal').modal("show");
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $('#delete_node').click(function () {
+            
+            //node = st.graph.getNode(node_id);
+            //parent_id = node.getParents()[0].id;
+            //st.select(parent_id, {
+            //    onComplete: function () {
+            //        delete_movement_tree();
+            //    }
+            //});
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: '/AdminAutomation/OrgChartManagement/CompleteDeleteOrgChartNodes',
+                data: {
+                    'OrgChartNodeId': node_id
+                },
+                //dataType: "json",
+                success: function (result) {
+                    
+
+                    if (result != undefined)
+                        if (result.Result == 'OK') {
+                            window.location.reload();
+                        }
+                        else
+                            alert(result.Message);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#myModal').find('.modal-title').html('خطا');
+                    $('#myModal').find('#error').html(xhr.responseText);
+                    $('#myModal').modal("show");
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        $('#edit_node').click(function () {
+            //Validate Form
+            //if (!$('#editNodeForm')[0].checkValidity()) {
+            //    $('#submit_edit_node').click();
+            //    return false;
+            //}
+
+            
+
+            var node_name = $("#edit_node_name").val();
+            var node_type_id = $("#edit_node_type").val();
+            var node_type = $("#edit_node_type option:selected").text();
+            var node_code = $("#edit_node_code").val();
+            var node_description = $("#edit_node_description").val();
+
+            if ((node_name == '') ||
+                (node_type_id == '')) {
+                alert('فیلدهای مربوطه را پر کنید');
+                return false;
+            }
+
+            var edit_supervisor_id;
+            var edit_supervisor;
+
+            var nodeClass = '';
+
+            var displayName = '';
+
+            var nodeTypeTitle = '';
+
+            var nodeName = '';
+
+            var user
+
+            switch (node_type_id) {
+                case '1':
+                    break;
+                case '2':
+                    break;
+                case '3':
+                    break;
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '9':
+                    if ($('#edit_supervisor').val() == null) {
+                        alert('سرپرست را انتخاب کنید');
+                        return;
+                    }
+
+                    edit_supervisor_id = $('#edit_supervisor').val();
+                    //new_supervisor = $("#new_supervisor option:selected").text();
+
+                    user = customUsersVMList.filter(function (item) {
+                        return edit_supervisor_id == item.UserId;
+                    })[0];
+
+                    //var displayName = '';
+
+                    if (user.Name != null)
+                        edit_supervisor = user.Name + ' ';
+
+                    if (user.Family != null)
+                        edit_supervisor += user.Family + ' ';
+
+                    //
+                    //var edit_node_object = {
+                    //    "name": node_name,
+                    //    "id": node.id,
+                    //    "data": {
+                    //        "code": node_code,
+                    //        "type_id": node_type_id,
+                    //        "type": node_type,
+                    //        "description": node_description,
+                    //        "userId": parseInt(edit_supervisor_id),
+                    //        "parentUserId": parseInt(userId),
+                    //        "staffName": edit_supervisor
+                    //    }
+                    //};
+                    displayName = edit_supervisor;
+                    node.data.staffName = displayName;
+
+                    //node = st.graph.getNode(add_to_node_id);
+
+                    //if (node['collapsed'] == false)
+                    //    make_movement(node, function () {
+                    //        add_movement_tree();
+                    //    });
+                    //else
+                    //    add_movement_tree();
+
+                    break;
+                case '8':
+                    if ($('#edit_employee').val() == null) {
+                        alert('شخص را انتخاب کنید');
+                        return false;
+                    }
+
+                    var employee_id = $('#edit_employee').val();
+
+                    user = customUsersVMList.filter(function (item) {
+                        return employee_id == item.UserId;
+                    })[0];
+
+                    if (user.Name != null)
+                        displayName = user.Name + ' ';
+
+                    if (user.Family != null)
+                        displayName += user.Family + ' ';
+
+                    //displayName += user.UserName + ' ';
+
+                    //edit_node_object = {
+                    //    "id": parseInt(add_to_node_id),
+                    //    "children": [{
+                    //        "name": node_name,
+                    //        "id": Math.floor((Math.random() * 10000) + 1),
+                    //        "data": {
+                    //            "code": node_code,
+                    //            "type_id": node_type_id,
+                    //            "type": node_type,
+                    //            "description": node_description,
+                    //            "userId": parseInt(user.UserId),
+                    //            "parentUserId": parseInt(userId),
+                    //            "staffName": displayName
+                    //        }
+                    //    }]
+                    //};
+
+                    node.data.staffName = displayName;
+                    break;
+            }
+
+            ////switch (node_type_id) {
+            ////    case '4':
+            ////        nodeClass = 'group';
+            ////        nodeTypeTitle = 'سرپرست: ';
+            ////        nodeName = 'گروه ';
+            ////        break;
+            ////    case '5':
+            ////        nodeClass = 'company';
+            ////        nodeTypeTitle = 'مدیر عامل: ';
+            ////        nodeName = 'دفتر ';
+            ////        break;
+            ////    //case '3':
+            ////    //    //nodeClass = 'group';
+            ////    //    break;
+            ////    case '7':
+            ////        nodeClass = 'unit';
+            ////        nodeTypeTitle = 'مدیر: ';
+            ////        nodeName = 'بخش ';
+            ////        break;
+            ////    //case '5':
+            ////    //    //nodeClass = 'group';
+            ////    //    break;
+            ////    case '8':
+            ////        nodeClass = 'employee';
+            ////        break;
+            ////}
+
+            ////var edit_node_object = {
+            ////    "name": node_name,
+            ////    "id": node.id,
+            ////    "data": {
+            ////        "code": node_code,
+            ////        "type_id": node_type_id,
+            ////        "type": node_type,
+            ////        "description": node_description,
+            ////        "userId": parseInt(new_supervisor_id),
+            ////        "parentUserId": parseInt(userId),
+            ////        "staffName": new_supervisor
+            ////    }
+            ////};
+
+            
+
+            node.name = node_name;
+            node.data.type_id = node_type_id;
+            node.data.type = node_type;
+            node.data.code = node_code;
+            node.data.description = node_description;
+            node.data.userId = user.UserId;
+
+            ////var $label = $('div#' + node.id).find('label.node_name');
+
+            ////$label.parent().parent().removeClass().addClass('node ' + nodeClass);
+            ////$label.next().html(nodeTypeTitle + ' ' + displayName)
+
+            ////$label.slideUp();
+            ////$label.html('');
+            ////if (node.name) {
+            ////    $label.html(nodeName + node.name.substr(0, 20));
+            ////}
+            ////$label.slideDown();
+
+            ////st.select(node.id, {
+            ////    onComplete: function () {
+            ////        $('#editNodeModal').modal('hide');
+            ////    }
+            ////});
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: '/AdminAutomation/OrgChartManagement/UpdateOrgChartNodes',
+                data: {
+                    //'NodeTypeId': node_type_id,
+                    'OrgChartNodeId': node.data.OrgChartNodeId,
+                    'NodeTitle': node_name,
+                    'NodeDescription': node_description,
+                    'ParentOrgChartNodeId': node.data.ParentOrgChartNodeId,
+                    'UserIdCreator': node.data.userId,
+                },
+                //dataType: "json",
+                success: function (result) {
+                    
+
+                    if (result != undefined)
+                        if (result.Result == 'OK') {
+                            //window.location.reload();
+                        }
+                        else
+                            alert(result.Message);
+
+                    window.location.reload();
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#myModal').find('.modal-title').html('خطا');
+                    $('#myModal').find('#error').html(xhr.responseText);
+                    $('#myModal').modal("show");
+
+                    window.location.reload();
+                }
+            });
+        });
+
+        for (var i = 0; i < customUsersVMList.length; i++) {
+            
+            var item = customUsersVMList[i];
+
+            var displayName = '';
+
+            if (item.Name != null)
+                displayName = item.Name + ' ';
+
+            if (item.Family != null)
+                displayName += item.Family + ' ';
+
+            displayName += item.UserName + ' ';
+
+            $('#new_supervisor')
+                .append($("<option></option>")
+                    .attr("value", item.UserId)
+                    .text(displayName));
+        }
+
+        $('#new_supervisor').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#new_node_type').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#edit_node_type').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        var $options = $("#new_supervisor > option").clone();
+
+        $('#new_employees').append($options);
+
+        $('#new_employees').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $options = $("#new_supervisor > option").clone();
+
+        $('#new_members').append($options);
+
+        $('#new_members').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $options = $("#new_supervisor > option").clone();
+
+        $('#ceo_member').append($options);
+
+        $('#ceo_member').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $options = $("#new_supervisor > option").clone();
+
+        $('#edit_employee').append($options);
+
+        $('#edit_employee').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $options = $("#new_supervisor > option").clone();
+
+        $('#edit_supervisor').append($options);
+
+        $('#edit_supervisor').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+
+
+
+
+
+
+
+
+        
+        //if (jsonData.children[0].data.BoardMembersVMList.length > 0) {
+        //    boardMembers = jsonData.children[0].data.BoardMembersVMList;
+
+        //    var members = [];
+
+        //    for (var i = 0; i < boardMembers.length; i++) {
+        //        var boardMember = boardMembers[i];
+
+        //        var userId = boardMember.UserId;
+
+        //        //var user = customUsersVMList.filter(function (item) {
+        //        //    return UserId == item.UserId;
+        //        //})[0];
+
+        //        if (boardMember.IsCeo) {
+        //            $('#ceo_member').val(userId + '').trigger("chosen:updated");
+        //        }
+        //        else
+        //            members.push(userId + '');
+        //    }
+
+        //    if (members.length > 0) {
+        //        //arrOfStr = [];
+
+        //        //members.forEach(num => {
+        //        //    arrOfStr.push(String(num));
+        //        //});
+        //        //members = arrOfStr;
+        //        $('#new_members').val(members).trigger("chosen:updated");
+        //    }
+
+        //    $('.members-list').attr('title', 'اعضا<br />');
+        //    $('.members-list').attr('data-content', '');
+
+        //    var member_ids = $('#new_members').val();
+
+        //    //member_ids = arrOfStr;
+
+        //    if (member_ids != null)
+        //        if (member_ids.length > 0) {
+        //            boardMembers=[];
+        //            for (var i = 0; i < member_ids.length; i++) {
+        //                
+        //                var memberId = member_ids[i];
+
+        //                var user = customUsersVMList.filter(function (item) {
+        //                    return memberId == item.UserId;
+        //                })[0];
+
+        //                var displayName = '';
+
+        //                if (user.Name != null)
+        //                    displayName = user.Name + ' ';
+
+        //                if (user.Family != null)
+        //                    displayName += user.Family + ' ';
+
+        //                boardMembers.push({
+        //                    UserId: memberId,
+        //                    DisplayName: displayName,
+        //                    CompanyId: null,
+        //                    IsCeo: false
+        //                });
+
+        //                $('.members-list').attr('data-content', $('.members-list').attr('data-content') + displayName + '<br />');
+        //            }
+
+        //            var ceo_id = $('#ceo_member').val();
+
+        //            var ceo_user = customUsersVMList.filter(function (item) {
+        //                return ceo_id == item.UserId;
+        //            })[0];
+
+        //            var displayName = '';
+
+        //            if (ceo_user.Name != null)
+        //                displayName = ceo_user.Name + ' ';
+
+        //            if (ceo_user.Family != null)
+        //                displayName += ceo_user.Family + ' ';
+
+        //            boardMembers.push({
+        //                UserId: ceo_id,
+        //                DisplayName: displayName,
+        //                CompanyId: null,
+        //                IsCeo: true
+        //            });
+
+        //            var title = 'مدیر عامل: ' + displayName;
+
+        //            $('.members-list').attr('data-content', title + '<br />' + $('.members-list').attr('data-content'));
+
+        //            //$('#addMemberModal').modal('hide');
+        //            $('[data-toggle="tooltip"]').tooltip();
+        //        }
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+        $('#addMemberModal').on('shown.bs.modal', function () {
+
+            if (boardMembers.length > 0) {
+                var ceo_user = boardMembers.filter(function (item) {
+                    return item.IsCeo == true;
+                })[0];
+
+                $('#ceo_member').val(ceo_user.UserId).trigger("chosen:updated");
+                
+                var ceo_users = boardMembers.filter(function (item) {
+                    return item.IsCeo == false;
+                });
+
+                var result = ceo_users.map((a) => {
+                    return a.UserId
+                });
+
+                $('#new_members').val(result).trigger("chosen:updated");
+            }
+        });
+
+        $('#addNodeModal').on('shown.bs.modal', function () {
+            $('#new_node_name').val('');
+            //$('#new_node_type').val('1').trigger("chosen:updated");
+            $("#new_node_type").val($("#new_node_type option:first").val()).trigger("chosen:updated");
+            //$('#new_supervisor').val(null).trigger("chosen:updated");
+            $("#new_supervisor").val($("#new_supervisor option:first").val()).trigger("chosen:updated");
+            $('#new_node_description').val('');
+            $('#new_node_type').change();
+        });
+
+        $('#editNodeModal').on('shown.bs.modal', function () {
+
+            $('#edit_node_type').change();
+        });
+
+        $('#new_node_type').change(function (e) {
+            e.preventDefault();
+
+            
+
+            var _this = $(this);
+
+            var nodeType = _this.val();
+
+            switch (nodeType) {
+                case '1':
+                    break;
+                case '2':
+                    //$('.new_supervisor_block').show();
+                    //$('.new_employee_block').hide();
+                    break;
+                case '4':
+                case '5':
+                case '7':
+                case '9':
+                    $('.new_supervisor_block').show();
+                    $('.new_employee_block').hide();
+                    break;
+                case '8':
+                    $('.new_supervisor_block').hide();
+                    $('.new_employee_block').show();
+                    $('#new_supervisor').val(null).trigger("chosen:updated");
+                    $('#new_employees').val(null).trigger("chosen:updated");
+                    break;
+            }
+        });
+
+        $('#edit_node_type').change(function (e) {
+            e.preventDefault();
+
+            
+
+            var _this = $(this);
+
+            var nodeType = _this.val();
+
+            switch (nodeType) {
+                case '1':
+                    break;
+                case '2':
+                    //$('.edit_supervisor_block').show();
+                    //$('.edit_employee_block').hide();
+                    break;
+                case '3':
+                    break;
+                case '4':
+                case '5':
+                case '7':
+                case '9':
+                    $('.edit_supervisor_block').show();
+                    $('.edit_employee_block').hide();
+                    break;
+                //case '5':
+                //    break;
+                case '8':
+                    $('.edit_supervisor_block').hide();
+                    $('.edit_employee_block').show();
+                    break;
+            }
+        });
+
+        //$('body').on('click', 'a.members', function(e){
+
+        //    e.preventDefault();
+
+        //    var _this = $(this);
+
+        //    alert('ok');
+
+        //});
+
+        //$('#btnSave').click(function (e) {
+        //    e.preventDefault();
+
+        //    var _this = $(this);
+
+        //    
+        //    jsonData = st.toJSON();
+
+        //    if (boardMembers.length > 0) {
+        //        jsonData.children[0].data.BoardMembersVMList = [];
+        //        for (var i = 0; i < boardMembers.length; i++) {
+        //            var member = boardMembers[i];
+        //            jsonData.children[0].data.BoardMembersVMList.push({
+        //                OrgChartNodeId: 2,
+        //                UserId: member.UserId,
+        //                IsCeo: member.IsCeo
+        //            })
+        //        }
+        //    }
+
+        //    console.log(jsonData);
+
+        //});
+
+    });
+</script>
+
+<script src="~/lib/jit2/tree.organization.js" type="text/javascript" charset="utf-8"></script>

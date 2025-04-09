@@ -1,0 +1,258 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+
+        @Html.Raw("var statesList = [];")
+        ;
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            @Html.Raw("debugger; statesList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+
+        @Html.Raw("var citiesList = [];")
+        ;
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            @Html.Raw("debugger; citiesList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+        @Html.Raw("var zonesList = [];")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            @Html.Raw("debugger; zonesList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DistrictsVM> districtsList = new List<DistrictsVM>();
+
+        @Html.Raw("var districtsList = [];")
+        ;
+
+        if (ViewData["DistrictsList"] != null)
+        {
+            districtsList = (List<DistrictsVM>)ViewData["DistrictsList"];
+
+            //var districtsListData = districtsList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.DistrictName}",
+            //    Value = c.DistrictId,
+            //    Data_ZoneId = c.ZoneId
+            //});
+
+            @Html.Raw("debugger; districtsList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(districtsList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<link href="~/lib/openlayers-v6.9.0/css/ol.css" rel="stylesheet" />
+<script src="~/lib/openlayers-v6.9.0/build/ol.js"></script>
+
+@*<link href="~/lib/openlayers-v7.0.0-site/theme/ol.css" rel="stylesheet" />
+    <script src="~/lib/openlayers-v7.0.0-site/main.js"></script>*@
+
+<style type="text/css">
+    #mapContainer {
+        height: 700px;
+        overflow: hidden;
+        width: 100%;
+    }
+
+        #mapContainer .ol-viewport {
+            height: 700px !important;
+        }
+
+    #mapLeft,
+    #mapRight,
+    #mapCity,
+    #mapZone,
+    #mapDistrict,
+    #mapTempZone {
+        height: 700px;
+        overflow: hidden;
+        /*width: 100%;*/
+    }
+
+    #mapLeft,
+    #mapCity {
+        float: left;
+    }
+
+    #mapRight,
+    #mapZone {
+        float: right;
+    }
+
+
+
+
+
+
+    .ol-popupZone {
+        position: relative;
+        background-color: white;
+        /*--webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));*/
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        /*bottom: 12px;*/
+        bottom: 80px;
+        left: -50px;
+        min-width: 180px;
+        float: left;
+    }
+
+        .ol-popupZone:after,
+        .ol-popupZone:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popupZone:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popupZone:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+    .ol-popup-closerZone {
+        text-decoration: none;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+    }
+
+        .ol-popup-closerZone:after {
+            content: "";
+        }
+
+    .ol-overlay-container.ol-selectable {
+        position: relative !important;
+    }
+
+    .ol-overlay-container {
+        position: absolute !important;
+        z-index: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none !important;
+    }
+
+
+
+
+
+
+    .ol-popupCity {
+        position: relative;
+        background-color: white;
+        /*--webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));*/
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        /*bottom: 12px;*/
+        bottom: 80px;
+        left: -50px;
+        min-width: 180px;
+        float: left;
+    }
+
+        .ol-popupCity:after,
+        .ol-popupCity:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popupCity:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popupCity:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+    .ol-popup-closerCity {
+        text-decoration: none;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+    }
+
+        .ol-popup-closerCity:after {
+            content: "";
+        }
+
+    .ol-overlay-container.ol-selectable {
+        position: relative !important;
+    }
+
+    .ol-overlay-container {
+        position: absolute !important;
+        z-index: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none !important;
+    }
+</style>

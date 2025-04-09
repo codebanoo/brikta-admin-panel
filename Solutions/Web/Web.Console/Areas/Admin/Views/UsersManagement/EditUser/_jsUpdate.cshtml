@@ -1,0 +1,650 @@
+﻿@using VM.Console;
+
+@model CustomUsersVM
+
+@{
+    bool isAdmin = false;
+    if (ViewData["IsAdmin"] != null)
+    {
+        isAdmin = (bool)ViewData["IsAdmin"];
+    }
+}
+
+<script>
+    var isAdmin = @Html.Raw(isAdmin.ToString().ToLower());
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+
+        $('#IsActivated').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            rtl: rtl
+        });
+
+        $('#IsDeleted').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            rtl: rtl
+        });
+
+        $('#Sexuality').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            rtl: rtl
+        });
+
+        // debugger;
+        // var sexuality = customUsersVM.Sexuality;
+
+        // if (sexuality == true) {
+
+        // }
+
+
+
+        // if (@Model.Sexuality == true){
+        //         $('#Sexuality').val('true').trigger("chosen:updated");
+        // } else if (@Model.Sexuality == false){
+        //             $('#Sexuality').val('false').trigger("chosen:updated");
+        // }else{
+        //     $('#Sexuality').val('true').trigger("chosen:updated");
+        // }
+
+
+
+        // $('#Sexuality').val('true').trigger("chosen:updated");
+
+        $('#DomainSettingId')
+            .append('<option value="" disabled>---</option>');
+
+        for (var i = 0; i < domainsSettingsList.length; i++) {
+            var item = domainsSettingsList[i];
+            $('#DomainSettingId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#DomainSettingId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#DomainSettingId').val(@Model.DomainSettingId).trigger("chosen:updated");
+
+        $('#RoleIds')
+            .append('<option value="" disabled>---</option>');
+
+        for (var i = 0; i < rolesList.length; i++) {
+            var item = rolesList[i];
+            $('#RoleIds')
+                .append($("<option></option>")
+                    .attr("value", item.RoleId)
+                    .attr("data-DomainSettingId", item.DomainSettingId)
+                    .text(((item.RoleName == 'Admins') ? 'داخلی' : 'خارجی')));
+        }
+
+        $('#RoleIds').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#RoleIds').val('@string.Join(",", Model.RoleIds)'.split(',')).trigger("chosen:updated");
+
+        $('#LevelIds')
+            .append('<option value="" disabled>---</option>');
+
+        $('#LevelIds').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+            //placeholder_text_multiple: placeholder_text_multiple
+        });
+
+        if (!isAdmin) {
+            $('#ParentUserId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" disabled>---</option>');
+
+            $('#ParentUserId').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+        }
+
+        var domainSettingId = $('#DomainSettingId').val();
+        var roleIds = $('#RoleIds').val();
+
+        if (!isAdmin) {
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/UsersManagement/GetUsersList",
+                data: /*JSON.stringify(*/{
+                    'DomainSettingId': domainSettingId,
+                    //'RoleId': roleId,
+                }/*)*/,
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var usersList = result.Records;
+
+                        for (var i = 0; i < usersList.length; i++) {
+                            var item = usersList[i];
+                            if (item.UserId != @Model.UserId) {
+                                $('#ParentUserId')
+                                    .append($("<option></option>")
+                                        .attr("value", item.UserId)
+                                        .text(item.UserName +
+                                            ((item.Name == null) ? '' : ' - ' + item.Name) +
+                                            ((item.Family == null) ? '' : ' - ' + item.Family)));
+                            }
+                        }
+                        $('#ParentUserId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#ParentUserId').val(@Model.ParentUserId.Value).trigger("chosen:updated");
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#myModal').find('#error').html(result.Message);
+                            $('#myModal').modal("show");
+                        }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                    $('#my-warning-modal').modal("show");
+                }
+            });
+        }
+
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: "/Admin/UsersManagement/GetLevelsList",
+            data: /*JSON.stringify(*/{
+                'DomainSettingId': domainSettingId,
+                'RoleIds': roleIds,
+            }/*)*/,
+            //contentType: 'application/json',
+            //dataType: "json",
+            success: function (result) {
+                if (result.Result == "OK") {
+
+                    var levelsList = result.Records;
+
+                    for (var i = 0; i < levelsList.length; i++) {
+                        var item = levelsList[i];
+                        $('#LevelIds')
+                            .append($("<option></option>")
+                                .attr("value", item.LevelId)
+                                .text(item.LevelName));
+                    }
+                    $('#LevelIds').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#LevelIds').val('@string.Join(",", Model.LevelIds)'.split(',')).trigger("chosen:updated");
+                }
+                else
+                    if (result.Result == "ERROR") {
+                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                        $('#myModal').find('#error').html(result.Message);
+                        $('#myModal').modal("show");
+                    }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+        $('#RoleIds').change(function () {
+
+            var _this = $(this);
+            var roleIds = _this.val();
+
+            $('#LevelIds').find('option')
+                .remove()
+                .end()
+                .append('<option value="" disabled>---</option>');
+
+            $('#LevelIds').trigger("chosen:updated");
+
+            //$('#ParentUserId').find('option')
+            //    .remove()
+            //    .end()
+            //    .append('<option value="" disabled>---</option>');
+
+            //$('#ParentUserId').trigger("chosen:updated");
+
+            var domainSettingId = $('#DomainSettingId').val();
+
+            //
+
+    @*$.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/UsersManagement/GetUsersList",
+                data: /*JSON.stringify(*/{
+                'DomainSettingId': domainSettingId,
+                'RoleId': roleId,
+                }/*)*/,
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                if (result.Result == "OK") {
+
+                var usersList = result.Records;
+
+                for (var i = 0; i < usersList.length; i++) {
+                var item = usersList[i];
+                if (item.UserId != @Model.UserId) {
+                $('#ParentUserId')
+                .append($("<option></option>")
+                .attr("value", item.UserId)
+                .text(item.UserName +
+                ((item.Name == null) ? '' : ' - ' + item.Name) +
+                ((item.Family == null) ? '' : ' - ' + item.Family)));
+                }
+                }
+                $('#ParentUserId').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+                });
+                $('#ParentUserId').trigger("chosen:updated");
+                }
+                else
+                if (result.Result == "ERROR") {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#myModal').find('#error').html(result.Message);
+                $('#myModal').modal("show");
+                }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+                }
+                });*@
+
+
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/Admin/UsersManagement/GetLevelsList",
+                    data: /*JSON.stringify(*/{
+                        'DomainSettingId': domainSettingId,
+                        'RoleIds': roleIds,
+                    }/*)*/,
+                    //contentType: 'application/json',
+                    //dataType: "json",
+                    success: function (result) {
+                        if (result.Result == "OK") {
+
+                            var levelsList = result.Records;
+
+                            for (var i = 0; i < levelsList.length; i++) {
+                                var item = levelsList[i];
+                                $('#LevelIds')
+                                    .append($("<option></option>")
+                                        .attr("value", item.LevelId)
+                                        .text(item.LevelName));
+                            }
+                            $('#LevelIds').chosen({
+                                placeholder_text_single: ' ',
+                                placeholder_text_multiple: ' ',
+                                search_contains: true,
+                                max_shown_results: numberOfChosenItemsShow,
+                                rtl: rtl
+                            });
+                            $('#LevelIds').trigger("chosen:updated");
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#myModal').find('#error').html(result.Message);
+                                $('#myModal').modal("show");
+                            }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                        $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                        $('#my-warning-modal').modal("show");
+                    }
+                });
+        });
+
+        $('#DomainSettingId').change(function () {
+
+            var _this = $(this);
+            var domainSettingId = _this.val();
+            var roleIds = $('#RoleIds').val();
+
+            $('#LevelIds').find('option')
+                .remove()
+                .end()
+                .append('<option value="" disabled>---</option>');
+
+            $('#LevelIds').trigger("chosen:updated");
+
+            if (!isAdmin) {
+                $('#ParentUserId').find('option')
+                    .remove()
+                    .end()
+                    .append('<option value="" disabled>---</option>');
+
+                $('#ParentUserId').trigger("chosen:updated");
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/Admin/UsersManagement/GetUsersList",
+                    data: /*JSON.stringify(*/{
+                        'DomainSettingId': domainSettingId,
+                        //'RoleId': roleId,
+                    }/*)*/,
+                    //contentType: 'application/json',
+                    //dataType: "json",
+                    success: function (result) {
+                        if (result.Result == "OK") {
+                            //
+                            var usersList = result.Records;
+
+                            $('#ParentUserId').find('option')
+                                .remove()
+                                .end()
+                                .append('<option value="" disabled>---</option>');
+
+                            $('#ParentUserId').trigger("chosen:updated");
+
+                            for (var i = 0; i < usersList.length; i++) {
+                                var item = usersList[i];
+                                if (item.UserId != @Model.UserId) {
+                                    $('#ParentUserId')
+                                        .append($("<option></option>")
+                                            .attr("value", item.UserId)
+                                            .text(item.UserName +
+                                                ((item.Name == null) ? '' : ' - ' + item.Name) +
+                                                ((item.Family == null) ? '' : ' - ' + item.Family)));
+                                }
+                            }
+                            $('#ParentUserId').chosen({
+                                placeholder_text_single: ' ',
+                                placeholder_text_multiple: ' ',
+                                search_contains: true,
+                                max_shown_results: numberOfChosenItemsShow,
+                                rtl: rtl
+                            });
+                            $('#ParentUserId').trigger("chosen:updated");
+
+                            //$('#LevelId').find('option')
+                            //    .remove()
+                            //    .end()
+                            //    .append('<option value="" disabled>---</option>');
+
+                            //$('#LevelId').chosen({
+                            //    placeholder_text_single: ' ',
+                            //    placeholder_text_multiple: ' ',
+                            //    search_contains: true,
+                            //    max_shown_results: numberOfChosenItemsShow,
+                            //    rtl: rtl
+                            //});
+
+                            //$('#LevelId').trigger("chosen:updated");
+
+                            //var ParentUserId = $('#ParentUserId').val();
+
+                            //if (roleId != '') {
+                            //    for (var i = 0; i < levelsList.length; i++) {
+                            //        var item = levelsList[i];
+                            //        if ((item.RoleId == roleId) &&
+                            //            ((ParentUserId != '') ?
+                            //                (item.UserIdCreator == ParentUserId) :
+                            //                (item.UserIdCreator == userId))) {
+                            //            //if (item.RoleId == roleId) {
+                            //            $('#LevelId')
+                            //                .append($("<option></option>")
+                            //                    .attr("value", item.RoleId)
+                            //                    .attr("data-RoleId", item.roleId)
+                            //                    .text(item.LevelName));
+                            //        }
+                            //    }
+                            //    $('#LevelId').chosen({
+                            //        placeholder_text_single: ' ',
+                            //        placeholder_text_multiple: ' ',
+                            //        search_contains: true,
+                            //        max_shown_results: numberOfChosenItemsShow,
+                            //        rtl: rtl
+                            //    });
+                            //    $('#LevelId').trigger("chosen:updated");
+                            //}
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#myModal').find('#error').html(result.Message);
+                                $('#myModal').modal("show");
+                            }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                        $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                        $('#my-warning-modal').modal("show");
+                    }
+                });
+            }
+
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/UsersManagement/GetLevelsList",
+                data: /*JSON.stringify(*/{
+                    'DomainSettingId': domainSettingId,
+                    'RoleIds': roleIds,
+                }/*)*/,
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var levelsList = result.Records;
+
+                        for (var i = 0; i < levelsList.length; i++) {
+                            var item = levelsList[i];
+                            $('#LevelIds')
+                                .append($("<option></option>")
+                                    .attr("value", item.LevelId)
+                                    .text(item.LevelName));
+                        }
+                        $('#LevelIds').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#LevelIds').trigger("chosen:updated");
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#myModal').find('#error').html(result.Message);
+                            $('#myModal').modal("show");
+                        }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                    $('#my-warning-modal').modal("show");
+                }
+            });
+        });
+
+        $('#ParentUserId').change(function () {
+
+
+        });
+
+
+        $('#btnSubmit').click(function (e) {
+            e.preventDefault();
+
+            debugger;
+
+            var password = $('#Password').val();
+            var replyPassword = $('#ReplyPassword').val();
+
+
+            if ((password != '') || (password != null)) {
+                
+                    if (password == replyPassword) {
+                        $('#formOfUpdateUser').submit();
+                    } else {
+                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                        $('#my-warning-modal').find('#error').html('رمز عبور و تکرار رمز عبور یکسان نیست.');
+                        $('#my-warning-modal').modal("show");
+                        return false;
+                    }
+                
+            } else {
+                $('#formOfUpdateUser').submit();
+            }
+
+
+        });
+
+
+    });
+
+    function OnBegin(e) {
+
+        //$('#AjaxLoading').show();
+        return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+        if (response.Result == 'OK') {
+            if ((document.getElementById("Picture").value != "") ||
+                (document.getElementById("CertificateCardFile").value != "") ||
+                (document.getElementById("NationalCardFile").value != "") ||
+                (document.getElementById("ResumeFile").value != "") ||
+                (document.getElementById("ContractFile").value != "")) {
+                var userId = response.UserId;
+
+                var formData = new FormData();
+                formData.append('pitureFile', $('#Picture')[0].files[0]);
+                formData.append('certificateCardFile', $('#CertificateCardFile')[0].files[0]);
+                formData.append('nationalCardFile', $('#NationalCardFile')[0].files[0]);
+                formData.append('resumeFile', $('#ResumeFile')[0].files[0]);
+                formData.append('contractFile', $('#ContractFile')[0].files[0]);
+                formData.append('UserId', userId);
+
+                var _url = '@Url.Action("UploadFile", "UsersManagement")';
+
+                $.ajax({
+                    url: _url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                        $('#error-alert').show(500);
+                        //$('#AjaxLoading').hide();
+                    },
+                    error: function (jqXHR) {
+                        $('#error-alert').removeClass('alert-success');
+                        $('#error-alert').addClass('alert-danger');
+
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(response.Message + '. ' + result.Message);
+                        $('#error-alert').show(500);
+                        //$('#AjaxLoading').hide();
+                    },
+                    complete: function (jqXHR, status) {
+                    }
+                });
+            }
+            else {
+                $('#error-alert').removeClass('alert-danger');
+                $('#error-alert').addClass('alert-success');
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(500);
+            //$('#AjaxLoading').hide();
+        }
+    }
+
+    function OnComplete() {
+
+        clearValidationSummary();
+        //var validationSummary = $('.validation-summary-errors');
+        //$('.validation-summary-errors').css('display', 'none');
+        //validationSummary.removeClass('validation-summary-errors').addClass('validation-summary-valid');
+    };
+
+    function OnFailed(context) {
+
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+        //$('#AjaxLoading').hide();
+    };
+</script>

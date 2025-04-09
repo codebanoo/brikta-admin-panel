@@ -1,0 +1,229 @@
+﻿@using VM.Console;
+@using VM.Automation;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<CustomUsersVM> customUsersVMList = new List<CustomUsersVM>();
+
+        @Html.Raw("var customUsersVMList = [];")
+        ;
+
+        if (ViewData["CustomUsers"] != null)
+        {
+            customUsersVMList = (List<CustomUsersVM>)ViewData["CustomUsers"];
+
+            @Html.Raw(" customUsersVMList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(customUsersVMList)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<NodeTypesVM> nodeTypesVMList = new List<NodeTypesVM>();
+
+        @Html.Raw("var nodeTypesVMList = [];")
+        ;
+
+        if (ViewData["NodeTypesList"] != null)
+        {
+            nodeTypesVMList = (List<NodeTypesVM>)ViewData["NodeTypesList"];
+
+            @Html.Raw(" nodeTypesVMList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(nodeTypesVMList)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        OrgChartNodeWithDataVM orgChartNodeWithDataVM = new OrgChartNodeWithDataVM();
+
+        @Html.Raw("var jsonData;")
+        ;
+
+        if (ViewData["HierarchyOfOrgChartNodes"] != null)
+        {
+            orgChartNodeWithDataVM = (OrgChartNodeWithDataVM)ViewData["HierarchyOfOrgChartNodes"];
+
+            @Html.Raw(" jsonData = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(orgChartNodeWithDataVM)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<style type="text/css">
+
+    div.node {
+        background-color: inherit !important;
+        box-shadow: inherit !important;
+        border: inherit !important;
+    }
+
+    .add_node {
+        background-image: url('/images/white_add.png');
+        background-position: center center;
+        float: right;
+        background-size: 20px 20px;
+        background-repeat: no-repeat;
+    }
+
+    .delete_node {
+        background-image: url('/images/white_delete.png');
+        background-position: center center;
+        float: right;
+        background-size: 20px 20px;
+    }
+
+    .edit_node {
+        background-image: url('/images/edit_node.png');
+        margin-left: 30px;
+        margin-right: 30px;
+        background-position: center center;
+        float: right;
+        background-size: 20px 20px;
+    }
+
+    .node_name {
+        color: white !important;
+        font-weight: inherit;
+        /*font-size: 16px;*/
+        font-size: 17px;
+    }
+
+    #infovis {
+        height: 700px;
+        overflow: hidden;
+    }
+
+    .colors-block {
+        float: right;
+        border-radius: 5px;
+        border: 1px solid #000;
+        padding: 10px;
+        box-shadow: 5px 5px;
+    }
+
+    .color-block {
+        float: right;
+        margin-right: 30px;
+        margin-top: 5px;
+        line-height: 22px;
+    }
+
+    .colorInfo {
+        float: right;
+        width: 24px;
+        height: 24px;
+        border: 1px solid #fff;
+        border-radius: 5px;
+    }
+
+    .btn-save-block {
+        float: right;
+    }
+
+    .add_node {
+        width: 20px;
+        height: 20px;
+    }
+
+    .edit_node {
+        width: 20px;
+        height: 20px;
+    }
+
+    .delete_node {
+        width: 20px;
+        height: 20px;
+    }
+
+    .options {
+        position: absolute;
+        color: white;
+        width: 120px;
+        height: 30px;
+        bottom: -5px;
+        left: 50%;
+        transform: translate(-50%);
+        -webkit-transform: translate(-50%);
+    }
+
+    .options_works {
+        left: 39px !important;
+    }
+
+    .alone {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    div.node.members-list {
+        background-color: #000062 !important;
+        height: 60px;
+    }
+
+    div.node.group {
+        background-color: #3131e5 !important;
+        padding-top: 4px;
+    }
+
+        div.node.group .staffName {
+            color: white !important;
+        }
+
+    div.node.company {
+        background-color: #5959e9 !important;
+    }
+
+        div.node.company .staffName {
+            color: white !important;
+        }
+
+    //div.node.assistance {
+        // background-color: slategrey !important;
+        //
+    }
+
+    div.node.unit {
+        background-color: #9090dd !important;
+    }
+
+        div.node.unit .staffName {
+            color: white !important;
+        }
+
+    div.node.project {
+        background-color: #6161a3 !important;
+    }
+
+        div.node.project .staffName {
+            color: white !important;
+        }
+
+    /*    div.node.organizational-position {
+                background-color: cadetblue !important;
+            }*/
+
+    div.node.employee {
+        background-color: lavender !important;
+    }
+
+        div.node.employee label.node_name {
+            color: black !important;
+        }
+
+    div.node .staffName {
+        font-size: 13px;
+    }
+
+    a.add_members i {
+        font-size: 20px !important;
+        color: white;
+    }
+</style>

@@ -1,0 +1,122 @@
+﻿@using VM.Public;
+
+@*@model MainSlidersVM*@
+
+@{
+    string domainName = "";
+    if (ViewData["DomainName"] != null)
+    {
+        domainName = ViewData["DomainName"] as string;
+    }
+}
+
+@*<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    <input asp-for="MainSliderId" type="hidden" />
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row">
+        <div class="form-group col col-md-12">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    MainSliderTitle
+                </label>
+            </div>
+            <input asp-for="MainSliderTitle" class="form-control input-sm" 
+                   placeholder="MainSliderTitle" />
+            <span asp-validation-for="MainSliderTitle" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    MainSliderOrder
+                </label>
+            </div>
+            <input asp-for="MainSliderOrder" class="form-control input-sm"
+                   placeholder="MainSliderOrder" />
+            <span asp-validation-for="MainSliderOrder" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    MainSliderImage
+                </label>
+            </div>
+            <input type="file" asp-for="MainSliderImage" class="form-control input-sm"
+                   onchange="ImageCheck(this, 'فایل با فرمتهای (jpeg, jpg, png, gif, bmp) انتخاب کنید', 'فایل ورودی را مجدد انتخاب کنید', 'حجم فایل انتخابی کمتر از 500 k باشد', 500);"
+                   placeholder="MainSliderImage" />
+        </div>
+    </div>
+    <div class="row">
+        @{
+            if (!string.IsNullOrEmpty(Model.MainSliderImage))
+            {
+                <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                    <span>OldMainSliderImage</span>
+                    <br />
+                    <a class="fancybox mainSliderThumbImage"
+                       href="/Files/MainSlidersFiles/@domainName/@Model.MainSliderId/@Model.MainSliderImage"
+                       data-fancybox-group="gallery" title="@Model.MainSliderTitle">
+                        <img src="/Files/MainSlidersFiles/@domainName/@Model.MainSliderId/thumb_@Model.MainSliderImage"
+                             alt="" data-caption="@Model.MainSliderTitle" />
+                    </a>
+                </div>
+            }
+        }
+        <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    MainSliderDescription
+                </label>
+            </div>
+            <textarea asp-for="MainSliderDescription" class="form-control input-sm" rows="6"
+                      placeholder="MainSliderDescription">
+                                    </textarea>
+            <span asp-validation-for="MainSliderDescription" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    IsActivated
+                </label>
+            </div>
+            <select asp-for="IsActivated" class="form-control input-sm"
+                    placeholder="فعال">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    IsDeleted
+                </label>
+            </div>
+            <select asp-for="IsDeleted" class="form-control input-sm"
+                    placeholder="حذف شده">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div class="empty-block">&nbsp;</div>
+            <button class="btn btn-default input-sm" type="submit">Submit
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="پاک کردن فرم">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+    </div>
+</form>*@

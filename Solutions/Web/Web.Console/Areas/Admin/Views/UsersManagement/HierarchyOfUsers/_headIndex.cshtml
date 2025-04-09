@@ -1,0 +1,91 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+
+      <link href="~/lib/Jit/css/base.css" rel="stylesheet" />
+    <link href="~/lib/Jit/css/Spacetree.css" rel="stylesheet" />
+    <script src="~/lib/Jit/jit.js"></script>
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<link href="~/lib/profile-cards/kl_profile_cards.min.css" rel="stylesheet" />
+
+<style type="text/css">
+    .error {
+        color: red;
+    }
+
+    input, select {
+        width: 150px;
+    }
+
+    .with-select > span,
+    .with-select > label.error {
+        vertical-align: top;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+    #infovis-label .col {
+        padding: 0;
+    }
+
+    #page-wrapper {
+        min-height: 660px !important;
+    }
+
+#hierarchyOfUsers, #center-container {
+    height: 700px !important;
+/*    width:1200px !important;*/
+   /* padding:10px !important;*/
+}
+#admins {
+    background-color: #2e4958 !important;
+    width: 16px;
+    height: 16px;
+    float: right;
+}
+#domains, #roles, #levels, #products, #users {
+    background-color: #91b0c1 !important;
+    width: 16px;
+    height: 16px;
+    float: right;
+}
+div.node div.card {
+    color: #fff !important;
+}
+div.node {
+    text-align: right;
+}
+.no-padding {
+    padding: 11px 13px !important;
+}
+.kl-card-overlay.kl-dark > .kl-card-overlay-item.product, div.node.product .kl-card > .kl-card-block, .kl-card-overlay.kl-dark > .kl-card-overlay-item.Hosts, div.node.Hosts .kl-card > .kl-card-block{
+    background-color: #1e3848 !important;
+}
+.kl-shadow-br {
+    box-shadow: inherit !important;
+}
+div.node.Hosts {
+    background-color: #1e3848 !important;
+    box-shadow: 4px 4px 5px -1px #323232bf !important;
+    border: 1px solid #1e3848 !important;
+}
+div.node {
+    background-color: #1e3848 !important;
+    box-shadow: 4px 4px 5px -1px #323232bf !important;
+    border: 1px solid #1e3848 !important;
+}
+div.node {
+    text-align: right;
+}
+.kl-card-overlay-split-v-4.kl-inverse.kl-bottom-in > .kl-card-overlay-item{
+    background-color:#1e3848 !important;
+}
+.bg-success{
+     background-color:#1e3848d4 !important;
+}
+</style>
+

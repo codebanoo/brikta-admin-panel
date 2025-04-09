@@ -1,0 +1,92 @@
+﻿@using Services.Xml.Entities;
+
+@{
+    Layout = "_Layout";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head{
+
+    <!-- Bootstrap -->
+    @*<link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">*@
+    <link href="/Gentelella_theme/bootstrap-v4-rtl-main/dist/css/bootstrap-rtl.min.css" rel="stylesheet">
+
+
+    <meta name="fontiran.com:license" content="5VM66X">
+            @*<link href="../build/css/iranyekan/fontiran.css" rel="stylesheet">*@
+    <link href="/Gentelella_theme/build/css/iranyekan/fontiran.css" rel="stylesheet">
+    <link href="/Gentelella_theme/build/css/iranyekan/iranyekan.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="/Gentelella_theme/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/Gentelella_theme/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/Gentelella_theme/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+                                @*<link href="/Gentelella_theme/build/css/custom-rtl.css" rel="stylesheet">*@
+    <link href="/Gentelella_theme/build/css/custom-login-rtl.css" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            background: #F7F7F7 !important;
+            font-family: IRANYekanX !important;
+        }
+
+        .lblRememberMe span {
+            vertical-align: super;
+        }
+
+        .lblRememberMe {
+            direction: ltr;
+        }
+
+            .lblRememberMe input[type="radio"], .lblRememberMe input[type="checkbox"] {
+                padding: 0;
+                margin: 0;
+                width: 20px;
+                height: 20px;
+                display: inline;
+            }
+
+        .login_content div .reset_pass {
+            margin-top: 5px !important;
+        }
+    </style>
+
+                                    @*        <link href="~/css/sb_admin_2/plugins/metisMenu/metisMenu.min.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/plugins/timeline.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/sb_admin_2rtl.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/plugins/morris.css" rel="stylesheet" />*@
+
+                                    @RenderSection("head", required: false)
+}
+
+@RenderBody()
+
+@section scripts{
+
+    <script src="~/js/tooltip.js" type="text/javascript"></script>
+
+
+    <link href="~/lib/jqueryloading/jquery.loading.css" rel="stylesheet" />
+    <script src="~/lib/jqueryloading/jquery.loading.js"></script>
+
+    <script src="~/js/public.js"></script>
+
+    @{
+        //await Html.RenderPartialAsync("sb_admin_2Js");
+    }
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $(window).load(function () { $('#AjaxLoading').hide(); });
+            $(document).Loading();
+        })
+                                                            //]]>
+    </script>
+}
+

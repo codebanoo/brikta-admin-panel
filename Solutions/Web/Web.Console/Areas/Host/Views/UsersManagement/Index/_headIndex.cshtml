@@ -1,0 +1,109 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<DomainsSettingsVM> domainsSettingsList = new List<DomainsSettingsVM>();
+        if (ViewData["DomainsSettingsList"] != null)
+        {
+            /*List<DomainsSettingsVM> */domainsSettingsList =
+                (List<DomainsSettingsVM>)ViewData["DomainsSettingsList"];
+
+            var domainsSettingsListData = domainsSettingsList.Select(c =>
+                      new
+                      {
+                          /*text = c.FullNumber + " - " + c.FarsiName,
+                          slug = c.FullNumber + " - " + c.FarsiName,
+                          id = c.Id*/
+                          DisplayText = $"{c.DomainName}",
+                          Value = c.DomainSettingId
+                      });
+
+            @Html.Raw("var domainsSettingsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(domainsSettingsListData)) + ";");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        if (ViewData["RolesList"] != null)
+        {
+            List<RolesVM> rolesList =
+                (List<RolesVM>)ViewData["RolesList"];
+
+            //var rolesListData = rolesList.Select(c =>
+            //          new
+            //          {
+            //              /*text = c.FullNumber + " - " + c.FarsiName,
+            //              slug = c.FullNumber + " - " + c.FarsiName,
+            //              id = c.Id*/
+            //              DisplayText = $"{c.DomainName + c.RoleName}",
+            //              Value = c.RoleId
+            //          });
+
+            @Html.Raw("var rolesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(rolesList)) + ";");
+        }
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+        float: right;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(1),
+    div.jtable-main-container table.jtable thead th:nth-child(3),
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(14),
+    div.jtable-main-container table.jtable thead th:nth-child(15),
+    div.jtable-main-container table.jtable thead th:nth-child(16),
+    div.jtable-main-container table.jtable thead th:nth-child(17),
+    div.jtable-main-container table.jtable thead th:nth-child(18),
+    div.jtable-main-container table.jtable thead th:nth-child(19),
+    div.jtable-main-container table.jtable thead th:nth-child(20),
+    div.jtable-main-container table.jtable thead th:nth-child(21),
+    div.jtable-main-container table.jtable thead th:nth-child(22),
+    div.jtable-main-container table.jtable thead th:nth-child(23) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(1),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(14),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(15),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(16),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(17),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(18),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(19),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(20),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(21),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(22),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(23) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .isActivated,
+    .isDeleted,
+    .editUser {
+        cursor: pointer;
+    }
+</style>
+

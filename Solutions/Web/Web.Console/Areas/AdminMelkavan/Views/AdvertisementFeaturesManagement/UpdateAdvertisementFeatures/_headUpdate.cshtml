@@ -1,0 +1,25 @@
+﻿@using VM.Melkavan
+@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        AdvertisementVM advertisementVM = new AdvertisementVM();
+
+        @Html.Raw("var advertisementVM;")
+        ;
+
+        if (ViewData["AdvertisementVM"] != null)
+        {
+            advertisementVM = ViewData["AdvertisementVM"] as AdvertisementVM;
+
+            @Html.Raw("debugger; advertisementVM = " +
+                 JsonConvert.DeserializeObject(JsonConvert.SerializeObject(advertisementVM)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<style type="text/css">
+</style>

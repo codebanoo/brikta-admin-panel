@@ -1,0 +1,270 @@
+﻿@using VM.Teniaco;
+
+@model InvestorsVM
+
+<div class="x_panel" id="searchBlock">
+
+    <div class="x_content">
+        <form class="col-12" id="formUpdateInvestor" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+              data-ajax="true" data-ajax-method="POST">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div class="row text-center justify-content-center">
+                <div class="form-group w-100">
+                    @{
+                        <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+                        <input type="hidden" asp-for="InvestorId" />
+                    }
+                </div>
+            </div>
+            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel">
+                    <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <h4 class="panel-title">   اطلاعات پایه</h4>
+                    </a>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body row">
+
+
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    نام
+                                </div>
+                                <input asp-for="CustomUsersVM.Name" class="form-control"
+                                       placeholder="نام" readonly/>
+                                <span asp-validation-for="CustomUsersVM.Name" class="text-danger"></span>
+                            </div>
+
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    نام خانوادگی
+                                </div>
+                                <input asp-for="CustomUsersVM.Family" class="form-control"
+                                       placeholder="نام خانوادگی" readonly />
+                                <span asp-validation-for="CustomUsersVM.Family" class="text-danger"></span>
+                            </div>
+
+
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    شماره همراه
+                                </div>
+                                <input asp-for="CustomUsersVM.Mobile" class="form-control"
+                                       placeholder="شماره همراه" readonly />
+                                <span asp-validation-for="CustomUsersVM.Mobile" class="text-danger"></span>
+                            </div>
+@* 
+
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    نام کاربری
+                                </div>
+                                <input asp-for="CustomUsersVM.UserName" class="form-control"
+                                       placeholder="نام کاربری" readonly />
+                                <span asp-validation-for="CustomUsersVM.UserName" class="text-danger"></span>
+                            </div> *@
+
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    کد ملی
+                                </div>
+                                <input asp-for="CustomUsersVM.NationalCode" class="form-control"
+                                       placeholder="کد ملی"  readonly />
+                                <span asp-validation-for="CustomUsersVM.NationalCode" class="text-danger"></span>
+                            </div>
+@* 
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    رمز عبور
+                                </div>
+                                <input asp-for="CustomUsersVM.Password" class="form-control"
+                                       placeholder="رمز عبور" readonly />
+                                <span asp-validation-for="CustomUsersVM.Password" class="text-danger"></span>
+                            </div> *@
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    ایمیل
+                                </div>
+                                <input asp-for="CustomUsersVM.Email" class="form-control"
+                                       placeholder="ایمیل"  readonly/>
+                                <span asp-validation-for="CustomUsersVM.Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                                <div>
+                                    معرف
+                                </div>
+                                <select asp-for="RepresentativeId" class="form-control ml-3"
+                                        placeholder=" نام معرف/شماره تماس">
+                                    <option value="">---</option>
+                                </select>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <a class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <h4 class="panel-title">   اطلاعات تکمیلی</h4>
+                    </a>
+                    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="row">
+
+
+                            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                                <div>
+                                    صنف
+                                </div>
+                                <select asp-for="GuildCategoryId"
+                                        class="form-control chosen-select input-validation-error ml-3">
+                                    <option value="">---</option>
+                                </select>
+                                <span asp-validation-for="GuildCategoryId" class="text-danger"></span>
+                            </div>
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    شغل
+                                </div>
+                                <input asp-for="Job" class="form-control "
+                                       placeholder="شغل" />
+                                <span asp-validation-for="Job" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                                <div>
+                                    عدد کل سرمایه
+                                </div>
+                                <select asp-for="FundId"
+                                        class="form-control chosen-select input-validation-error ml-3">
+                                    <option value="">---</option>
+                                </select>
+                                <span asp-validation-for="FundId" class="text-danger"></span>
+                            </div>
+                            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                                <div>
+                                    عدد قابل معامله
+                                </div>
+                                <select asp-for="TradableNumber"
+                                        class="form-control chosen-select input-validation-error ml-3">
+                                    <option value="">---</option>
+                                </select>
+                                <span asp-validation-for="TradableNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    نام شرکت
+                                </div>
+                                <input asp-for="CompanyName" class="form-control "
+                                       placeholder="نام شرکت" />
+                                <span asp-validation-for="CompanyName" class="text-danger"></span>
+                            </div>
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    تلفن شرکت
+                                </div>
+                                <input asp-for="CompanyPhone" class="form-control "
+                                       placeholder="تلفن شرکت" type="number" />
+                                <span asp-validation-for="CompanyPhone" class="text-danger"></span>
+                            </div>
+
+
+                            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                                <div class="mx-2">
+                                    تعداد املاک
+                                </div>
+                                <input asp-for="CountOfProperties" class="form-control "
+                                       placeholder="تعداد املاک" />
+                                <span asp-validation-for="CountOfProperties" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class='col-12  my-3'>
+                                <div class="mx-2">
+                                    آدرس شرکت
+                                </div>
+                                <textarea asp-for="CompanyAddress" class="form-control " rows="1"
+                                          placeholder="    آدرس شرکت"></textarea>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class='col-6  my-3'>
+                                <div class="mx-2">
+                                    شرح شرکت
+                                </div>
+                                <textarea asp-for="DescriptionOfCompany" class="form-control " rows="2"
+                                          placeholder="شرح شرکت"></textarea>
+                            </div>
+
+                            <div class='col-6  my-3'>
+                                <div class="mx-2">
+                                    اشخاص مرتبط
+                                </div>
+                                <textarea asp-for="RelatedPersons" class="form-control " rows="2"
+                                          placeholder=" اشخاص مرتبط"></textarea>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class='col-6  my-3'>
+                                <div class="mx-2">
+                                    روحیه شخصی
+                                </div>
+                                <textarea asp-for="PersonalSpirit" class="form-control " rows="2"
+                                          placeholder=" روحیه شخصی"></textarea>
+                            </div>
+
+                            <div class='col-6  my-3'>
+                                <div class="mx-2">
+                                    روحیه تجاری
+                                </div>
+                                <textarea asp-for="BusinessSpirit" class="form-control " rows="2"
+                                          placeholder="روحیه تجاری"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class='col-6  my-3'>
+                                <div class="mx-2">
+                                    شرح سرمایه
+                                </div>
+                                <textarea asp-for="DescriptionOfFund" class="form-control " rows="2"
+                                          placeholder="شرح سرمایه"></textarea>
+                            </div>
+
+                            <div class='col-6  my-3'>
+                                <div class="mx-2">
+                                    معاملات گذشته
+                                </div>
+                                <textarea asp-for="PastTransactions" class="form-control " rows="2"
+                                          placeholder="معاملات گذشته"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group row">
+                <div class="col-md-9 col-sm-9  offset-md-3">
+                    <button type="submit" class="btn btn-success btn-md" id="updateInvestor">ثبت</button>
+                    <button class="btn btn-primary btn-md" type="reset" id="reset">پاک کردن فرم</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+

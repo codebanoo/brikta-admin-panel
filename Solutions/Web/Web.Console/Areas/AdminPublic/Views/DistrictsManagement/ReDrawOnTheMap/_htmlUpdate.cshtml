@@ -1,0 +1,198 @@
+﻿@using VM.Public;
+
+@model DistrictsVM
+
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+      <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    @*roundedBlock*@
+    <div class="row ">
+        @* <label>
+        اطلاعات پایه
+        </label>*@
+        <div class="row col-12">
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            استان
+        </div>
+        <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                placeholder="استان">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            بخش
+        </div>
+
+        <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                placeholder="بخش">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            شهر/منطقه
+        </div>
+        <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                placeholder="شهر/منطقه">
+            <option value="" selected>---</option>
+        </select>
+        @*<input id="txtSearchTitle" name="txtSearchTitle" class="form-control"
+        placeholder="شهر/منطقه" />*@
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div class="mx-2">
+            نام ناحیه
+        </div>
+        <input asp-for="DistrictName" type="text" id="txtDistrictName" name="txtDistrictName" class="form-control"
+               placeholder="نام ناحیه" />
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div class="mx-2">
+            نام روستا
+        </div>
+        <input asp-for="VillageName" type="text" id="txtVillageName" name="txtVillageName" class="form-control"
+               placeholder="نام روستا" />
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div class="mx-2">
+            نام شهرک
+        </div>
+        <input asp-for="TownName" type="text" id="txtTownName" name="txtTownName" class="form-control"
+               placeholder="نام شهرک" />
+    </div>
+
+            @*  <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+            <label for="IntermediaryPersonId">
+            نام واسط/شماره تماس
+            </label>
+            </div>
+            <select asp-for="IntermediaryPersonId" class="form-control input-sm"
+            placeholder="نام واسط/شماره تماس">
+            <option value="">---</option>
+            </select>
+            <label class="lblNewPerson pointer" style="height: 15px;">
+            <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+            class="" data-original-title="جدید">
+            </label>
+            </div>*@
+
+
+
+        </div>
+     <div class="row col-12">
+        <div id="map" class="col-xl-6 col-md-6 col-lg-6"></div>
+        <div id="mapSatellite" class="col-xl-6 col-md-6 col-lg-6"></div>
+    </div>
+    </div>
+    <div class="ln_solid"></div>
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+
+
+        </div>
+    </div>
+</form>
+@*
+<form onsubmit="return false;">
+    <div class="row">
+        <div class="form-group col col-md-12">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            استان
+        </div>
+        <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                placeholder="استان">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            بخش
+        </div>
+
+        <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                placeholder="بخش">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            شهر/منطقه
+        </div>
+        <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                placeholder="شهر/منطقه">
+            <option value="" selected>---</option>
+        </select>
+        @*<input id="txtSearchTitle" name="txtSearchTitle" class="form-control"
+        placeholder="شهر/منطقه" />
+
+    </div>
+
+
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div class="mx-2">
+            نام ناحیه
+        </div>
+        <input asp-for="DistrictName" type="text" id="txtDistrictName" name="txtDistrictName" class="form-control"
+               placeholder="نام ناحیه" />
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div class="mx-2">
+            نام روستا
+        </div>
+        <input asp-for="VillageName" type="text" id="txtVillageName" name="txtVillageName" class="form-control"
+               placeholder="نام روستا" />
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div class="mx-2">
+            نام شهرک
+        </div>
+        <input asp-for="TownName" type="text" id="txtTownName" name="txtTownName" class="form-control"
+               placeholder="نام شهرک" />
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <label class="col-lg-12">
+                &nbsp;
+            </label>
+            <button id="btnSubmit" name="btnSubmit" class="btn btn-default input-sm" type="submit">
+                ارسال
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="پاک کردن فرم">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div id="map" class="col col-md-6 col-lg-6"></div>
+        <div id="mapSatellite" class="col col-md-6 col-lg-6"></div>
+    </div>
+</form>
+*@

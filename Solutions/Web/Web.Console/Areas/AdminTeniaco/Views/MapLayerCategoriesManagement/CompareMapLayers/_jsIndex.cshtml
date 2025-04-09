@@ -1,0 +1,677 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Map
+        var rasterRight = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var rasterLeft = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+        var vectorSourceRight = new ol.source.Vector({
+            wrapX: false
+        });
+
+        var vectorSourceLeft = new ol.source.Vector({
+            wrapX: false
+        });
+
+
+        var vectorSourceBoth = new ol.source.Vector({
+            wrapX: false
+        });
+
+
+        // The map
+        var map = new ol.Map({
+            target: 'map',
+            layers: [rasterLeft],
+            view: view
+        });
+
+        var map2 = new ol.Map({
+            target: 'map2',
+            layers: [rasterRight],
+            view: view
+        });
+
+        var layerRight = new ol.layer.Vector({
+            source: vectorSourceRight,
+            style: [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'green',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgb(15 72 8 / 10%)'
+                    })
+                }),
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'green'
+                        })
+                    }),
+                })
+            ]
+        });
+
+        var layerLeft = new ol.layer.Vector({
+            source: vectorSourceLeft,
+            style: [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'IndianRed',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgb(147 10 79 / 10%)'
+                    })
+                }),
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'IndianRed'
+                        })
+                    }),
+                })
+            ]
+        });
+
+
+        var layerBoth = new ol.layer.Vector({
+            source: vectorSourceBoth,
+            style: [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)'
+                    })
+                }),
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'darkblue'
+                        })
+                    }),
+                })
+            ]
+        });
+
+
+        // Synchronize the maps
+        map.addInteraction(new ol.interaction.Synchronize({ maps: [map2] }));
+        map2.addInteraction(new ol.interaction.Synchronize({ maps: [map] }));
+
+        map.addLayer(layerBoth);
+        map2.addLayer(layerBoth);
+
+        var swipe = new ol.control.SwipeMap({ right: true });
+
+        // Change mode
+        var currentMode;
+        function setMode(mode) {
+            if (mode) {
+                currentMode = mode;
+                // Remove tools
+                map2.removeControl(swipe);
+                //map2.removeInteraction(clip);
+                // Set interactions
+                switch (mode) {
+                    case 'swipev':
+                    case 'swipeh': {
+                        map2.addControl(swipe);
+                        swipe.set('orientation', (mode === 'swipev' ? 'vertical' : 'horizontal'));
+                        break;
+                    }
+
+                }
+                // Update position
+                document.getElementById("compare").className = mode;
+            }
+            map.updateSize();
+            map2.updateSize();
+        }
+
+        setMode('swipev');
+
+        // Check click and dispatch to map
+        map2.on('click', function (e) {
+            if (/swipe/.test(currentMode)) {
+                if (!ol.extent.containsCoordinate(swipe.getRectangle(), e.pixel)) {
+                    // Simulate map1 selection
+                    e.map = map;
+                    e.stopPropagation();
+                    select2.getFeatures().clear();
+                    select1.handleEvent(e);
+                } else {
+                    select1.getFeatures().clear();
+                }
+            }
+        });
+
+
+        map.updateSize();
+        map2.updateSize();
+
+
+        //Select elements
+        var parentsList = mapLayerCategoriesList.filter(f => f.Data_Parent === null);
+
+        for (var j = 0; j < parentsList.length; j++) {
+            debugger;
+
+            var item = parentsList[j].Value;
+            var childsList = mapLayerCategoriesList.filter(c => c.Data_Parent === item);
+            debugger;
+
+            var display = childsList.find(f => f.DisplayText).DisplayText;
+
+            var value = childsList.find(f => f.DisplayText).Value;
+
+            var optgroup = '<optgroup label="' + display + '">';
+
+            var childMapLayerCategoriesList = mapLayerCategoriesList.filter(c => c.Data_Parent === value);
+
+            var options = '';
+            for (var i = 1; i < childMapLayerCategoriesList.length; i++) {
+                var item = childMapLayerCategoriesList[i];
+
+                options += '<option class="options" value="' + item.Value + '">' + item.DisplayText + '</option>';
+            }
+
+            optgroup += options + "</optgroup>";
+
+            $('#slcMapLayerCategories').html($('#slcMapLayerCategories').html() + optgroup);
+
+        }
+
+        $('#slcMapLayerCategories').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < statesList.length; i++) {
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        var item = mapLayerCategoriesList[0];
+
+        $('#slcPropertyValues')
+            .append($("<option class='satellite'></option>")
+                .attr("value", item.Value)
+                .text(item.DisplayText));
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcDistrictId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcPropertyValues').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        var setMapLayerCategoryIds = [];
+
+        //Change events
+        $('body').on('change', '#slcMapLayerCategories', function (e) {
+            e.preventDefault();
+            debugger;
+            var _this = $(this);
+
+            var mapLayerCategoryId = _this.val();
+
+            debugger;
+
+
+            if (mapLayerCategoryId == "" || mapLayerCategoryId == null) {
+                vectorSourceRight.clear();
+                return;
+            }
+            var difference = mapLayerCategoryId.filter(e => !setMapLayerCategoryIds.includes(e));
+
+            var remove = setMapLayerCategoryIds.filter(e => !mapLayerCategoryId.includes(e));
+
+            debugger;
+
+            if (difference.length == 0) {
+                //Remove Points
+                debugger;
+
+                var removedFeature = vectorSourceRight.getFeatures().filter(e => e.title == remove[0]);
+
+                vectorSourceRight.removeFeature(removedFeature[0]);
+                map2.removeLayer(layerRight);
+                map2.addLayer(layerRight);
+
+                debugger;
+            } else {
+
+                //Add Points
+
+                if (mapLayerCategoryId === "" || mapLayerCategoryId === null) {
+                    vectorSourceRight.clear();
+                } else {
+                    $.ajax({
+                        cache: false,
+                        type: "Post",
+                        url: "/AdminTeniaco/MapLayerCategoriesManagement/GetAllMapLayersList",
+                        data: {
+                            'MapLayerCategoryId': difference[0]
+                        },
+
+                        success: function (result) {
+                            if (result.Result == "OK") {
+
+                                debugger;
+
+                                var mapLayersVM = result.Records;
+
+                                var coordsRight = [];
+
+                                for (i = 0; i < mapLayersVM.length; i++) {
+                                    debugger;
+                                    coordsRight.push(JSON.parse(mapLayersVM[i].StrPolygon));
+                                    debugger;
+                                }
+
+                                var polygonListRight = [];
+                                for (var i = 0; i < coordsRight.length; i += 1) {
+                                    var pointList = [];
+                                    for (var j = 0; j < coordsRight[i].length; j += 1) {
+                                        var point = ol.proj.transform([Number(coordsRight[i][j][0]), Number(coordsRight[i][j][1])], 'EPSG:4326', 'EPSG:3857');
+                                        pointList.push(point);
+                                    }
+                                    var polygon = new ol.geom.Polygon([pointList]);
+
+                                    polygonListRight.push(polygon);
+                                }
+
+                                debugger;
+
+
+                                var multuPolygonGeometryRight = new ol.geom.MultiPolygon(polygonListRight);
+                                var multiPolygonFeatureRight = new ol.Feature(multuPolygonGeometryRight);
+
+
+                                multiPolygonFeatureRight.title = difference[0];
+
+                                //vectorSourceRight.removeFeature(multiPolygonFeatureRight);
+                                vectorSourceRight.addFeature(multiPolygonFeatureRight);
+
+                                map2.removeLayer(layerRight);
+                                map2.addLayer(layerRight);
+
+                                debugger;
+                            }
+                            else
+                                if (result.Result == "ERROR") {
+                                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                                    $('#my-warning-modal').find('#error').html('خطا');
+                                    $('#my-warning-modal').modal("show");
+                                }
+                        },
+                    });
+
+                }
+                setMapLayerCategoryIds.push(difference[0]);
+            }
+
+
+        });
+
+        $('body').on('change', '#slcPropertyValues', function (e) {
+            e.preventDefault();
+            debugger;
+            var _this = $(this);
+            var mapLayerCategoryId = _this.val();
+
+
+            if (mapLayerCategoryId === "") {
+                vectorSourceLeft.clear();
+
+            } else {
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/AdminTeniaco/MapLayerCategoriesManagement/GetAllMapLayersList",
+                    data: {
+                        'MapLayerCategoryId': mapLayerCategoryId
+                    },
+
+                    success: function (result) {
+                        if (result.Result == "OK") {
+                            debugger;
+                            var mapLayersVM = result.Records;
+
+                            var coordsLeft = [];
+
+                            for (i = 0; i < mapLayersVM.length; i++) {
+                                coordsLeft.push(JSON.parse(mapLayersVM[i].StrPolygon));
+                            }
+
+                            var polygonListLeft = [];
+
+                            for (var i = 0; i < coordsLeft.length; i += 1) {
+                                var pointList = [];
+                                for (var j = 0; j < coordsLeft[i].length; j += 1) {
+                                    var point = ol.proj.transform([Number(coordsLeft[i][j][0]), Number(coordsLeft[i][j][1])], 'EPSG:4326', 'EPSG:3857');
+                                    pointList.push(point);
+                                }
+                                var polygon = new ol.geom.Polygon([pointList]);
+
+                                polygonListLeft.push(polygon);
+                            }
+
+
+                            var multuPolygonGeometryLeft = new ol.geom.MultiPolygon(polygonListLeft);
+                            var multiPolygonFeatureLeft = new ol.Feature(multuPolygonGeometryLeft);
+
+                            debugger;
+
+                            vectorSourceLeft.removeFeature(multiPolygonFeatureLeft);
+                            vectorSourceLeft.addFeature(multiPolygonFeatureLeft);
+
+                            map.removeLayer(layerLeft);
+                            map.addLayer(layerLeft);
+                            debugger;
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html('خطا');
+                                $('#my-warning-modal').modal("show");
+                            }
+                    },
+                });
+            }
+
+        });
+
+        $('body').on('change', '#slcStateId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#slcCityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                debugger;
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#slcCityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcCityId').trigger("chosen:updated");
+
+            $('#slcCityId').change();
+        });
+
+        $('body').on('change', '#slcCityId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#slcZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                debugger;
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#slcZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcZoneId').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#slcZoneId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+            $('#slcDistrictId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                debugger;
+                var item = districtsList[i];
+                if (item.Data_ZoneId == zoneId)
+                    $('#slcDistrictId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcDistrictId').trigger("chosen:updated");
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/MapLayerCategoriesManagement/GetZoneWithZoneId",
+                data: {
+                    'ZoneId': zoneId
+                },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        debugger;
+                        var zonesVM = result.Record;
+
+                        var coordinates;
+                        var strPolygon = '';
+
+                        var coords = [];
+
+
+                        if (zonesVM === null) {
+                            vectorSourceBoth.clear();
+                        } else {
+                            coords.push(JSON.parse(zonesVM.StrPolygon));
+                        }
+
+
+                        var polygonList = [];
+                        for (var i = 0; i < coords.length; i += 1) {
+                            var pointList = [];
+                            for (var j = 0; j < coords[i].length; j += 1) {
+                                var point = ol.proj.transform([Number(coords[i][j][0]), Number(coords[i][j][1])], 'EPSG:4326', 'EPSG:3857');
+                                pointList.push(point);
+                            }
+                            debugger;
+                            var polygon = new ol.geom.Polygon([pointList]);
+                            debugger;
+                            polygonList.push(polygon);
+                        }
+
+                        debugger;
+                        var multuPolygonGeometry = new ol.geom.MultiPolygon(polygonList);
+                        var multiPolygonFeature = new ol.Feature(multuPolygonGeometry);
+
+                        debugger;
+
+                        vectorSourceBoth.clear();
+                        vectorSourceBoth.addFeature(multiPolygonFeature);
+
+
+                        map.removeLayer(layerBoth);
+                        map.addLayer(layerBoth);
+
+                        map2.removeLayer(layerBoth);
+                        map2.addLayer(layerBoth);
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+
+        });
+
+        $('body').on('change', '#slcDistrictId', function (e) {
+            e.preventDefault();
+            debugger;
+            var _this = $(this);
+            var districtId = _this.val();
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/MapLayerCategoriesManagement/GetDistrictWithDistrictId",
+                data: {
+                    'DistrictId': districtId
+                },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        debugger;
+                        var districtsVM = result.Record;
+
+                        var coordinates;
+                        var strPolygon = '';
+
+                        var coords = [];
+
+                        debugger;
+                        if (districtsVM === null) {
+
+                            vectorSourceBoth.clear();
+                        } else {
+                            coords.push(JSON.parse(districtsVM.StrPolygon));
+                        }
+
+
+
+                        var polygonList = [];
+                        for (var i = 0; i < coords.length; i += 1) {
+                            var pointList = [];
+                            for (var j = 0; j < coords[i].length; j += 1) {
+                                var point = ol.proj.transform([Number(coords[i][j][0]), Number(coords[i][j][1])], 'EPSG:4326', 'EPSG:3857');
+                                pointList.push(point);
+                            }
+                            debugger;
+                            var polygon = new ol.geom.Polygon([pointList]);
+                            debugger;
+                            polygonList.push(polygon);
+                        }
+
+                        debugger;
+                        var multuPolygonGeometry = new ol.geom.MultiPolygon(polygonList);
+                        var multiPolygonFeature = new ol.Feature(multuPolygonGeometry);
+
+                        debugger;
+
+                        vectorSourceBoth.clear();
+                        vectorSourceBoth.addFeature(multiPolygonFeature);
+
+
+                        map.removeLayer(layerBoth);
+                        map.addLayer(layerBoth);
+
+                        map2.removeLayer(layerBoth);
+                        map2.addLayer(layerBoth);
+
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+        });
+
+        $('#compare').addClass('row col-12 mt-5');
+    });
+
+</script>

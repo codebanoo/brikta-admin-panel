@@ -1,0 +1,23 @@
+﻿<script type="text/javascript">
+     function checkNodesForChildren(nodes) {
+      $.each(nodes, function (index, node) {
+         if (node.children) {
+            node.folder = node.isAnswer ? false : true;
+            checkNodesForChildren(node.children);
+         };
+      });
+   }
+        $(document).ready(function () {
+            
+            $("#tree").fancytree({
+                checkbox: false,
+                selectMode: 3,
+                rtl: true,
+                source:jsonData,
+                postProcess: function (event, data) {
+                checkNodesForChildren(data.response);
+               }
+            });
+        });
+
+</script>

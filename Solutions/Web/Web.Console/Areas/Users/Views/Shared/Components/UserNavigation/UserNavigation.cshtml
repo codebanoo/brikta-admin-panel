@@ -1,0 +1,157 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+@using VM.Teniaco
+@using FrameWork;
+
+@{
+    List<int> roleIds = new List<int>();
+    string name = "";
+    if (ViewData["RoleIds"] != null)
+    {
+        roleIds = ((string)ViewData["RoleIds"]).Split(',').Select(int.Parse).ToList();
+    }
+
+    List<int> levelIds = new List<int>();
+    if (ViewData["LevelIds"] != null)
+    {
+        levelIds = ((string)ViewData["LevelIds"]).Split(',').Select(int.Parse).ToList();
+    }
+
+
+    if (ViewData["ControllerName"].Equals("MyProjectsManagement"))
+    {
+        name = "پروژه های من";
+    }
+
+
+    if (ViewData["ControllerName"].Equals("RepresentativesProjectsManagement"))
+    {
+        name = "پروژه های تحت نمایندگی";
+    }
+
+
+    if (ViewData["ControllerName"].Equals("TeniacoPanel"))
+    {
+        name = "داشبورد";
+    }
+
+
+
+    if (ViewData["ControllerName"].Equals("MyPropertiesForInvestorsManagement"))
+    {
+        name = "املاک من";
+    }
+
+
+
+    if (ViewData["ControllerName"].Equals("TeniacoSuggestionsManagement"))
+    {
+        name = "پیشنهادات تنیاکو";
+    }
+
+
+    if (ViewData["ControllerName"].Equals("MelkavanPropertiesManagement"))
+    {
+        name = "بازار املاک";
+    }
+
+    GetUnreadConversationsAndUnverifiedFilesCountVM ConversationsAndFilesCount = new GetUnreadConversationsAndUnverifiedFilesCountVM();
+    if (ViewData["GetUnreadConversationsAndUnverifiedFilesCount"] != null)
+    {
+        ConversationsAndFilesCount = (GetUnreadConversationsAndUnverifiedFilesCountVM)ViewData["GetUnreadConversationsAndUnverifiedFilesCount"];
+    }
+
+
+
+    // if (ViewData["ControllerName"].Equals("ProposalsManagement"))
+    // {
+    //     name = "پیشنهادات تنیاکو";
+    // }
+
+    // <script>
+    //     @{
+    //         string nameFamily = "";
+
+    //         @Html.Raw("var nameFamily  = '';")
+    //         ;
+
+    //         if (ViewData["NameFamily"] != null)
+    //         {
+    //             nameFamily = (string)ViewData["NameFamily"];
+    //             @Html.Raw("var nameFamily = '" + Html.Raw(nameFamily) + "';")
+    //             ;
+    //         }
+    //     }
+
+    // </script>
+}
+
+<div class="mobile-menu md:hidden">
+    <div class="mobileMenuCloser" style="width: 60%; height: 100%; z-index: 11; opacity:0; display: none; position: fixed; top:0; left: 0;">&nbsp;</div>
+    <div class="mobile-menu-bar">
+        
+        @*<a href="" class="flex mr-auto">*@
+        <a href="" class="mobile_menu_top">
+            <img alt="Midone - HTML Admin Template" class="w-6" src="/Enigma v1.0.5/dist/images/Teniaco_Logo_White.png">
+        </a>
+        @* <div class="fakeMobileMenu w-8 h-8">&nbsp;</div> *@
+        <a href="javascript:;" class="mobile-menu-toggler"> <i data-lucide="bar-chart-2" class="w-8 h-8 text-white transform -rotate-90"></i> </a>
+    </div>
+    <div class="scrollable rtl:ml-0">
+        <a href="javascript:;" class="mobile-menu-toggler"> <i data-lucide="x-circle" class="w-8 h-8 text-white transform -rotate-90"></i> </a>
+        <ul class="scrollable__content py-2">
+            @Html.Raw(ViewData["MainMenu"] as string)
+        </ul>
+    </div>
+</div>
+
+<nav class="side-nav">
+    <ul id="side-nav-menu-items">
+
+        
+        @Html.Raw(ViewData["MainMenu"] as string)
+    </ul>
+</nav>
+<div class="top-menu w-full top-bar-boxed h-[70px] md:h-[65px] z-[51] border-b border-white/[0.08] mt-12 md:mt-0 -mx-3 sm:-mx-8 md:-mx-0 px-3 md:border-b-0 relative md:fixed md:inset-x-0 md:top-0 sm:px-8 md:px-10 md:pt-10 md:bg-gradient-to-b md:from-slate-100 md:to-transparent dark:md:from-darkmode-700">
+    <div class="h-full flex items-center">
+        <a href="" class="logo -intro-x hidden md:flex xl:w-[180px] block">
+            <img alt="Midone - HTML Admin Template" class="logo__image w-6" src="/Enigma v1.0.5/dist/images/Teniaco_Logo_White.png">
+           @* <span class="logo__text text-white text-lg ml-3"> تنیاکو </span>*@
+        </a>
+        <nav aria-label="breadcrumb" class="-intro-x h-[45px] mr-auto">
+            <ol class="breadcrumb breadcrumb-light">
+               @* <li class="breadcrumb-item"><a href="#">پلتفرم</a></li>*@
+                <li class="breadcrumb-item active " aria-current="page">@name</li>
+            </ol>
+           
+        </nav>
+
+        <div class="flex flex-row-reverse items-center mobileBM">
+
+        @Html.Raw(ViewData["TopMenu"] as string)
+
+
+
+            <div class="intro-x dropdown ml-4">
+                <div class="dropdown-toggle notification notification--bullet cursor-pointer" role="button" aria-expanded="false" data-tw-toggle="dropdown"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="bell" data-lucide="bell" class="lucide lucide-bell notification__icon dark:text-slate-500"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg> </div>
+                <div class="notification-content pt-2 dropdown-menu">
+                    <div class="notification-content__box dropdown-content">
+                        <div class="flex flex-col">
+                            <div class="notification-content__title CDocumentTitle">مدارک تأیید نشده<span class="CDocument ">@(ConversationsAndFilesCount is null ? PersianType.ToPersianDigits(0.ToString()) : PersianType.ToPersianDigits(ConversationsAndFilesCount.UnverifiedFilesCount.ToString()))</span></div>
+                            <div class="notification-content__title CConverstionTitle">مکاتبه های خوانده نشده<span class="CConverstion bg-warning">@(ConversationsAndFilesCount is null ? PersianType.ToPersianDigits(0.ToString()) : PersianType.ToPersianDigits(ConversationsAndFilesCount.UnreadConversationCount.ToString()))</span></div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+

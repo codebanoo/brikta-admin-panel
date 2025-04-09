@@ -1,0 +1,89 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        PropertiesVM propertiesVM = new PropertiesVM();
+
+        @Html.Raw("var propertiesVM;")
+        ;
+
+        if (ViewData["PropertiesVM"] != null)
+        {
+            propertiesVM = ViewData["PropertiesVM"] as PropertiesVM;
+
+            @Html.Raw(" propertiesVM = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertiesVM)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        string domainName = "";
+
+        @Html.Raw("var domainName;")
+        ;
+
+        if (ViewData["DomainName"] != null)
+        {
+            domainName = ViewData["DomainName"] as string;
+
+            @Html.Raw(" domainName = '" + domainName + "'; ")
+            ;
+        }
+    }
+</script>
+
+<link href="~/lib/video-player-lazy-load-rtop/dist/css/rtop.videoPlayer.1.0.0.min.css" rel="stylesheet" />
+<link href="~/lib/video-player-lazy-load-rtop/dist/css/all.css" rel="stylesheet" />
+<script src="~/lib/video-player-lazy-load-rtop/dist/js/rtop.videoPlayer.1.0.2.min.js"></script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(2),
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(2),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    .fa, .far, .fas {
+        font-family: FontAwesome !important;
+    }
+</style>

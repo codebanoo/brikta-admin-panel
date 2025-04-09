@@ -1,0 +1,60 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        PropertiesVM property = new PropertiesVM();
+        @Html.Raw("var property;");
+
+        if (ViewData["Properties"] != null)
+        {
+            property = (PropertiesVM)ViewData["Properties"];
+
+            @Html.Raw("debugger; property =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(property))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(9),
+    div.jtable-main-container table.jtable thead th:nth-child(10) {
+        width: 1% !important;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(10) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+</style>

@@ -1,0 +1,972 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+        for (var i = 0; i < propertyTypesList.length; i++) {
+            debugger;
+            var item = propertyTypesList[i];
+            $('#slcPropertyTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcPropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < typeOfUsesList.length; i++) {
+            debugger;
+            var item = typeOfUsesList[i];
+            $('#slcTypeOfUseId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcTypeOfUseId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < documentTypesList.length; i++) {
+            debugger;
+            var item = documentTypesList[i];
+            $('#slcDocumentTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcDocumentTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < personsList.length; i++) {
+            debugger;
+            var item = personsList[i];
+            $('#ConsultantUserId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#ConsultantUserId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        //for (var i = 0; i < documentTypesList.length; i++) {
+        //    debugger;
+        //    var item = documentTypesList[i];
+        //    $('#OwnerId')
+        //        .append($("<option></option>")
+        //            .attr("value", item.Value)
+        //            .text(item.DisplayText));
+        //}
+
+        $('#OwnerId').html($('#ConsultantUserId').html());
+
+        $('#OwnerId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        //for (var i = 0; i < documentOwnershipTypesList.length; i++) {
+        //    debugger;
+        //    var item = documentOwnershipTypesList[i];
+        //    $('#slcDocumentOwnershipTypeId')
+        //        .append($("<option></option>")
+        //            .attr("value", item.Value)
+        //            .text(item.DisplayText));
+        //}
+
+        //$('#slcDocumentOwnershipTypeId').chosen({
+        //    placeholder_text_single: ' ',
+        //    placeholder_text_multiple: ' ',
+        //    search_contains: true,
+        //    max_shown_results: numberOfChosenItemsShow,
+        //    rtl: rtl
+        //});
+
+        //for (var i = 0; i < documentRootTypesList.length; i++) {
+        //    debugger;
+        //    var item = documentRootTypesList[i];
+        //    $('#slcDocumentRootTypeId')
+        //        .append($("<option></option>")
+        //            .attr("value", item.Value)
+        //            .text(item.DisplayText));
+        //}
+
+        //$('#slcDocumentRootTypeId').chosen({
+        //    placeholder_text_single: ' ',
+        //    placeholder_text_multiple: ' ',
+        //    search_contains: true,
+        //    max_shown_results: numberOfChosenItemsShow,
+        //    rtl: rtl
+        //});
+
+        for (var i = 0; i < statesList.length; i++) {
+            debugger;
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.StateId)
+                    .text(item.StateName));
+        }
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcDistrictId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        //$('#slcIsPrivate').chosen({
+        //    placeholder_text_single: ' ',
+        //    placeholder_text_multiple: ' ',
+        //    search_contains: true,
+        //    max_shown_results: numberOfChosenItemsShow,
+        //    rtl: rtl
+        //});
+
+        $('body').on('change', '#slcStateId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#slcCityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                debugger;
+                var item = citiesList[i];
+                if (item.StateId == stateId)
+                    $('#slcCityId')
+                        .append($("<option></option>")
+                            .attr("value", item.CityId)
+                            .text(item.CityName));
+            }
+
+            $('#slcCityId').trigger("chosen:updated");
+
+            $('#slcCityId').change();
+        });
+
+        $('body').on('change', '#slcCityId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#slcZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                debugger;
+                var item = zonesList[i];
+                if (item.CityId == cityId)
+                    $('#slcZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.ZoneId)
+                            .text(item.ZoneName));
+            }
+
+            $('#slcZoneId').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#slcZoneId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+            $('#slcDistrictId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                debugger;
+                var item = districtsList[i];
+                if (item.ZoneId == zoneId){
+
+                    var districtName = '';
+                    if(item.DistrictName != null)
+                        districtName = item.DistrictName;
+                    else
+                        if(item.VillageName != null)
+                            districtName = item.VillageName;
+                        else
+                            if(item.TownName != null)
+                                districtName = item.TownName;
+
+                    $('#slcDistrictId')
+                        .append($("<option></option>")
+                            .attr("value", item.DistrictId)
+                            .text(districtName));
+                }
+            }
+
+            $('#slcDistrictId').trigger("chosen:updated");
+        });
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'املاک', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminTeniaco/PropertiesManagement/GetListOfProperties',
+                //createAction: '/AdminTeniaco/PropertiesManagement/AddToProperties',
+                //updateAction: '/AdminTeniaco/PropertiesManagement/UpdateProperties',
+                deleteAction: '/AdminTeniaco/PropertiesManagement/CompleteDeleteProperties'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function () {
+                            window.location.href = '/AdminTeniaco/PropertiesManagement/AddToProperties';
+                        }
+                    }]
+
+            },
+            fields: {
+                PropertyId: {
+                    title: 'کد&nbsp;ملک',
+                    key: true,
+                    list: true
+                },
+                PropertyTypeId: {
+                    title: 'نوع&nbsp;ملک',
+                    options: propertyTypesList,
+                    sorting: false,
+                },
+                TypeOfUseId: {
+                    title: 'نوع&nbsp;کاربری',
+                    options: typeOfUsesList,
+                    sorting: false,
+                },
+                DocumentTypeId: {
+                    title: 'نوع&nbsp;سند',
+                    options: documentTypesList,
+                    sorting: false,
+                },
+                //DocumentOwnershipTypeId: {
+                //    title: 'نوع&nbsp;مالکیت',
+                //    options: documentOwnershipTypesList,
+                //    sorting: false,
+                //},
+                //DocumentRootTypeId: {
+                //    title: 'ریشه&nbsp;سند',
+                //    options: documentRootTypesList,
+                //    sorting: false,
+                //},
+                PropertyCodeName: {
+                    title: 'عنوان&nbsp;ملک',
+                    sorting: false,
+
+                },
+                Area: {
+                    title: 'مساحت',
+                    sorting: false,
+                },
+                ConsultantUserId: {
+                    title: 'مشاور',
+                    sorting: false,
+                    options: personsList,
+                },
+                OwnerId: {
+                    title: 'مالک',
+                    sorting: false,
+                    options: personsList,
+                },
+                StateId: {
+                    title: 'استان',
+                    //options: statesList,
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.PropertyAddressVM != null)
+                            if (data.record.PropertyAddressVM.StateId != null)
+                                return data.record.PropertyAddressVM.StateName;
+                    }
+                },
+                CityId: {
+                    title: 'بخش',
+                    //options: citiesList,
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.PropertyAddressVM != null)
+                            if (data.record.PropertyAddressVM.CityId != null)
+                                return data.record.PropertyAddressVM.CityName;
+                    }
+                },
+                ZoneName: {
+                    title: 'شهر&nbsp;/&nbsp;منطقه',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.PropertyAddressVM != null)
+                            if (data.record.PropertyAddressVM.ZoneName != null)
+                                return data.record.PropertyAddressVM.ZoneName;
+                    }
+                },
+                DistrictName: {
+                    title: 'ناحیه',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.PropertyAddressVM != null){
+                            if (data.record.PropertyAddressVM.DistrictName != '')
+                            {
+                                return data.record.PropertyAddressVM.DistrictName;
+                            }
+                            else
+                                if (data.record.PropertyAddressVM.VillageName != '') {
+                                    return data.record.PropertyAddressVM.VillageName;
+                                }
+                                else
+                                    if (data.record.PropertyAddressVM.TownName != null){
+                                        return data.record.PropertyAddressVM.TownName;
+                                    }
+                        }
+                    }
+                },
+                //Abbreviation: {
+                //    title: 'نام&nbsp;اختصار',
+                //    sorting: false,
+                //    display: function (data) {
+                //        if (data.record.PropertyAddressVM != null)
+                //            if (data.record.PropertyAddressVM.Abbreviation != null)
+                //                return data.record.PropertyAddressVM.Abbreviation;
+                //    }
+                //},
+                //VillageName: {
+                //    title: 'روستا',
+                //    sorting: false,
+                //    display: function (data) {
+                //        if (data.record.PropertyAddressVM != null)
+                //            if (data.record.PropertyAddressVM.VillageName != null)
+                //                return data.record.PropertyAddressVM.VillageName;
+                //    }
+                //},
+                //TownName: {
+                //    title: 'شهرک',
+                //    sorting: false,
+                //    display: function (data) {
+                //        if (data.record.PropertyAddressVM != null)
+                //            if (data.record.PropertyAddressVM.TownName != null)
+                //                return data.record.PropertyAddressVM.TownName;
+                //    }
+                //},
+                RegisterOrEditDate: {
+                    title: 'تاریخ&nbsp;آخرین&nbsp;ثبت',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        debugger;
+                        return data.record.RegisterOrEditDate;
+                    }
+                },
+                //NewPropertyDescriptions: {
+                //    title: 'توضیحات&nbsp;تکمیلی',
+                //    sorting: false,
+                //    display: function (data) {
+                //        if (data.record.NewPropertyDescriptions != null)
+                //            return '<div class="propertyDescriptions pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.PropertyDescriptions + '">' + data.record.NewPropertyDescriptions + '</div>';
+
+                //        //return '<div class="propertyDescriptions aShowMoreInfo pointer"><i class="fa fa-2x fa-warning"></i></div><div style="display: none;">' +
+                //        //    data.record.PropertyDescriptions + '</div>';
+                //    }
+                //},
+                Maps: {
+                    title: 'نقشه&nbsp;ها',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="maps pointer" data-PropertyId="' + data.record.PropertyId + '"><img src="/images/Cad.png" class="" /><div class="numberCircle" >' + data.record.CountOfMaps + '</div></div>';
+                    }
+                },
+                Features: {
+                    title: 'امکانات',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="features pointer" data-PropertyId="' + data.record.PropertyId + '"><img src="/images/Info.png" class="" /></div>';
+                    }
+                },
+                Location: {
+                    title: 'موقعیت',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="location pointer" data-PropertyId="' + data.record.PropertyId + '"><img src="/images/Location.png" class="" /></div>';
+                    }
+                },
+                Docs: {
+                    title: 'اسناد',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="docs pointer" data-PropertyId="' + data.record.PropertyId + '"><img src="/images/sanad.png" class="" /><div class="numberCircle">' + data.record.CountOfDocs + '</div></div>';
+                    }
+                },
+                Media: {
+                    title: 'فیلم&nbsp;/&nbsp;عکس',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="media pointer" data-PropertyId="' + data.record.PropertyId + '"><img src="/images/Video.png" class="" /><div class="numberCircle">' + data.record.CountOfMedia + '</div></div>';
+                    }
+                },
+                PropertiesPricesHistories: {
+                    title: 'تاریخچه&nbsp;قیمت&nbsp;ها',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<div class="details pointer" data-PropertyId="' + data.record.PropertyId + '"><img src="/images/priceList.png"  class="" /><div class="numberCircle">' + data.record.CountOfPrices + '</div></div>';
+                    }
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-PropertyId="' +
+                                data.record.PropertyId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-PropertyId="' +
+                                data.record.PropertyId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-PropertyId="' + data.record.PropertyId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-PropertyId="' + data.record.PropertyId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditProperty: {
+                    title: 'ویرایش',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editProperty pointer" data-PropertyId="' + data.record.PropertyId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                }
+            },
+            formCreated: function (event, data) {
+                      //$('.ui-dialog-titlebar-close').html('X');
+            },
+            formSubmitting: function (event, data) {
+
+            },
+            formClosed: function (event, data) {
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.maps', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+            window.open("/AdminTeniaco/PropertiesMapsManagement/Index/" + propertyId, '_blank').focus();
+        });
+
+        $('body').on('click', '.features', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+            window.open("/AdminTeniaco/PropertiesFeaturesManagement/UpdatePropertyFeatures/" + propertyId, '_blank').focus();
+        });
+
+        $('body').on('click', '.location', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+            window.open("/AdminTeniaco/PropertiesLocationManagement/UpdatePropertyLocation/" + propertyId, '_blank').focus();
+        });
+
+        $('body').on('click', '.docs', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+            window.open("/AdminTeniaco/PropertiesDocsManagement/Index/" + propertyId, '_blank').focus();
+        });
+
+        $('body').on('click', '.media', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+            window.open("/AdminTeniaco/PropertiesMediaManagement/Index/" + propertyId, '_blank').focus();
+        });
+
+        $('body').on('click', '.propertyDescriptions', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyDescription = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + propertyDescription + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+
+        $('body').on('click', '.details', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+            window.open("/AdminTeniaco/PropertiesPricesHistoriesManagement/Index/" + propertyId, '_blank').focus();
+        });
+
+        $('body').on('click', '.editProperty', function (e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+            window.location.href = '/AdminTeniaco/PropertiesManagement/UpdateProperties/' + propertyId;
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/ToggleActivationProperties",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'PropertyId': propertyId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+                        var slcTypeOfUseId = $('#slcTypeOfUseId').val();
+                        var slcDocumentTypeId = $('#slcDocumentTypeId').val();
+                        var slcConsultantUserId = $('#slcConsultantUserId').val();
+                        var slcOwnerId = $('#slcOwnerId').val();
+                        //var slcDocumentOwnershipTypeId = $('#slcDocumentOwnershipTypeId').val();
+                        //var slcDocumentRootTypeId = $('#slcDocumentRootTypeId').val();
+                        var txtPropertyCodeName = $('#txtPropertyCodeName').val();
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+                        var slcDistrictId = $('#slcDistrictId').val();
+                        //var txtIntermediary = $('#txtIntermediary').val();
+                        //var slcIsPrivate = $('#slcIsPrivate').val();
+
+                        //if ((slcPropertyTypeId != null) &&
+                        //    (slcTypeOfUseId != null) &&
+                        //    (slcDocumentTypeId != null) &&
+                        //    (slcConsultantUserId != null) &&
+                        //    (slcOwnerId != null) &&
+                        //    //(slcDocumentOwnershipTypeId != null) &&
+                        //    //(slcDocumentRootTypeId != null) &&
+                        //    (txtPropertyCodeName != null) &&
+                        //    (slcStateId != null) &&
+                        //    (slcCityId != null) &&
+                        //    (slcZoneId != null) &&
+                        //    (slcDistrictId != null)/* &&
+                        //            (txtIntermediary != null)/* &&
+                        //            (slcIsPrivate != null)*/) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyTypeId': slcPropertyTypeId,
+                                'TypeOfUseId': slcTypeOfUseId,
+                                'DocumentTypeId': slcDocumentTypeId,
+                                'ConsultantUserId': slcConsultantUserId,
+                                'OwnerId': slcOwnerId,
+                                //'DocumentOwnershipTypeId': slcDocumentOwnershipTypeId,
+                                //'DocumentRootTypeId': slcDocumentRootTypeId,
+                                'PropertyCodeName': txtPropertyCodeName,
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+                                'DistrictId': slcDistrictId,
+                                //'Intermediary': txtIntermediary,
+                                //'IsPrivate': slcIsPrivate,
+                            });
+
+                        //}
+                        //else {
+                        //
+                        //    $('#listContainer').jtable('load', {
+                        //        currentPage: $('#listContainer').jtable('getCurrentPage')
+                        //    });
+                        //
+                        //}
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var propertyId = _this.attr('data-PropertyId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/TemporaryDeleteProperties",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'PropertyId': propertyId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+                        var slcTypeOfUseId = $('#slcTypeOfUseId').val();
+                        var slcDocumentTypeId = $('#slcDocumentTypeId').val();
+                        var slcConsultantUserId = $('#slcConsultantUserId').val();
+                        var slcOwnerId = $('#slcOwnerId').val();
+                        //var slcDocumentOwnershipTypeId = $('#slcDocumentOwnershipTypeId').val();
+                        //var slcDocumentRootTypeId = $('#slcDocumentRootTypeId').val();
+                        var txtPropertyCodeName = $('#txtPropertyCodeName').val();
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+                        var slcDistrictId = $('#slcDistrictId').val();
+                        //var txtIntermediary = $('#txtIntermediary').val();
+                        //var slcIsPrivate = $('#slcIsPrivate').val();
+
+                        //if ((slcPropertyTypeId != null) &&
+                        //    (slcTypeOfUseId != null) &&
+                        //    (slcDocumentTypeId != null) &&
+                        //    (slcConsultantUserId != null) &&
+                        //    (slcOwnerId != null) &&
+                        //    //(slcDocumentOwnershipTypeId != null) &&
+                        //    //(slcDocumentRootTypeId != null) &&
+                        //    (txtPropertyCodeName != null) &&
+                        //    (slcStateId != null) &&
+                        //    (slcCityId != null) &&
+                        //    (slcZoneId != null) &&
+                        //    (slcDistrictId != null)/* &&
+                        //            (txtIntermediary != null)/* &&
+                        //            (slcIsPrivate != null)*/) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyTypeId': slcPropertyTypeId,
+                                'TypeOfUseId': slcTypeOfUseId,
+                                'DocumentTypeId': slcDocumentTypeId,
+                            'ConsultantUserId': slcConsultantUserId,
+                                'OwnerId': slcOwnerId,
+                                //'DocumentOwnershipTypeId': slcDocumentOwnershipTypeId,
+                                //'DocumentRootTypeId': slcDocumentRootTypeId,
+                                'PropertyCodeName': txtPropertyCodeName,
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+                                'DistrictId': slcDistrictId,
+                                //'Intermediary': txtIntermediary,
+                                //'IsPrivate': slcIsPrivate,
+                            });
+
+                        //}
+                        //else {
+                        //
+                        //    $('#listContainer').jtable('load', {
+                        //        currentPage: $('#listContainer').jtable('getCurrentPage')
+                        //    });
+                        //
+                        //}
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+            var slcTypeOfUseId = $('#slcTypeOfUseId').val();
+            var slcDocumentTypeId = $('#slcDocumentTypeId').val();
+            var slcConsultantUserId = $('#slcConsultantUserId').val();
+            var slcOwnerId = $('#slcOwnerId').val();
+            //var slcDocumentOwnershipTypeId = $('#slcDocumentOwnershipTypeId').val();
+            //var slcDocumentRootTypeId = $('#slcDocumentRootTypeId').val();
+            var txtPropertyCodeName = $('#txtPropertyCodeName').val();
+            var slcStateId = $('#slcStateId').val();
+            var slcCityId = $('#slcCityId').val();
+            var slcZoneId = $('#slcZoneId').val();
+            var slcDistrictId = $('#slcDistrictId').val();
+            //var txtIntermediary = $('#txtIntermediary').val();
+            //var slcIsPrivate = $('#slcIsPrivate').val();
+
+            //if ((slcPropertyTypeId != null) &&
+            //    (slcTypeOfUseId != null) &&
+            //    (slcDocumentTypeId != null) &&
+            //    (slcConsultantUserId != null) &&
+            //    (slcOwnerId != null) &&
+            //    //(slcDocumentOwnershipTypeId != null) &&
+            //    //(slcDocumentRootTypeId != null) &&
+            //    (txtPropertyCodeName != null) &&
+            //    (slcStateId != null) &&
+            //    (slcCityId != null) &&
+            //    (slcZoneId != null) &&
+            //    (slcDistrictId != null)/* &&
+            //            (txtIntermediary != null)/* &&
+            //            (slcIsPrivate != null)*/) {
+
+                $('#listContainer').jtable('load', {
+                    'PropertyTypeId': slcPropertyTypeId,
+                    'TypeOfUseId': slcTypeOfUseId,
+                    'DocumentTypeId': slcDocumentTypeId,
+                'ConsultantUserId': slcConsultantUserId,
+                    'OwnerId': slcOwnerId,
+                    //'DocumentOwnershipTypeId': slcDocumentOwnershipTypeId,
+                    //'DocumentRootTypeId': slcDocumentRootTypeId,
+                    'PropertyCodeName': txtPropertyCodeName,
+                    'StateId': slcStateId,
+                    'CityId': slcCityId,
+                    'ZoneId': slcZoneId,
+                    'DistrictId': slcDistrictId,
+                    //'Intermediary': txtIntermediary,
+                    //'IsPrivate': slcIsPrivate,
+                });
+
+            //}
+            //else {
+            //
+            //    $('#listContainer').jtable('load');
+            //
+            //}
+        });
+
+        $('#btnReload').click(function (e) {
+            $('#slcPropertyTypeId').val(null);
+            $('#slcTypeOfUseId').val(null);
+            $('#slcDocumentTypeId').val(null);
+            $('#ConsultantUserId').val(null);
+            $('#OwnerId').val(null);
+            //$('#slcDocumentOwnershipTypeId').val(null);
+            //$('#slcDocumentRootTypeId').val(null);
+            $('#txtPropertyCodeName').val(null);
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+            $('#slcDistrictId').val(null);
+            //$('#txtIntermediary').val(null);
+            //$('#slcIsPrivate').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            $('#slcPropertyTypeId').val(null);
+            $('#slcTypeOfUseId').val(null);
+            $('#slcDocumentTypeId').val(null);
+            $('#ConsultantUserId').val(null);
+            $('#OwnerId').val(null);
+            //$('#slcDocumentOwnershipTypeId').val(null);
+            //$('#slcDocumentRootTypeId').val(null);
+            $('#txtPropertyCodeName').val(null);
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+            $('#slcDistrictId').val(null);
+            //$('#txtIntermediary').val(null);
+            //$('#slcIsPrivate').val(null);
+
+            e.preventDefault();
+        });
+    });
+
+
+</script>

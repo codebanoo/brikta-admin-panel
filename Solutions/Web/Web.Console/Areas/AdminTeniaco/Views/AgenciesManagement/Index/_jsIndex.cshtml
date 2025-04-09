@@ -1,0 +1,952 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+
+        for (var i = 0; i < statesList.length; i++) {
+            debugger;
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        // $('body').on('change', '#slcStateId', function (e) {
+        //     e.preventDefault();
+
+        //     var _this = $(this);
+        //     var stateId = _this.val();
+
+        //     $('#slcCityId').find('option')
+        //         .remove()
+        //         .end()
+        //         .append('<option value="" selected>---</option>');
+
+        //     for (var i = 0; i < citiesList.length; i++) {
+        //         debugger;
+        //         var item = citiesList[i];
+        //         if (item.Data_StateId == stateId)
+        //             $('#slcCityId')
+        //                 .append($("<option></option>")
+        //                     .attr("value", item.Value)
+        //                     .text(item.DisplayText));
+        //     }
+
+        //     $('#slcCityId').trigger("chosen:updated");
+
+        //     $('#slcCityId').change();
+
+        //     ShowCheckBoxBeforeChosenFoJtable();
+        // });
+
+
+        // $('body').on('change', '#slcCityId', function (e) {
+        //     e.preventDefault();
+
+        //     var _this = $(this);
+        //     var cityId = _this.val();
+
+        //     $('#slcZoneId').find('option')
+        //         .remove()
+        //         .end()
+        //         .append('<option value="" selected>---</option>');
+
+        //     for (var i = 0; i < zonesList.length; i++) {
+        //         debugger;
+        //         var item = zonesList[i];
+        //         if (item.Data_CityId == cityId)
+        //             $('#slcZoneId')
+        //                 .append($("<option></option>")
+        //                     .attr("value", item.Value)
+        //                     .text(item.DisplayText));
+        //     }
+
+        //     $('#slcZoneId').trigger("chosen:updated");
+
+        //     ShowCheckBoxBeforeChosenFoJtable();
+
+        // });
+
+
+        $('#listContainer').jtable({
+            title: 'آژانس املاک', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminTeniaco/AgenciesManagement/GetListOfAgencies',
+                createAction: '/AdminTeniaco/AgenciesManagement/AddToAgencies',
+                updateAction: '/AdminTeniaco/AgenciesManagement/UpdateAgencies',
+                deleteAction: '/AdminTeniaco/AgenciesManagement/CompleteDeleteAgencies'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                ]
+            },
+            fields: {
+                AgencyId: {
+                    key: true,
+                    list: false
+                },
+                AgencyName: {
+                    title: 'نام&nbsp;آژانس&nbsp;املاک',
+                    sorting: false,
+                },
+                Mobile: {
+                    title: 'شماره&nbsp;موبایل&nbsp;آژانس&nbsp;املاک',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Mobile != '') {
+                                if (data.record.CustomUsersVM.Mobile != null) {
+                                    return '<input type="text" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile" readonly />';
+
+                                }
+                                else {
+                                    return '<input type="text" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile"  />';
+                                }
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile" />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile" readonly />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Mobile != null)
+                                return data.record.CustomUsersVM.Mobile;
+                    }
+                },
+                UserName: {
+                    title: 'نام&nbsp;کاربری',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.UserName != '') {
+                                if (data.record.CustomUsersVM.UserName != null) {
+                                    return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                                }
+                                else {
+                                    return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                                }
+
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.UserName != null)
+                                return data.record.CustomUsersVM.UserName;
+                    }
+                },
+                Password: {
+                    title: 'نام&nbsp;کاربری',
+                    sorting: false,
+                    list:false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Password != '') {
+                                if (data.record.CustomUsersVM.Password != null) {
+                                    return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                                }
+                                else {
+                                    return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                                }
+
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Password != null)
+                                return data.record.CustomUsersVM.Password;
+                    }
+                },
+                Name: {
+                    title: 'نام',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Name != '') {
+                                return '<input type="text" id="Edit-CustomUsersVM.Name" name="CustomUsersVM.Name" />';
+                                
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Name" name="CustomUsersVM.Name" />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Name" name="CustomUsersVM.Name" />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Name != null)
+                                return data.record.CustomUsersVM.Name;
+                    }
+                },
+                Family: {
+                    title: 'نام&nbsp;خانوادگی',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Family != '') {
+                                return '<input type="text" id="Edit-CustomUsersVM.Family" name="CustomUsersVM.Family" />';
+
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Family" name="CustomUsersVM.Family" />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Family" name="CustomUsersVM.Family" />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Family != null)
+                                return data.record.CustomUsersVM.Family;
+                    }
+                },
+                Telephone: {
+                    title: 'شماره&nbsp;ثابت&nbsp;آژانس&nbsp;املاک',
+                    sorting: false,
+                },
+                StateId: {
+                    title: 'استان',
+                    options: statesList,
+                    sorting: false,
+                },
+                CityId: {
+                    title: 'بخش',
+                    options: citiesList,
+                    sorting: false,
+                },
+                ZoneId: {
+                    title: 'شهر&nbsp;/&nbsp;منطقه',
+                    sorting: false,
+                    options: zonesList,
+                },
+                Address: {
+                    title: 'آدرس',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.Address != null) {
+                            var sp = data.record.Address.split(",");
+
+                            var result = '';
+                            if (sp.length > 1) {
+                                //result += '<i class="fa fa-exclamation-circle fa-2x" aria-hidden="true">&nbsp;</i><br/>';
+                                for (var i = 0; i < sp.length; i++) {
+                                    var item = sp[i];
+
+                                    result += '<span>' + (i + 1) + '_' + sp[i] + '</span><br/>'
+                                }
+                                return result;
+
+                            }
+                            return sp[0];
+                        }
+                    }
+                },
+                // Site: {
+                //     title: 'سایت',
+                //     sorting: false,
+                // },
+                SocialNetworks: {
+                    title: 'شبکه&nbsp;اجتماعی',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.SocialNetworks != null) {
+                            var sp = data.record.SocialNetworks.split(",");
+
+                            var result = '';
+
+                            if (sp.length > 1) {
+                                for (var i = 0; i < sp.length; i++) {
+                                    var item = sp[i];
+                                    result += '<span>' + (i + 1) + '_' + sp[i] + '</span><br />';
+                                }
+
+                                return result;
+                            }
+                            else
+                                return sp[0];
+                        }
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                },
+                AgencyStaffs: {
+                    title: 'کارمندان',
+                    width: '2%',
+                    sorting: false,
+                    edit: false,
+                    create: false,
+                    display: function (data) {
+                        //return '<button class="AgencyStaffsList" data-agencyId="' + data.record.AgencyId + '"">کارمندان</button>';
+                        return '<i class="fa fa-users fa-2x pointer" data-agencyId="' + data.record.AgencyId + '" id="AgencyStaffsList" >&nbsp;</i>';
+                    }
+                },
+                Location: {
+                    title: 'موقعیت',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<div class="location pointer" data-AgencyId="' + data.record.AgencyId + '"><img src="/images/Location.png" class="" /></div>';
+                    }
+                },
+
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-AgencyId="' +
+                                data.record.AgencyId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-AgencyId="' +
+                                data.record.AgencyId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-AgencyId="' + data.record.AgencyId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-AgencyId="' + data.record.AgencyId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function (event, data) {
+                console.log(data.form);
+
+
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+                //$('.ui-dialog-titlebar-close').html('X');
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+
+                if (formName == 'edit') {
+
+                    $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(3) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                    $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(7) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                    $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(9) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+
+                    $('#Edit-StateId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-StateId').val(data.record.StateId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-CityId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-CityId').val(data.record.CityId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-ZoneId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+
+
+                    $('#Edit-ZoneId').val(data.record.ZoneId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+
+                    ShowCheckBoxBeforeChosenFoJtable();
+                }
+                else
+                    if (formName == 'create') {
+
+
+                        $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(2) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true" data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                        $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(6) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                        $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(8) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+
+                        $('#Edit-StateId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        $('#Edit-StateId').val('').trigger("chosen:updated");
+
+                        $('#Edit-StateId').trigger("chosen:updated");
+
+                        $('#Edit-StateId').trigger("chosen:updated");
+
+                        $('#Edit-CityId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        $('#Edit-CityId').val('').trigger("chosen:updated");
+
+                        $('#Edit-CityId').trigger("chosen:updated");
+
+                        $('#Edit-CityId').trigger("chosen:updated");
+
+                        $('#Edit-ZoneId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        $('#Edit-ZoneId').val('').trigger("chosen:updated");
+
+                        $('#Edit-ZoneId').trigger("chosen:updated");
+
+                        $('#Edit-ZoneId').trigger("chosen:updated");
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+
+
+                        ShowCheckBoxBeforeChosenFoJtable();
+                    }
+
+
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+
+
+        });
+
+        $('#listContainer').jtable('load');
+
+        $('body').on('click', '#AgencyStaffsList', function (e) {
+            debugger;
+            var _this = $(this);
+            var id = _this.attr('data-agencyId');
+            window.open("/AdminTeniaco/AgencyStaffsManagement/Index/" + id, '_blank').focus();
+
+        });
+
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+
+        $('body').on('keyup', '#Edit-CustomUsersVM.Mobile', function (e) {
+            e.preventDefault();
+
+            var mobile = $('#Edit-CustomUsersVM.Mobile').val();
+            $('#Edit-CustomUsersVM.UserName').val(mobile);
+            $('#Edit-CustomUsersVM.Password').val(mobile);
+        });
+
+        $('body').on('change', '#Edit-StateId', function (e) {
+            e.preventDefault();
+            debugger;
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#Edit-CityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="">---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#Edit-CityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-CityId').trigger("chosen:updated");
+            $('#Edit-CityId').change();
+
+
+        });
+
+        $('body').on('change', '#Edit-CityId', function (e) {
+            e.preventDefault();
+            debugger;
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#Edit-ZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="">---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                //debugger;
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#Edit-ZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-ZoneId').trigger("chosen:updated");
+
+
+        });
+
+        $('body').on('click', '.location', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var agencyId = _this.attr('data-AgencyId');
+            window.open("/AdminTeniaco/AgencyLocationManagement/UpdateAgencylocation/" + agencyId, '_blank').focus();
+        });
+
+        $('body').on('click', '.editAgency', function (e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var agencyId = _this.attr('data-AgencyId');
+            window.location.href = '/AdminTeniaco/AgenciesManagement/UpdateAgencies/' + agencyId;
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var agencyId = _this.attr('data-AgencyId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/AgenciesManagement/ToggleActivationAgencies",
+
+                data: { 'AgencyId': agencyId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        var txtAgencyName = $('#txtAgencyName').val();
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+
+
+                        if (
+                            (txtAgencyName != null) &&
+                            (slcStateId != null) &&
+                            (slcCityId != null) &&
+                            (slcZoneId != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'AgencyName': txtAgencyName,
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var agencyId = _this.attr('data-AgencyId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/AgenciesManagement/TemporaryDeleteAgencies",
+
+                data: { 'AgencyId': agencyId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var txtAgencyName = $('#txtAgencyName').val();
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+
+
+                        if (
+                            (txtAgencyName != null) &&
+                            (slcStateId != null) &&
+                            (slcCityId != null) &&
+                            (slcZoneId != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'AgencyName': txtAgencyName,
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            var txtAgencyName = $('#txtAgencyName').val();
+            var slcStateId = $('#slcStateId').val();
+            var slcCityId = $('#slcCityId').val();
+            var slcZoneId = $('#slcZoneId').val();
+
+
+            if (
+                (txtAgencyName != null) &&
+                (slcStateId != null) &&
+                (slcCityId != null) &&
+                (slcZoneId != null)) {
+
+                $('#listContainer').jtable('load', {
+                    'AgencyName': txtAgencyName,
+                    'StateId': slcStateId,
+                    'CityId': slcCityId,
+                    'ZoneId': slcZoneId,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            $('#txtAgencyName').val(null);
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            $('#txtAgencyName').val(null);
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+
+            e.preventDefault();
+        });
+    });
+
+
+
+
+</script>

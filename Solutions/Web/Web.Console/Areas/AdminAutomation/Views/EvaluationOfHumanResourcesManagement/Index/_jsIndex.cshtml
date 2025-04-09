@@ -1,0 +1,381 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#tabs").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+        $("#tabs ul").removeClass('ui-widget-header');
+
+        setTimeout(function () {
+            $('.ui-corner-left').removeClass('ui-corner-left');
+        }, 300);
+
+        $("#tabs li").removeClass("ui-corner-top").addClass("ui-corner-left");
+        $('.myReplies', '#tabs').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: 200,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < evaluationsVMList.length; i++) {
+
+            var item = evaluationsVMList[i];
+            $('#slcEvaluation')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcEvaluation').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < customUsersVMList.length; i++) {
+
+            var item = customUsersVMList[i];
+            $('#slcUsers')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcUsers').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        var records;
+
+
+        var tmpRecords = [];
+
+        var evaluationItemValuesVMList = [];
+
+
+        function GetChilds(evalCategoryId) {
+
+
+            if (records.EvaluationCategoriesVMList.filter(c => c.EvaluationParentCategoryId == evalCategoryId).length == 0) {
+                tmpRecords.push(evalCategoryId);
+                return;
+            }
+
+            var evalCategories = records.EvaluationCategoriesVMList.filter(c => c.EvaluationParentCategoryId == evalCategoryId);
+
+            for (var i = 0; i < evalCategories.length; i++) {
+                var evaluationCategoryId = evalCategories[i].EvaluationCategoryId;
+                GetChilds(evaluationCategoryId);
+
+            }
+            return tmpRecords;
+        }
+
+
+        $('body').on('change', '#slcEvaluation', function (e) {
+
+
+            e.preventDefault();
+            var _this = $(this);
+
+            var evaluationId = parseInt(_this.val());
+            var parentId = Number($('#slcUsers').val());
+
+            if (evaluationId !== 0 && parentId !== 0) {
+                GetEvaluations(parentId, evaluationId);
+            }
+
+        });
+
+
+        $('body').on('change', '#slcUsers', function (e) {
+
+
+            e.preventDefault();
+            var _this = $(this);
+
+
+            var parentId = parseInt(_this.val());
+
+            var evaluationId = Number($('#slcEvaluation').val());
+
+
+            if (evaluationId !== 0 && parentId !== 0) {
+                GetEvaluations(parentId, evaluationId);
+
+            }
+
+        });
+
+
+        function GetEvaluations(parentId, evaluationId) {
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminAutomation/EvaluationOfHumanResourcesManagement/GetAllDivisionOfEvaluationsListByParentId",
+                data: {
+                    'parentId': parentId,
+                    'evaluationId': evaluationId,
+
+                },
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        records = result.records;
+
+                        if (records != null) {
+                            if (records.EvaluationCategoriesVMList != null) {
+                                if (records.EvaluationCategoriesVMList.length > 0) {
+                                    var parents = records.EvaluationCategoriesVMList.filter(c => c.EvaluationParentCategoryId == null);
+
+                                    $('#ulTabs').html('');
+                                    $('#items').html('');
+                                    for (var j = 0; j < parents.length; j++) {
+
+                                        var tabName = parents[j].EvaluationCategoryTitle;
+                                        var tabId = parents[j].EvaluationCategoryId;
+
+
+                                        $('#ulTabs').append($("<li class='nav-item' style='margin-bottom: 6px'><a class='nav-link pointer evalCategory' data-evalCategoryId ='" + tabId + "'>" + tabName + "</a></li>"));
+
+                                    }
+
+                                    $('#ulTabs .evalCategory:first').click();
+                                }
+                            }
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+
+        };
+
+        var questionIds = [];
+
+        var itemIds = [];
+
+
+        var changeItem = false;
+
+        $('body').on('change', '.slcItem', function (e) {
+            changeItem = true;
+        });
+
+
+        $('body').on('click', '.evalCategory', function (e) {
+
+            var _this = $(this);
+
+
+            if (changeItem == true) {
+                $('#my-confirm-modal').find('.modal-title').html('هشدار');
+                $('#my-confirm-modal').find('#modal-message').html('در صورت تغییر تب جاری ، تغییرات شما از بین میرود ');
+                $('#my-confirm-modal').modal("show");
+
+
+                $('body').on('click', '#modal-btn-yes', function (e) {
+                    $('#my-confirm-modal').modal("hide");
+                    LoadQuestionsAndItems(_this);
+                    changeItem = false;
+                });
+
+                $('body').on('click', '#modal-btn-no', function (e) {
+                    e.preventDefault();
+                    $('#my-confirm-modal').modal("hide");
+                    changeItem = false;
+                });
+            }
+            else {
+                LoadQuestionsAndItems(_this);
+            }
+        });
+
+        function LoadQuestionsAndItems(_this) {
+            tmpRecords = null;
+
+            tmpRecords = [];
+            $('#items').html('');
+
+            //var _this = $(this);
+            var evalCategoryId = _this.attr('data-evalCategoryId');
+
+
+            GetChilds(evalCategoryId);
+
+            var tmpQuestionIds = [];
+            var tmpQuestion = [];
+            var tmpItemIds = [];
+            var tmpItem = [];
+
+            evaluationItemValuesVMList = records.EvaluationItemValuesVMList;
+
+            if (tmpRecords.length > 0) {
+                records.EvaluationQuestionsVMList.filter(function (ques) {
+
+                    if (tmpRecords.indexOf(ques.EvaluationCategoryId) >= 0) {
+                        tmpQuestion.push(ques);
+                        tmpQuestionIds.push(ques.EvaluationQuestionId);
+
+                    }
+                });
+            }
+
+
+            if (tmpQuestionIds.length > 0) {
+                records.EvaluationItemsVMList.filter(function (item) {
+
+                    if (tmpQuestionIds.indexOf(item.EvaluationQuestionId) >= 0) {
+
+                        tmpItem.push(item);
+                        tmpItemIds.push(item.EvaluationItemId);
+                    }
+                });
+            }
+
+            for (var i = 0; i < tmpQuestion.length; i++) {
+                var tmpQuestionTitle = tmpQuestion[i].EvaluationQuestion;
+
+                var selectItemId = tmpQuestion[i].EvaluationQuestionId;
+
+                questionIds.push(selectItemId);
+
+                var options = '';
+
+
+                debugger;
+                var tmpItemForCurrentQuestion = tmpItem.filter(function (e) {
+                    return e.EvaluationQuestionId == selectItemId;
+                })
+
+                for (var j = 0; j < tmpItemForCurrentQuestion.length; j++) {
+
+                    var tmpItemId = tmpItemForCurrentQuestion[j].EvaluationItemId;
+                    var tmpItemTitle = tmpItemForCurrentQuestion[j].EvaluationAnswer;
+
+                    debugger;
+                    var answer = evaluationItemValuesVMList.filter(function (e) {
+                        //debugger;
+                        return e.EvaluationItemId == tmpItemId;
+                    });
+
+                    if (answer != null) {
+                        if (answer.length > 0) {
+                            debugger;
+                            options += '<option value="' + tmpItemId + '" selected>' + tmpItemTitle + '</option>';
+                            itemIds.push(tmpItemId);
+                        }
+                        else {
+                            options += '<option value="' + tmpItemId + '">' + tmpItemTitle + '</option>';
+                        }
+                    }
+                    else {
+                        options += '<option value="' + tmpItemId + '">' + tmpItemTitle + '</option>';
+                    }
+                }
+
+
+                $('#items').append($("<div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'><div>" + tmpQuestionTitle + "</div><select id='slcItem-" + selectItemId + "'  class='form-control input-sm chosen-select myReplies slcItem' style='display:flex;' ><option></option> " + options + "</select> </div>"));
+
+                $('.slcItem').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+            }
+        }
+
+
+        $('body').on('click', '#btnSave', function (e) {
+
+            debugger;
+            questionIds;
+            itemIds;
+
+            var evaluationItemValues = [];
+            var parentId = Number($('#slcUsers').val());
+
+            for (var i = 0; i < questionIds.length; i++) {
+                var questionId = questionIds[i];
+
+                var itemValue = $("#slcItem-" + questionId).val();
+
+                var tmpItemValue = parseInt(itemValue);
+
+                var test = itemIds.includes(tmpItemValue);
+
+                if (test == false) {
+                    evaluationItemValues.push({
+                        ParentId: parentId,
+                        ParentType: 'HumanResources',
+                        EvaluationQuestionId: questionId,
+                        EvaluationItemId: itemValue
+                    });
+                }
+            }
+
+            $.ajax({
+                url: '/AdminAutomation/EvaluationOfHumanResourcesManagement/UpdateEvaluationItemValuesList',
+                type: 'POST',
+                data: { evaluationItemValues },
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').show(500);
+
+                        $('#moreInfo-modal').modal("show");
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+            });
+        });
+
+    });
+
+
+    function setanswer(records) {
+        records.forEach(function (element) {
+            $('#item' + element.EvaluationQuestionId + '.myReplies', '#tabs').val(element.EvaluationItemId).trigger("chosen:updated");
+        });
+    }
+
+    function clearAll() {
+
+        if (confirm("پاسخ های قبلی، پاک شود ؟") == true) {
+            let activeTabs = $("#tabs .ui-tabs-panel:visible").attr("id");
+            let _context = '#' + activeTabs;
+            console.log(_context);
+            $('select.myReplies option:selected', _context).prop('selected', false).trigger("chosen:updated");
+        }
+    }
+
+</script>
+
+

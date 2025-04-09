@@ -1,0 +1,41 @@
+﻿@using Services.Xml.Entities;
+
+@model dynamic
+
+@{
+    string controllerName = "";
+    if (ViewData["ControllerName"] != null)
+    {
+        controllerName = ViewData["ControllerName"] as string;
+    }
+
+    string actionName = "";
+    if (ViewData["ActionName"] != null)
+    {
+        actionName = ViewData["ActionName"] as string;
+    }
+    Layout = "_LoginLayout";
+    //Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+@section head{
+
+    @{
+        Html.RenderPartial("~/Views/" + controllerName + "/" + actionName + "/_headLogin.cshtml");
+    }
+
+}
+
+
+@{
+    Html.RenderPartial("~/Views/" + controllerName + "/" + actionName + "/_htmlLogin.cshtml");
+}
+
+
+@section scripts{
+
+    @{
+        Html.RenderPartial("~/Views/" + controllerName + "/" + actionName + "/_jsLogin.cshtml");
+    }
+
+}

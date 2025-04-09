@@ -1,0 +1,292 @@
+﻿@using VM.Console;
+
+@model CustomUsersVM
+
+@{
+    bool isAdmin = false;
+    if (ViewData["IsAdmin"] != null)
+    {
+        isAdmin = (bool)ViewData["IsAdmin"];
+    }
+
+    string domainName = "";
+    if (ViewData["DomainName"] != null)
+    {
+        domainName = ViewData["DomainName"] as string;
+    }
+}
+<!-- start accordion -->
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST" id="formOfUpdateUser">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+     <div class="row text-center justify-content-center">
+                <div class="form-group w-100">
+                    @{
+                        <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+
+                    }
+                </div>
+            </div>
+     <input asp-for="UserId" type="hidden" />
+    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel">
+            <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h4 class="panel-title">   اطلاعات پایه</h4>
+            </a>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body row">
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 with-select">
+                        <div >
+                            دامنه
+                        </div>
+                        <select asp-for="DomainSettingId"
+                                class="form-control ml-3 chosen-select input-validation-error"></select>
+                        <span asp-validation-for="DomainSettingId" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div >
+                            نقش
+                        </div>
+                        <select asp-for="RoleIds"
+                                class="form-control ml-3  input-validation-error"></select>
+                        <span asp-validation-for="RoleIds" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div >
+                            دسترسی
+                        </div>
+                        <select asp-for="LevelIds"
+                                class="form-control ml-3  input-validation-error"></select>
+                        <span asp-validation-for="LevelIds" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div >
+                            کاربر والد
+                        </div>
+                        <select asp-for="ParentUserId"
+                                class="form-control ml-3  input-validation-error"></select>
+                        <span asp-validation-for="ParentUserId" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            نام  کاربری
+                        </div>
+                        <input type='text' asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            ایمیل
+                        </div>
+                        <input type='text' asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            رمز عبور
+                        </div>
+                        <input type='password' asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            تکرار رمز
+                        </div>
+                        <input type='password' asp-for="ReplyPassword" class="form-control" />
+                        <span asp-validation-for="ReplyPassword" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div >
+                            فعال/غیرفعال
+                        </div>
+                        <select asp-for="IsActivated"
+                                class="form-control ml-3  input-validation-error">
+                            <option value="true">
+                                بله
+                            </option>
+                            <option value="false">
+                                خیر
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div >
+                            حذف شده
+                        </div>
+                        <select asp-for="IsDeleted"
+                                class="form-control ml-3  input-validation-error">
+                            <option value="true">
+                                بله
+                            </option>
+                            <option value="false">
+                                خیر
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+           </div>
+            <div class="panel">
+                <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <h4 class="panel-title">   اطلاعات بیشتر</h4>
+                </a>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body row">
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            نام
+                        </div>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            نام خانوادگی
+                        </div>
+                        <input asp-for="Family" class="form-control" />
+                        <span asp-validation-for="Family" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            شماره شناسنامه
+                        </div>
+                        <input asp-for="CertificateId" class="form-control" />
+                        <span asp-validation-for="CertificateId" class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            کد ملی
+                        </div>
+                        <input type='text' asp-for="NationalCode" class="form-control" />
+                        <span asp-validation-for="NationalCode" class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                             شماره تماس
+                        </div>
+                        <input asp-for="Phone" class="form-control" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                             شماره همراه
+                        </div>
+                        <input asp-for="Mobile" class="form-control" />
+                        <span asp-validation-for="Mobile" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            تاریخ تولد
+                        </div>
+                        <input type="text" asp-for="BirthDateTime" class="form-control" data-MdDateTimePicker="true" data-EnableTimePicker="false" data-Placement="bottom"
+                               onkeydown="return false" placeholder="تاریخ تولد" />
+                        <span asp-validation-for="BirthDateTime" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div>
+                            جنسیت
+                        </div>
+                        <select asp-for="Sexuality"
+                                class="form-control ml-3  input-validation-error">
+                            <option value="true">
+                                مرد
+                            </option>
+                            <option value="false">
+                                زن
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            آدرس
+                        </div>
+                        <textarea asp-for="Address" class="form-control"
+                                  placeholder="آدرس"></textarea>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            تصویر
+                            (500Kb)
+                        </div>
+                        <input type="file" asp-for="Picture"
+                               placeholder="تصویر" />
+                        <span asp-validation-for="Picture" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            شناسنامه
+                        </div>
+                        <input type="file" asp-for="CertificateCardFile"
+                               placeholder="تصویر" />
+                        <span asp-validation-for="CertificateCardFile" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            کارت ملی
+                        </div>
+                        <input type="file" asp-for="NationalCardFile"
+                               placeholder="تصویر" />
+                        <span asp-validation-for="NationalCardFile" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            رزومه
+                        </div>
+                        <input type="file" asp-for="ResumeFile"
+                               placeholder="تصویر" />
+                        <span asp-validation-for="ResumeFile" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+                        <div class="mx-2">
+                            قرارداد
+                        </div>
+                        <input type="file" asp-for="ContractFile"
+                               placeholder="تصویر" />
+                        <span asp-validation-for="ContractFile" class="text-danger"></span>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+        </div>
+
+        <div class="ln_solid"></div>
+        <div class="form-group row">
+            <div class="col-md-9 col-sm-9  offset-md-3">
+                <button type="submit" class="btn btn-success btn-md" id="btnSubmit">ثبت</button>
+                <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+                <button type="button" class="btn btn-primary btn-md">لغو</button>
+
+
+            </div>
+        </div>
+</form>
+
+<!-- end of accordion -->
+

@@ -1,0 +1,661 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+        for (var i = 0; i < constructionItemsList.length; i++) {
+
+            var item = constructionItemsList[i];
+            $('#slcConstructionItemParentId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcConstructionItemParentId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'آیتمهای برآورد هزینه ساخت', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminPublic/ConstructionItemsManagement/GetListOfConstructionItems',
+                createAction: '/AdminPublic/ConstructionItemsManagement/AddToConstructionItems',
+                updateAction: '/AdminPublic/ConstructionItemsManagement/UpdateConstructionItems',
+                deleteAction: '/AdminPublic/ConstructionItemsManagement/CompleteDeleteConstructionItems'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                ConstructionItemId: {
+                    key: true,
+                    list: false
+                },
+                ConstructionItemParentId: {
+                    title: 'والد',
+                    options: constructionItemsList,
+                    sorting: false,
+                    //inputClass: 'validate[required]'
+                },
+                ConstructionItemTitle: {
+                    title: 'عنوان',
+                    sorting: false,
+                    inputClass: 'validate[required]',
+                },
+                UnitOfMeasurementId: {
+                    title: 'واحد',
+                    options: unitsOfMeasurementList,
+                    sorting: false,
+                },
+                LastItemValue: {
+                    title: 'آخرین مبلغ',
+                    sorting: false,
+                    inputClass: 'validate[required]',
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.LastItemValue == '') {
+                                return '<input type="number" id="Edit-LastItemValue" name="LastItemValue" class="form-control"' +
+                                    'placeholder="مبلغ" /> ';
+                            }
+                            else {
+                                return '<input type="number" id="Edit-LastItemValue" name="LastItemValue" class="form-control"' +
+                                    'placeholder="مبلغ" value="' + data.record.LastItemValue + '" />';
+                            }
+                        }
+                        else {
+                            return '<input type="number" id="Edit-LastItemValue" name="LastItemValue" class="form-control"' +
+                                'placeholder="مبلغ" /> ';
+                        }
+                    },
+                },
+                PersianRegisterDate: {
+                    title: 'تاریخ&nbsp;ثبت',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                },
+                ConstructionItemDesc: {
+                    title: 'توضیحات',
+                    sorting: false,
+                    type: 'textarea',
+                    display: function (data) {
+                        if (data.record.NewConstructionItemDesc != null)
+                            return '<div class="constructionItemDesc pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.ConstructionItemDesc + '">' + data.record.NewConstructionItemDesc + '</div>';
+
+                        //return '<div class="propertyDescriptions aShowMoreInfo pointer"><i class="fa fa-2x fa-warning"></i></div><div style="display: none;">' +
+                        //    data.record.PropertyDescriptions + '</div>';
+                    }
+                },
+                //ConstructionItemPercentValue: {
+                //    title: 'درصد',
+                //    sorting: false,
+                //    list: false,
+                //    create: false,
+                //    edit: false,
+                //},
+                ConstructionSubItemsDetail: {
+                    title: 'زیر&nbsp;آیتمها',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<div class="ConstructionSubItemsDetail pointer" data-ConstructionItemId="' + data.record.ConstructionItemId + '"><img src="/images/details.png" class="" /></div>';
+                    }
+                },
+                ConstructionItemPricesHistories: {
+                    title: 'تاریخچه&nbsp;قیمت',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<div class="ConstructionItemPricesHistories pointer" data-ConstructionItemId="' + data.record.ConstructionItemId + '"><img src="/images/paid.png" class="" /></div>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-ConstructionItemId="' +
+                                data.record.ConstructionItemId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-ConstructionItemId="' +
+                                data.record.ConstructionItemId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-ConstructionItemId="' + data.record.ConstructionItemId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-ConstructionItemId="' + data.record.ConstructionItemId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function (event, data) {
+
+                data.form.find('[name="ConstructionItemTitle"]').addClass(
+                    'validate[required]');
+
+                data.form.find('[name="ConstructionItemValue"]').addClass(
+                    'validate[required]');
+
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                    //prettySelect: true,
+                    //useSuffix: "chosen-"
+                    //updatePromptsPosition: true,
+                    //autoPositionUpdate: true,
+                    //updatePromptsPosition: true,
+                    //inlineValidation: true,
+                    //prettySelect: true,
+                    //useSuffix: "_chosen"
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+                //$('.ui-dialog-titlebar-close').html('X');
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                var descriptionBlock;
+
+                $('#Edit-UnitOfMeasurementId')
+                    .prepend('<option value="">---</option>');
+
+                $('#Edit-ConstructionItemParentId').find('option')
+                    .remove()
+                    .end()
+                    .append('<option value="" selected>---</option>');
+
+                for (var i = 0; i < constructionItemsList.length; i++) {
+
+                    var item = constructionItemsList[i];
+                    $('#Edit-ConstructionItemParentId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+                }
+
+                if (formName == 'edit') {
+
+                    descriptionBlock = $(".jtable-dialog-form .jtable-input-field-container:nth-child(6)");
+
+                    $('#Edit-UnitOfMeasurementId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-UnitOfMeasurementId').val(data.record.UnitOfMeasurementId + '').trigger("chosen:updated");
+
+                    $('#Edit-ConstructionItemParentId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-ConstructionItemParentId').val(data.record.ConstructionItemParentId + '').trigger("chosen:updated");
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+
+                        descriptionBlock = $(".jtable-dialog-form .jtable-input-field-container:nth-child(5)");
+
+                        $('#Edit-UnitOfMeasurementId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-UnitOfMeasurementId').val(0).trigger("chosen:updated");
+
+                        $('#Edit-ConstructionItemParentId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-ConstructionItemParentId').trigger("chosen:updated");
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+                    }
+
+                descriptionBlock.removeAttr('class');
+                descriptionBlock.attr('class', 'jtable-input-field-container col col-md-12 col-sm-12 col-xs-12');
+                descriptionBlock.css('width', '100%');
+                descriptionBlock.css('height', '200px');
+                descriptionBlock.find('textarea').css('width', '100%');
+                descriptionBlock.find('textarea').css('height', '75px !important');
+            },
+            formSubmitting: function (event, data) {
+
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+
+                //$('#listContainer').jtable('load');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.isActivated', function () {
+
+            var _this = $(this);
+            var constructionItemId = _this.attr('data-ConstructionItemId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/ConstructionItemsManagement/ToggleActivationConstructionItems",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'ConstructionItemId': constructionItemId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var slcConstructionItemParentId = $('#slcConstructionItemParentId').val();
+                        var txtConstructionItemTitle = $('#txtConstructionItemTitle').val();
+
+                        if ((slcConstructionItemParentId != null) &&
+                            (txtConstructionItemTitle != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ConstructionItemParentId': slcConstructionItemParentId,
+                                'ConstructionItemTitle': txtConstructionItemTitle,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+
+            var _this = $(this);
+            var constructionItemId = _this.attr('data-ConstructionItemId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/ConstructionItemsManagement/TemporaryDeleteConstructionItems",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'ConstructionItemId': constructionItemId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var slcConstructionItemParentId = $('#slcConstructionItemParentId').val();
+                        var txtConstructionItemTitle = $('#txtConstructionItemTitle').val();
+
+                        if ((slcConstructionItemParentId != null) &&
+                            (txtConstructionItemTitle != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ConstructionItemParentId': slcConstructionItemParentId,
+                                'ConstructionItemTitle': txtConstructionItemTitle,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            var slcConstructionItemParentId = $('#slcConstructionItemParentId').val();
+            var txtConstructionItemTitle = $("#txtConstructionItemTitle").val();
+
+            $('#listContainer').jtable('load', {
+                'ConstructionItemParentId': slcConstructionItemParentId,
+                'ConstructionItemTitle': txtConstructionItemTitle,
+            });
+
+            //if ((txtConstructionItemTitle != null)) {
+            //    if ((slcConstructionItemParentId != null) && slcConstructionItemParentId != "---") {
+            //        $('#listContainer').jtable('load', {
+            //            'ConstructionItemParentId': slcConstructionItemParentId,
+            //            'ConstructionItemTitle': txtConstructionItemTitle,
+            //        });
+            //    }
+            //    else {
+            //        $('#listContainer').jtable('load', {
+            //            'ConstructionItemParentId': slcConstructionItemParentId,
+            //            'ConstructionItemTitle': null,
+            //        });
+            //    }
+
+
+            //}
+            //else {
+
+            //    $('#listContainer').jtable('load');
+
+            //}
+        });
+
+        $('#btnReload').click(function (e) {
+            $('#slcConstructionItemParentId').val(null);
+            $('#txtConstructionItemTitle').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            $('#slcConstructionItemParentId').val(null);
+            $('#txtConstructionItemTitle').val(null);
+
+            e.preventDefault();
+        });
+
+        $('body').on('click', '.constructionItemDesc', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var constructionItemDesc = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + constructionItemDesc + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('body').on('click', '.ConstructionSubItemsDetail', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var constructionItemId = _this.attr('data-ConstructionItemId');
+            window.open("/AdminPublic/ConstructionSubItemsManagement/Index/" + constructionItemId, '_blank').focus();
+        });
+
+        $('body').on('click', '.ConstructionItemPricesHistories', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var constructionItemId = _this.attr('data-ConstructionItemId');
+            window.open("/AdminPublic/ConstructionItemPricesHistoriesManagement/Index?Id=" + constructionItemId + "&parentType=item", '_blank').focus();
+        });
+    });
+
+
+</script>

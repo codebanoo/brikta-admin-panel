@@ -1,0 +1,358 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+@{
+
+    string IsNewProp = ViewContext.HttpContext.Request.Query["IsNewProp"];
+    PropertiesVM propertiesVM = new PropertiesVM();
+
+    if (ViewData["PropertiesVM"] != null)
+    {
+        propertiesVM = ViewData["PropertiesVM"] as PropertiesVM;
+    }
+
+    PropertyFeaturesValuesVM propertyFeaturesValuesVM = new PropertyFeaturesValuesVM();
+
+    if (ViewData["PropertyFeaturesValuesVM"] != null)
+    {
+        propertyFeaturesValuesVM = ViewData["PropertyFeaturesValuesVM"] as PropertyFeaturesValuesVM;
+    }
+}
+
+<div id="searchBlock" class="col-12">
+    <div class="row ">
+        <div class="col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                نام  ملک:
+                @Html.Raw(propertiesVM.PropertyCodeName)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    <input type="hidden" id="PropertyId" name="PropertyId" value="@propertiesVM.PropertyId" />
+    <div>
+        @{
+            string htmlResult = "";
+            int i = 1;
+
+
+            htmlResult += "<div class=\"accordion\" id=\"accordion\" role=\"tablist\" aria-multiselectable=\"true\">" +
+            "<div class=\"panel\">";
+            if (propertyFeaturesValuesVM.FeaturesCategoriesVMList != null)
+                foreach (var featureCategory in propertyFeaturesValuesVM.FeaturesCategoriesVMList)
+                {
+                    htmlResult += "<a class=\"panel-heading collapsed\" role=\"tab\" id=\"heading" + featureCategory.FeatureCategoryId + "\" data-toggle=\"collapse\" href=\"#collapse" + featureCategory.FeatureCategoryId + "\" aria-expanded=\"false\" aria-controls=\"collapse" + featureCategory.FeatureCategoryId + "\">" +
+                    "<h4 class=\"panel-title\">" + featureCategory.FeatureCategoryTitle + "</h4>" +
+                    "</a>" +
+                    "<div id=\"collapse" + featureCategory.FeatureCategoryId + "\" class=\"panel-collapse collapse in\" role=\"tabpanel\" aria-labelledby=\"heading" + featureCategory.FeatureCategoryId + "\" aria-expanded=\"true\">" +
+                    "<div class=\"panel-body row\">";
+
+                    foreach (var feature in propertyFeaturesValuesVM.FeaturesVMList)
+                    {
+                        if (feature.FeatureCategoryId != featureCategory.FeatureCategoryId)
+                            continue;
+                        //if ((i % 4) == 1)
+                        //{
+                        //    htmlResult += "";
+                        //}
+                        htmlResult += "<div class=\"col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3\">" +
+                        "<div>" +
+                        //"<label for=\"" + feature.FeatureId + "\">" +
+                        feature.FeatureTitle +
+                        //"</label>" +
+                        "</div>";
+                        string value = "";
+                        if (propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).Any())
+                        {
+                            value = propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).FirstOrDefault().FeatureValue;
+                        }
+                        switch (feature.ElementTypeId)
+                        {
+                            case 1://متنی
+                                htmlResult += "<input data-ElementTypeId=\"" + feature.ElementTypeId + "\" class=\"form-control features-input \" placeholder=\"" + feature.FeatureTitle +
+                                "\" type=\"text\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId + "\" value=\"" + value + "\">";
+                                break;
+                            case 2://تک انتخابی
+                                htmlResult += "<select data-ElementTypeId=\"" + feature.ElementTypeId + "\" class=\"form-control ml-3 features-input\" placeholder=\"" + feature.FeatureTitle + "\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId + "\">" +
+                                "<option value=\"\">---</option>";
+
+                                var featureOptions = propertyFeaturesValuesVM.FeaturesOptionsVMList.Where(fo => fo.FeatureId.Equals(feature.FeatureId)).ToList();
+                                if (featureOptions != null)
+                                    if (featureOptions.Count > 0)
+                                    {
+                                        foreach (var featureOption in featureOptions)
+                                        {
+                                            htmlResult += "<option value=\"" + featureOption.FeatureOptionValue + "\">" + featureOption.FeatureOptionText + "</option>";
+                                        }
+                                    }
+
+                                htmlResult += "</select>";
+                                break;
+                            case 3://چند انتخابی
+                                htmlResult += "<select data-ElementTypeId=\"" + feature.ElementTypeId + "\" multiple class=\"form-control ml-3 features-input\" placeholder=\"" + feature.FeatureTitle + "\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId + "\">" +
+                                "<option disabled value=\"\">---</option>";
+
+                                var multiFeatureOptions = propertyFeaturesValuesVM.FeaturesOptionsVMList.Where(fo => fo.FeatureId.Equals(feature.FeatureId)).ToList();
+                                if (multiFeatureOptions != null)
+                                    if (multiFeatureOptions.Count > 0)
+                                    {
+                                        foreach (var featureOption in multiFeatureOptions)
+                                        {
+                                            htmlResult += "<option value=\"" + featureOption.FeatureOptionValue + "\">" + featureOption.FeatureOptionText + "</option>";
+                                        }
+                                    }
+
+                                htmlResult += "</select>";
+                                break;
+                            case 4://توضیحات
+                                break;
+                            case 5://چک باکس
+                                bool boolValue = false;
+                                if (!string.IsNullOrEmpty(value))
+                                    boolValue = (value == "1" ? true : false);
+                                htmlResult += "<label style=\"height: 39px;\"><input style=\"opacity:100% !important;\" data-ElementTypeId=\"" + feature.ElementTypeId +
+                                "\" type=\"checkbox\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId +
+                                "\" data-placement=\"top\" data-toggle=\"tooltip\" title=\"" + feature.FeatureTitle +
+                                "\" class=\"showAllChosenItem features-input\" " + (boolValue ? "checked" : "") + ">&nbsp;&nbsp;&nbsp;</label>";
+                                break;
+                        }
+
+                        htmlResult += "</div>";
+                        i++;
+                        //if ((i % 4) == 1)
+                        //{
+                        //    htmlResult += "</div>";
+                        //}
+                    }
+                    htmlResult += "</div></div><br>";
+                }
+
+            htmlResult += "</div></div>";
+
+            @Html.Raw(htmlResult)
+            ;
+
+            string scriptResult = "<script type=\"text/javascript\"> $(document).ready(function () { ";
+
+            foreach (var feature in propertyFeaturesValuesVM.FeaturesVMList.Where(f => f.ElementTypeId.Equals(2) || f.ElementTypeId.Equals(3)))
+            {
+                scriptResult += "$('#" + feature.FeatureId + "').chosen({" +
+                "placeholder_text_single: ' '," +
+                "placeholder_text_multiple: ' '," +
+                "search_contains: true," +
+                "max_shown_results: numberOfChosenItemsShow," +
+                "rtl: rtl" +
+                "});";
+
+                string value = "";
+                if (propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).Any())
+                {
+                    value = propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).FirstOrDefault().FeatureValue;
+                }
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    if (feature.ElementTypeId.Equals(2))
+                        scriptResult += " $('#" + feature.FeatureId + "').val('" + value + "').trigger(\"chosen:updated\");";
+                    else
+                    if (feature.ElementTypeId.Equals(3))
+                    {
+                        scriptResult += "debugger;";
+                        scriptResult += "var a = '" + value + "'.split(',');";
+                        scriptResult += " $('#" + feature.FeatureId + "').val('" + value + "'.split(',')" + ").trigger(\"chosen:updated\"); ";
+                    }
+                }
+            }
+
+            scriptResult += " }); </script>";
+
+            @Html.Raw(scriptResult)
+            ;
+        }
+    </div>
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            @if (propertyFeaturesValuesVM.FeaturesCategoriesVMList != null)
+            {
+                @if (IsNewProp == "yes")
+                {
+                    <button NewProp="yes" type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+                    <button id="btnBack" class="btn btn-primary btn-md" type="reset">بازگشت به لیست املاک</button>
+                }
+                else
+                {
+                    <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+                    <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+                }
+            }
+            else
+            {
+                <button id="btnBack" class="btn btn-primary btn-md" type="reset">بازگشت به لیست املاک</button>
+            }
+
+        </div>
+    </div>
+</form>
+
+@*<form onsubmit="return false;">
+    <div class="row">
+        <div class="row">
+            <div class="form-group col col-md-12">
+                @{
+                    <div id='error-alert' class="form-group alert alert-danger">
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                <label class="col-lg-12">
+                    &nbsp;
+                </label>
+                <button id="btnSubmit" name="btnSubmit" class="btn btn-default input-sm" type="button">
+                    بروز رسانی
+                </button>
+            </div>
+        </div>
+     <div class="row">
+
+        @{
+            string htmlResult = "";
+            int i = 1;
+            foreach (var feature in propertyFeaturesValuesVM.FeaturesVMList)
+            {
+                if ((i % 4) == 1)
+                {
+                    htmlResult += "<div class=\"row\">";
+                }
+                htmlResult += "<div class=\"form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12\">" +
+                "<div>" +
+                "<label for=\"" + feature.FeatureId + "\">" +
+                feature.FeatureTitle +
+                "</label>" +
+                "</div>";
+                string value = "";
+                if (propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).Any())
+                {
+                    value = propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).FirstOrDefault().FeatureValue;
+                }
+                switch (feature.ElementTypeId)
+                {
+                    case 1://متنی
+                        htmlResult += "<input data-ElementTypeId=\"" + feature.ElementTypeId + "\" class=\"form-control input-sm features\" placeholder=\"" + feature.FeatureTitle +
+                        "\" type=\"text\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId + "\" value=\"" + value + "\">";
+                        break;
+                    case 2://تک انتخابی
+                        htmlResult += "<select data-ElementTypeId=\"" + feature.ElementTypeId + "\" class=\"form-control input-sm features\" placeholder=\"" + feature.FeatureTitle + "\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId + "\">" +
+                        "<option value=\"\">---</option>";
+
+                        var featureOptions = propertyFeaturesValuesVM.FeaturesOptionsVMList.Where(fo => fo.FeatureId.Equals(feature.FeatureId)).ToList();
+                        if (featureOptions != null)
+                            if (featureOptions.Count > 0)
+                            {
+                                foreach (var featureOption in featureOptions)
+                                {
+                                    htmlResult += "<option value=\"" + featureOption.FeatureOptionValue + "\">" + featureOption.FeatureOptionText + "</option>";
+                                }
+                            }
+
+                        htmlResult += "</select>";
+                        break;
+                    case 3://چند انتخابی
+                        htmlResult += "<select data-ElementTypeId=\"" + feature.ElementTypeId + "\" multiple class=\"form-control input-sm features\" placeholder=\"" + feature.FeatureTitle + "\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId + "\">" +
+                        "<option value=\"\">---</option>";
+
+                        var multiFeatureOptions = propertyFeaturesValuesVM.FeaturesOptionsVMList.Where(fo => fo.FeatureId.Equals(feature.FeatureId)).ToList();
+                        if (multiFeatureOptions != null)
+                            if (multiFeatureOptions.Count > 0)
+                            {
+                                foreach (var featureOption in multiFeatureOptions)
+                                {
+                                    htmlResult += "<option value=\"" + featureOption.FeatureOptionValue + "\">" + featureOption.FeatureOptionText + "</option>";
+                                }
+                            }
+
+                        htmlResult += "</select>";
+                        break;
+                    case 4://توضیحات
+                        break;
+                    case 5://چک باکس
+                        bool boolValue = false;
+                        if (!string.IsNullOrEmpty(value))
+                            boolValue = bool.Parse(value);
+                        htmlResult += "<label style=\"height: 29px;\"><input data-ElementTypeId=\"" + feature.ElementTypeId +
+                        "\" type=\"checkbox\" id=\"" + feature.FeatureId + "\" name=\"" + feature.FeatureId +
+                        "\" data-placement=\"top\" data-toggle=\"tooltip\" title=\"" + feature.FeatureTitle +
+                        "\" class=\"features\" " + (boolValue ? "checked" : "") + ">&nbsp;&nbsp;&nbsp;" + feature.FeatureTitle + "</label>";
+                        break;
+                }
+
+                htmlResult += "</div>";
+                i++;
+                if ((i % 4) == 1)
+                {
+                    htmlResult += "</div>";
+                }
+            }
+
+            @Html.Raw(htmlResult)
+            ;
+
+            string scriptResult = "<script type=\"text/javascript\"> $(document).ready(function () { ";
+
+            foreach (var feature in propertyFeaturesValuesVM.FeaturesVMList.Where(f => f.ElementTypeId.Equals(2) || f.ElementTypeId.Equals(3)))
+            {
+                scriptResult += "$('#" + feature.FeatureId + "').chosen({" +
+                "placeholder_text_single: ' '," +
+                "placeholder_text_multiple: ' '," +
+                "search_contains: true," +
+                "max_shown_results: numberOfChosenItemsShow," +
+                "rtl: rtl" +
+                "});";
+
+                string value = "";
+                if (propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).Any())
+                {
+                    value = propertyFeaturesValuesVM.FeaturesValuesVMList.Where(fv => fv.FeatureId.Equals(feature.FeatureId)).FirstOrDefault().FeatureValue;
+                }
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    if (feature.ElementTypeId.Equals(2))
+                        scriptResult += " $('#" + feature.FeatureId + "').val('" + value + "').trigger(\"chosen:updated\");";
+                    else
+                    if (feature.ElementTypeId.Equals(3))
+                    {
+                        scriptResult += "debugger;";
+                        scriptResult += "var a = '" + value + "'.split(',');";
+                        scriptResult += " $('#" + feature.FeatureId + "').val('" + value + "'.split(',')" + ").trigger(\"chosen:updated\"); ";
+                    }
+                }
+            }
+
+            scriptResult += " }); </script>";
+
+            @Html.Raw(scriptResult)
+            ;
+        }
+        @*</div>
+
+
+    </div>
+
+</form>*@

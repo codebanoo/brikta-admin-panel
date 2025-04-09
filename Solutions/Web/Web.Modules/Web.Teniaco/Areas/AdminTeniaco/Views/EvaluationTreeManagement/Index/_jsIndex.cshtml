@@ -1,0 +1,106 @@
+﻿<script type="text/javascript">
+
+    //var jsonData = "";
+
+    var jsonData = {
+        "title": '',
+        "folder": true,
+        "expanded": true,
+        "children": []
+    };
+
+    function checkNodesForChildren(evaluationCategoryId) {
+        debugger;
+
+        var children = [];
+
+        if (evaluationCategoriesList.filter(c => c.EvaluationParentCategoryId == evaluationCategoryId).length == 0) {
+            debugger;
+
+            return children;
+        }
+
+        var evalCategories = evaluationCategoriesList.filter(c => c.EvaluationParentCategoryId == evaluationCategoryId);
+
+        for (var i = 0; i < evalCategories.length; i++) {
+
+
+            children.push({
+                "title": evalCategories[i].EvaluationCategoryTitle,
+                "folder": true,
+                "expanded": true,
+                "children": checkNodesForChildren(evalCategories[i].EvaluationCategoryId)
+            });
+
+
+            debugger;
+
+            //jsonData += " { ";
+            //jsonData += " title: \"" + evalCategories[i].EvaluationCategoryTitle + "\", folder: true, expanded: true, ";
+            //jsonData += " children: [ " + checkNodesForChildren(evalCategories[i].EvaluationCategoryId) + " ],";
+            //jsonData += " }, ";
+
+
+        }
+
+        return children;
+        debugger
+    }
+
+
+
+
+    $(document).ready(function () {
+        debugger;
+        var parents = evaluationCategoriesList.filter(f => f.EvaluationParentCategoryId == null);
+
+        jsonData = null;
+
+        jsonData = {
+            "title": '',
+            "folder": true,
+            "expanded": true,
+            "children": []
+        };
+
+        var children = [];
+
+
+        for (var i = 0; i < parents.length; i++) {
+            debugger;
+
+            var tmpNode = [];
+
+            tmpNode = checkNodesForChildren(parents[i].EvaluationCategoryId);
+
+            //jsonData += " { ";
+            //jsonData += " title: \"" + parents[i].EvaluationCategoryTitle + "\", folder: true, expanded: true, ";
+            //jsonData += " children: [ " + checkNodesForChildren(parents[i].EvaluationCategoryId) + " ],";
+            //jsonData += ' }, ';
+
+            children.push({
+                "title": parents[i].EvaluationCategoryTitle,
+                "folder": true,
+                "expanded": true,
+                "children": tmpNode
+            });
+
+        }
+        debugger;
+
+        jsonData.children = children;
+
+
+        $("#tree").fancytree({
+            checkbox: false,
+            selectMode: 3,
+            rtl: true,
+            source: jsonData,
+            icon: "/images/CheckCircle.png",
+            //postProcess: function (event, data) {
+            //    checkNodesForChildren(data.response);
+            //}
+        });
+    });
+
+</script>

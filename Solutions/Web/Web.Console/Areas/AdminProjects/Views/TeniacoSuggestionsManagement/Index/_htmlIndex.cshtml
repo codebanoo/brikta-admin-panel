@@ -1,0 +1,103 @@
+﻿<hr class="full-splitter" />
+@using VM.Projects
+@{
+    ConstructionProjectsVM project = new ConstructionProjectsVM();
+
+    if (ViewData["ConstructionProject"] != null)
+    {
+        project = (ConstructionProjectsVM)ViewData["ConstructionProject"];
+    }
+}
+
+
+
+
+
+<div class="col-md-12 col-sm-12 ">
+    <div class="x_panel">
+
+        <div class="x_content">
+            <div class="row justify-content-center">
+
+
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-3 col-xs-12 col-sm-12 col-lg-3 col-xl-3">
+                            <div>
+                                عنوان پروژه:
+                                @Html.Raw(project.ConstructionProjectTitle)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 flex items-center d-flex align-items-center my-5 suggestionTitleDiv">
+                    <label style="margin-bottom:0px;" class="ml-5">عنوان صفحه پیشنهادات</label>
+                    <input id="suggestionPageTitle" type="text" value="@Html.Raw(project.SuggestionTitle)" class="form-control w-25" style="border-radius: 11px;" />
+                </div>
+
+                <div class="col-12 flex items-center d-flex align-items-center suggestionAddDiv">
+
+                    <div id="dz-main" class="drop-zone">
+                        <label class="form-label mb-1 titles" style="color: gray; cursor:pointer;" id="mainImage">عکس اصلی</label>
+                        <span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="drop-zone__prompt"></span>
+                        <input accept=".png, .jpg, .jpeg, .webp" type="file" name="myFile" class="main-Image d-none" id="main-img-input">
+                        <span class="text-danger"></span>
+                    </div>
+
+                    <textarea id="fileDescription" style="border-radius:20px; height: 105px;resize: none;" class="form-control" rows="10" placeholder="توضیحات تکمیلی"></textarea>
+
+                    <button id="addFile" class="btn btn-success btn-md mx-3">افزودن رکورد</button>
+
+                </div>
+
+                <div style="overflow: auto;overflow-x: hidden;" class="col-12 my-5">
+                    <section class="container2">
+                    </section>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center">
+                    <button id="submitChanges" class="btn btn-success btn-md mx-3">ثبت</button>
+                    <button id="enterEditMode" class="btn btn-primary btn-md mx-3">ویرایش</button>
+                    <button id="updateFiles" class="btn btn-primary btn-md mx-3 hidden">بروزرسانی</button>
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div style="z-index:1051; background: rgba(0, 0, 0, 0.8);" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="deleteModal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button onclick="$('#deleteModal').hide();" id="closeDeleteModal" type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title col-12" id="myModalLabel">حذف فایل</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-12 my-3'>
+                        <div class="mx-2">
+                            آیا از حذف این فایل مطمئن هستید ؟
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-delete-file btn-sm">بله</button>
+                <button onclick="$('#deleteModal').hide();" type="button" class="btn btn-danger btn-sm">خیر</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

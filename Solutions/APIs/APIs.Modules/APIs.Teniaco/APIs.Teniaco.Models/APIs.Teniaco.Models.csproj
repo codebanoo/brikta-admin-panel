@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;" />
+	</Target>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="6.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.9">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="APIs.Public.Models">
+		  <HintPath>..\..\..\..\..\AllRef\APIs.Public.Models.dll</HintPath>
+		</Reference>
+		<Reference Include="FrameWork">
+			<HintPath>..\..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Console">
+		  <HintPath>..\..\..\..\..\AllRef\VM.Console.dll</HintPath>
+		</Reference>
+		<Reference Include="VM.Teniaco">
+		  <HintPath>..\..\..\..\VM\VM.Teniaco\bin\Debug\net6.0\VM.Teniaco.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

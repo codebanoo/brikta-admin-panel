@@ -1,0 +1,300 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<MyPropertyTypesVM> propertyTypesList = new List<MyPropertyTypesVM>();
+
+                        @Html.Raw("var propertyTypesList = [];");
+
+        if (ViewData["MyPropertyTypesList"] != null)
+        {
+            propertyTypesList = (List<MyPropertyTypesVM>)ViewData["MyPropertyTypesList"];
+
+            var propertyTypesListData = propertyTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.PropertyTypeTilte}",
+                Value = c.PropertyTypeId
+            });
+
+                            @Html.Raw("debugger; propertyTypesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertyTypesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<TypeOfUsesVM> typeOfUsesList = new List<TypeOfUsesVM>();
+
+                        @Html.Raw("var typeOfUsesList = [];");
+
+        if (ViewData["TypeOfUsesList"] != null)
+        {
+            typeOfUsesList = (List<TypeOfUsesVM>)ViewData["TypeOfUsesList"];
+
+            var typeOfUsesListData = typeOfUsesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.TypeOfUseTitle}",
+                Value = c.TypeOfUseId
+            });
+
+                            @Html.Raw("debugger; typeOfUsesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(typeOfUsesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentTypesVM> documentTypesList = new List<DocumentTypesVM>();
+
+                        @Html.Raw("var documentTypesList = [];");
+
+        if (ViewData["DocumentTypesList"] != null)
+        {
+            documentTypesList = (List<DocumentTypesVM>)ViewData["DocumentTypesList"];
+
+            var documentTypesListData = documentTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentTypeTitle}",
+                Value = c.DocumentTypeId
+            });
+
+                            @Html.Raw("debugger; documentTypesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentTypesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+
+
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+
+                                    @Html.Raw("var statesList = [];");
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            //var statesListData = statesList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.StateName}",
+            //    Value = c.StateId
+            //});
+
+                                        @Html.Raw("debugger; statesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesList)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+
+                                    @Html.Raw("var citiesList = [];");
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            //var citiesListData = citiesList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.CityName}",
+            //    Value = c.CityId,
+            //    Data_StateId = c.StateId
+            //});
+
+                                        @Html.Raw("debugger; citiesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesList)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+                                    @Html.Raw("var zonesList = [];");
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            var zonesListData = zonesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.ZoneName }",
+                Value = c.ZoneId,
+                Data_CityId = c.CityId
+            });
+                                        @Html.Raw("debugger; zonesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesList)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DistrictsVM> districtsList = new List<DistrictsVM>();
+
+        @Html.Raw("var districtsList = [];")
+        ;
+
+        if (ViewData["DistrictsList"] != null)
+        {
+            districtsList = (List<DistrictsVM>)ViewData["DistrictsList"];
+
+            //var districtsListData = districtsList.Select(c =>
+            //new
+            //{
+            //    DisplayText = $"{c.DistrictName}",
+            //    Value = c.DistrictId,
+            //    Data_ZoneId = c.ZoneId
+            //});
+
+            @Html.Raw("debugger; districtsList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(districtsList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<PersonsVM> personsList = new List<PersonsVM>();
+
+                                            @Html.Raw("var personsList = [];");
+
+        if (ViewData["PersonsList"] != null)
+        {
+            personsList = (List<PersonsVM>)ViewData["PersonsList"];
+
+            var personsListData = personsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family}",
+                Value = c.PersonId
+            });
+
+                                                @Html.Raw("debugger; personsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personsListData)) + "; debugger;");
+        }
+    }
+</script>
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(18),
+    div.jtable-main-container table.jtable thead th:nth-child(19),
+    div.jtable-main-container table.jtable thead th:nth-child(20),
+    div.jtable-main-container table.jtable thead th:nth-child(21),
+    div.jtable-main-container table.jtable thead th:nth-child(22),
+    div.jtable-main-container table.jtable thead th:nth-child(23),
+    div.jtable-main-container table.jtable thead th:nth-child(24),
+    div.jtable-main-container table.jtable thead th:nth-child(25),
+    div.jtable-main-container table.jtable thead th:nth-child(26),
+    div.jtable-main-container table.jtable thead th:nth-child(27) {
+        width: 1% !important;
+    }
+
+
+
+
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(18),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(19),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(20),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(21),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(22),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(23),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(24),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(25),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(26),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(27) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    .maps,
+    .features,
+    .location,
+    .media,
+    .docs {
+        width: 47px;
+        height: 35px;
+        text-align: center;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+
+    .details {
+        width: 38px;
+        height: 35px;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+
+    .numberCircle {
+        /* font: 18px Arial, sans-serif; */
+        /* width: 1em; */
+        /* height: 1em; */
+        /* box-sizing: initial; */
+        background: #417bb5;
+        /* border: 0.1em solid #417bb5; */
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        font-size: 12px;
+        /* box-sizing: content-box; */
+        margin: auto;
+        /* margin-top: 11px; */
+        width: 22px;
+        height: 22px;
+        position: absolute;
+        vertical-align: middle;
+        line-height: 12px;
+        left: 5px;
+        bottom: -10px;
+        /* z-index: 999;*/
+    }
+</style>

@@ -1,0 +1,309 @@
+﻿@using VM.Teniaco;
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+      <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="DistrictFileTitle1" name="DistrictFileTitle1" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+               فایل 1
+            </div>
+            <input type="file" id="file1" name="file1"
+                   placeholder="فایل 1"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="DistrictFileOrder1" name="DistrictFileOrder1" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="DistrictFileTitle2" name="DistrictFileTitle2" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                 فایل 2
+            </div>
+            <input type="file" id="file2" name="file2"
+                   placeholder="فایل 2"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="DistrictFileOrder2" name="DistrictFileOrder2" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="DistrictFileTitle3" name="DistrictFileTitle3" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+               فایل 3
+            </div>
+            <input type="file" id="file3" name="file3"
+                   placeholder="فایل 3"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="DistrictFileOrder3" name="DistrictFileOrder3" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="DistrictFileTitle4" name="DistrictFileTitle4" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                 فایل 4
+            </div>
+            <input type="file" id="file4" name="file4"
+                   placeholder="فایل 4"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="DistrictFileOrder4" name="DistrictFileOrder4" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="DistrictFileTitle5" name="DistrictFileTitle5" class="form-control "
+                   placeholder="عنوان" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                 فایل 5
+            </div>
+            <input type="file" id="file5" name="file5"
+                   placeholder="فایل 5"  />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مرتب سازی
+            </div>
+            <input type="number" id="DistrictFileOrder5" name="DistrictFileOrder5" class="form-control"
+                   placeholder="مرتب سازی" value="0" />
+        </div>
+    </div>
+
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+        </div>
+    </div>
+</form>
+@*
+<form onsubmit="return false;">
+    <div class="row">
+        <div class="row">
+            <div class="form-group col col-md-12">
+                @{
+                    <div id='error-alert' class="form-group alert alert-danger">
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileTitle1">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="DistrictFileTitle1" name="DistrictFileTitle1" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file1">
+                        فایل 1
+                    </label>
+                </div>
+                <input type="file" id="file1" name="file1" class="form-control input-sm"
+                       placeholder="فایل 1"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileOrder1">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="DistrictFileOrder1" name="DistrictFileOrder1" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileTitle2">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="DistrictFileTitle2" name="DistrictFileTitle2" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file2">
+                        فایل 2
+                    </label>
+                </div>
+                <input type="file" id="file2" name="file2" class="form-control input-sm"
+                       placeholder="فایل 2"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileOrder2">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="DistrictFileOrder2" name="DistrictFileOrder2" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileTitle3">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="DistrictFileTitle3" name="DistrictFileTitle3" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file3">
+                        فایل 3
+                    </label>
+                </div>
+                <input type="file" id="file3" name="file3" class="form-control input-sm"
+                       placeholder="فایل 3"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileOrder3">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="DistrictFileOrder3" name="DistrictFileOrder3" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileTitle4">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="DistrictFileTitle4" name="DistrictFileTitle4" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file4">
+                        فایل 4
+                    </label>
+                </div>
+                <input type="file" id="file4" name="file4" class="form-control input-sm"
+                       placeholder="فایل 4"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileOrder4">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="DistrictFileOrder4" name="DistrictFileOrder4" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileTitle5">
+                        عنوان
+                    </label>
+                </div>
+                <input type="text" id="DistrictFileTitle5" name="DistrictFileTitle5" class="form-control input-sm"
+                       placeholder="عنوان" />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="file5">
+                        فایل 5
+                    </label>
+                </div>
+                <input type="file" id="file5" name="file5" class="form-control input-sm"
+                       placeholder="فایل 5"  />
+            </div>
+            <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                <div>
+                    <label for="DistrictFileOrder5">
+                        مرتب سازی
+                    </label>
+                </div>
+                <input type="number" id="DistrictFileOrder5" name="DistrictFileOrder5" class="form-control input-sm"
+                       placeholder="مرتب سازی" value="0" />
+            </div>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <label class="col-lg-12">
+                &nbsp;
+            </label>
+            <button id="btnSubmit" name="btnSubmit" class="btn btn-default input-sm" type="button">
+                آپلود
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="پاک کردن فرم">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+    </div>
+
+</form>*@

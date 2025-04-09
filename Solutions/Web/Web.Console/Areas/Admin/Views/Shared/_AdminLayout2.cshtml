@@ -1,0 +1,242 @@
+﻿@using Services.Xml.Entities;
+@using VM.Console;
+
+@{
+    Layout = "_MainLayout";
+
+    DomainsSettingsVM domainsSettings = new DomainsSettingsVM();
+    if (ViewData["DomainsSettings"] != null)
+    {
+        domainsSettings = ViewData["DomainsSettings"] as DomainsSettingsVM;
+    }
+}
+
+@section head{
+
+    <link href="~/css/sb_admin_2/plugins/metisMenu/metisMenu.min.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/plugins/timeline.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/sb_admin_2rtl.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/plugins/morris.css" rel="stylesheet" />
+
+    <link href="~/lib/bootstrap-persiandatetimepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+
+    <style type="text/css">
+        div.jtable-main-container div.jtable-title {
+            text-align: center !important;
+            padding-right: 10px;
+        }
+
+        div.jtable-main-container > table.jtable > thead th.jtable-column-header div.jtable-column-header-container {
+            text-align: right !important;
+            padding-left: 10px;
+            background-position: left !important;
+        }
+
+        div.jtable-main-container table.jtable thead th {
+            text-align: right !important;
+            padding-right: 10px;
+        }
+
+        .jtable-dialog-form input,
+        .jtable-dialog-form select {
+            width: 100%;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            width: 100%;
+        }
+    </style>
+
+    @RenderSection("head", required: false)
+}
+
+@RenderBody()
+
+<div class="modal fade" id="my-details-modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="details-block"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="my-warning-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p id="error"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="my-confirm-modal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" 
+                    aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">تایید</h4>
+                <p>
+                    آسا مطمئن هستید؟
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="modal-btn-no">خیر</button>
+                <button type="button" class="btn btn-primary" id="modal-btn-yes">بله</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/js/sb_admin_2/metisMenu/metisMenu.min.js"></script>
+    <script src="~/js/sb_admin_2/raphael/raphael.min.js"></script>
+    <script src="~/js/sb_admin_2/morris/morris.min.js"></script>
+    <script src="~/js/sb_admin_2/sb_admin_2.js"></script>
+
+    <script src="~/lib/bootstrap-persiandatetimepicker/calendar.js"></script>
+    <script src="~/lib/bootstrap-persiandatetimepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+
+        })
+        //]]>
+    </script>
+
+    <script type="text/javascript">
+        //<![CDATA[
+            rtl = true; 
+            chosenConfig.rtl=rtl;
+
+        @{
+            if (domainsSettings.DomainSettingId != 0)
+            {
+                if (domainsSettings.NumberOfChosenItemsShow.HasValue)
+                {
+                    @Html.Raw("numberOfChosenItemsShow = " + domainsSettings.NumberOfChosenItemsShow.Value);
+                }
+            }
+        }
+
+        //]]>
+    </script>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        //var numberOfChosenItemsShow = 10;
+
+        @{
+            if (domainsSettings.DomainSettingId != 0)
+            {
+                if (domainsSettings.NumberOfChosenItemsShow.HasValue)
+                {
+                    @Html.Raw("numberOfChosenItemsShow = " + domainsSettings.NumberOfChosenItemsShow.Value);
+                }
+            }
+        }
+
+        //]]>
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+
+            debugger;
+            if (numberOfChosenItemsShow > 0) {
+                var chosens = $('.chosen-container');
+                var selects = [];
+                for (var i = 0; i < chosens.length; i++) {
+                    var chosen = chosens[i];
+                    selects.push($(chosen).prev());
+                }
+
+                for (var i = 0; i < selects.length; i++) {
+                    var select = selects[i];
+
+                    search_contains = true;
+                    rtl = true;
+                    chosenConfig.max_shown_results = numberOfChosenItemsShow;
+                    chosenConfig.search_contains = search_contains;
+                    chosenConfig.rtl = rtl;
+
+                    $(select).chosen('destroy').chosen(chosenConfig);
+
+                    debugger;
+                    $(select).next().attr('style', 'width: 88% !important;');
+                    $(select).next().after('<label class="lblShowAllChosenItem"><input type="checkbox" ' +
+                        'data-placement="top" data-toggle="tooltip"' +
+                        'title="نمایش همه" class="showAllChosenItem"></label>');
+                    var label = $(select).next().next();
+                    label.css('height', $(select).next().height());
+                }
+
+                $('.lblShowAllChosenItem').on('click', function () {
+                    debugger;
+                    var _this = $(this);
+                    var select = _this.prev().prev();
+                    if (_this.find('input[type="checkbox"]').is(':checked'))
+                        chosenConfig.max_shown_results = 1000;
+                    else
+                        chosenConfig.max_shown_results = numberOfChosenItemsShow;
+                    $(select).chosen('destroy').chosen(chosenConfig);
+                    _this.prev().attr('style', 'width: 88% !important;');
+                });
+            }
+            else {
+                numberOfChosenItemsShow = 1000
+            }
+
+            $('a[href="/AdminAutomation/AutomationPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/AutomationPanel/Desk"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index2"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index3"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index4"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index5"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/OrgChartManagement/Index2"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/WorkFlowsManagement/WorkFlowDesign"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/WorkFlowsManagement/Index"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/AutomationPanel/Desk"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/PropertiesManagement/CompareProperties2"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/InvestorsManagement/AnswerSheet2"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/MapLayerCategoriesManagement/Index2"]').addClass('colorRed');
+            $('a[href="/AdminProjects/OutterProjectsPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/EvaluationCategoriesManagement/Index2"]').addClass('colorRed');
+            $('a[href="/AdminConfigSite/ConfigSitePanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminDashboardConfig/DashboardConfigPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminPublic/RatesPanel/Index"]').addClass('colorRed');
+        });
+                            //]]>
+    </script>
+
+}
+

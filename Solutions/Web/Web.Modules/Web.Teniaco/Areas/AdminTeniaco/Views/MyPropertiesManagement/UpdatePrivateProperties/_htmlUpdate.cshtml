@@ -1,0 +1,308 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+@model MyPropertiesVM
+
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+       <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <input type="hidden" asp-for="PropertyId" />
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+       
+        <div class="form-group col col-md-12">
+            <div>
+                <label>
+                    کد ملک:
+                </label>
+                @Html.Raw(Model.PropertyId)
+            </div>
+        </div>
+
+        <div class="row roundedBlock">
+            <label>
+                اطلاعات پایه
+            </label>
+            <div class="row">
+
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PropertyCodeName">
+                            عنوان ملک
+                        </label>
+                    </div>
+                    <input asp-for="PropertyCodeName" class="form-control input-sm"
+                           placeholder="عنوان ملک" />
+                    <span asp-validation-for="PropertyCodeName" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PropertyTypeId">
+                            نوع ملک
+                        </label>
+                    </div>
+                    <select asp-for="PropertyTypeId" class="form-control input-sm"
+                            placeholder="نوع ملک">
+                        <option value="">---</option>
+                    </select>
+                    <span asp-validation-for="PropertyTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="TypeOfUseId">
+                            نوع کاربری
+                        </label>
+                    </div>
+                    <select asp-for="TypeOfUseId" class="form-control input-sm"
+                            placeholder="نوع کاربری">
+                        <option value="">---</option>
+                    </select>
+                    <span asp-validation-for="TypeOfUseId" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="DocumentTypeId">
+                            نوع سند
+                        </label>
+                    </div>
+                    <select asp-for="DocumentTypeId" class="form-control input-sm"
+                            placeholder="نوع سند">
+                        <option value="">---</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="ConsultantUserId">
+                            نام واسط/شماره تماس
+                        </label>
+                    </div>
+                    <select asp-for="ConsultantUserId" class="form-control input-sm"
+                            placeholder="نام واسط/شماره تماس">
+                        <option value="">---</option>
+                    </select>
+                    <label class="lblNewPerson pointer" style="height: 15px;">
+                        <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+                             class="" data-original-title="جدید">
+                    </label>
+                </div>
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="OwnerId">
+                            نام مالک/شماره تماس
+                        </label>
+                    </div>
+                    <select asp-for="OwnerId" class="form-control input-sm"
+                            placeholder="نام مالک/شماره تماس">
+                        <option value="">---</option>
+                    </select>
+                    <label class="lblNewPerson pointer" style="height: 15px;">
+                        <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+                             class="" data-original-title="جدید">
+                    </label>
+                </div>
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="Area">
+                            مساحت
+                        </label>
+                    </div>
+                    <input asp-for="Area" class="form-control input-sm"
+                           placeholder="مساحت" />
+                    <span asp-validation-for="Area" class="text-danger"></span>
+                </div>
+
+            </div>
+            @*        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+            <label>
+            عمومی/خصوصی
+            </label>
+            </div>
+            <select asp-for="IsPrivate" class="form-control input-sm"
+            placeholder="عمومی/خصوصی">
+            <option value="">عمومی</option>
+            <option value="">خصوصی</option>
+            </select>
+            <span asp-validation-for="IsPrivate" class="text-danger"></span>
+            </div>*@
+            <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <div>
+                    <label for="PropertyDescriptions">
+                        توضیحات تکمیلی
+                    </label>
+                </div>
+                <textarea asp-for="PropertyDescriptions" class="form-control input-sm" rows="5"
+                          placeholder="توضیحات تکمیلی"></textarea>
+            </div>
+        </div>
+        <div class="row roundedBlock">
+            <label>
+                قیمت
+            </label>
+            <div class="row">
+                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="OfferPriceType">
+                            نوع قیمت
+                        </label>
+                    </div>
+                    <select asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPriceType" class="form-control input-sm"
+                            placeholder="نوع قیمت">
+                        <option value="0">متری بر مبنای میلیون</option>
+                        <option value="1">کل بر مبنای میلیارد</option>
+                    </select>
+                    <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPriceType" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="OfferPrice">
+                            قیمت پیشنهادی
+                        </label>
+                        <span id="spnOfferPrice"></span>
+                    </div>
+                    <input asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPrice" class="form-control input-sm"
+                           placeholder="قیمت پیشنهادی" />
+                    <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="CalculatedOfferPrice">
+                            قیمت محاسبه شده
+                        </label>
+                        <span id="spnCalculatedOfferPrice"></span>
+                    </div>
+                    <input asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().CalculatedOfferPrice" class="form-control input-sm" readonly
+                           placeholder="قیمت محاسبه شده" />
+                    <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().CalculatedOfferPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PriceTypeRegister">
+                            نوع ثبت قیمت
+                        </label>
+                    </div>
+                    <select asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().PriceTypeRegister" class="form-control input-sm"
+                            placeholder="نوع ثبت قیمت">
+                        <option value="0">اصلاح قیمت قبلی</option>
+                        <option value="1">ثبت قیمت جدید</option>
+                    </select>
+                    <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().PriceTypeRegister" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row roundedBlock">
+            <label>
+                موقعیت
+            </label>
+            <div class="row">
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PropertyAddressVM_StateId">
+                            استان
+                        </label>
+                    </div>
+                    <select asp-for="MyPropertyAddressVM.StateId" class="form-control input-sm"
+                            placeholder="استان">
+                        <option value="">---</option>
+                    </select>
+                    <span asp-validation-for="MyPropertyAddressVM.StateId" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PropertyAddressVM_CityId">
+                            شهر
+                        </label>
+                    </div>
+                    <select asp-for="MyPropertyAddressVM.CityId" class="form-control input-sm"
+                            placeholder="شهر">
+                        <option value="">---</option>
+                    </select>
+                    <span asp-validation-for="MyPropertyAddressVM.CityId" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PropertyAddressVM_ZoneId">
+                            منطقه
+                        </label>
+                    </div>
+                    <select asp-for="MyPropertyAddressVM.ZoneId" class="form-control input-sm"
+                            placeholder="منطقه">
+                        <option value="">---</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PropertyAddressVM_Address">
+                            آدرس
+                        </label>
+                    </div>
+                    <textarea asp-for="MyPropertyAddressVM.Address" class="form-control input-sm" rows="3"
+                              placeholder="آدرس"></textarea>
+                    <span asp-validation-for="MyPropertyAddressVM.Address" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col col-md-1 col-lg-1">
+                        <div class="pointer board maps">
+                            <div class="board-title">نقشه ها</div>
+                            <img src="/images/Cad.png" title="نقشه ها" />
+                        </div>
+
+                    </div>
+                    <div class="form-group col col-md-1 col-lg-1 ">
+
+                        <div class="pointer board features">
+                            <div class="board-title">امکانات</div>
+                            <img src="/images/Info.png" title="امکانات" />
+                        </div>
+
+                    </div>
+                    <div class="form-group col col-md-1 col-lg-1 ">
+                        <div class="pointer board location">
+                            <div class="board-title">موقعیت</div>
+                            <img src="/images/Location.png" title="موقعیت" />
+                        </div>
+
+                    </div>
+                    <div class="form-group col col-md-1 col-lg-1 ">
+                        <div class="pointer board docs">
+                            <div class="board-title">اسناد</div>
+                            <img src="/images/sanad.png" title="اسناد" />
+                        </div>
+
+                    </div>
+                    <div class="form-group col col-md-1 col-lg-1 ">
+                        <div class="pointer board media">
+                            <div class="board-title">فیلم&nbsp;و&nbsp;عکس</div>
+                            <img src="/images/Video.png" title="مدیا/تصاویر" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                        <label class="col-lg-12">
+                            &nbsp;
+                        </label>
+                        <button class="btn btn-default input-sm" type="submit" id="UpdateProperties">
+                            ویرایش
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</form>

@@ -1,0 +1,75 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        debugger;
+        var mapLayerId = mapLayers.MapLayerId;
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            var formData = new FormData();
+
+            debugger;
+
+            var filesElm = $('input[type=file]');
+
+            var mapLayerFileUploadPVMList = [];
+
+            if (filesElm.length > 0) {
+                for (var i = 0; i < filesElm.length; i++) {
+                    var file = filesElm[i];
+                    if (file != null)
+                        if (file.files[0] != null)
+                            if (file.files[0].size > 0) {
+                                mapLayerFileUploadPVMList.push({
+                                    File: file.files[0]
+                                });
+
+                                formData.append("MapLayerFileUploadPVMList[" + i + "].File", file.files[0]);
+                            }
+                }
+
+                if (mapLayerFileUploadPVMList.length > 0) {
+                    formData.append('MapLayerId', mapLayerId
+
+                    $.ajax({
+                        url: '/AdminTeniaco/MapLayersManagement/AddGeoJsonFile',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            debugger;
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                            $('#error-alert').show(500);
+                          
+                        },
+                        error: function (jqXHR) {
+                            $('#error-alert').removeClass('alert-success');
+                            $('#error-alert').addClass('alert-danger');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message);
+                            $('#error-alert').show(500);
+                           
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+                else {
+                    alert('لطفا فایلهای مورد نظر را انتخاب کنید');
+                }
+            }
+        });
+
+    });
+</script>

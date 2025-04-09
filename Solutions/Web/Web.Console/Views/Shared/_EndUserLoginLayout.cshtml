@@ -1,0 +1,35 @@
+﻿@using Services.Xml.Entities;
+
+@{
+    Layout = "_Layout";
+}
+
+@section head{
+    @RenderSection("head", required: false)
+}
+
+@RenderBody()
+
+@section scripts{
+
+    <script src="~/js/tooltip.js" type="text/javascript"></script>
+
+    <link href="~/lib/jqueryloading/jquery.loading.css" rel="stylesheet" />
+    <script src="~/lib/jqueryloading/jquery.loading.js"></script>
+
+    <script src="~/js/public.js"></script>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            //$(window).load(function () { $('#AjaxLoading').hide(); });
+            $(document).Loading();
+        })
+            //]]>
+    </script>
+    @{
+        //await Html.RenderPartialAsync("sb_admin_2Js");
+    }
+    @RenderSection("scripts", required: false)
+}
+

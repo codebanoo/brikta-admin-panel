@@ -1,0 +1,78 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+
+        $('.chkChecker').change(function () {
+            debugger;
+            $('#strIds').val('');
+
+            var chkCheckers = $('.chkChecker');
+            var strIds = '';
+
+            for (var i = 0; i < chkCheckers.length; i++) {
+                var item = chkCheckers[i];
+                if ($(item).is(":checked")) {
+                    var menuId = $(item).attr('data-MenuId');
+                    strIds += menuId + ',';
+                }
+            }
+
+            $('#strIds').val(strIds);
+
+            //if ($(this).is(":checked")) {
+            //    var returnVal = confirm("Are you sure?");
+            //    $(this).attr("checked", returnVal);
+            //}
+            //$('#textbox1').val($(this).is(':checked'));
+        });
+    });
+
+    function OnBegin() {
+        debugger;
+        //$('#strAccesses').val('')
+        //var accesses = '';
+        //$('#AjaxLoading').show();
+        //var nodes = $('#tree').fancytree('getTree').getSelectedNodes();
+        //for(var i in nodes)
+        //{
+        //    var node = nodes[i];
+        //    if(node.selected == true)
+        //        if(node.data.id != undefined)
+        //            accesses += node.data.id + ',';
+        //}
+        //$('#strAccesses').val(accesses);
+        //return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+        if (response.Result == 'OK') {
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+            window.setTimeout(function () {
+            }, 2000);
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+        }
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $('#error-alert').show(1000);
+        $('#error-alert').html(response.Message);
+        $('#error-alert').show(500);
+        //$('#AjaxLoading').hide();
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        debugger;
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+        //$('#AjaxLoading').hide();
+    };
+</script>

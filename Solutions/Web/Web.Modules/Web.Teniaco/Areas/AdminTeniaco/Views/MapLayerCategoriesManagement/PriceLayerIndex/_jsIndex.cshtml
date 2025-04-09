@@ -1,0 +1,702 @@
+﻿<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $('#slcPlatform').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < propertyTypesList.length; i++) {
+            debugger;
+            var item = propertyTypesList[i];
+            $('#slcPropertyTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcPropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < typeOfUsesList.length; i++) {
+            debugger;
+            var item = typeOfUsesList[i];
+            $('#slcTypeOfUseId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcTypeOfUseId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < statesList.length; i++) {
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+
+            $('#slcStates')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+
+        }
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcStates').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCities').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZones').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcDistrictId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcDistricts').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('body').on('change', '#Edit-StateId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#Edit-CityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#Edit-CityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-CityId').trigger("chosen:updated");
+
+            $('#Edit-CityId').change();
+        });
+
+        $('body').on('change', '#Edit-CityId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#Edit-ZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#Edit-ZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-ZoneId').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#Edit-ZoneId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+            $('#Edit-DistrictId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                var item = districtsList[i];
+                if (item.Data_ZoneId == zoneId)
+                    $('#Edit-DistrictId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-DistrictId').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#slcStates', function (e) {
+            e.preventDefault();
+
+
+            let _this = $(this);
+            let stateId = _this.val();
+
+            $('#slcCities').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+
+                if (item.Data_StateId == stateId) {
+
+                    $('#slcCities')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+                }
+            }
+            $('#slcCities').trigger("chosen:updated");
+            $('#slcCities').change();
+
+            $('#slcDistricts').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+            $('#slcDistricts').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#slcCities', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#slcZones').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#slcZones')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcZones').trigger("chosen:updated");
+            $('#slcDistricts').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+            $('#slcDistricts').trigger("chosen:updated");
+        });
+
+        $('body').on('change', '#slcZones', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+
+            $('#slcDistricts').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                var item = districtsList[i];
+                if (item.Data_ZoneId == zoneId) {
+
+                    var districtName = '';
+                    if (item.DistrictName != null)
+                        districtName = item.DistrictName;
+                    else
+                        if (item.VillageName != null)
+                            districtName = item.VillageName;
+                        else
+                            if (item.TownName != null)
+                                districtName = item.TownName;
+
+                    $('#slcDistricts')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+                }
+            }
+            $('#slcDistricts').trigger("chosen:updated");
+
+        });
+
+        // var raster = new ol.layer.Tile({
+        //     source: new ol.source.OSM,
+        //     zoom: 12,
+        //     maxZoom: 17,
+        //     minZoom: 1,
+        // });
+
+        // var view = new ol.View({
+        //     center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+        //     //center: ol.proj.fromLonLat([116.5, 40]),
+        //     zoom: 12,
+        //     maxZoom: 17,
+        //     minZoom: 1,
+        //     constrainOnlyCenter: true,
+        // });
+
+        // var mapLeft = new ol.Map({
+        //     logo: false,
+        //     controls: ol.control.defaults({
+        //         attributionOptions: ({
+        //             collapsible: false
+        //         })
+        //     }),
+        //     layers: [raster],
+        //     target: 'mapContainer',
+        //     view: view
+        // });
+
+        var map;
+
+        $('body').on('click', '#btnGetRecords', function (e) {
+
+            e.preventDefault();
+
+            var _this = $(this);
+
+            var platform = $('#slcPlatform').val();
+            var priceFrom = $('#txtPriceFrom').val();
+            var priceTo = $('#txtPriceTo').val();
+            var stateId = $('#slcStateId').val();
+            var cityId = $('#slcCityId').val();
+            var zoneId = $('#slcZoneId').val();
+            var districtId = $('#slcDistrictId').val();
+            var typeOfUseId = $('#slcTypeOfUseId').val();
+            var propertyTypeId = $('#slcPropertyTypeId').val();
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/MapLayerCategoriesManagement/GetListOfPropertiesPricesForMap",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: {
+                    'platform': platform,
+                    'priceFrom': priceFrom,
+                    'priceTo': priceTo,
+                    'stateId': stateId,
+                    'cityId': cityId,
+                    'zoneId': zoneId,
+                    'districtId': districtId,
+                    'typeOfUseId': typeOfUseId,
+                    'propertyTypeId': propertyTypeId
+                },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        propertiesPricesList = result.Records;
+
+                        if (propertiesPricesList != null)
+                            if (propertiesPricesList.length > 0) {
+
+                                const features = new Array(propertiesPricesList.length);
+                                const distanceInput = 40;
+                                const minDistanceInput = 20;
+
+                                for (var i = 0; i < propertiesPricesList.length; i++) {
+                                    debugger;
+                                    var price = propertiesPricesList[i];
+
+                                    var coord = ol.proj.transform([price.LocationLon, price.LocationLat], 'EPSG:4326', 'EPSG:3857')
+
+                                    //var coord = ol.proj.transform([Number(price.LocationLat), Number(price.LocationLon)], 'EPSG:3857', 'EPSG:4326');
+
+                                    //var coord = [price.LocationLat, price.LocationLon]
+
+                                    //var point = ol.proj.transform([Number(coord[0]), Number(coord[1])], 'EPSG:4326', 'EPSG:3857');
+                                    var point = new ol.geom.Point(coord);
+                                    features[i] = new ol.Feature(point);
+                                    features[i].OfferPrice = price.OfferPrice;
+                                    features[i].CalculatedOfferPrice = price.CalculatedOfferPrice;
+                                    features[i].OfferPriceType = price.OfferPriceType;
+                                    features[i].LastPrice = price.LastPrice;
+
+
+                                    // const count = 20000;
+                                    // const features = new Array(count);
+                                    // const e = 4500000;
+
+
+
+
+                                    // for (let i = 0; i < count; ++i) {
+                                    //     //debugger;
+                                    //     const coord = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+                                    //     //var point = ol.proj.transform([Number(coord[0]), Number(coord[1])], 'EPSG:4326', 'EPSG:3857')
+
+
+                                    //     features[i] = new ol.Feature(new ol.geom.Point(coord));
+
+
+
+                                    //     // features[i] = new ol.Feature({
+                                    //     //     'geometry': new ol.geom.Point(coord),
+                                    //     //     // 'geometry': new ol.geom.Point([
+                                    //     //     //     coord[0],
+                                    //     //     //     coord[1],
+                                    //     //     // ]),
+                                    //     // });
+
+
+                                    //     //features[i] = new ol.Feature(new ol.geom.Point(coord[0], coord[1]));
+
+
+
+
+                                    //     //features[i] = new ol.Feature(new ol.source.Point(coord));
+                                    //     //features[i] = new ol.Feature(point);
+                                    // }
+                                }
+
+                                var parentMapContainer = $('#mapContainer').parent();
+                                $('#mapContainer').remove();
+                                parentMapContainer.html('<div id="mapContainer"></div>');
+
+                                const source = new ol.source.Vector({
+                                    features: features,
+                                });
+                                debugger;
+                                const clusterSource = new ol.source.Cluster({
+                                    //const clusterSource = new Cluster({
+                                    distance: parseInt(distanceInput, 10),
+                                    minDistance: parseInt(minDistanceInput, 10),
+                                    source: source,
+                                });
+
+                                const styleCache = {};
+                                const clusters = new ol.layer.Vector({
+                                    source: clusterSource,
+                                    style: function (feature) {
+                                        debugger;
+                                        var features = feature.get('features');
+
+                                        var sum = 0;
+                                        for (var i = 0; i < features.length; i++) {
+                                            var tmpFeature = features[i];
+                                            sum += tmpFeature.LastPrice;
+                                        }
+
+                                        //const size = feature.get('features').length;
+                                        const size = Math.round(sum / features.length);
+                                        let style = styleCache[size];
+                                        
+                                        if (!style) {
+                                            style = new ol.style.Style({
+                                                //label: function (feature) { debugger; return 'a'; },
+                                                image: new ol.style.Circle({
+                                                    //image: new CircleStyle({
+                                                    radius: 10,
+                                                    stroke: new ol.style.Stroke({
+                                                        color: '#fff',
+                                                    }),
+                                                    fill: new ol.style.Fill({
+                                                        color: '#3399CC',
+                                                    }),
+                                                }),
+                                                text: new ol.style.Text({
+                                                    // text: function (eee) {
+                                                    //     debugger;
+                                                    // },
+                                                    text: size.toString(),
+                                                    fill: new ol.style.Fill({
+                                                        color: '#000',
+                                                    }),
+                                                }),
+                                                // label: "${val}",
+                                                // },
+                                                // // {
+                                                // {
+                                                //     context: {
+                                                //         val: function (feature) {
+                                                //             if (feature.cluster.length > 1) {
+                                                //                 var sumValue = 0;
+                                                //                 for (var i = 0; i < feature.cluster.length; i++) {
+                                                //                     sumValue += parseFloat(feature.cluster[i].attributes.tzewn);
+                                                //                 }
+                                                //                 var averageValue = (sumValue / feature.cluster.length).toFixed(1);
+                                                //                 return averageValue;
+                                                //             }
+                                                //             else
+                                                //                 var Value = feature.cluster[0].attributes.tzewn;
+                                                //             return Value; //"1";
+                                                //         }
+                                                //     }
+                                            });
+                                            styleCache[size] = style;
+                                        }
+                                        debugger;
+                                        //style.getText().setText(feature.A.features[0].price);
+                                        return style;
+                                    },
+                                });
+
+                                // var container = $('#popup');
+                                // var content = $('#popup-content');
+                                // var closer = $('#popup-closer');
+
+                                // overlay = new ol.Overlay({
+                                //     element: container,
+                                //     autoPan: true,
+                                //     autoPanAnimation: {
+                                //         duration: 250
+                                //     }
+                                // });
+
+                                // closer.onclick = function () {
+                                //     overlay.setPosition(undefined);
+                                //     closer.blur();
+                                //     return false;
+                                // };
+
+                                const raster = new ol.layer.Tile({
+                                    //const raster = new TileLayer({
+                                    source: new ol.source.OSM(),
+                                });
+
+                                var view = new ol.View({
+                                    center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+                                    //center: ol.proj.fromLonLat([116.5, 40]),
+                                    zoom: 12,
+                                    maxZoom: 17,
+                                    minZoom: 1,
+                                    constrainOnlyCenter: true,
+                                });
+
+                                map = new ol.Map({
+                                    layers: [raster, clusters],
+                                    target: 'mapContainer',
+                                    view: view,
+                                    //overlays: [overlay],
+                                    // view: new ol.View({
+                                    //     center: [0, 0],
+                                    //     zoom: 2,
+                                    // }),
+                                });
+
+                                map.on('click', (e) => {
+                                    debugger;
+                                    clusters.getFeatures(e.pixel).then((clickedFeatures) => {
+                                        debugger;
+                                        if (clickedFeatures.length) {
+                                            // Get clustered Coordinates
+                                            const features = clickedFeatures[0].get('features');
+                                            if (features.length > 1) {
+                                                const extent = new ol.extent.boundingExtent(
+                                                    features.map((r) => r.getGeometry().getCoordinates())
+                                                );
+                                                map.getView().fit(extent, { duration: 1000, padding: [50, 50, 50, 50] });
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html(result.Message);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('خطا');
+                    $('#my-warning-modal').modal("show");
+                }
+            });
+        });
+
+        // const distanceInput = 40;
+        // const minDistanceInput = 20;
+
+        // const count = 20000;
+        // const features = new Array(count);
+        // const e = 4500000;
+        // for (let i = 0; i < count; ++i) {
+        //     debugger;
+        //     const coord = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+        //     //var point = ol.proj.transform([Number(coord[0]), Number(coord[1])], 'EPSG:4326', 'EPSG:3857')
+
+
+        //     features[i] = new ol.Feature(new ol.geom.Point(coord));
+
+
+
+        //     // features[i] = new ol.Feature({
+        //     //     'geometry': new ol.geom.Point(coord),
+        //     //     // 'geometry': new ol.geom.Point([
+        //     //     //     coord[0],
+        //     //     //     coord[1],
+        //     //     // ]),
+        //     // });
+
+
+        //     //features[i] = new ol.Feature(new ol.geom.Point(coord[0], coord[1]));
+
+
+
+
+        //     //features[i] = new ol.Feature(new ol.source.Point(coord));
+        //     //features[i] = new ol.Feature(point);
+        // }
+
+        // const source = new ol.source.Vector({
+        //     features: features,
+        // });
+        // debugger;
+        // const clusterSource = new ol.source.Cluster({
+        //     //const clusterSource = new Cluster({
+        //     distance: parseInt(distanceInput, 10),
+        //     minDistance: parseInt(minDistanceInput, 10),
+        //     source: source,
+        // });
+
+        // const styleCache = {};
+        // const clusters = new ol.layer.Vector({
+        //     source: clusterSource,
+        //     style: function (feature) {
+        //         const size = feature.get('features').length;
+        //         let style = styleCache[size];
+        //         if (!style) {
+        //             style = new ol.style.Style({
+        //                 image: new ol.style.Circle({
+        //                     //image: new CircleStyle({
+        //                     radius: 10,
+        //                     stroke: new ol.style.Stroke({
+        //                         color: '#fff',
+        //                     }),
+        //                     fill: new ol.style.Fill({
+        //                         color: '#3399CC',
+        //                     }),
+        //                 }),
+        //                 text: new ol.style.Text({
+        //                     text: size.toString(),
+        //                     fill: new ol.style.Fill({
+        //                         color: '#fff',
+        //                     }),
+        //                 }),
+        //             });
+        //             styleCache[size] = style;
+        //         }
+        //         return style;
+        //     },
+        // });
+
+        // const raster = new ol.layer.Tile({
+        //     //const raster = new TileLayer({
+        //     source: new ol.source.OSM(),
+        // });
+
+        // var view = new ol.View({
+        //     center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+        //     //center: ol.proj.fromLonLat([116.5, 40]),
+        //     zoom: 12,
+        //     maxZoom: 17,
+        //     minZoom: 1,
+        //     constrainOnlyCenter: true,
+        // });
+
+        // const map = new ol.Map({
+        //     layers: [raster, clusters],
+        //     target: 'mapContainer',
+        //     view: view
+        //     // view: new ol.View({
+        //     //     center: [0, 0],
+        //     //     zoom: 2,
+        //     // }),
+        // });
+
+        // map.on('click', (e) => {
+        //     debugger;
+        //     clusters.getFeatures(e.pixel).then((clickedFeatures) => {
+        //         debugger;
+        //         if (clickedFeatures.length) {
+        //             // Get clustered Coordinates
+        //             const features = clickedFeatures[0].get('features');
+        //             if (features.length > 1) {
+        //                 const extent = boundingExtent(
+        //                     features.map((r) => r.getGeometry().getCoordinates())
+        //                 );
+        //                 map.getView().fit(extent, { duration: 1000, padding: [50, 50, 50, 50] });
+        //             }
+        //         }
+        //     });
+        // });
+    });
+
+
+</script>

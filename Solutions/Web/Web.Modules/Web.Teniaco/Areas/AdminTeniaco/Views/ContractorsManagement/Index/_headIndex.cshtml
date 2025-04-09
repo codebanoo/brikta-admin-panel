@@ -1,0 +1,144 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+        @Html.Raw("var statesList=[];")
+        ;
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            var statesListData = statesList.Select(s =>
+         new
+         {
+             DisplayText = $"{s.StateName}",
+             Value = s.StateId
+         });
+
+            @Html.Raw("debugger; statesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesListData)) +" ;debugger;")
+            ;
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+        @Html.Raw("var citiesList=[];")
+        ;
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            var citiesListData = citiesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.CityName}",
+                Value = c.CityId,
+                Data_StateId = c.StateId
+            });
+
+            @Html.Raw("debugger; citiesList = " +
+               JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+        @Html.Raw("var zonesList = [];")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            var zonesListData = zonesList.Select(c =>
+            new
+            {
+                DisplayText = $"{ c.ZoneName}",
+                Value = c.ZoneId,
+                Data_CityId = c.CityId
+            });
+
+            @Html.Raw("debugger; zonesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<GuildCategoriesVM> guildCategoriesList = new List<GuildCategoriesVM>();
+        @Html.Raw("var guildCategoriesList=[];")
+        ;
+
+        if (ViewData["GuildCategoriesList"] != null)
+        {
+            guildCategoriesList = (List<GuildCategoriesVM>)ViewData["GuildCategoriesList"];
+
+            var guildCategoriesListData = guildCategoriesList.Select(s =>
+            new
+            {
+                DisplayText = $"{s.GuildCategoryName}",
+                Value = s.GuildCategoryId,
+
+            });
+
+            @Html.Raw("debugger; guildCategoriesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(guildCategoriesListData)) +" ;debugger;")
+            ;
+        }
+
+    }
+</script>
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(11),
+    div.jtable-main-container table.jtable thead th:nth-child(12) {
+        width: 1% !important;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(11),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(12){
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+   
+</style>

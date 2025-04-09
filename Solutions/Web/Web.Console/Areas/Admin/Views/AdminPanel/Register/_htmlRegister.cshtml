@@ -1,0 +1,119 @@
+﻿@using VM.Console;
+
+@model CustomUsersVM
+
+@{
+    string ReturnUrl = ViewData["ReturnUrl"] as string;
+
+    bool createSubDomainPerNewUser = false;
+    if (ViewData["CreateSubDomainPerNewUser"] != null)
+    {
+        createSubDomainPerNewUser = (bool)ViewData["CreateSubDomainPerNewUser"];
+    }
+}
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    <input asp-for="ParentUserId" class="form-control input-sm" type="hidden" />
+    <input asp-for="DomainSettingId" class="form-control input-sm" type="hidden" />
+    <input asp-for="RoleId" class="form-control input-sm" type="hidden" />
+    <input asp-for="LevelId" class="form-control input-sm" type="hidden" />
+    @*<input type="hidden" id="ParentUserId" name="ParentUserId" value="@Model.ParentUserId.Value" />
+        <input type="hidden" id="DomainSettingId" name="DomainSettingId" value="@Model.DomainSettingId" />*@
+    <div class="row">
+        <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="row">
+            <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <span>نام  کاربری</span>
+                <input asp-for="UserName" class="form-control input-sm"
+                       placeholder="نام کاربری" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <span>نام</span>
+                <input asp-for="Name" class="form-control input-sm"
+                       placeholder="نام" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <span>رمز عبور</span>
+                <input asp-for="Password" class="form-control input-sm" type="password"
+                       placeholder="رمز" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <span>نام خانوادگی</span>
+                <input asp-for="Family" class="form-control input-sm"
+                       placeholder="نام خانوادگی" />
+                <span asp-validation-for="Family" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <span>تکرار رمز</span>
+                <input asp-for="ReplyPassword" class="form-control input-sm" type="password"
+                       placeholder="تکرار رمز" />
+                <span asp-validation-for="ReplyPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                <span>همراه</span>
+                <input asp-for="Mobile" class="form-control input-sm"
+                       placeholder="همراه" />
+                <span asp-validation-for="Mobile" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-6 col-lg-6 col-xs-6 col-sm-6">
+            <span>کد را وارد کنید</span>
+            <input id="txtCaptchaCode" name="txtCaptchaCode" class="form-control input-sm"
+                   placeholder="کد را وارد کنید" />
+            <div id="captchaParentBlock">
+                <img src="/Home/GetCaptchaImage" class="captcha" />
+                <i class="fa fa-2x fa-repeat reloadCaptcha pointer">&nbsp;</i>
+            </div>
+        </div>
+    </div>
+    @{
+        if (createSubDomainPerNewUser)
+        {
+            <div class="row">
+                <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                    <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                        <div class="checkbox">
+                                <label id="lblCreateSubDomain" asp-for="CreateSubDomain">
+                                    <input asp-for="CreateSubDomain" class="input-sm" />
+                                    <span>ساخت زیر دامنه</span>
+                                </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    <div class="row">
+        <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+            <button class="btn btn-default btn-block input-sm" type="submit">
+                ثبت نام
+            </button>
+        </div>
+        <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+            <label id="lblLogin">
+                <a id="aLogin" href="/Admin/AdminPanel/Login">
+                    ورود
+                </a>
+            </label>
+        </div>
+    </div>
+</form>

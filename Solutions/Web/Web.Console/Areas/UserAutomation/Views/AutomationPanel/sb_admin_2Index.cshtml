@@ -1,0 +1,92 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using VM.Console
+
+@model IEnumerable<LevelShortCutImagesVM>
+
+@{
+    Layout = "_sb_admin_2Layout";
+    ViewData["Title"] = "PageTitle";
+
+
+    List<UserShortCutImagesVM> userShortCutImages = new List<UserShortCutImagesVM>();
+    if (ViewData["UserShortCutImages"] != null)
+    {
+        userShortCutImages = (List<UserShortCutImagesVM>)ViewData["UserShortCutImages"];
+    }
+}
+
+@section head{
+    @{
+        //@await Component.InvokeAsync("JTableCssJs")
+        await Html.RenderPartialAsync("jTableCssJs");
+    }
+}
+
+<div id="wrapper">
+    @await Component.InvokeAsync("UserNavigation")
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    @*@Html.Raw(pageTexts.FirstOrDefault(p => p.PropertyName.Equals("PageTitle")).Value)*@
+                    @*تصاویر اسلایدر*@
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            @await Component.InvokeAsync("UserAutomationDashboard")
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        PageTitle
+                    </div>
+                    <div class="panel-body">
+                        @{
+                            foreach (var icon in Model)
+                            {
+                                <div class="col col-md-3 col-xs-3 col-sm-3 col-lg-3">
+                                    <div class="shortcutIcon boxShadow">
+                                        <a href="@icon.Link">
+                                            <i class="fa fa-3x @icon.CssClass"></i>
+                                            <br />
+                                            @icon.Title
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+                            if (userShortCutImages.Count > 0)
+                            {
+                                foreach (var icon in userShortCutImages)
+                                {
+                                    <div class="col col-md-3 col-xs-3 col-sm-3 col-lg-3">
+                                        <div class="shortcutIcon boxShadow">
+                                            <a href="@icon.Link">
+                                                <i class="fa fa-3x @icon.CssClass"></i>
+                                                <br />
+                                                @icon.Title
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                        @*<div id="SliderList" style="text-align:right;"></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+    </script>
+}
+

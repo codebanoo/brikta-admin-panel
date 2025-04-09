@@ -1,0 +1,276 @@
+﻿@using Newtonsoft.Json;
+@using VM.Console;
+
+@{
+    CustomUsersVM parentUser = new CustomUsersVM();
+    if (ViewData["ParentUser"] != null)
+    {
+        parentUser = (CustomUsersVM)ViewData["ParentUser"];
+    }
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+    });
+</script>
+
+<script type="text/javascript">
+
+        $('body').on('click', 'a.show-profile', function (e) {
+            alert('ok');
+        });
+
+        var top = $jit.id('r-top'),
+            left = $jit.id('r-left'),
+            bottom = $jit.id('r-bottom'),
+            right = $jit.id('r-right'),
+            normal = $jit.id('s-normal');
+
+        function init() {
+            var popover;
+            var nodeId;
+            var nodeSelected = false;
+            var showingPopover = false;
+            $('[data-toggle=popover]').popover('hide');
+
+            var st = new $jit.ST({
+                injectInto: 'hierarchyOfUsers',
+                duration: 400,
+                transition: $jit.Trans.Quart.easeInOut,
+                levelDistance: 50,
+                levelsToShow: 1,
+                orientation: "top",
+                Navigation: {
+                    enable: true,
+                    panning: true
+                },
+                Node: {
+                    height: 90,
+                    align: "left",
+                    width: 170,
+                    type: 'rectangle',
+                    overridable: true,
+                },
+                Edge: {
+                    type: 'bezier',
+                    overridable: true
+                },
+                request: function (nodeId, level, onComplete) {
+                    debugger;
+
+                    $.ajax({
+                        cache: false,
+                        type: "Post",
+                        url: '/Host/UsersManagement/GetChildUsersForSpaceTree',
+                        data: {
+                            'UserId': nodeId,
+                        },
+                        dataType: "json",
+                        success: function (result) {
+                            debugger;
+
+                            if (result != undefined) {
+                                if (result.length > 0) {
+                                    var subtree = {
+                                        data: {},
+                                        id: nodeId,
+                                        name: nodeId,
+                                        HasChilds: true,
+                                        children: result
+                                    };
+
+                                    $jit.json.prune(subtree, level);
+
+                                    onComplete.onComplete(nodeId, {
+                                        'id': nodeId,
+                                        'children': subtree.children
+                                    });
+                                    return;
+                                }
+                            }
+
+                            onComplete.onComplete(nodeId, result);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            $('#myModal').find('.modal-title').html('خطا');
+                            $('#myModal').find('#error').html(xhr.responseText);
+                            $('#myModal').modal("show");
+                        }
+                    });
+                },
+                onBeforeCompute: function (node) {
+                },
+                onAfterCompute: function (node) {
+
+                },
+                onCreateLabel: function (label, node) {
+                    debugger;
+                    label.id = node.id;
+                    label.className += " " + node.data.RoleName;
+
+                    var innerHTML = '<div class="card kl-card kl-xl kl-reveal kl-overlay kl-show kl-slide-in kl-shine kl-hide kl-spin">' +
+                                             '<div class="kl-card-block kl-lg bg-success kl-shadow-br kl-overlay">' +
+                                '<div class="kl-background">' +
+                                    '<div class="row">' +
+                                        '<div class="col-lg-5 col-md-5 col-xs-5 col-sm-5 no-padding">' +
+                                            node.data.UserImage +
+                                        '</div>' +
+                                        '<div class="col-lg-7 col-md-7 col-xs-7 col-sm-7 no-padding"><a class="showMoreInfo" data-toggle="popover" ' +
+                                                'tabindex="0" data-trigger="focus" data-html="True" ' +
+                                                'data-content="' + node.data.DataContent + '" data-container="body" data-original-title="' +
+                                                node.data.MoreInformationTitle + '"' +
+                                                ' data-placement="top" title="' + node.data.RoleTitle + ' : ' +
+                                                node.data.RoleName + ' ' + node.data.LevelTitle + ' : ' +
+                                                node.data.LevelName + '">' +
+                                            node.data.RegisterDateTitle + ':' +
+                                            '<br />' +
+                                            node.data.RegisterDate +
+                                            '<br />' +
+                                            (node.data.Mobile != '' ? node.data.Mobile : '') +
+                                        '</a></div>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="kl-card-overlay kl-card-overlay-split-v-4 kl-dark kl-inverse kl-bottom-in">' +
+                                    '<div class="kl-card-overlay-item ' + node.data.RoleName + '"></div>' +
+                                    '<div class="kl-card-overlay-item ' + node.data.RoleName + '"></div>' +
+                                    '<div class="kl-card-overlay-item ' + node.data.RoleName + '"></div>' +
+                                    '<div class="kl-card-overlay-item ' + node.data.RoleName + '"></div>' +
+                                '</div>' +
+                                '<div class="kl-card-item kl-pbl kl-show text-white kl-txt-shadow">' +
+                                '</div>' +
+                                '<div class="kl-card-item kl-pbr kl-show text-white kl-txt-shadow">' +
+                                '</div>' +
+                                '<div class="kl-card-item kl-pm kl-show text-white kl-txt-shadow text-center">' +
+                                '</div>' +
+                                '<div class="kl-card-item kl-pb kl-show online_status">' +
+                                    (node.data.IsActivated ? '<span class="badge badge-success green">' : '<span class="badge badge-success red">') +
+                                        node.data.ActiveateDeactivateStatusText +
+                                    '</span>' +
+                                '</div>' +
+                                '<div class="kl-card-avatar kl-xl kl-pm kl-slow kl-hide">' +
+                                    '<div class="row">' +
+                                        '<div class="col-lg-5 col-md-5 col-xs-5 col-sm-5 no-padding">' +
+                                            node.data.UserImage +
+                                        '</div>' +
+                                        '<div class="col-lg-7 col-md-7 col-xs-7 col-sm-7 no-padding">' +
+                                            node.data.NameFamily +
+                                            '<br />' +
+                                            node.data.UserName +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+
+                    label.innerHTML = innerHTML;
+                    label.onclick = function (e) {
+                        debugger;
+                        nodeId = node.id;
+
+                        popover = $('#hierarchyOfUsers-label').find('div#' + nodeId).find('[data-toggle="popover"]');
+
+                        if (node.selected) {
+                            var j = 0;
+                            var i = 0;
+
+                            nodeSelected = true;
+                        }
+                        else {
+                            var j = 0;
+
+                            node.selected = true;
+
+                            nodeSelected = false;
+                            showingPopover = false;
+                            popover.popover('hide');
+
+                            var i = 0;
+                        }
+
+                        if (e.target != undefined) {
+                            if (e.target.className != 'show-profile') {
+                                if (node.data.HasChilds)
+                                    st.onClick(node.id);
+                            }
+                        }
+                    };
+                    var style = label.style;
+                    style.width = 170 + 'px';
+                    style.height = 90 + 'px';
+                    style.cursor = 'pointer';
+                    style.color = '#000';
+                    style.background = '#c5eaff';
+                    style.fontSize = '1.0em';
+                    style.padding = '3px';
+                    style.border = '1px solid #c5eaff';
+                    style.borderRadius = '8px';
+                },
+                onComplete: function (nodeId, result) {
+                    debugger;
+
+                    if (popover != undefined) {
+
+                        if (nodeSelected) {
+                            if (!showingPopover) {
+                                if (!$(popover).data('bs.popover').tip() != undefined) {
+                                    if (!$(popover).data('bs.popover').tip().is(':visible')) {
+                                        $('[data-toggle=popover]').not(popover).popover('hide');
+                                        popover.popover('show');
+                                        showingPopover = true;
+                                    }
+                                }
+                            }
+                            else {
+                                $('[data-toggle=popover]').not(popover).popover('hide');
+                                popover.popover('show');
+                            }
+                        }
+                        else {
+                            if (!showingPopover) {
+                                $('[data-toggle=popover]').not(popover).popover('hide');
+                                popover.popover('show');
+                                showingPopover = true;
+                            }
+                        }
+                    }
+                },
+                onBeforePlotNode: function (node) {
+                    if (node.selected) {
+                        node.data.$color = "transparent";
+                    }
+                    else {
+                        node.data.$color = "transparent";
+                        delete node.data.$color;
+                        if (!node.anySubnode("exist")) {
+                            node.data.$color = "transparent";
+                        }
+                        else {
+                            node.data.$color = "transparent";
+                        }
+                    }
+                },
+                onBeforePlotLine: function (adj) {
+                    if (adj.nodeFrom.selected && adj.nodeTo.selected) {
+                        adj.data.$color = "#c5eaff";
+                        adj.data.$lineWidth = 3;
+                    }
+                    else {
+                        adj.data.$color = "#c5eaff";
+                        delete adj.data.$lineWidth;
+                    }
+                }
+            });
+
+            debugger;
+
+            st.loadJSON(@{ @Html.Raw(JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ViewData["Root"]))) });
+            st.compute();
+            st.geom.translate(new $jit.Complex(-200, -500), "current");
+            st.root = '@parentUser.UserId';
+            st.onClick(st.root);
+        }
+
+        init();
+
+</script>

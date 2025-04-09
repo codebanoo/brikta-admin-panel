@@ -1,0 +1,650 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        for (var i = 0; i < domainsSettingsList.length; i++) {
+            var item = domainsSettingsList[i];
+            $('#slcDomainSearch')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcDomainSearch').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcDomainSearch').change(function () {
+            debugger;
+            var _this = $(this);
+            var domainSettingId = _this.val();
+
+            //$('#slcRoleIdsSearch').find('option')
+            //    .remove()
+            //    .end();
+
+            //$('#slcRoleIdsSearch')
+            //    .append($("<option></option>")
+            //        .attr("value", "")
+            //        .attr("data-DomainSettingId", "0")
+            //        .text("---"));
+
+            //for (var i = 0; i < rolesList.length; i++) {
+            //    var item = rolesList[i];
+            //    if (item.DomainSettingId == domainSettingId) {
+            //        $('#slcRoleIdsSearch')
+            //            .append($("<option></option>")
+            //                .attr("value", item.Value)
+            //                .attr("data-DomainSettingId", item.DomainSettingId)
+            //                .text(item.DisplayText));
+            //    }
+            //}
+
+            //$('#slcRoleIdsSearch').chosen({
+            //    placeholder_text_single: ' ',
+            //    placeholder_text_multiple: ' ',
+            //    search_contains: true,
+            //    max_shown_results: 10
+            //});
+            //$('#slcRoleIdsSearch').trigger("chosen:updated");
+        });
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'لیست', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/Host/LimitationsManagement/GetListOfLimitations',
+                createAction: '/Host/LimitationsManagement/AddToLimitations',
+                updateAction: '/Host/LimitationsManagement/UpdateLimitations',
+                deleteAction: '/Host/LimitationsManagement/CompleteDeleteLimitations'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Host/HostPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                DomainLimitationsId: {
+                    key: true,
+                    list: false
+                },
+                DomainSettingId: {
+                    title: 'دامنه',
+                    sorting: false,
+                    options: domainsSettingsList,
+                    inputClass: 'validate[required]',
+                    input: function (data) {
+                        return '<select id="Edit-DomainSettingId" name="DomainSettingId"></select>'
+                    }
+                },
+                AreaId: {
+                    title: 'ماژول',
+                    list: false,
+                    input: function (data) {
+                        return '<select id="Edit-AreaId" name="AreaId"></select>'
+                    },
+                },
+                ControllerId: {
+                    title: 'منو',
+                    list: false,
+                    input: function (data) {
+                        return '<select id="Edit-ControllerId" name="ControllerId"></select>'
+                    },
+                },
+                ActionId: {
+                    title: 'زیر&nbsp;منو',
+                    //options: rolesList,
+                    sorting: false,
+                    inputClass: 'validate[required]',
+                    input: function (data) {
+                        return '<select id="Edit-ActionId" name="ActionId"></select><input type="hidden" id="Edit-ActionName" name="ActionName" />'
+                    },
+                    display: function (data) {
+                        debugger;
+                        return data.record.ActionName;
+                    }
+                },
+                LimitTitle: {
+                    title: 'محدودیت',
+                    inputClass: 'validate[required]'
+                },
+                Limit: {
+                    title: 'تعداد',
+                    sorting: false,
+                    inputClass: 'validate[required]'
+                },
+            },
+            formCreated: function (event, data) {
+                debugger;
+                data.form.find('select[name="DomainSettingId"]').addClass(
+                    'validate[required]');
+                data.form.find('select[name="ActionId"]').addClass(
+                    'validate[required]');
+                data.form.find('input[name="LimitTitle"]').addClass(
+                    'validate[required]');
+                data.form.find('input[name="Limit"]').addClass(
+                    'validate[required]');
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                debugger;
+
+                $('#Edit-DomainSettingId')
+                    .append($("<option></option>")
+                        .attr("value", "")
+                        .attr("data-DomainSettingId", "0")
+                        .text("---"));
+
+                if (formName == 'edit') {
+                    for (var i = 0; i < domainsSettingsList.length; i++) {
+                        var item = domainsSettingsList[i];
+                        $('#Edit-DomainSettingId')
+                            .append($("<option></option>")
+                                .attr("value", item.Value)
+                                .text(item.DisplayText));
+                    }
+
+                    $('#Edit-DomainSettingId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+
+                    $('#Edit-DomainSettingId').val(data.record.DomainSettingId).trigger("chosen:updated");
+
+                    $('#Edit-AreaId').find('option')
+                        .remove()
+                        .end();
+                    $('#Edit-AreaId').trigger("chosen:updated");
+
+                    $('#Edit-ControllerId').find('option')
+                        .remove()
+                        .end();
+                    $('#Edit-ControllerId').trigger("chosen:updated");
+
+                    $('#Edit-ActionId').find('option')
+                        .remove()
+                        .end();
+                    $('#Edit-ActionId').trigger("chosen:updated");
+
+                    $.ajax({
+                        cache: false,
+                        type: "Post",
+                        url: "/Host/LimitationsManagement/GetListOfAreas",
+                        //data: JSON.stringify({ 'LevelId': levelId }),
+                        data: { 'DomainSettingId': data.record.DomainSettingId },
+                        //contentType: 'application/json',
+                        //dataType: "json",
+                        success: function (result) {
+                            if (result.Result == "OK") {
+                                var areasList = result.Records;
+
+                                $('#Edit-AreaId')
+                                    .append($("<option></option>")
+                                        .attr("value", "")
+                                        .text("---"));
+
+                                for (var i = 0; i < areasList.length; i++) {
+                                    var item = areasList[i];
+                                    $('#Edit-AreaId')
+                                        .append($("<option></option>")
+                                            .attr("value", item.AreaId)
+                                            .text(item.AreaName));
+                                }
+                                $('#Edit-AreaId').val(data.record.AreaId).trigger("chosen:updated");
+
+                                $.ajax({
+                                    cache: false,
+                                    type: "Post",
+                                    url: "/Host/LimitationsManagement/GetListOfControllers",
+                                    data: { 'AreaId': data.record.AreaId },
+                                    success: function (result) {
+                                        if (result.Result == "OK") {
+                                            var controllersList = result.Records;
+
+                                            $('#Edit-ControllerId')
+                                                .append($("<option></option>")
+                                                    .attr("value", "")
+                                                    .text("---"));
+
+                                            for (var i = 0; i < controllersList.length; i++) {
+                                                var item = controllersList[i];
+                                                $('#Edit-ControllerId')
+                                                    .append($("<option></option>")
+                                                        .attr("value", item.ControllerId)
+                                                        .text(item.ControllerName));
+                                            }
+                                            $('#Edit-ControllerId').val(data.record.ControllerId).trigger("chosen:updated");
+
+                                            $.ajax({
+                                                cache: false,
+                                                type: "Post",
+                                                url: "/Host/LimitationsManagement/GetListOfActions",
+                                                data: { 'ControllerId': data.record.ControllerId },
+                                                success: function (result) {
+                                                    if (result.Result == "OK") {
+                                                        var actionsList = result.Records;
+
+                                                        $('#Edit-ActionId')
+                                                            .append($("<option></option>")
+                                                                .attr("value", "")
+                                                                .text("---"));
+
+                                                        for (var i = 0; i < actionsList.length; i++) {
+                                                            var item = actionsList[i];
+                                                            $('#Edit-ActionId')
+                                                                .append($("<option></option>")
+                                                                    .attr("value", item.ActionId)
+                                                                    .text(item.ActionName));
+                                                        }
+                                                        $('#Edit-ActionId').val(data.record.ActionId).trigger("chosen:updated");
+                                                        $('#Edit-ActionId').change();
+                                                    }
+                                                    else
+                                                        if (result.Result == "ERROR") {
+                                                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                                                            $('#my-warning-modal').find('#error').html('خطا');
+                                                            $('#my-warning-modal').modal("show");
+                                                        }
+                                                },
+                                                error: function (xhr, ajaxOptions, thrownError) {
+                                                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                                                    $('#my-warning-modal').find('#error').html('خطا');
+                                                    $('#my-warning-modal').modal("show");
+                                                }
+                                            });
+                                        }
+                                        else
+                                            if (result.Result == "ERROR") {
+                                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                                $('#my-warning-modal').find('#error').html('خطا');
+                                                $('#my-warning-modal').modal("show");
+                                            }
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html('خطا');
+                                        $('#my-warning-modal').modal("show");
+                                    }
+                                });
+                            }
+                            else
+                                if (result.Result == "ERROR") {
+                                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                                    $('#my-warning-modal').find('#error').html('خطا');
+                                    $('#my-warning-modal').modal("show");
+                                }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                    });
+                }
+                else
+                    if (formName == 'create') {
+                        for (var i = 0; i < domainsSettingsList.length; i++) {
+                            var item = domainsSettingsList[i];
+                            $('#Edit-DomainSettingId')
+                                .append($("<option></option>")
+                                    .attr("value", item.Value)
+                                    .text(item.DisplayText));
+                        }
+
+                        $('#Edit-DomainSettingId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        $('#Edit-DomainSettingId').trigger("chosen:updated");
+                    }
+
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+            debugger;
+            var domainSettingIdSearch = $('#slcDomainSearch').val();
+            var txtLimitTitleSearch = $('#txtLimitTitleSearch').val();
+            if (domainSettingIdSearch != '' || txtLimitTitleSearch != '') {
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    'domainSettingIdSearch': domainSettingIdSearch,
+                    'limitTitleSearch': txtLimitTitleSearch,
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('راهنمایی');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+        $('#btnReload').click(function () {
+            $('#btnReset').click();
+            $('#slcRoleSearch').val('').trigger("chosen:updated");
+            $('#txtLevelNameSearch').val('');
+            $('#listContainer').jtable('load');
+        });
+
+        $('body').on('change', '#Edit-DomainSettingId', function () {
+            debugger;
+            var _this = $(this);
+            var domainSettingId = _this.val();
+
+            $('#Edit-AreaId').find('option')
+                .remove()
+                .end();
+            $('#Edit-AreaId').trigger("chosen:updated");
+
+            $('#Edit-ControllerId').find('option')
+                .remove()
+                .end();
+            $('#Edit-ControllerId').trigger("chosen:updated");
+
+            $('#Edit-ActionId').find('option')
+                .remove()
+                .end();
+            $('#Edit-ActionId').trigger("chosen:updated");
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Host/LimitationsManagement/GetListOfAreas",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'DomainSettingId': domainSettingId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var areasList = result.Records;
+
+                        $('#Edit-AreaId')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("---"));
+
+                        for (var i = 0; i < areasList.length; i++) {
+                            var item = areasList[i];
+                            $('#Edit-AreaId')
+                                .append($("<option></option>")
+                                    .attr("value", item.AreaId)
+                                    .text(item.AreaName));
+                        }
+                        $('#Edit-AreaId').trigger("chosen:updated");
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('change', '#Edit-AreaId', function () {
+            debugger;
+            var _this = $(this);
+            var areaId = _this.val();
+
+            $('#Edit-ControllerId').find('option')
+                .remove()
+                .end();
+            $('#Edit-AreaId').trigger("chosen:updated");
+
+            $('#Edit-ActionId').find('option')
+                .remove()
+                .end();
+            $('#Edit-ActionId').trigger("chosen:updated");
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Host/LimitationsManagement/GetListOfControllers",
+                data: { 'AreaId': areaId },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var controllersList = result.Records;
+
+                        $('#Edit-ControllerId')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("---"));
+
+                        for (var i = 0; i < controllersList.length; i++) {
+                            var item = controllersList[i];
+                            $('#Edit-ControllerId')
+                                .append($("<option></option>")
+                                    .attr("value", item.ControllerId)
+                                    .text(item.ControllerName));
+                        }
+                        $('#Edit-ControllerId').trigger("chosen:updated");
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('change', '#Edit-ControllerId', function () {
+            debugger;
+            var _this = $(this);
+            var controllerId = _this.val();
+
+            $('#Edit-ActionId').find('option')
+                .remove()
+                .end();
+            $('#Edit-ActionId').trigger("chosen:updated");
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Host/LimitationsManagement/GetListOfActions",
+                data: { 'ControllerId': controllerId },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var actionsList = result.Records;
+
+                        $('#Edit-ActionId')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("---"));
+
+                        for (var i = 0; i < actionsList.length; i++) {
+                            var item = actionsList[i];
+                            $('#Edit-ActionId')
+                                .append($("<option></option>")
+                                    .attr("value", item.ActionId)
+                                    .text(item.ActionName));
+                        }
+                        $('#Edit-ActionId').trigger("chosen:updated");
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('change', '#Edit-ActionId', function () {
+            var _this = $(this);
+            var actionName = _this.find("option:selected").text();
+            $('#Edit-ActionName').val(actionName);
+        });
+    });
+</script>

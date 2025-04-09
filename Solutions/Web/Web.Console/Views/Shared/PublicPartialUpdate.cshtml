@@ -1,0 +1,44 @@
+﻿@{
+    string controllerName = "";
+    if (ViewData["ControllerName"] != null)
+    {
+        controllerName = ViewData["ControllerName"] as string;
+    }
+
+    string actionName = "";
+    if (ViewData["ActionName"] != null)
+    {
+        actionName = ViewData["ActionName"] as string;
+    }
+
+    string userDevicePlatform = "";
+
+    if (ViewData["UserDevicePlatform"] != null)
+    {
+        userDevicePlatform = ViewData["UserDevicePlatform"] as string;
+        if (userDevicePlatform == "mobile")
+            Layout = "_MobileLayout";
+            else
+            Layout = "_MobileLayout";
+    }
+}
+
+@section head{
+
+    @{
+        Html.RenderPartial("~/Views/" + controllerName + "/" + actionName + "/_headUpdate.cshtml");
+    }
+
+}
+
+@{
+    Html.RenderPartial("~/Views/" + controllerName + "/" + actionName + "/_htmlUpdate.cshtml");
+}
+
+@section scripts{
+
+    @{
+        Html.RenderPartial("~/Views/" + controllerName + "/" + actionName + "/_jsUpdate.cshtml");
+    }
+
+}

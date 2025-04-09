@@ -1,0 +1,32 @@
+﻿@using Newtonsoft.Json
+@using VM.Teniaco
+<script type="text/javascript">
+    @{
+        List<MapLayerCategoriesNodeWithDataVM> mapLayerCategoriesNodeWithDataVM = new List<MapLayerCategoriesNodeWithDataVM>();
+
+        @Html.Raw("var jsonData;")
+        ;
+        
+
+        if (ViewData["MapLayerCatList"] != null)
+        {
+            mapLayerCategoriesNodeWithDataVM = ViewData["MapLayerCatList"] as List<MapLayerCategoriesNodeWithDataVM>;
+
+            @Html.Raw(" jsonData = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mapLayerCategoriesNodeWithDataVM)) + "; ")
+        ;
+        }
+    }
+</script>
+//<script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>
+//<script src="~/lib/jquery.fancytree/dist/jquery.fancytree.min.js"></script>
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+<link href="~/lib/jquery.fancytree/dist/skin-win7/ui.fancytree.css" rel="stylesheet" />
+<script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>

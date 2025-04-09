@@ -1,0 +1,732 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        var agencyId = agency.AgencyId;
+
+        $('#listContainer').jtable({
+            title: 'مشاورین', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminTeniaco/AgencyStaffsManagement/GetListOfAgencyStaffs',
+                createAction: '/AdminTeniaco/AgencyStaffsManagement/AddToAgencyStaffs',
+                updateAction: '/AdminTeniaco/AgencyStaffsManagement/UpdateAgencyStaffs',
+                deleteAction: '/AdminTeniaco/AgencyStaffsManagement/CompleteDeleteAgencyStaffs'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                ]
+            },
+            fields: {
+                AgencyStaffsId: {
+                    key: true,
+                    list: false
+                },
+                Name: {
+                    title: 'نام',
+                    sorting: false,
+                    list: false,
+                    edit: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Name != '') {
+                                return '<input type="text" id="Edit-CustomUsersVM.Name" name="CustomUsersVM.Name" />';
+
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Name" name="CustomUsersVM.Name" />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Name" name="CustomUsersVM.Name" />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record != null)
+                            return data.record.CustomUsersVM.Name;
+
+
+                    }
+                },
+                Family: {
+                    title: 'نام&nbsp;خانوادگی',
+                    sorting: false,
+                    list: false,
+                    edit: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Family != '') {
+                                return '<input type="text" id="Edit-CustomUsersVM.Family" name="CustomUsersVM.Family" />';
+
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Family" name="CustomUsersVM.Family" />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Family" name="CustomUsersVM.Family" />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record != null)
+                            return data.record.CustomUsersVM.Family;
+                    }
+                },
+                FullName: {
+                    title: 'مشاور',
+                    sorting: false,
+                    //edit: false,
+                    create: false,
+                    display: function (data) {
+                        if (data.record != null) {
+                            if (data.record.CustomUsersVM != null) {
+                                var name = data.record.CustomUsersVM.Name;
+                                var family = data.record.CustomUsersVM.Family;
+                                return name + ' ' + family;
+                            } else {
+                                return '';
+                            }
+                        } else {
+                            return '';
+                        }
+
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM != null) {
+                                var name = data.record.CustomUsersVM.Name;
+                                var family = data.record.CustomUsersVM.Family;
+                                var fullName = name + ' ' + family;
+
+                                return '<input type="text" id="Edit-FullName" name="FullName" value="' + fullName + '" readOnly/>';
+                            }
+                            else {
+                                return '<input type="text" id="Edit-FullName" name="FullName" value ="" readOnly/>';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-FullName" name="FullName" value =""  readOnly/>';
+                        }
+                    },
+                },
+                Mobile: {
+                    title: 'شماره&nbsp;موبایل',
+                    sorting: false,
+                    //list:false,
+                    edit: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Mobile != '') {
+                                if (data.record.CustomUsersVM.Mobile != null) {
+                                    return '<input type="number" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile"  />';
+
+                                }
+                                else {
+                                    return '<input type="number" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile"  />';
+                                }
+                            }
+                            else {
+                                return '<input type="number" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile" />';
+                            }
+                        }
+                        else {
+                            return '<input type="number" id="Edit-CustomUsersVM.Mobile" name="CustomUsersVM.Mobile"  />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record != null) {
+                            if (data.record.CustomUsersVM != null) {
+                                if (data.record.CustomUsersVM.Mobile != '') {
+                                    if (data.record.CustomUsersVM.Mobile != null) {
+                                        return data.record.CustomUsersVM.Mobile;
+                                    } else {
+                                        return '';
+                                    }
+                                }
+                                else {
+                                    return '';
+                                }
+                            }
+                            else {
+                                return '';
+                            }
+                        } else {
+                            return '';
+                        }
+
+                    }
+                },
+                UserName: {
+                    title: 'نام&nbsp;کاربری',
+                    sorting: false,
+                    list: false,
+                    edit: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            debugger;
+                            if (data.record.CustomUsersVM.UserName != '') {
+                                if (data.record.CustomUsersVM.UserName != null) {
+                                    return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                                }
+                                else {
+                                    return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                                }
+
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" readonly />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null) {
+                            if (data.record.CustomUsersVM.UserName != null) {
+                                return data.record.CustomUsersVM.UserName;
+                            } else {
+                                return '';
+                            }
+
+                        } else {
+                            return '';
+                        }
+
+                    }
+                },
+                Password: {
+                    title: 'رمز&nbsp;عبور',
+                    sorting: false,
+                    list: false,
+                    edit: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Password != '') {
+                                if (data.record.CustomUsersVM.Password != null) {
+                                    return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                                }
+                                else {
+                                    return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                                }
+
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Password != null)
+                                return data.record.CustomUsersVM.Password;
+                    }
+                },
+                ParentId: {
+                    title: 'والد',
+                    sorting: false,
+                    options: agencyStaffsList,
+                    display: function (data) {
+                        if (data.record != null) {
+                            if (data.record.CustomUsersVM != null) {
+                                if (data.record.CustomUsersVM.ParentUserId != null) {
+
+                                    var parentValue = agencyStaffsList.filter(c => c.Value == data.record.CustomUsersVM.ParentUserId);
+
+                                    if (parentValue != null) {
+
+                                        var parent = agencyStaffsList.filter(c => c.Value == data.record.CustomUsersVM.ParentUserId).find(c => c.DisplayText).DisplayText;
+                                        return parent;
+                                    } else {
+                                        return '';
+                                    }
+
+                                } else {
+                                    return '';
+                                }
+                            }else{
+                                return '';
+                            }
+                            
+                        } else {
+                            return '';
+                        }
+
+                    },
+                },
+                PositionId: {
+                    title: 'دسترسی',
+                    sorting: false,
+                    options: positionsList,
+                    display: function (data) {
+                        if (data.record != null) {
+                            if (data.record.PositionId != null) {
+                                var position = positionsList.filter(c => c.Value == data.record.PositionId).find(c => c.DisplayText).DisplayText;
+                                return position;
+                            }
+                        }
+
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<input type="hidden" id="Edit-AgencyId" name="AgencyId" value="' + agency.AgencyId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<input type="hidden" id="Edit-AgencyId" name="AgencyId" value="' + agency.AgencyId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<input type="hidden" id="Edit-AgencyId" name="AgencyId" value="' + agency.AgencyId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-AgencyStaffsId="' + data.record.AgencyStaffsId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-AgencyStaffsId="' + data.record.AgencyStaffsId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-AgencyStaffsId="' + data.record.AgencyStaffsId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-AgencyStaffsId="' + data.record.AgencyStaffsId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function (event, data) {
+                debugger;
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+                //$('.ui-dialog-titlebar-close').html('X');
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+
+                if (formName == 'edit') {
+                    debugger;
+
+                    $('#Edit-ParentId').html('');
+                    var agencyStaffId = data.record.UserId;
+
+                    var staffsList = agencyStaffsList.filter(c => c.Value !== agencyStaffId);
+
+                    for (var i = 0; i < staffsList.length; i++) {
+                        debugger;
+                        var item = staffsList[i];
+                        $('#Edit-ParentId')
+                            .append($("<option></option>")
+                                .attr("value", item.Value)
+                                .text(item.DisplayText));
+                    }
+                    $('#Edit-ParentId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+
+                    $('#Edit-ParentId').val(data.record.CustomUsersVM.ParentUserId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-CustomUsersVM.Password').val('');
+
+                    $('#Edit-PositionId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-PositionId').val(data.record.PositionId + '').trigger("chosen:updated");
+
+
+
+
+
+
+
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+
+
+
+                    // $('[name = "CustomUsersVM.UserName"]').prop('readonly', true);
+                    // $('[name = "CustomUsersVM.Email"]').prop('readonly', true);
+                    // $('#Edit-PersonId').prop('disabled', true);
+                    // $('#Edit-PersonId').trigger('chosen:updated');
+
+                }
+                else
+                    if (formName == 'create') {
+                        debugger;
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+                        $('#Edit-PositionId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-PositionId').trigger("chosen:updated");
+
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+
+                    }
+
+
+            },
+            formSubmitting: function (event, data) {
+
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+                window.setTimeout(function () { window.location.reload(); }, 1500);
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+
+
+        });
+
+        $('#listContainer').jtable('load', {
+            'AgencyId': agencyId
+        });
+
+
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+
+        $('body').on('click', '.isActivated', function () {
+
+            var _this = $(this);
+            var agencyStaffsId = _this.attr('data-AgencyStaffsId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/AgencyStaffsManagement/ToggleActivationAgencyStaffs",
+                data: { 'AgencyStaffsId': agencyStaffsId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'AgencyId': agencyId
+                        });
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+
+            var _this = $(this);
+            var agencyStaffsId = _this.attr('data-AgencyStaffsId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/AgencyStaffsManagement/TemporaryDeleteAgencyStaffs",
+
+                data: { 'AgencyStaffsId': agencyStaffsId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'AgencyId': agencyId
+                        });
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+
+            });
+        });
+
+        $('body').on('change', '#Edit-PersonId', function (e) {
+            e.preventDefault();
+            debugger;
+
+            $('[name="CustomUsersVM.UserName"]').val('');
+            $('[name="CustomUsersVM.UserName"]').prop('readonly', false);
+            $('[name="CustomUsersVM.Password"]').val('');
+
+
+            var personId = $('#Edit-PersonId').val();
+            var phone = personsList.filter(f => f.Value == personId)[0].Phone;
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/UsersManagement/GetUserWithUserProfileMobile",
+                data: {
+                    'mobile': phone
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        if (result.Record != null) {
+                            var record = result.Record;
+                            debugger;
+                            if (record.UserName != null) {
+                                if (record.UserName != '') {
+                                    $('[name="CustomUsersVM.UserName"]').val(record.UserName);
+                                    $('[name="CustomUsersVM.UserName"]').prop('readonly', true);
+                                    $('[name="CustomUsersVM.Password"]').val('**********');
+                                }
+                            }
+
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html(result.Message);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('خطا');
+                    $('#my-warning-modal').modal("show");
+                }
+            });
+
+        });
+
+        $('body').on('keyup', '[name = "CustomUsersVM.Mobile"]', function (e) {
+            e.preventDefault();
+            debugger;
+            var mobile = $('[name = "CustomUsersVM.Mobile"]').val();
+            $('[name = "CustomUsersVM.UserName"]').val(mobile);
+            $('[name = "CustomUsersVM.Password"]').val(mobile);
+        });
+    });
+
+
+
+
+</script>

@@ -1,0 +1,387 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#searchBlock').hide(1000);
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'لیست گوگل شیت', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminProjects/GoogleSheetConfigsManagement/GetListOfGoogleSheetConfigs',
+                createAction: '/AdminProjects/GoogleSheetConfigsManagement/AddToGoogleSheetConfigs',
+                updateAction: '/AdminProjects/GoogleSheetConfigsManagement/UpdateGoogleSheetConfigs',
+                deleteAction: '/AdminProjects/GoogleSheetConfigsManagement/CompleteDeleteGoogleSheetConfigs'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    
+                ]
+            },
+            fields: {
+                GoogleSheetConfigId: {
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false,
+                },
+                GoogleSheetId: {
+                    title: 'آیدی گوگل شیت',
+                    sorting: false,
+                },
+                GoogleSheetTitle: {
+                    title: 'عنوان گوگل شیت',
+                    sorting: false,
+                },
+                GoogleDriveId: {
+                    title: 'آیدی گوگل درایو',
+                    sorting: false,
+                },
+                GoogleDriveTitle: {
+                    title: 'عنوان گوگل درایو',
+                    sorting: false,
+                },
+                ApiKey: {
+                    title: 'کلید API',
+                    sorting: false,
+                },
+                ConfigJson: {
+                    title: 'ConfigJson',
+                    list: false,
+                },
+                NewConfigJson: {
+                    title: 'ConfigJson',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                },
+                CredentialsJson: {
+                    title: 'CredentialsJson',
+                    list: false,
+                },
+                NewCredentialsJson: {
+                    title: 'CredentialsJson',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                },
+                GmailAddress: {
+                    title: 'آدرس جیمیل',
+                    sorting: false,
+                },
+                GmailPassword: {
+                    title: 'رمز عبور جیمیل',
+                    sorting: false,
+                },
+                ExcelSheetConfig: {
+                    title: 'تنظیمات شیت اکسل',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function(data) {
+                        return '<a href="/AdminProjects/ExcelSheetConfigsManagement/Index/' + data.record.GoogleSheetConfigId + '" style="color: black" >' +
+                            '<i class="material-symbols-outlined redirect-icon px-4" >Description</i></a>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-GoogleSheetConfigId="' +
+                                data.record.GoogleSheetConfigId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-GoogleSheetConfigId="' +
+                                data.record.GoogleSheetConfigId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-GoogleSheetConfigId="' + data.record.GoogleSheetConfigId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-GoogleSheetConfigId="' + data.record.GoogleSheetConfigId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function(event, data) {
+                debugger;
+                //$(".jtable-dialog-form").append($('<input type="hidden" value="' + constructionProjectId + '" name="ConstructionProjectId"></input>'))
+
+                $(".jtable-dialog-form :input").each(function() {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                $("#Edit-IsDeleted").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+                $("#Edit-IsActivated").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+
+
+                data.form.find('input[name="GoogleSheetId"]').addClass(
+                    'validate[required]');
+                data.form.find('input[name="ApiKey"]').addClass(
+                    'validate[required]');
+                data.form.find('input[name="ConfigJson"]').addClass(
+                    'validate[required]');
+                data.form.find('input[name="GmailAddress"]').addClass(
+                    'validate[required]');
+                data.form.find('input[name="GmailPassword"]').addClass(
+                    'validate[required]');
+
+                data.form.validationEngine();
+            },
+            formSubmitting: function(event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function(event, data) {
+                //$('#listContainer').jtable('reload');
+
+            },
+            selectionChanged: function() {
+
+            },
+            recordAdded: function(event, data) {
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load'/*, { 'ConstructionProjectId': constructionProjectId }*/);
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+        $('body').on('click', '.isActivated', function() {
+            debugger;
+            var _this = $(this);
+            var googleSheetConfigId = _this.attr('data-GoogleSheetConfigId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/GoogleSheetConfigsManagement/ToggleActivationGoogleSheetConfigs",
+
+                data: { 'googleSheetConfigId': googleSheetConfigId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function() {
+            debugger;
+            var _this = $(this);
+            var googleSheetConfigId = _this.attr('data-GoogleSheetConfigId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/GoogleSheetConfigsManagement/TemporaryDeleteGoogleSheetConfigs",
+
+                data: { 'googleSheetConfigId': googleSheetConfigId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+
+
+
+    });
+
+
+</script>

@@ -1,0 +1,279 @@
+﻿@using VM.Teniaco;
+@model PropertyAddressVM
+
+@{
+    string IsNewProp = ViewContext.HttpContext.Request.Query["IsNewProp"];
+    PropertiesVM property = new PropertiesVM();
+
+    if (ViewData["PropertiesVM"] != null)
+    {
+        property = (PropertiesVM)ViewData["PropertiesVM"];
+
+    }
+}
+
+
+<div id="searchBlock" class="col-12">
+    <div class="row ">
+        <div class="col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                نام  ملک:
+                @Html.Raw(property.PropertyCodeName)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                استان
+            </div>
+            <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                    placeholder="استان">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                بخش
+            </div>
+
+            <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                    placeholder="بخش">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                شهر/منطقه
+            </div>
+            <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                    placeholder="شهر/منطقه">
+                <option value="" selected>---</option>
+            </select>
+            @*<input id="txtSearchTitle" name="txtSearchTitle" class="form-control"
+            placeholder="شهر/منطقه" />*@
+
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                <label class="lblNewDistrict pointer" style="height: 15px;" data-modal-title="محله">
+                    <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+                         class="" data-original-title="جدید">
+                </label>
+                محله
+            </div>
+
+            <select id="slcDistrictId" name="slcDistrictId" class="form-control ml-3"
+                    placeholder="محله">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="row">
+        <div class='col-12  my-3'>
+            <div class="mx-2">
+                آدرس
+            </div>
+            <textarea asp-for="PropertiesVM.PropertyAddressVM.Address" class="form-control " rows="3"
+                      placeholder="آدرس"></textarea>
+        </div>
+    </div>
+    <div class=" ">
+        @*<div id="mapContainer" class="mapContainer"></div>*@
+        <div id="mapLeft" class="w-100"></div>
+
+    </div>
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            @if (IsNewProp == "yes")
+            {
+                <button NewProp="yes" type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+                <button id="btnCancel" class="btn btn-danger btn-md" type="reset">رد</button>
+                <button id="btnBack" class="btn btn-primary btn-md" type="reset">بازگشت به لیست املاک</button>
+            }
+            else
+            {
+                <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+                <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            }
+
+
+        </div>
+    </div>
+</form>
+@*
+<form onsubmit="return false;">
+    <div class="row">
+        <div class="row">
+            <div class="form-group col col-md-12">
+                @{
+                    <div id='error-alert' class="form-group alert alert-danger">
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="row roundedBlock">
+
+            <div class="row col-12">
+                <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                    <div>
+                        استان
+                    </div>
+                    <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                            placeholder="استان">
+                        <option value="" selected>---</option>
+                    </select>
+                </div>
+                <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                    <div>
+                        بخش
+                    </div>
+
+                    <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                            placeholder="بخش">
+                        <option value="" selected>---</option>
+                    </select>
+                </div>
+                <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                    <div>
+                        شهر/منطقه
+                    </div>
+                    <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                            placeholder="شهر/منطقه">
+                        <option value="" selected>---</option>
+                    </select>
+                    @*<input id="txtSearchTitle" name="txtSearchTitle" class="form-control"
+                    placeholder="شهر/منطقه" />
+
+                </div>
+                <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                    <div>
+                        شهر/منطقه
+                    </div>
+         <select id="slcDistrictId" name="slcDistrictId" class="form-control ml-3"
+                            placeholder="ناحیه">
+                        <option value="" selected>---</option>
+                    </select>
+
+                </div>
+                <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                    <div class="mx-2">
+                      آدرس
+                    </div>
+      <textarea asp-for="PropertiesVM.PropertyAddressVM.Address" class="form-control" rows="3"
+                              placeholder="آدرس"></textarea>
+                    <span asp-validation-for="PropertiesVM.PropertyAddressVM.Address" class="text-danger"></span>
+
+                </div>
+
+                  <div class="row col-12">
+            @*<div id="mapContainer" class="mapContainer"></div>
+            <div id="mapLeft" class="col-xl-6 col-lg-6 col-md-6 col-sm-12"></div>
+            <div id="mapRight" class="col-xl-6 col-lg-6 col-md-6 col-sm-12"></div>
+        </div>
+
+                <div class="col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+                    <div>
+                        <label>
+                            استان
+                        </label>
+                    </div>
+                    <select id="slcStateId" name="slcStateId" class="form-control input-sm"
+                            placeholder="استان">
+                        <option value="" selected>---</option>
+                    </select>
+                </div>
+                <div class="col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+                    <div>
+                        <label>
+                            بخش
+                        </label>
+                    </div>
+                    <select id="slcCityId" name="slcCityId" class="form-control input-sm"
+                            placeholder="بخش">
+                        <option value="" selected>---</option>
+                    </select>
+                </div>
+                <div class="col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+                    <div>
+                        <label>
+                            منطقه/شهر
+                        </label>
+                    </div>
+                    <select id="slcZoneId" name="slcZoneId" class="form-control input-sm"
+                            placeholder="منطقه/شهر">
+                        <option value="" selected>---</option>
+                    </select>
+                </div>
+                <div class="col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+                    <div>
+                        <label>
+                            ناحیه
+                        </label>
+                    </div>
+                    <select id="slcDistrictId" name="slcDistrictId" class="form-control input-sm"
+                            placeholder="ناحیه">
+                        <option value="" selected>---</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12">
+                    <div>
+                        <label for="PropertyAddressVM_Address">
+                            آدرس
+                        </label>
+                    </div>
+                    <textarea asp-for="PropertiesVM.PropertyAddressVM.Address" class="form-control input-sm" rows="3"
+                              placeholder="آدرس"></textarea>
+                    <span asp-validation-for="PropertiesVM.PropertyAddressVM.Address" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                <label class="col-lg-12">
+                    &nbsp;
+                </label>
+                <button id="btnSubmit" name="btnSubmit" class="btn btn-default input-sm" type="button">
+                    بروز رسانی
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            @*<div id="mapContainer" class="mapContainer"></div>
+            <div id="mapLeft" class="col col-md-7 col-lg-7"></div>
+            <div id="mapRight" class="col col-md-5 col-lg-5"></div>
+        </div>
+
+
+    </div>
+
+</form>
+*@

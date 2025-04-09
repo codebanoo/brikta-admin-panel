@@ -1,0 +1,532 @@
+﻿<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        // Sortable List js codes
+        function InitializeTweenLite() {
+            var rowSize = 100; // => container height / number of items
+            var container = document.querySelector(".container2");
+            var listItems = Array.from(document.querySelectorAll(".list-item")); // Array of elements
+            var sortables = listItems.map(Sortable); // Array of sortables
+            var total = sortables.length;
+
+            TweenLite.to(container, 0.5, { autoAlpha: 1 });
+
+            function updateOrderNumbers() {
+                $(".list-item").each(function (index) {
+                    var orderSpan = $(this).find(".order");
+                    orderSpan.text(index + 1);
+                    orderSpan.attr("fileOrder", index + 1);
+                });
+            }
+
+            function changeIndex(item, to) {
+                arrayMove(sortables, item.index, to);
+
+                if (to === total - 1) {
+                    container.appendChild(item.element);
+                } else {
+                    var i = item.index > to ? to : to + 1;
+                    container.insertBefore(item.element, container.children[i]);
+                }
+
+                sortables.forEach((sortable, index) => sortable.setIndex(index));
+
+                // ✅ Update order numbers after reordering
+                updateOrderNumbers();
+            }
+
+            function Sortable(element, index) {
+                var content = element.querySelector(".item-content");
+                var order = element.querySelector(".order");
+                var textarea = element.querySelector(".item-textarea");
+
+                var animation = TweenLite.to(content, 0.3, {
+                    boxShadow: "rgba(0,0,0,0.2) 0px 16px 32px 0px",
+                    force3D: true,
+                    scale: 1.1,
+                    paused: true
+                });
+
+                var dragger = new Draggable(element, {
+                    onDragStart: downAction,
+                    onRelease: upAction,
+                    onDrag: dragAction,
+                    cursor: "inherit",
+                    type: "y"
+                });
+
+                if (textarea) {
+                    textarea.addEventListener("focus", function () {
+                        dragger.disable();
+                    });
+
+                    textarea.addEventListener("blur", function () {
+                        dragger.enable();
+                    });
+                }
+
+                var sortable = {
+                    dragger: dragger,
+                    element: element,
+                    index: index,
+                    setIndex: setIndex
+                };
+
+                TweenLite.set(element, { y: index * rowSize });
+
+                function setIndex(index) {
+                    sortable.index = index;
+                    order.textContent = index + 1;
+                    order.setAttribute("fileOrder", index + 1);
+                    if (!dragger.isDragging) layout();
+                }
+
+                function downAction() {
+                    animation.play();
+                    this.update();
+                }
+
+                function dragAction() {
+                    var index = clamp(Math.round(this.y / rowSize), 0, total - 1);
+                    if (index !== sortable.index) {
+                        changeIndex(sortable, index);
+                    }
+                }
+
+                function upAction() {
+                    animation.reverse();
+                    layout();
+                }
+
+                function layout() {
+                    TweenLite.to(element, 0.3, { y: sortable.index * rowSize });
+                }
+
+                return sortable;
+            }
+
+            function arrayMove(array, from, to) {
+                array.splice(to, 0, array.splice(from, 1)[0]);
+            }
+
+            function clamp(value, a, b) {
+                return value < a ? a : value > b ? b : value;
+            }
+
+            // ✅ Update order numbers after all initializations
+            updateOrderNumbers();
+        }
+
+        function SwapMode() {
+            $('.suggestionTitleDiv').toggleClass('d-flex').toggleClass('hidden');
+            $('.suggestionAddDiv').toggleClass('d-flex').toggleClass('hidden');
+            $('#enterEditMode').toggleClass('hidden');
+            $('#updateFiles').toggleClass('hidden');
+            $('.filePhotoIcon').toggleClass('hidden');
+            $('.deleteFile').toggleClass('hidden');
+            $('.fileInput').toggleClass('hidden');
+            $('#submitChanges').toggleClass('hidden');
+            $('.item-textarea').prop('readonly', function (i, val) {
+                return !val;
+            });
+
+        }
+
+        let NewUploadedMainImage = '';
+
+        //#region SingleUploadImage
+        document.querySelectorAll(".main-Image").forEach((inputElement) => {
+            debugger;
+            const dropZoneElement = inputElement.closest(".drop-zone");
+
+            dropZoneElement.addEventListener("click", (e) => {
+                if ($(".drop-zone__thumb")[0] == undefined) {
+                    inputElement.click();
+                }
+            });
+
+            inputElement.addEventListener("change", (e) => {
+                debugger;
+                if (inputElement.files.length) {
+                    IsMainChanged = true;
+
+                    updateThumbnail(dropZoneElement, inputElement.files[0]);
+                    if ($(".drop-zone__thumb")[0] != undefined) {
+                        if ($("#DeleteMainImage").html() == undefined)
+                            $($(".drop-zone__thumb")[0]).append($('<div id="DeleteMainImage"></div>'));
+                    }
+                }
+            });
+
+            dropZoneElement.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZoneElement.classList.add("drop-zone--over");
+            });
+
+            ["dragleave", "dragend"].forEach((type) => {
+                dropZoneElement.addEventListener(type, (e) => {
+                    dropZoneElement.classList.remove("drop-zone--over");
+                });
+            });
+
+            dropZoneElement.addEventListener("drop", (e) => {
+                e.preventDefault();
+
+                if (e.dataTransfer.files.length) {
+                    inputElement.files = e.dataTransfer.files;
+                    updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                }
+
+                dropZoneElement.classList.remove("drop-zone--over");
+            });
+
+
+        });
+
+
+        function updateThumbnail(dropZoneElement, file) {
+            let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+            // First time - remove the prompt
+            if (dropZoneElement.querySelector("#drop-zone__prompt")) {
+                dropZoneElement.querySelector("#drop-zone__prompt").remove();
+                dropZoneElement.querySelector("#mainImage").remove();
+            }
+
+            // First time - there is no thumbnail element, so lets create it
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div");
+                thumbnailElement.classList.add("drop-zone__thumb");
+                dropZoneElement.appendChild(thumbnailElement);
+            }
+
+            thumbnailElement.dataset.label = file.name;
+
+            // Show thumbnail for image files
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+                    NewUploadedMainImage = reader.result;
+                };
+            } else {
+                thumbnailElement.style.backgroundImage = null;
+            }
+        }
+
+        $('body').on('click', '#DeleteMainImage', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            debugger;
+            var _this = $(this);
+            $("#main-img-input").val("");
+            $($(".drop-zone__thumb")[0]).remove();
+            var label = $('<label class="form-label mb-1 titles" style="color: gray;" id="mainImage"></label>');
+            label.html('عکس');
+            var span = $('<span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="drop-zone__prompt"></span>');
+            $("#dz-main").append(label);
+            $("#dz-main").append(span);
+
+
+            //add main photo id to removedIDs
+            let removedId = $(this).attr('fileid');
+            if (removedId) {
+                RemovedPhotosIDs.push(removedId);
+            }
+
+
+            let removedPath = $(this).attr('fileurl');
+            if (removedPath) {
+                RemovedPhotosPaths.push(removedPath);
+            }
+
+            $("#main-img-input").val('');
+        });
+        //#endregion
+
+
+        //#region ChangeFilePhoto
+        $('body').on('change', '.fileInput', function (event) {
+            let input = event.target;
+            let fileId = $(this).attr('fileId');
+
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.listImg[fileId=' + fileId + ']').attr('src', e.target.result).show();
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+
+        //#endregion
+
+        //temporary file array
+        let filesArray = [];
+
+        $('#addFile').on('click', function () {
+            var mainFile = $('#main-img-input');
+            var fileDescription = $('#fileDescription').val();
+            if (!mainFile) {
+                alert('لطفا عکس مورد نظر را آپلود نمایید');
+                return;
+            }
+            if (!fileDescription) {
+                alert('لطفا توضیحات تکمیلی را وارد نمایید');
+                return;
+            }
+
+            //Adding file and its name to an temporary array
+            let fileInput = mainFile[0].files[0];
+
+            let fileItem = {
+                name: fileInput.name,
+                file: fileInput
+            };
+
+            filesArray.push(fileItem);
+
+
+            let recordHtml = `
+                                <div class="list-item temporary-list-item">
+                                    <div style="border-radius:20px;" class="item-content d-flex">
+
+                                        <div style="flex-direction: column-reverse;" class="d-flex align-items-center my-3 mx-3">
+                                                    <span  data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="material-symbols-outlined deleteTemporaryFile">close</span>
+
+                                                <div class="d-flex align-items-center">
+                                                                <span style="cursor:pointer; margin-left:0; color:cornflowerblue;" class="material-symbols-outlined hidden">add_photo_alternate</span>
+                                                                        <input style="width: 23px !important; height:23px !important;" type="file" class="fileInput hidden">
+                                                                </div>
+
+                                                                <span style="cursor:pointer; margin-left:0; color:green;" class="material-symbols-outlined updateFile hidden">check</span>
+
+                                    </div>
+
+                                                            <span fileOrder="" class="order"></span>
+                                                    <img imgName="${fileInput.name}" class="listImg" src="${NewUploadedMainImage}" />
+                                            <textarea readonly class="form-control item-textarea" style="line-height:16px; resize: none; white-space:normal;">
+                                                   ${fileDescription}
+                                        </textarea>
+                                    </div>
+                                </div>`;
+
+            $('.container2').append(recordHtml);
+            InitializeTweenLite();
+            $('#fileDescription').val('');
+            $('#DeleteMainImage').trigger('click');
+
+
+        });
+
+        $('#submitChanges').on('click', function () {
+
+            var formData = new FormData();
+
+            $('.list-item').each(function (index) {
+
+                debugger;
+
+                let fileId = $(this).find('.order').attr('fileId');
+                let order = Number(index) + 1;
+                let description = $(this).find('.item-textarea').val();
+                let fileName = $(this).find('.listImg').attr('imgName');
+                let file = filesArray.find(f => f.name === fileName);
+
+                formData.append('SuggestionPageTitle', $('#suggestionPageTitle').val());
+
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].SuggestionFileId', fileId)
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].SuggestionFileOrder', order);
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].SuggestionFileTitle', fileName);
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].ConstructionProjectId', constructionProjectId);
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].SuggestionFileDescription', description);
+                if (file) {
+                    formData.append('TeniacoSuggestionFilesVM[' + index + '].File', file.file);
+                }
+
+            })
+
+            $.ajax({
+                url: '/AdminProjects/TeniacoSuggestionsManagement/AddToTeniacoSuggestionFiles',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    LoadFiles();
+                }
+            });
+
+        });
+
+        $('#submitOrders').on('click', function () {
+
+
+            let suggestionFileOrders = new URLSearchParams();
+
+            $('.order').each(function () {
+                let fileId = $(this).attr('fileId');
+                let fileOrder = $(this).attr('fileOrder');
+                suggestionFileOrders.append(`SuggestionFileOrders[${fileId}]`, fileOrder);
+            });
+
+
+
+            $.ajax({
+                url: '/AdminProjects/TeniacoSuggestionsManagement/ChangeTeniacoSuggestionFilesOrder',
+                type: 'POST',
+                data: suggestionFileOrders.toString(),
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (result) {
+
+                }
+            });
+
+        });
+
+        LoadFiles();
+
+        function LoadFiles() {
+
+            filesArray = [];
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/TeniacoSuggestionsManagement/GetListOfTeniacoSuggestionFilesWithConstructionProjectId",
+                data: { 'ConstructionProjectId': constructionProjectId },
+                success: function (response) {
+
+                    if (response.Result == "OK") {
+                        let files = response.Records;
+                        let htmlResult = "";
+                        debugger;
+                        for (let i = 0; i < files.length; i++) {
+                            htmlResult += `
+                                                                                            <div fileId=${files[i].SuggestionFileId} class="list-item">
+                                                                                            <div style="border-radius:20px;" class="item-content d-flex">
+
+                                                                                                <div style="flex-direction: column-reverse;" class="d-flex align-items-center my-3 mx-3">
+                                                                                                            <span  data-toggle="tooltip" data-placement="top" title="Tooltip on top" fileId=${files[i].SuggestionFileId} class="material-symbols-outlined deleteFile hidden">close</span>
+
+                                                                                                        <div class="d-flex align-items-center">
+                                                                                                                        <span style="cursor:pointer; margin-left:0; color:cornflowerblue;" class="material-symbols-outlined filePhotoIcon hidden">add_photo_alternate</span>
+                                                                                                                                <input style="width: 23px !important; height:23px !important;" fileId=${files[i].SuggestionFileId} type="file" class="fileInput hidden">
+                                                                                                                        </div>
+
+                                                                                                                        <span fileId=${files[i].SuggestionFileId} style="cursor:pointer; margin-left:0; color:green;" class="material-symbols-outlined updateFile hidden">check</span>
+
+                                                                                            </div>
+
+                                                                                                        <span fileId=${files[i].SuggestionFileId} fileOrder=${files[i].SuggestionFileOrder} class="order">${files[i].SuggestionFileOrder}</span>
+                                                                                                    <img fileId=${files[i].SuggestionFileId} class="listImg" src="/Files/TeniacoSuggestionFiles/my.teniaco.com/${constructionProjectId}/Media/${files[i].SuggestionFilePath}" />
+                                                                                                    <textarea readonly fileId=${files[i].SuggestionFileId} class="form-control item-textarea" style="line-height:16px; resize: none; white-space:normal;">
+                                                                                                   ${files[i].SuggestionFileDescription}
+                                                                                                </textarea>
+                                                                                            </div>
+                                                                                        </div>`;
+                        }
+
+                        $('.container2').html(htmlResult);
+                        InitializeTweenLite();
+                        $('[data-toggle="tooltip"]').tooltip()
+
+                        $('.item-textarea').each(function () {
+                            $(this).val($.trim($(this).val()));
+                        });
+
+
+                    }
+
+                }
+            });
+        }
+
+        $('body').on('click', '.deleteTemporaryFile', function () {
+            $(this).closest('.list-item').remove();
+            InitializeTweenLite();
+        })
+
+        $('body').on('click', '.deleteFile', function () {
+
+            let fileId = $(this).attr('fileId');
+            $('.btn-delete-file').attr('fileId', fileId);
+
+            $('#deleteModal').show();
+
+        });
+
+        $('#enterEditMode').on('click', function () {
+            $('.temporary-list-item').remove();
+            InitializeTweenLite();
+            SwapMode();
+        });
+
+        $('#updateFiles').on('click', function () {
+            SwapMode();
+
+            var formData = new FormData();
+
+            $('.list-item').each(function (index) {
+
+                debugger;
+
+                let fileId = $(this).find('.order').attr('fileId');
+                let order = Number(index) + 1;
+                let description = $(this).find('.item-textarea').val();
+                let file = $('.fileInput[fileId=' + fileId + ']')[0].files[0];
+
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].SuggestionFileId', fileId)
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].SuggestionFileOrder', order);
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].ConstructionProjectId', constructionProjectId);
+                formData.append('TeniacoSuggestionFilesVM[' + index + '].SuggestionFileDescription', description);
+                if (file) {
+                    formData.append('TeniacoSuggestionFilesVM[' + index + '].File', file);
+                }
+
+            })
+
+            $.ajax({
+                url: '/AdminProjects/TeniacoSuggestionsManagement/EditTeniacoSuggestionFile',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+
+                }
+            });
+
+
+        });
+
+
+        $('.btn-delete-file').on('click', function () {
+
+            let fileId = $(this).attr('fileId');
+
+            $.ajax({
+                url: '/AdminProjects/TeniacoSuggestionsManagement/DeleteTeniacoSuggestionFile',
+                type: 'POST',
+                data: { 'SuggestionFileId': fileId },
+                success: function (result) {
+                    $('#deleteModal').hide();
+                    $('.list-item[fileId=' + fileId + ']').remove();
+                    InitializeTweenLite();
+                }
+            });
+        })
+
+
+
+
+    });
+
+
+</script>

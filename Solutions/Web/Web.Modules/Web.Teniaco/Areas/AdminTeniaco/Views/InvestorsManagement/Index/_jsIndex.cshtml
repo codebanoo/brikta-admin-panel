@@ -1,0 +1,962 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+
+        for (var i = 0; i < personsList.length; i++) {
+
+            var item = personsList[i];
+            $('#slcPersonId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcPersonId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        $('#listContainer').jtable({
+            title: 'سرمایه گذاران', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminTeniaco/InvestorsManagement/GetListOfInvestors',
+                //createAction: '/AdminTeniaco/InvestorsManagement/AddToInvestors',
+                //updateAction: '/AdminTeniaco/InvestorsManagement/UpdateInvestors',
+                deleteAction: '/AdminTeniaco/InvestorsManagement/CompleteDeleteInvestors'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function () {
+                            window.location.href = '/AdminTeniaco/InvestorsManagement/AddToInvestors';
+                        }
+                    }]
+
+            },
+            fields: {
+                InvestorId: {
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false,
+                },
+                // PersonId: {
+                //     title: 'سرمایه&nbsp;گذار',
+                //     list: false,
+                //     options: personsList,
+                // },
+                Name: {
+                    title: 'نام',
+                    sorting: false,
+                    display: function (data) {
+
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Name != null)
+                                return data.record.CustomUsersVM.Name;
+
+                    },
+                    create: false,
+                    edit: false
+                },
+                Family: {
+                    title: 'نام&nbsp;خانوادگی',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Family != null)
+                                return data.record.CustomUsersVM.Family;
+                    },
+                    create: false,
+                    edit: false
+                },
+                Mobile: {
+                    title: 'شماره&nbsp;تماس',
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Mobile != null)
+                                return data.record.CustomUsersVM.Mobile;
+                    },
+                    create: false,
+                    edit: false
+                },
+                UserName: {
+                    title: 'نام&nbsp;کاربری',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.UserName != '') {
+                                return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" value="' + data.record.CustomUsersVM.UserName + '"/>';
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName" />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.UserName" name="CustomUsersVM.UserName"/>';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.UserName != null)
+                                return data.record.CustomUsersVM.UserName;
+                    }
+                },
+                Password: {
+                    title: 'رمز&nbsp;عبور',
+                    list: false,
+                    edit: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Password != '') {
+                                return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                            }
+                            else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                            }
+                        }
+                        else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Password" name="CustomUsersVM.Password" readonly />';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.CustomUsersVM != null)
+                            if (data.record.CustomUsersVM.Password != null)
+                                return data.record.CustomUsersVM.Password;
+                    }
+                },
+                NationalCode:{
+                    title: 'کدملی',
+                    sorting: false,
+                    display: function(data){
+                        if(data.record != undefined){
+                            if(data.record.CustomUsersVM != null){
+                                if(data.record.CustomUsersVM.NationalCode != null){
+                                    return data.record.CustomUsersVM.NationalCode;
+                                }
+                            }
+                        }
+                    }
+
+                },
+                Email: {
+                    title: 'ایمیل',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.CustomUsersVM.Email != '') {
+                                return '<input type="text" id="Edit-CustomUsersVM.Email" name="CustomUsersVM.Email" value="' + data.record.CustomUsersVM.Email + '" />';
+                            } else {
+                                return '<input type="text" id="Edit-CustomUsersVM.Email" name="CustomUsersVM.Email" />';
+                            }
+                        } else {
+                            return '<input type="text" id="Edit-CustomUsersVM.Email" name="CustomUsersVM.Email" />';
+                        }
+                    },
+                    display: function (data) {
+
+                        if (data.record.CustomUsersVM != null) {
+                            if (data.record.CustomUsersVM.Email != null) {
+                                return data.record.CustomUsersVM.Email
+                            }
+                        }
+                    }
+                },
+                RepresentativeId: {
+                    title: 'معرف',
+                    sorting: false,
+                    options: personsList,
+                    display: function (data) {
+                        debugger;
+                        if (data.record != null) {
+                            if (data.record.RepresentativeId != null) {
+                                for (var i = 0; i < personsList.length; i++) {
+                                    if (personsList[i].Value === data.record.RepresentativeId) {
+                                        return personsList[i].DisplayText;
+                                    }
+                                }
+
+
+                            }
+                        }
+                    }
+                },
+                GuildCategoryId: {
+                    title: 'صنف',
+                    options: guildCategoriesList,
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.GuildCategoriesVM != null)
+                            if (data.record.GuildCategoriesVM.GuildCategoryId != null)
+                                return data.record.GuildCategoriesVM.GuildCategoryName;
+                    }
+                       
+                },
+                Job: {
+                    title: 'شغل',
+                    sorting: false,
+                },
+
+                FundId: {
+                    title: 'عدد&nbsp;کل&nbsp;سرمایه',
+                    sorting: false,
+                    options: fundsList,
+
+                },
+
+                TradableNumber: {
+                    title: 'عدد&nbsp;قابل&nbsp;معامله',
+                    sorting: false,
+                    options: fundsList,
+                },
+
+                DescriptionOfFund: {
+                    title: 'شرح&nbsp;سرمایه',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.NewDescriptionOfFund != null)
+                            return '<div class="DescriptionOfFund pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.DescriptionOfFund + '">' + data.record.NewDescriptionOfFund + '</div>';
+
+                    }
+                },
+
+                CompanyName: {
+                    title: 'نام&nbsp;شرکت',
+                    sorting: false,
+                },
+                CompanyPhone: {
+                    title: 'تلفن&nbsp;شرکت',
+                    sorting: false,
+                },
+                CompanyAddress: {
+                    title: 'آدرس&nbsp;شرکت',
+                    sorting: false,
+                },
+               
+                DescriptionOfCompany: {
+                    title: 'شرح&nbsp;شرکت',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.NewDescriptionOfCompany != null)
+                            return '<div class="DescriptionOfCompany pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.DescriptionOfCompany + '">' + data.record.NewDescriptionOfCompany + '</div>';
+
+                    }
+                },
+
+                CountOfProperties: {
+                    title: 'تعداد&nbsp;املاک',
+                    sorting: false,
+                },
+        
+       
+             
+                RelatedPersons: {
+                    title: 'اشخاص&nbsp;مرتبط',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.NewRelatedPersons != null)
+                            return '<div class="RelatedPersons pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.RelatedPersons + '">' + data.record.NewRelatedPersons + '</div>';
+
+                    }
+                },
+
+                PersonalSpirit: {
+                    title: 'روحیه&nbsp;شخصی',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.NewPersonalSpirit != null)
+                            return '<div class="PersonalSpirit pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.PersonalSpirit + '">' + data.record.NewPersonalSpirit + '</div>';
+
+                    }
+                },
+
+                BusinessSpirit: {
+                    title: 'روحیه&nbsp;تجاری',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.NewRelatedPersons != null)
+                            return '<div class="BusinessSpirit pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.BusinessSpirit + '">' + data.record.NewBusinessSpirit + '</div>';
+
+                    }
+                },
+                PastTransactions: {
+                    title: 'معاملات&nbsp;گذشته',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.NewPastTransactions != null)
+                            return '<div class="PastTransactions pointer" data-toggle="tooltip" title="برای نمایش کامل توضیحات، کلیک کنید." data-Description="' + data.record.PastTransactions + '">' + data.record.NewPastTransactions + '</div>';
+
+                    }
+                },
+                Score: {
+                    title: 'امتیاز',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                EvaluationOfInvestors: {
+                    title: 'چارت&nbsp;ارزیابی&nbsp;سرمایه&nbsp;گذار',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<i class="fa fa-bar-chart fa-2x pointer" data-investorId="' + data.record.InvestorId + '" id="EvaluationOfInvestors" >&nbsp;</i>';
+                    }
+                },
+                AnswerSheet: {
+                    title: 'پاسخنامه',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<i class="fa fa-file-o fa-2x pointer" data-investorId="' + data.record.InvestorId + '" id="AnswerSheet" >&nbsp;</i>';
+                    }
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-InvestorId="' +
+                                data.record.InvestorId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-InvestorId="' +
+                                data.record.InvestorId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-InvestorId="' + data.record.InvestorId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-InvestorId="' + data.record.InvestorId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditInvestor: {
+                    title: 'ویرایش',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editInvestor pointer" data-InvestorId="' + data.record.InvestorId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function (event, data) {
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+
+                if (formName == 'edit') {
+
+                    $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(2) div.jtable-input-label').append('<span style="color:red; font-size:14px" aria-hidden="true">  *  </span>');
+
+                    $('#Edit-PersonId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-PersonId').val(data.record.PersonId + '').trigger("chosen:updated");
+
+
+                    $('Edit-GuildCategoryId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('Edit-GuildCategoryId').val(data.record.GuildCategoryId + '').trigger("chosen:updated");
+
+                    $('#Edit-FundId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-FundId').val(data.record.FundId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+
+                    $('#Edit-RepresentativeId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-RepresentativeId').val(data.record.RepresentativeId + '').trigger("chosen:updated");
+
+
+                    $('[name="CustomUsersVM.UserName"]').prop('readonly', true);
+                    $('[name="CustomUsersVM.Email"]').prop('readonly', true);
+                    $('#Edit-PersonId').prop('disabled', true);
+                    ShowCheckBoxBeforeChosenFoJtable();
+                }
+                else
+                    if (formName == 'create') {
+                        $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(1) div.jtable-input-label').append('<span style="color:red; font-size:14px" aria-hidden="true">  *  </span>');
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+
+                        $('#Edit-RepresentativeId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        ShowCheckBoxBeforeChosenFoJtable();
+
+                    }
+
+
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+
+
+        });
+
+        $('#listContainer').jtable('load');
+
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+        $('body').on('click', '.editInvestor', function (e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var investorId = _this.attr('data-InvestorId');
+            window.location.href = '/AdminTeniaco/InvestorsManagement/UpdateInvestors/' + investorId;
+        });
+
+
+        $('body').on('click', '.DescriptionOfCompany', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var DescriptionOfCompany = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + DescriptionOfCompany + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('body').on('click', '.DescriptionOfFund', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var DescriptionOfFund = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + DescriptionOfFund + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('body').on('click', '.RelatedPersons', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var RelatedPersons = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + RelatedPersons + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('body').on('click', '.BusinessSpirit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var BusinessSpirit = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + BusinessSpirit + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('body').on('click', '.PersonalSpirit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var PersonalSpirit = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + PersonalSpirit + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('body').on('click', '.PastTransactions', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var PastTransactions = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + PastTransactions + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('body').on('click', '#EvaluationOfInvestors', function (e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var investorId = _this.attr('data-investorId');
+            var parentType = "Investors";
+
+            window.open("/AdminTeniaco/EvaluationChartManagement/Index/" + '?Id=' + investorId + '&parentType=' + parentType, '_blank');
+
+            //window.open("/AdminTeniaco/InvestorsManagement/EvaluationOfInvestors/" + investorId, '_blank').focus();
+        });
+
+        $('body').on('click', '#AnswerSheet', function (e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var investorId = _this.attr('data-investorId');
+            var parentType = "Investors";
+
+            window.open("/AdminTeniaco/AnswerSheetManagement/Index/" + '?Id=' + investorId + '&parentType=' + parentType, '_blank');
+
+            //window.open("/AdminTeniaco/AnswerSheetManagement/Index/" + investorId ,'_blank').focus();
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var investorId = _this.attr('data-InvestorId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/InvestorsManagement/ToggleActivationInvestors",
+
+                data: { 'investorId': investorId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        //var slcPersonId = $('#slcPersonId').val();
+                        var txtCompanyName = $('#txtCompanyName').val();
+                        //var txtUserName = $('#txtUserName').val();
+                        //var slcFundId = $('#slcFundId').val();
+
+
+                        if (
+                            (txtCompanyName != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                //'PersonId': slcPersonId,
+                                'CompanyName': txtCompanyName,
+                                //'FundId': slcFundId
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var investorId = _this.attr('data-InvestorId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/InvestorsManagement/TemporaryDeleteInvestors",
+
+                data: { 'investorId': investorId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var slcPersonId = $('#slcPersonId').val();
+                        var txtCompanyName = $('#txtCompanyName').val();
+                        //var slcFundId = $('#slcFundId').val();
+
+
+                        if (
+                            (slcPersonId != null) &&
+                            (txtCompanyName != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PersonId': slcPersonId,
+                                'CompanyName': txtCompanyName,
+                                //'FundId': slcFundId
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            //var slcPersonId = $('#slcPersonId').val();
+            var txtCompanyName = $('#txtCompanyName').val();
+
+            if ((txtCompanyName != null)) {
+
+                $('#listContainer').jtable('load', {
+                    //'PersonId': slcPersonId,
+                    'CompanyName': txtCompanyName,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            e.preventDefault();
+
+            $('#slcPersonId').val(null);
+            $('#txtCompanyName').val(null);
+
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            e.preventDefault();
+
+            $('#slcPersonId').val(null);
+            $('#txtCompanyName').val(null);
+
+
+
+        });
+
+
+        $('body').on('change', '#Edit-PersonId', function (e) {
+            e.preventDefault();
+            debugger;
+            $('[name="CustomUsersVM.UserName"]').val('');
+            $('[name="CustomUsersVM.UserName"]').prop('readonly', false);
+            $('[name="CustomUsersVM.Password"]').val('');
+
+
+            var personId = $('#Edit-PersonId').val();
+            var phone = personsList.filter(f => f.Value == personId)[0].Phone;
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/UsersManagement/GetUserWithUserProfileMobile",
+                data: {
+                    'mobile': phone
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        if (result.Record != null) {
+                            var record = result.Record;
+                            debugger;
+                            if (record.UserName != null) {
+                                if (record.UserName != '') {
+                                    $('[name="CustomUsersVM.UserName"]').val(record.UserName);
+                                    $('[name="CustomUsersVM.UserName"]').prop('readonly', true);
+                                    $('[name="CustomUsersVM.Password"]').val('**********');
+                                }
+                            }
+
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html(result.Message);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('خطا');
+                    $('#my-warning-modal').modal("show");
+                }
+            });
+        });
+
+
+        $('body').on('keyup', '[name="CustomUsersVM.UserName"]', function (e) {
+            e.preventDefault();
+
+            debugger;
+            var value = $(this).val();
+            $('[name="CustomUsersVM.Password"]').val(value);
+
+        });
+    });
+
+
+</script>

@@ -1,0 +1,465 @@
+﻿<script type="text/javascript">
+    $(function () {
+        $(window).scroll(function () {
+            map.updateSize();
+        });
+    });
+    $(document).ready(function () {
+
+
+        $('#slcPropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcFirstPropertyId,#slcThirdPropertyId,#slcSecondPropertyId,#slcFourthPropertyId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: 200,
+            rtl: rtl
+        });
+
+        for (var i = 0; i < comparePropertiesByPersonIdVMList.length; i++) {
+            var item = comparePropertiesByPersonIdVMList[i];
+            $('#slcFirstPropertyId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+            $('#slcThirdPropertyId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+            $('#slcSecondPropertyId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+            $('#slcFourthPropertyId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+
+        }
+
+
+        for (var i = 0; i < propertyTypesList.length; i++) {
+
+            var item = propertyTypesList[i];
+            $('#slcPropertyTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('body').on('change', '#slcFirstPropertyId,#slcThirdPropertyId,#slcSecondPropertyId,#slcFourthPropertyId', function (e) {
+            e.preventDefault();
+            let id = $(this).attr('id');
+            //let _PropertyId = this.value;
+
+            var propertyId = this.value;
+
+            if (!propertyId) {
+                let side = id == 'slcFirstPropertyId' ? 'L_' : id == 'slcThirdPropertyId' ? 'R_' : id == 'slcFourthPropertyId' ? 'F_' : 'M_';
+                $('.' + side + 'Val').html('--');
+                $('[id ^=' + side + 'FeatureId_]').html('');
+                let ids = $('[id ^=' + side + 'FeatureId_]');
+                $.each(ids, function (key, value) {
+                    //console.log(value.id.split('_'));
+                    let tem = value.id.split('_');
+                    if ($('#L_' + tem[1] + '_' + tem[2]).is(':empty') && $('#M_' + tem[1] + '_' + tem[2]).is(':empty') && $('#R_' + tem[1] + '_' + tem[2]).is(':empty') && $('#F_' + tem[1] + '_' + tem[2]).is(':empty')) {
+                        $("#Rw" + tem[2]).remove();
+                    }
+                });
+                $('#' + side + 'Map').empty();
+                return;
+
+            }
+
+            let propertyTypeId = comparePropertiesByPersonIdVMList.filter(function (item) {
+                return item.Value == propertyId;
+            })[0].PropertyTypeId;
+
+
+
+            GetComparePropertiesForBasicInfo(propertyId, id);
+            GetCompareFeatureValues(propertyId, id);
+            GetComparePropertiesAddress(propertyId, id);
+            // GetComparePropertiesPricesHistories(propertyId, id);
+
+        });
+
+
+        raster = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+
+        vectorSource = new ol.source.Vector({
+            wrapX: false
+        });
+
+
+        map = new ol.Map({
+            target: 'map',
+            layers: [raster],
+            view: view
+        });
+
+        layer = new ol.layer.Vector({
+            source: vectorSource,
+            style: [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)'
+                    })
+                }),
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        'icon-src': 'wwwroot/images/details.png',
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'darkblue'
+                        })
+                    }),
+                })
+            ]
+        });
+
+        map.addLayer(layer);
+
+
+
+    });
+
+    ///Functions For show CompareProperties BasicInfo Table
+    function GetComparePropertiesForBasicInfo(propertyId, kind) {
+
+        const _url = '/AdminTeniaco/PropertiesManagement/GetListOfComparePropertiesForBasicInfo';
+
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: { 'PropertyId': propertyId },
+            success: function (result) {
+
+                if (result.Result == "OK") {
+                    DisplayComparePropertiesForBasicInfo(result.Record, kind);
+                }
+                else {
+                    alert('خطا رخ داده است')
+                }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            }
+        });
+    }
+
+    function DisplayComparePropertiesForBasicInfo(data, kind) {
+        let side = kind == 'slcFirstPropertyId' ? 'L_' : kind == 'slcThirdPropertyId' ? 'R_' : kind == 'slcFourthPropertyId' ? 'F_' : 'M_';
+        //setLocationOfCompareProperties(data.LocationLat, data.LocationLon, side);
+
+        $('#' + side + 'PropertyCodeName').html(data.PropertyCodeName);
+        $('#' + side + 'PropertyTypesName').html(data.PropertyTypeTitle);
+        $('#' + side + 'DocumentTypes').html(data.TypeOfUseTitle);
+        $('#' + side + 'Area').html(data.Area);
+
+    }
+
+
+
+    ///Functions For show CompareProperties FeatureValues Table
+    function GetCompareFeatureValues(propertyId, kind) {
+        const _url = '/AdminTeniaco/PropertiesManagement/GetListOfCompareFeatureValues';
+
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: { 'PropertyId': propertyId },
+            success: function (result) {
+                //console.log(result);
+                if (result.Result == "OK") {
+                    DisplayCompareFeatureValues(result.Record, kind);
+                }
+                else {
+                    alert('خطا رخ داده است')
+                }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            }
+        });
+    }
+
+    function DisplayCompareFeatureValues(data, kind) {
+
+        let _$parent = $('#collapseTwo > .panel-body')[0];
+
+        $.each(data, function (key, value) {
+
+            if ($("#Rw" + value.FeatureId).length == 0) {
+
+                //console.log(value.FeatureTitle, value.FeatureId, value.FeatureValue);
+                let dives = '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="L_FeatureId_' + value.FeatureId + '"></span></div>';
+                dives += '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="M_FeatureId_' + value.FeatureId + '"></span></div>';
+                dives += '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="R_FeatureId_' + value.FeatureId + '"></span></div>';
+                dives += '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="F_FeatureId_' + value.FeatureId + '"></span></div>';
+                $(_$parent).append('<div class = "row feat" id="Rw' + value.FeatureId + '"><div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span style="float:right;font-weight:bold">' + value.FeatureTitle + '</span></div>' + dives + '</div>');
+            }
+
+
+            let side = kind == 'slcFirstPropertyId' ? 'L_' : kind == 'slcThirdPropertyId' ? 'R_' : kind == 'slcFourthPropertyId' ? 'F_' : 'M_';
+
+            $.each(data, function (key, value) {
+                //console.log('#' + side + '_FeatureId_' + value.FeatureId);
+                $('#' + side + 'FeatureId_' + value.FeatureId).html(value.FeatureValue);
+            });
+        });
+    }
+
+
+    ///Functions For show CompareProperties Address Table
+    function GetComparePropertiesAddress(propertyId, kind) {
+        const _url = '/AdminTeniaco/PropertiesManagement/GetListOfComparePropertiesAddress';
+
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: { 'PropertyId': propertyId },
+            success: function (result) {
+                if (result.Result == "OK") {
+
+                    DisplayComparePropertiesAddress(result.Record, kind);
+                }
+                else {
+                    alert('خطا رخ داده است')
+                }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            }
+        });
+    }
+
+    function DisplayComparePropertiesAddress(data, kind) {
+
+        let side = kind == 'slcFirstPropertyId' ? 'L_' : kind == 'slcThirdPropertyId' ? 'R_' : kind == 'slcFourthPropertyId' ? 'F_' : 'M_';
+
+        for (var i = 0; i < data.length; i++) {
+
+            setLocationOfCompareProperties(data[i].LocationLat, data[i].LocationLon, side);
+
+            $('#' + side + 'State').html(data[i].StateName);
+            $('#' + side + 'City').html(data[i].CityName);
+            $('#' + side + 'Zone').html(data[i].ZoneName);
+            $('#' + side + 'District').html(data[i].DistrictName);
+
+        }
+    }
+
+    //function setLocationOfCompareProperties(LocationLat, LocationLon, side) {
+    //    //console.log(_LocationLat, _LocationLon, side);
+    //    debugger;
+    //    if (!LocationLat || !LocationLon)
+    //        return;
+    //    let $map = side + 'Map';
+    //    var raster = new ol.layer.Tile({
+    //        source: new ol.source.OSM,
+    //        zoom: 12,
+    //        maxZoom: 17,
+    //        minZoom: 1,
+    //    });
+
+    //    var view = new ol.View({
+    //        center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+    //        zoom: 12,
+    //        maxZoom: 17,
+    //        minZoom: 1,
+    //        constrainOnlyCenter: true,
+    //    });
+
+
+    //    var mapLeft = new ol.Map({
+    //        logo: false,
+    //        controls: ol.control.defaults({
+    //            attributionOptions: ({
+    //                collapsible: false
+    //            })
+    //        }),
+    //        layers: [raster],
+    //        target: $map,
+    //        view: view
+    //    });
+
+
+    //    var tmpEvt = {
+    //        LocationLon: LocationLon,
+    //        LocationLat: LocationLat,
+    //    }
+
+    //    var iconGeometry = new ol.geom.Point(ol.proj.transform([LocationLon, LocationLat], 'EPSG:4326', 'EPSG:3857'));
+
+    //    var layer = new ol.layer.Vector({
+    //        source: new ol.source.Vector({
+    //            features: [
+    //                new ol.Feature({
+    //                    geometry: iconGeometry
+    //                })
+    //            ]
+    //        }),
+    //        style: new ol.style.Style({
+    //            image: new ol.style.Icon({
+    //                anchor: [0.5, 46],
+    //                anchorXUnits: 'fraction',
+    //                anchorYUnits: 'pixels',
+    //                src: '/images/mapmarker1.png'
+    //            })
+    //        })
+    //    });
+
+    //    mapLeft.addLayer(layer);
+
+    //    mapLeft.on('singleclick', function (evt) {
+    //        debugger;
+
+    //        var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+    //        tmpEvt = {
+    //            LocationLon: lonlat[0],
+    //            LocationLat: lonlat[1]
+    //        };
+    //        iconGeometry.setCoordinates(evt.coordinate);
+    //    });
+
+    //}
+
+
+
+    function setLocationOfCompareProperties(LocationLat, LocationLon, side) {
+
+        debugger;
+        if (!LocationLat || !LocationLon)
+            return;
+        // let $map = side + 'Map';
+
+        var tmpEvt = {
+            LocationLon: LocationLon,
+            LocationLat: LocationLat,
+        }
+
+        var iconGeometry = new ol.geom.Point(ol.proj.transform([LocationLon, LocationLat], 'EPSG:4326', 'EPSG:3857'));
+
+        //iconGeometry[side] = new ol.geom.Point(ol.proj.transform([LocationLon, LocationLat], 'EPSG:4326', 'EPSG:3857'));
+
+
+
+        //for (var i = 0; i < iconGeometry.length; i++) {
+        //    var iconGeometry = iconGeometry[i];
+        //    map.on('singleclick', function (evt) {
+        //        debugger;
+
+        //        var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+        //        tmpEvt = {
+        //            LocationLon: lonlat[0],
+        //            LocationLat: lonlat[1]
+        //        };
+        //        iconGeometry.setCoordinates(evt.coordinate);
+        //    });
+        //}
+
+
+        //map.on('singleclick', function (evt) {
+        //    debugger;
+
+        //    var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+        //    tmpEvt = {
+        //        LocationLon: lonlat[0],
+        //        LocationLat: lonlat[1]
+        //    };
+        //    iconGeometry[side].setCoordinates(evt.coordinate);
+        //});
+
+
+        map.on('singleclick', function (evt) {
+            debugger;
+
+            var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+            tmpEvt = {
+                LocationLon: lonlat[0],
+                LocationLat: lonlat[1]
+            };
+            iconGeometry.setCoordinates(evt.coordinate);
+
+        });
+        var singlePolygonFeature = new ol.Feature(iconGeometry);
+        vectorSource.addFeature(singlePolygonFeature);
+
+    }
+
+
+    ///Functions For show CompareProperties PriceHistories Table
+
+    function GetComparePropertiesPricesHistories(propertyId, kind) {
+
+        const _url = '/AdminTeniaco/PropertiesManagement/GetListOfComparePropertiesPricesHistories';
+
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: { 'PropertyId': propertyId },
+            success: function (result) {
+
+                if (result.Result == "OK") {
+                    DisplayGetComparePropertiesPricesHistories(result.Record, kind);
+                }
+                else {
+                    alert('خطا رخ داده است')
+                }
+
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+
+            }
+        });
+    }
+
+    function DisplayGetComparePropertiesPricesHistories(data, kind) {
+
+        let side = kind == 'slcFirstPropertyId' ? 'L_' : kind == 'slcThirdPropertyId' ? 'R_' : kind == 'slcFourthPropertyId' ? 'F_' : 'M_';
+
+
+        $('#' + side + 'spring').html();
+        $('#' + side + 'summer').html();
+        $('#' + side + 'fall').html();
+        $('#' + side + 'winter').html();
+    }
+
+</script>

@@ -1,0 +1,174 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <MvcRazorExcludeViewFilesFromBuild>false</MvcRazorExcludeViewFilesFromBuild>
+    <MvcRazorExcludeViewFilesFromPublish>true</MvcRazorExcludeViewFilesFromPublish>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Areas\AdminAutomation\Views\AutomationPanel\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\AutomationPanel\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\AutomationPanel\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\DepartmentsStaffManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\DepartmentsStaffManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\DepartmentsStaffManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\EvaluationOfHumanResourcesManagement\EvaluationChartOfHumaneResourcesManagement\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\EvaluationOfHumanResourcesManagement\EvaluationChartOfHumaneResourcesManagement\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\EvaluationOfHumanResourcesManagement\EvaluationChartOfHumaneResourcesManagement\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\EvaluationOfHumanResourcesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\EvaluationOfHumanResourcesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\EvaluationOfHumanResourcesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormElementOptionsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormElementOptionsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormElementOptionsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormElementsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormElementsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormElementsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\FormsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\AddToMyCompanies\_headAddTo.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\AddToMyCompanies\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\AddToMyCompanies\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\UpdateMyCompanies\_headUpdate.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\UpdateMyCompanies\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyCompaniesManagement\UpdateMyCompanies\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyDepartmentsDirectorsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyDepartmentsDirectorsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyDepartmentsDirectorsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyDepartmentsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyDepartmentsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\MyDepartmentsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\OrganizationalPositionsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\OrganizationalPositionsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\OrganizationalPositionsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\OrgChartManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\OrgChartManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\OrgChartManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\Shared\Components\AdminAutomationDashboard\sb_admin_2AdminAutomationDashboard.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\Shared\Components\AdminAutomationDashboard\sb_admin_2AdminCrmDashboard.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\Shared\Components\AdminNavigation\sb_admin_2AdminNavigation.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\AddToStaff\_headAddTo.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\AddToStaff\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\AddToStaff\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\UpdateStaff\_headUpdate.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\UpdateStaff\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\StaffManagement\UpdateStaff\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\WorkFlowsManagement\WorkFlowDesign\_headIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\WorkFlowsManagement\WorkFlowDesign\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\WorkFlowsManagement\WorkFlowDesign\_jsIndex.cshtml" />
+    <None Include="Areas\AdminAutomation\Views\_ViewImports.cshtml" />
+    <None Include="Areas\UserAutomation\Views\AutomationPanel\sb_admin_2Index.cshtml" />
+    <None Include="Areas\UserAutomation\Views\CrmPanel\sb_admin_2Index.cshtml" />
+    <None Include="Areas\UserAutomation\Views\DepartmentsStaffManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\DepartmentsStaffManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\DepartmentsStaffManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\AddToMyCompanies\_headAddTo.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\AddToMyCompanies\_htmlAddTo.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\AddToMyCompanies\_jsAddTo.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\UpdateMyCompanies\_headUpdate.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\UpdateMyCompanies\_htmlUpdate.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyCompaniesManagement\UpdateMyCompanies\_jsUpdate.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyDepartmentsDirectorsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyDepartmentsDirectorsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyDepartmentsDirectorsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyDepartmentsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyDepartmentsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\MyDepartmentsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\Shared\Components\UserAutomationDashboard\sb_admin_2UserAutomationDashboard.cshtml" />
+    <None Include="Areas\UserAutomation\Views\Shared\Components\UserAutomationDashboard\sb_admin_2UserCrmDashboard.cshtml" />
+    <None Include="Areas\UserAutomation\Views\Shared\Components\UserNavigation\sb_admin_2UserNavigation.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\AddToStaff\_headAddTo.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\AddToStaff\_htmlAddTo.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\AddToStaff\_jsAddTo.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\UpdateStaff\_headUpdate.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\UpdateStaff\_htmlUpdate.cshtml" />
+    <None Include="Areas\UserAutomation\Views\StaffManagement\UpdateStaff\_jsUpdate.cshtml" />
+    <None Include="Areas\UserAutomation\Views\_ViewImports.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ApiCallers.AutomationApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.AutomationApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.BaseApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.BaseApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.PublicApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.PublicApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.TeniacoApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.TeniacoApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomAttributes">
+      <HintPath>..\..\..\..\AllRef\CustomAttributes.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\..\AllRef\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Business">
+      <HintPath>..\..\..\..\AllRef\Services.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Public">
+      <HintPath>..\..\..\..\AllRef\Services.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Xml">
+      <HintPath>..\..\..\..\AllRef\Services.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Automation">
+      <HintPath>..\..\..\..\AllRef\VM.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\..\AllRef\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\..\AllRef\VM.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Teniaco">
+      <HintPath>..\..\..\..\AllRef\VM.Teniaco.dll</HintPath>
+    </Reference>
+    <Reference Include="Web.Core">
+      <HintPath>..\..\..\..\AllRef\Web.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\Web\Web.Console\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminAutomation&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminAutomation&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserAutomation&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserAutomation&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminAutomation/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminAutomation\Views&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserAutomation/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserAutomation\Views&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Automation\Areas\AdminAutomation\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminAutomation\Accesses.xml&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Automation\Areas\UserAutomation\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserAutomation\Accesses.xml&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Automation\Areas\AdminAutomation\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminAutomation\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Automation\Areas\UserAutomation\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserAutomation\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Automation\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Automation\wwwroot&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\wwwroot&quot;" />
+  </Target>
+
+</Project>

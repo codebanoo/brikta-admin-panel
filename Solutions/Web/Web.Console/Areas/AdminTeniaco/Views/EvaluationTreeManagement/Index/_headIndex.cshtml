@@ -1,0 +1,43 @@
+﻿@using Newtonsoft.Json
+@using VM.Teniaco
+
+
+<script type="text/javascript">
+    @{
+        List<EvaluationCategoriesVM> evaluationCategoriesVMList = new List<EvaluationCategoriesVM>();
+
+        @Html.Raw("var evaluationCategoriesList;")
+        ;
+
+        if (ViewData["EvaluationCategoriesList"] != null)
+        {
+            evaluationCategoriesVMList = ViewData["EvaluationCategoriesList"] as List<EvaluationCategoriesVM>;
+
+            @Html.Raw("debugger; evaluationCategoriesList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationCategoriesVMList)) + "; debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+<link href="~/lib/jquery.fancytree/dist/skin-win7/ui.fancytree.css" rel="stylesheet" />
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>
+
+
+<style type="text/css">
+    .BoldTree {
+        background-color: yellow;
+        color: black !important;
+    }
+
+</style>

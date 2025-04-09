@@ -1,0 +1,93 @@
+﻿@using VM.Automation;
+@using VM.Teniaco;
+@using VM.Public;
+@using Newtonsoft.Json;
+@{ //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs"); }
+
+<script type="text/javascript">
+    @{
+        FormsVM formVM = new FormsVM();
+        @Html.Raw("var formVM ;")
+        ;
+
+        if (ViewData["FormsVM"] != null)
+        {
+            formVM = (FormsVM)ViewData["FormsVM"];
+
+            @Html.Raw("debugger; formVM =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(formVM))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    @{
+
+        List<ElementTypesVM> elementTypesList = new List<ElementTypesVM>();
+
+        @Html.Raw("var elementTypesList = [];");
+
+        if (ViewData["ElementTypesList"] != null)
+        {
+            /*List<DomainsSettingsVM> */
+            elementTypesList =(List<ElementTypesVM>)ViewData["ElementTypesList"];
+
+            var elementTypesListData = elementTypesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.ElementTypeTitle}",
+                          Value = c.ElementTypeId
+                      });
+
+            @Html.Raw("debugger; elementTypesList = " +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(elementTypesListData)) + "; debugger;");
+
+
+
+        }
+
+    }
+</script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8),
+    div.jtable-main-container table.jtable thead th:nth-child(9),
+    div.jtable-main-container table.jtable thead th:nth-child(10) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(10) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+</style>

@@ -1,0 +1,876 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+
+                // فیلد اجباری
+        $('#IsRequired, #editIsRequired').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        for (var i = 0; i < FeaturesCategoriesList.length; i++) {
+            debugger;
+            var item = FeaturesCategoriesList[i];
+            $('#categories, #editCategories')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+
+        $('#categories, #editCategories').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+
+        for (var i = 0; i < elementTypesList.length; i++) {
+            debugger;
+            var item = elementTypesList[i];
+            $('#elementTypeId, #editElementTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+
+        $('#elementTypeId, #editElementTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < propertyTypesList.length; i++) {
+            debugger;
+            var item = propertyTypesList[i];
+            $('#slcPropertyTypeId, #propertyTypeId, #editPropertyTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+                $('#slcPropertyTypeId, #propertyTypeId, #editPropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'امکانات', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminTeniaco/PropertiesManagement/GetListOfFeatures',
+                //createAction: '/AdminTeniaco/PropertiesManagement/AddToFeatures',
+                //updateAction: '/AdminTeniaco/PropertiesManagement/UpdateFeatures',
+                deleteAction: '/AdminTeniaco/PropertiesManagement/CompleteDeleteFeatures'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    {
+                        icon: '/jtable/themes/lightcolor/add.png',
+                        text: 'افزودن امکانات',
+                        click: function () {
+                            $('#create-Feature-modal').modal('show');
+                        }
+                    }]
+            },
+            fields: {
+                FeatureId: {
+                    key: true,
+                    list: false
+                },
+                PropertyTypeId: {
+                    title: 'نوع&nbsp;ملک',
+                    options: propertyTypesList
+                },
+                FeatureCategoryId: {
+                    title: '<i class="fa fa-plus pointer"></i>&nbsp;دسته&nbsp;بندی',
+                    // title: 'دسته&nbsp;بندی',
+                    options: FeaturesCategoriesList
+                },
+                FeatureTitle: {
+                    title: 'عنوان',
+                    inputclass: 'validate[required]',
+                },
+                ElementTypeId: {
+                    title: 'نوع&nbsp;المان',
+                    options: elementTypesList
+                },
+                DefaultValue: {
+                    title: 'مقدار&nbsp;پیش&nbsp;فرض',
+                    sorting: false,
+                },
+                IsRequired: {
+                    title: 'اجباری',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsRequired" name="IsRequired">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsRequired" name="IsRequired">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsRequired" name="IsRequired">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        if (data.record.IsRequired)
+                            return '<div class="isRequired""><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isRequired""><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                FeaturesOptions: {
+                    title: 'آیتمها',
+                    edit: false,
+                    create: false,
+                    sorting: false,
+                    display: function (data) {
+                        if ((data.record.ElementTypeId == 2) ||
+                            (data.record.ElementTypeId == 3))
+                            return '<div class="featuresOptions pointer" data-FeatureId="' + data.record.FeatureId + '"><i class="fa fa-list-alt"></i></div>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-FeatureId="' +
+                                data.record.FeatureId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-FeatureId="' +
+                                data.record.FeatureId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-FeatureId="' + data.record.FeatureId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-FeatureId="' + data.record.FeatureId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditProperty: {
+                    title: 'ویرایش',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editFeature pointer" data-FeatureId="' + data.record.FeatureId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function (event, data) {
+
+                data.form.find('input[name="FeatureTitle"]').addClass(
+                    'validate[required]');
+
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                    //prettySelect: true,
+                    //useSuffix: "chosen-"
+                    //updatePromptsPosition: true,
+                    //autoPositionUpdate: true,
+                    //updatePromptsPosition: true,
+                    //inlineValidation: true,
+                    //prettySelect: true,
+                    //useSuffix: "_chosen"
+                });
+
+
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                if (formName == 'edit') {
+
+                    $('#Edit-PropertyTypeId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-PropertyTypeId').val(data.record.PropertyTypeId + '').trigger("chosen:updated");
+
+                    $('#Edit-ElementTypeId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-ElementTypeId').val(data.record.ElementTypeId + '').trigger("chosen:updated");
+
+                    $('#Edit-IsRequired').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsRequired').val(data.record.IsRequired + '').trigger("chosen:updated");
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+                        $('#Edit-PropertyTypeId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-PropertyTypeId').trigger("chosen:updated");
+
+                        $('#Edit-ElementTypeId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-ElementTypeId').trigger("chosen:updated");
+
+                        $('#Edit-IsRequired').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsRequired').trigger("chosen:updated");
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+                    }
+
+            },
+            formSubmitting: function (event, data) {
+
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+
+                                //$('.jtable-toolbar-item-add-record').addClass('d-none');
+                                //$('.jtable-edit-command-button').addClass('d-none');
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        $('.jtable-column-header-text').eq(1).html('دسته&nbsp;بندی');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.featuresOptions', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var featureId = _this.attr('data-FeatureId');
+            window.location.href = '/AdminTeniaco/FeaturesOptionsManagement/Index/' + featureId;
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var featureId = _this.attr('data-FeatureId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/ToggleActivationFeatures",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'FeatureId': featureId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        debugger;
+                        var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+                        var txtFeatureTitleSearch = $('#txtFeatureTitleSearch').val();
+
+                        if ((slcPropertyTypeId != '') &&
+                            (txtFeatureTitleSearch != '')) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyTypeId': slcPropertyTypeId,
+                                'FeatureTitleSearch': txtFeatureTitleSearch,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var featureId = _this.attr('data-FeatureId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/TemporaryDeleteFeatures",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'FeatureId': featureId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+                        var txtFeatureTitleSearch = $('#txtFeatureTitleSearch').val();
+
+                        if ((slcPropertyTypeId != '') &&
+                            (txtFeatureTitleSearch != '')) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyTypeId': slcPropertyTypeId,
+                                'FeatureTitleSearch': txtFeatureTitleSearch,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+
+        //Re-load records when user click 'load records' button.
+        $('#btnSearch').click(function (e) {
+            debugger;
+            e.preventDefault();
+            var slcPropertyTypeId = $('#slcPropertyTypeId').val();
+            var txtFeatureTitleSearch = $('#txtFeatureTitleSearch').val();
+
+            if ((slcPropertyTypeId != '') &&
+                (txtFeatureTitleSearch != '')) {
+
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    'PropertyTypeId': slcPropertyTypeId,
+                    'FeatureTitleSearch': txtFeatureTitleSearch,
+                });
+
+            } else if ((slcPropertyTypeId != '') ||
+                (txtFeatureTitleSearch != '')) {
+
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    'PropertyTypeId': slcPropertyTypeId,
+                    'FeatureTitleSearch': txtFeatureTitleSearch,
+                });
+            }
+            else {
+
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage')
+                });
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            e.preventDefault();
+
+            $('#slcPropertyTypeId').val(null);
+            $('#txtFeatureTitleSearch').val(null);
+            $('#btnSearch').click();
+
+        });
+        $('#btnReset').click(function (e) {
+            e.preventDefault();
+
+            $('#slcPropertyTypeId').val(null);
+            $('#txtFeatureTitleSearch').val(null);
+            $('#btnSearch').click();
+
+        });
+
+
+        $('body').on('click', '#addCategory', function (e) {
+            $('.ui-dialog-titlebar-close').trigger('click');
+            $('#create-FeatureCategory-modal').modal('show');
+        });
+
+
+        $('body').on('click', '.btn-Create-category', function (e) {
+            e.preventDefault();
+
+            var categoryTitle = $('#txtCategoryName').val();
+
+            if (!categoryTitle) {
+                alert('لطفا دسته بندی را به طور صحیح وارد کنید');
+                return;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/AddToFeaturesCategories",
+                data: {
+                    'FeatureCategoryTitle': categoryTitle
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                         $('#categories, #editCategories').append(new Option(categoryTitle, result.Id));
+                         $('#categories, #editCategories').trigger('chosen:updated');
+
+
+                        $('#closeCategoryModal').trigger('click');
+                    }
+                    else if (result.Result == "ERROR") {
+                        alert('این دسته بندی تکراری است');
+                    }
+                }
+            });
+        });
+
+
+
+        // افزودن امکانات
+                $('body').on('click', '#modal-btn-CreateFeature', function (e) {
+            e.preventDefault();
+            debugger;
+            let featureName = $('#FeatureName').val();
+            let propertyTypeId = $('#propertyTypeId').val();
+            let categoryId = $('#categories').val();
+            let elementTypeId = $('#elementTypeId').val();
+            let isRequired = $('#IsRequired').val();
+
+            if (!featureName) {
+                alert('لطفا عنوان امکانات را به طور صحیح وارد کنید');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append("FeatureCategoryId",categoryId);
+            formData.append("PropertyTypeId",propertyTypeId);
+            formData.append("FeatureTitle",featureName);
+            formData.append("ElementTypeId",elementTypeId);
+            formData.append("IsRequired",isRequired);
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/AddToFeatures",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+
+                    if (result.Result == "OK") {
+                        //$('#listContainer').jtable('reload');
+                        $('#create-Feature-modal').modal('hide');
+                        window.location.reload();
+                    }
+                    else if (result.Result == "ERROR") {
+                        alert('خطا');
+                    }
+                }
+            });
+        });
+
+
+
+
+        // ویرایش امکانات
+         let featureId = 0;
+        $('body').on('click','.editFeature',function(){
+
+            featureId = $(this).attr('data-featureid');
+
+            $('#edit-Feature-modal').modal('show');
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/GetFeatureWithFeatureId",
+                data: { 'FeatureId': featureId },
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        console.log(result);
+                        $('#editPropertyTypeId').val(result.Record.PropertyTypeId).trigger('chosen:updated');
+                        $('#editCategories').val(result.Record.FeatureCategoryId).trigger('chosen:updated');
+                        $('#editFeatureName').val(result.Record.FeatureTitle);
+                        $('#editElementTypeId').val(result.Record.ElementTypeId).trigger('chosen:updated');
+                        $('#editIsRequired').val(result.Record.IsRequired==true?'true':'false').trigger('chosen:updated');
+                    }
+                    else if (result.Result == "ERROR") {
+
+                    }
+                },
+            });
+
+
+
+        });
+
+
+
+          $('body').on('click', '#modal-btn-EditFeature', function (e) {
+            e.preventDefault();
+            debugger;
+            let featureName = $('#editFeatureName').val();
+            let propertyTypeId = $('#editPropertyTypeId').val();
+            let categoryId = $('#editCategories').val();
+            let elementTypeId = $('#editElementTypeId').val();
+            let isRequired = $('#editIsRequired').val();
+
+            if (!featureName) {
+                alert('لطفا عنوان امکانات را به طور صحیح وارد کنید');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append("FeatureCategoryId",categoryId);
+            formData.append("PropertyTypeId",propertyTypeId);
+            formData.append("FeatureTitle",featureName);
+            formData.append("ElementTypeId",elementTypeId);
+            formData.append("IsRequired",isRequired);
+            formData.append('FeatureId',featureId);
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/UpdateFeatures",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+
+                    if (result.Result == "OK") {
+                        $('#edit-Feature-modal').modal('hide');
+                        $('#listContainer').jtable('reload');
+                    }
+                    else if (result.Result == "ERROR") {
+                        alert('خطا');
+                    }
+                }
+            });
+        });
+
+
+
+    });
+
+
+</script>

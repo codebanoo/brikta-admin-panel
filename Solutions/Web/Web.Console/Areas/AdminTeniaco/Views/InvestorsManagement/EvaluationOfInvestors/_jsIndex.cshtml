@@ -1,0 +1,311 @@
+﻿<script type="text/javascript">
+
+    var json = {
+        "id": 0,
+        "name": '',
+        "data": {
+            "$area": 0,
+            "$dim": 0,
+            "$color": ""
+        },
+        "children": []
+    };
+
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+        for (var i = 0; i < evaluationsVMList.length; i++) {
+
+            var item = evaluationsVMList[i];
+            $('#slcEvaluation')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcEvaluation').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        $('body').on('change', '#slcEvaluation', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var evaluationId = _this.val();
+            var evaluationTitle = "";
+
+            $("#slcEvaluation option:selected").each(function () {
+                evaluationTitle += $(this).text() + " ";
+            });
+
+
+            $('#container').css("display", "none");
+
+            
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/InvestorsManagement/GetAllEvalCategoriesList",
+
+                data: { 'EvaluationId': evaluationId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        
+                        var records = result.Records;
+
+                        var parents = records.EvaluationCategoriesVMList.filter(f => f.EvaluationParentCategoryId == null);
+                       
+                        json = null;
+
+                        json = {
+                            "id": 0,
+                            "name": '',
+                            "data": {
+                                "$area": 0,
+                                "$dim": 0,
+                                "$color": ""
+                            },
+                            "children": []
+                        };
+
+                        var children = [];
+
+                        for (var i = 0; i < parents.length; i++) {
+                            var parent = parents[i];
+                            var tmpChild = [];
+
+                            tmpChild = GetChilds(result.Records.EvaluationCategoriesVMList.filter(f => f.EvaluationParentCategoryId == parent.EvaluationCategoryId), parent.EvaluationCategoryId);
+
+                            children.push({
+                                "id": parent.EvaluationCategoryId,
+                                "name": parent.EvaluationCategoryTitle,
+                                "data": {
+                                    "$area": 8,
+                                    "$dim": 8,
+                                    "$color": "#a872ff"
+
+                                },
+                                "children": tmpChild
+                            });
+                        }
+
+                        json.children = [];
+
+                        json.id = evaluationId;
+                        json.name = evaluationTitle;
+                        json.data = {
+                            "$area": 8,
+                            "$dim": 8,
+                            "$color": "#001eff"
+                        };
+                        json.children = children;
+
+                        $('#container').css("display", "flex");
+
+                        selectColor = -1;
+                        init();
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+            var slcEvaluation = $('#slcEvaluation').val();
+
+        });
+    });
+
+
+
+
+
+    var labelType, useGradients, nativeTextSupport, animate;
+
+    (function () {
+        var ua = navigator.userAgent,
+            iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),
+            typeOfCanvas = typeof HTMLCanvasElement,
+            nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),
+            textSupport = nativeCanvasSupport
+                && (typeof document.createElement('canvas').getContext('2d').fillText == 'function');
+        labelType = (!nativeCanvasSupport || (textSupport && !iStuff)) ? 'Native' : 'HTML';
+        nativeTextSupport = labelType == 'Native';
+        useGradients = nativeCanvasSupport;
+        animate = !(iStuff || !nativeCanvasSupport);
+    })();
+
+    var Log = {
+        elem: false,
+        write: function (text) {
+            if (!this.elem)
+                this.elem = document.getElementById('log');
+            this.elem.innerHTML = text;
+            this.elem.style.left = (500 - this.elem.offsetWidth / 2) + 'px';
+        }
+    };
+
+
+
+    var icicle;
+
+    function init() {
+        
+
+        controls();
+
+        $("#infovis").html("");
+
+        controls();
+
+        icicle = new $jit.Icicle({
+
+            injectInto: 'infovis',
+
+            animate: animate,
+
+            offset: 1,
+
+            cushion: true,
+
+            constrained: false,
+            levelsToShow: 3,
+
+            Tips: {
+                enable: true,
+                type: 'Native',
+
+                offsetX: 20,
+                offsetY: 20,
+                onShow: function (tip, node) {
+                    var count = 0;
+                    node.eachSubnode(function () {
+                        count++;
+                    });
+                    tip.innerHTML = "<div class=\"tip-title\"><b>نام:</b> " + node.name
+                        + "</div><div class=\"tip-text\">" + count + ":تعداد زیر گروه</div>";
+                }
+            },
+            Events: {
+                enable: true,
+                onMouseEnter: function (node) {
+                    node.setData('border', '#33dddd');
+                    icicle.fx.plotNode(node, icicle.canvas);
+                    icicle.labels.plotLabel(icicle.canvas, node, icicle.controller);
+                },
+                onMouseLeave: function (node) {
+                    node.removeData('border');
+                    icicle.fx.plot();
+                },
+                onClick: function (node) {
+                    if (node) {
+                        icicle.tips.hide();
+                        if (icicle.events.hovered)
+                            this.onMouseLeave(icicle.events.hovered);
+                        icicle.enter(node);
+                    }
+                },
+                onRightClick: function () {
+                    icicle.tips.hide();
+                    if (icicle.events.hovered)
+                        this.onMouseLeave(icicle.events.hovered);
+                    icicle.out();
+                }
+            },
+            Label: {
+                type: labelType
+            },
+            onCreateLabel: function (domElement, node) {
+                domElement.innerHTML = node.name;
+                var style = domElement.style;
+                style.fontSize = '0.9em';
+                style.display = '';
+                style.cursor = 'pointer';
+                style.color = '#333';
+                style.overflow = 'hidden';
+            },
+            onPlaceLabel: function (domElement, node) {
+                var style = domElement.style,
+                    width = node.getData('width'),
+                    height = node.getData('height');
+                if (width < 7 || height < 7) {
+                    style.display = 'none';
+                } else {
+                    style.display = '';
+                    style.width = width + 'px';
+                    style.height = height + 'px';
+                }
+            }
+        });
+
+        icicle.loadJSON(json);
+
+        
+        icicle.layout.orientation = 'v';
+
+        icicle.config.constrained = true;
+        icicle.config.levelsToShow = 5;
+
+        icicle.refresh();
+
+    }
+
+    function controls() {
+        var jit = $jit;
+        var gotoparent = jit.id('update');
+        jit.util.addEvent(gotoparent, 'click', function () {
+            icicle.out();
+        });
+
+    }
+
+    var colors = ["#ee6aff", "#ea47ff", "#ea4eff", "#ef72ff", "#ec60ff", "#ec60ff"];
+
+    let selectColor = -1;
+
+    function GetChilds(childs, evaluationCategoryId) {
+
+        var children = [];
+
+        if (childs.filter(f => f.EvaluationParentCategoryId == evaluationCategoryId).length == 0) {
+            return children;
+        }
+        else {
+
+            for (var j = 0; j < childs.length; j++) {
+                var parent = childs.filter(f => f.EvaluationParentCategoryId == evaluationCategoryId)[j];
+
+                selectColor++;
+                children.push({
+                    "id": parent.EvaluationCategoryId,
+                    "name": parent.EvaluationCategoryTitle,
+                    "data": {
+                        "$area": 8,
+                        "$dim": 8,
+                        "$color": colors[selectColor]
+                    },
+                    "children": GetChilds(childs.filter(f => f.EvaluationParentCategoryId == parent.EvaluationCategoryId), parent.EvaluationCategoryId)
+                });
+
+            }
+            return children;
+
+        }
+    }
+
+</script>

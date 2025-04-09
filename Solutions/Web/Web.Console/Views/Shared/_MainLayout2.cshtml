@@ -1,0 +1,451 @@
+﻿@using VM.Console
+@using Services.Xml.Entities
+
+@{
+    Layout = "_Layout";
+
+    List<ShortCutKeysVM> shortCutKeys = new List<ShortCutKeysVM>();
+    if (ViewData["ShortCutKeys"] != null)
+    {
+        shortCutKeys = ViewData["ShortCutKeys"] as List<ShortCutKeysVM>;
+    }
+}
+
+@section head{
+    <link href="~/lib/jquery-chosen/chosen.css" rel="stylesheet" />
+
+    <link href="~/lib/wickedpicker/dist/wickedpicker.min.css" rel="stylesheet" />
+
+    @RenderSection("head", required: false)
+}
+
+@RenderBody()
+
+@section Scripts{
+
+    @{
+        if (shortCutKeys.Count > 0)
+        {
+            <script type="text/javascript">
+        //<![CDATA[
+                $(document).ready(function () {
+
+                });
+
+                document.addEventListener("keydown", function (event) {
+                    if (event.altKey)
+                    {
+                        switch (event.which)
+                        {
+                            case 78://n
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "alt + n")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 66://b
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "alt + b")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 76://l
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "alt + l")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+
+                    if (event.ctrlKey)
+                    {
+                        switch (event.which)
+                        {
+                            case 38://arrow up
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow up")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 40://arrow down
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow down")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 39://arrow right
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow right")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 37://arrow left
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow left")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 73://i
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + i")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+
+                    if (event.altKey && event.shiftKey)
+                    {
+                        switch (event.which)
+                        {
+                            case 68://d
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "alt + shift + d")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+
+                    if (event.ctrlKey && event.shiftKey)
+                    {
+                        switch (event.which)
+                        {
+                            case 69://e
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + shift + e")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 49://1
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + shift + 1")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 83://s
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + shift + s")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 70://f
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + shift + f")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+
+                    if (event.which == 27) {
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + i")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                    }
+
+                });
+
+
+                @*$(document).keydown(function (e) {
+                    debugger;
+                    if (/*e.ctrlKey && */e.shiftKey)
+                    {
+                        switch (e.which)
+                        {
+                            case 'n':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + n")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'b':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + b")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'l':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + l")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 38:
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow up")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 40:
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow down")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 39:
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow right")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 37:
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + arrow left")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'd':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + d")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'e':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + e")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'i':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + i")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case '1':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + 1")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 's':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + s")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'f':
+                                @{
+                                    foreach (var shortCutKey in shortCutKeys)
+                                    {
+                                        if (shortCutKey.ShortCutKey == "ctrl + f")
+                                        {
+                                            @Html.Raw(shortCutKey.Operations);
+                                            break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+
+                    if (e.which == 27)
+                    {
+                        @{
+                            foreach (var shortCutKey in shortCutKeys)
+                            {
+                                if (shortCutKey.ShortCutKey == "esc")
+                                {
+                                    @Html.Raw(shortCutKey.Operations);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    //console.log('key code is: ' + e.which + ' ' + (e.ctrlKey ? 'Ctrl' : '') + ' ' +
+                    //      (e.shiftKey ? 'Shift' : '') + ' ' + (e.altKey ? 'Alt' : ''));
+                });*@
+
+
+
+
+
+
+        //]]>
+            </script>
+        }
+    }
+    <script src="~/lib/jquery-chosen/chosen.jquery.js"></script>
+
+    <link href="~/lib/jQuery-Validation-Engine-master/css/validationEngine.jquery.css" rel="stylesheet" />
+    <script src="~/lib/jQuery-Validation-Engine-master/js/jquery.validationEngine.js"></script>
+    <script src="~/lib/jQuery-Validation-Engine-master/js/languages/jquery.validationEngine-fa.js"></script>
+
+    <script src="~/lib/wickedpicker/dist/wickedpicker.min.js"></script>
+
+    <link href="~/lib/jqueryloading/jquery.loading.css" rel="stylesheet" />
+    <script src="~/lib/jqueryloading/jquery.loading.js"></script>
+
+    <script src="~/js/public.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            var i = 0;
+            $(document).Loading();
+            debugger;
+        });
+                //]]>
+    </script>
+}

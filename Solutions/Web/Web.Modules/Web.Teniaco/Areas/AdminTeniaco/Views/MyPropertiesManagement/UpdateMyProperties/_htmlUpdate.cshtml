@@ -1,0 +1,346 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+@model MyPropertiesVM
+
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+     <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <input type="hidden" asp-for="PropertyId" />
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    @*roundedBlock*@
+    <div class="row ">
+        @* <label>
+        اطلاعات پایه
+        </label>*@
+        <div class="row">
+            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                <div class="mx-2">
+                    عنوان ملک
+                </div>
+                <input asp-for="PropertyCodeName" class="form-control" />
+                <span asp-validation-for="PropertyCodeName" class="text-danger"></span>
+            </div>
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div>
+                    نوع ملک
+                </div>
+                <select asp-for="PropertyTypeId" class="form-control ml-3"
+                        placeholder=" نوع ملک">
+                    <option value="">---</option>
+                </select>
+                <span asp-validation-for="PropertyTypeId" class="text-danger"></span>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div>
+                    نوع کاربری
+                </div>
+                <select asp-for="TypeOfUseId" class="form-control ml-3"
+                        placeholder=" نوع کاربری">
+                    <option value="">---</option>
+                </select>
+                <span asp-validation-for="TypeOfUseId" class="text-danger"></span>
+            </div>
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div>
+                    نوع سند
+                </div>
+                <select asp-for="DocumentTypeId" class="form-control ml-3"
+                        placeholder=" نوع سند">
+                    <option value="">---</option>
+                </select>
+                <span asp-validation-for="DocumentTypeId" class="text-danger"></span>
+            </div>
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div>
+                    نام واسط/شماره تماس
+                </div>
+                <select asp-for="ConsultantUserId" class="form-control ml-3"
+                        placeholder="   نام واسط/شماره تماس">
+                    <option value="">---</option>
+                </select>
+                <label class="lblNewPerson pointer" style="height: 15px;">
+                    <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+                         class="" data-original-title="جدید">
+                </label>
+            </div>
+
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div>
+                    نام مالک/شماره تماس
+                </div>
+                <select asp-for="OwnerId" class="form-control ml-3"
+                        placeholder=" نام مالک/شماره تماس">
+                    <option value="">---</option>
+                </select>
+                <label class="lblNewPerson pointer" style="height: 15px;">
+                    <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+                         class="" data-original-title="جدید">
+                </label>
+            </div>
+            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                <div class="mx-2">
+                    مساحت (متر مربع)
+                </div>
+
+                <input class="form-control" asp-for="Area" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+            <div class='col-12  my-3'>
+                <div class="mx-2">
+                    توضیحات تکمیلی
+                </div>
+                <textarea asp-for="PropertyDescriptions" class="form-control " rows="10"
+                          placeholder="توضیحات تکمیلی"></textarea>
+            </div>
+
+            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                <div class="mx-2">
+                    قیمت
+                </div>
+
+                <input asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPrice" class="form-control"
+                       placeholder="قیمت پیشنهادی" />
+                <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPrice" class="text-danger"></span>
+            </div>
+            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                <div>
+                    نوع قیمت
+                </div>
+
+                <select asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPriceType" class="form-control ml-3"
+                        placeholder="نوع قیمت">
+                    <option value="0">متری بر مبنای میلیون</option>
+                    <option value="1">کل بر مبنای میلیارد</option>
+                </select>
+                <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().OfferPriceType" class="text-danger"></span>
+            </div>
+            <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+                <div class="mx-2">
+                    قیمت محاسبه شده
+                    <span id="spnCalculatedOfferPrice"></span>
+                </div>
+                <input asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().CalculatedOfferPrice" class="form-control" readonly
+                       placeholder="قیمت محاسبه شده" />
+                <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().CalculatedOfferPrice" class="text-danger"></span>
+
+            </div>
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div class="mx-2">
+                    نوع ثبت قیمت
+                </div>
+                <select asp-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().PriceTypeRegister" class="form-control ml-3"
+                        placeholder="نوع ثبت قیمت">
+                    <option value="0">اصلاح قیمت قبلی</option>
+                    <option value="1">ثبت قیمت جدید</option>
+                </select>
+                <span asp-validation-for="MyPropertiesPricesHistoriesVM.FirstOrDefault().PriceTypeRegister" class="text-danger"></span>
+            </div>
+            @*  <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <div>
+            <label for="ConsultantUserId">
+            نام واسط/شماره تماس
+            </label>
+            </div>
+            <select asp-for="ConsultantUserId" class="form-control input-sm"
+            placeholder="نام واسط/شماره تماس">
+            <option value="">---</option>
+            </select>
+            <label class="lblNewPerson pointer" style="height: 15px;">
+            <img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""
+            class="" data-original-title="جدید">
+            </label>
+            </div>*@
+
+
+
+        </div>
+    </div>
+    @*    <div class="row">
+    <div class="form-group col col-md-1 col-lg-1">
+    <div class="pointer board maps">
+    <div class="board-title">نقشه ها</div>
+    <img src="/images/Cad.png" title="نقشه ها" />
+    </div>
+
+    </div>
+    <div class="form-group col col-md-1 col-lg-1 ">
+
+    <div class="pointer board features">
+    <div class="board-title">امکانات</div>
+    <img src="/images/Info.png" title="امکانات" />
+    </div>
+
+    </div>
+    <div class="form-group col col-md-1 col-lg-1 ">
+    <div class="pointer board location">
+    <div class="board-title">موقعیت</div>
+    <img src="/images/Location.png" title="موقعیت" />
+    </div>
+
+    </div>
+    <div class="form-group col col-md-1 col-lg-1 ">
+    <div class="pointer board docs">
+    <div class="board-title">اسناد</div>
+    <img src="/images/sanad.png" title="اسناد" />
+    </div>
+
+    </div>
+    <div class="form-group col col-md-1 col-lg-1 ">
+    <div class="pointer board media">
+    <div class="board-title">فیلم&nbsp;و&nbsp;عکس</div>
+    <img src="/images/Video.png" title="مدیا/تصاویر" />
+    </div>
+    </div>
+    </div>*@
+    <div class="ln_solid"></div>
+    <div class="form-group row justify-content-center">
+        <div class="row col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+        </div>
+        <div class="row col-3 col-md-3 col-sm-3  offset-md-3 justify-content-end">
+            <div class="pointer board maps  mx-2" data-toggle="tooltip" data-placement="top" title="نقشه ها">
+                <img src="/images/Cad.png" title="نقشه ها" />
+            </div>
+            <div class="pointer board features  mx-2" data-toggle="tooltip" data-placement="top" title="امکانات">
+                <img src="/images/Info.png" title="امکانات" />
+            </div>
+            <div class="pointer board location  mx-2" data-toggle="tooltip" data-placement="top" title="موقعیت">
+                <img src="/images/Location.png" title="موقعیت" />
+            </div>
+            <div class="pointer board docs  mx-2" data-toggle="tooltip" data-placement="top" title="اسناد">
+                <img src="/images/sanad.png" title="اسناد" />
+            </div>
+            <div class="pointer board media mx-2" data-toggle="tooltip" data-placement="top" title="مدیا/تصاویر">
+                <img src="/images/Video.png" title="مدیا/تصاویر" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="create-person-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+               <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">تعریف مالک/واسط</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نام
+                        </div>
+
+                        <input type='text' class="form-control" id="txtName" name="txtName" />
+                    </div>
+
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نام خانوادگی
+                        </div>
+
+                        <input type='text' class="form-control" id="txtFamily" name="txtFamily" />
+                    </div>
+
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            شماره تماس
+                        </div>
+
+                        <input type='text' class="form-control" id="txtPhone" name="txtPhone" />
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3">
+                        <div>
+                            مالک/واسط
+                        </div>
+                        <select class="form-control ml-3" id="slcPersonTypeId" name="slcPersonTypeId"
+                                placeholder="  مالک/واسط"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-Create-person btn-sm" id="modal-btn-yes">ثبت</button>
+                <button type="button" class="btn btn-primary btn-sm" id="modal-btn-no" data-dismiss="modal">لغو</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="moreInfo-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">اطلاعات تکمیلی</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        &nbsp;
+                    </div>
+                    <div class="col col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <div class="board pointer maps roundedBlock">
+                            <img src="/images/Cad.png" title="نقشه ها" />
+                            <div class="board-title">
+                                نقشه ها
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <div class="board pointer features roundedBlock">
+                            <img src="/images/Info.png" title="امکانات" />
+                            <div class="board-title">
+                                امکانات
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <div class="board pointer location roundedBlock">
+                            <img src="/images/Location.png" title="موقعیت" />
+                            <div class="board-title">
+                                موقعیت
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <div class="board pointer docs roundedBlock">
+                            <img src="/images/sanad.png" title="اسناد" />
+                            <div class="board-title">
+                                اسناد
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <div class="board pointer media roundedBlock">
+                            <img src="/images/Video.png" title="مدیا/تصاویر" />
+                            <div class="board-title">
+                                فیلم و عکس
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-xs-12 col-sm-12 col-md-1 col-lg-1">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-Edit-properties" id="modal-btn-yes">ویرایش</button>
+                <button type="button" class="btn btn-primary btn-Create-properties" id="modal-btn-yes">جدید</button>
+            </div>
+        </div>
+    </div>
+</div>*@

@@ -1,0 +1,80 @@
+﻿@using VM.Teniaco;
+@model MyPropertyAddressVM
+
+<form class="col-12"  data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+                <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div id="error-alert" class="form-group alert alert-danger" style="display: block;"></div>
+            }
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            استان
+        </div>
+        <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                placeholder="استان">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            بخش
+        </div>
+
+        <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                placeholder="بخش">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            شهر/منطقه
+        </div>
+        <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                placeholder="شهر/منطقه">
+            <option value="" selected>---</option>
+        </select>
+        @*<input id="txtSearchTitle" name="txtSearchTitle" class="form-control"
+        placeholder="شهر/منطقه" />*@
+
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+           ناحیه
+        </div>
+        <select id="slcDistrictId" name="slcDistrictId" class="form-control ml-3"
+                placeholder="ناحیه">
+            <option value="" selected>---</option>
+        </select>
+
+    </div>
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div class="mx-2">
+            آدرس
+        </div>
+        <textarea asp-for="Address" class="form-control" rows="3"
+                  placeholder="آدرس"></textarea>
+        <span asp-validation-for="Address" class="text-danger"></span>
+
+    </div>
+
+    <div class="row col-12">
+        @*<div id="mapContainer" class="mapContainer"></div>*@
+        <div id="mapLeft" class="col-xl-6 col-lg-6 col-md-6 col-sm-12"></div>
+        <div id="mapRight" class="col-xl-6 col-lg-6 col-md-6 col-sm-12"></div>
+    </div>
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+        </div>
+    </div>
+</form>

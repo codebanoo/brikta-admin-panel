@@ -1,0 +1,630 @@
+﻿@using VM.Console
+@using VM.Melkavan;
+@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+
+<link rel="stylesheet" href="/dactorapp/vender/materialdesign/css/materialdesignicons.min.css">
+
+<script type="text/javascript">
+    @{
+        AdvertisementVM advertisement = new AdvertisementVM();
+        @Html.Raw("var advertisementVM;")
+        ;
+
+        if (ViewData["Advertisement"] != null)
+        {
+            advertisement = (AdvertisementVM)ViewData["Advertisement"];
+
+            @Html.Raw("debugger; advertisementVM =" + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(advertisement)) + " ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CustomUsersVM> ownersList = new List<CustomUsersVM>();
+
+        @Html.Raw("var ownersList = [];")
+        ;
+
+        if (ViewData["OwnersList"] != null)
+        {
+            ownersList = (List<CustomUsersVM>)ViewData["OwnersList"];
+
+            var ownersListData = ownersList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.UserName + " - " + c.Mobile}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("ownersList = " +
+                          JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ownersListData)) + ";")
+            ;
+        }
+
+
+        List<CustomUsersVM> consultantsList = new List<CustomUsersVM>();
+
+        @Html.Raw("var ConsultantsList = [];")
+        ;
+
+        if (ViewData["ConsultantsList"] != null)
+        {
+            consultantsList = (List<CustomUsersVM>)ViewData["ConsultantsList"];
+
+            var consultantsListData = consultantsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.Phone}",
+                Value = c.UserId
+            });
+
+            @Html.Raw("ConsultantsList = " +
+                          JsonConvert.DeserializeObject(JsonConvert.SerializeObject(consultantsListData)) + ";")
+            ;
+        }
+
+
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<AdvertisementTypesVM> advertisementTypeList = new List<AdvertisementTypesVM>();
+
+        @Html.Raw("var advertisementTypeList = [];")
+        ;
+
+        if (ViewData["AdvertisementTypesList"] != null)
+        {
+            advertisementTypeList = (List<AdvertisementTypesVM>)ViewData["AdvertisementTypesList"];
+
+            var advertisementTypeListData = advertisementTypeList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.AdvertisementTypeTilte}",
+                Value = c.AdvertisementTypeId
+            });
+
+            @Html.Raw("debugger; advertisementTypeList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(advertisementTypeListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<PropertyTypesVM> propertyTypesList = new List<PropertyTypesVM>();
+
+        @Html.Raw("var propertyTypesList = [];")
+        ;
+
+        if (ViewData["PropertyTypesList"] != null)
+        {
+            propertyTypesList = (List<PropertyTypesVM>)ViewData["PropertyTypesList"];
+
+            var propertyTypesListData = propertyTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.PropertyTypeTilte}",
+                Value = c.PropertyTypeId
+            });
+
+            @Html.Raw("debugger; propertyTypesList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertyTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<TypeOfUsesVM> typeOfUsesList = new List<TypeOfUsesVM>();
+
+        @Html.Raw("var typeOfUsesList = [];")
+        ;
+
+        if (ViewData["TypeOfUsesList"] != null)
+        {
+            typeOfUsesList = (List<TypeOfUsesVM>)ViewData["TypeOfUsesList"];
+
+            var typeOfUsesListData = typeOfUsesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.TypeOfUseTitle}",
+                Value = c.TypeOfUseId
+            });
+
+            @Html.Raw("debugger; typeOfUsesList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(typeOfUsesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentTypesVM> documentTypesList = new List<DocumentTypesVM>();
+
+        @Html.Raw("var documentTypesList = [];")
+        ;
+
+        if (ViewData["DocumentTypesList"] != null)
+        {
+            documentTypesList = (List<DocumentTypesVM>)ViewData["DocumentTypesList"];
+
+            var documentTypesListData = documentTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentTypeTitle}",
+                Value = c.DocumentTypeId
+            });
+
+            @Html.Raw("debugger; documentTypesList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentRootTypesVM> documentRootTypesList = new List<DocumentRootTypesVM>();
+
+        @Html.Raw("var documentRootTypesList = [];")
+        ;
+
+        if (ViewData["DocumentRootTypesList"] != null)
+        {
+            documentRootTypesList = (List<DocumentRootTypesVM>)ViewData["DocumentRootTypesList"];
+
+            var documentRootTypesListData = documentRootTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentRootTypeTitle}",
+                Value = c.DocumentRootTypeId
+            });
+
+            @Html.Raw("debugger; documentRootTypesList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentRootTypesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<DocumentOwnershipTypesVM> documentOwnershipTypesVMList = new List<DocumentOwnershipTypesVM>();
+
+        @Html.Raw("var documentOwnershipTypesVMList = [];")
+        ;
+
+        if (ViewData["DocumentOwnershipTypesList"] != null)
+        {
+            documentOwnershipTypesVMList = (List<DocumentOwnershipTypesVM>)ViewData["DocumentOwnershipTypesList"];
+
+            var documentOwnershipTypesVMListData = documentOwnershipTypesVMList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentOwnershipTypeTitle}",
+                Value = c.DocumentOwnershipTypeId
+            });
+
+            @Html.Raw("debugger; documentOwnershipTypesVMList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentOwnershipTypesVMListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+        @Html.Raw("var statesList=[];")
+        ;
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            var statesListData = statesList.Select(s =>
+         new
+         {
+             DisplayText = $"{s.StateName}",
+             Value = s.StateId
+         });
+
+            @Html.Raw("debugger; statesList =" + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesListData)) + " ;debugger;")
+            ;
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+        @Html.Raw("var citiesList=[];")
+        ;
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            var citiesListData = citiesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.CityName}",
+                Value = c.CityId,
+                Data_StateId = c.StateId
+            });
+
+            @Html.Raw("debugger; citiesList = " +
+                                     JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+        @Html.Raw("var zonesList = [];")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            var zonesListData = zonesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.ZoneName}",
+                Value = c.ZoneId,
+                Data_CityId = c.CityId
+            });
+
+            @Html.Raw("debugger; zonesList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<BuildingLifesVM> buildingLifesList = new List<BuildingLifesVM>();
+
+        @Html.Raw("var buildingLifesList = [];")
+        ;
+
+        if (ViewData["BuildingLifesList"] != null)
+        {
+            buildingLifesList = (List<BuildingLifesVM>)ViewData["BuildingLifesList"];
+
+            var buildingLifesListData = buildingLifesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.BuildingLifeTitle}",
+                Value = c.BuildingLifeId
+            });
+
+            @Html.Raw("debugger; buildingLifesList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(buildingLifesListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<TagsVM> tagsList = new List<TagsVM>();
+
+        @Html.Raw("var tagsList = [];")
+        ;
+
+        if (ViewData["TagsList"] != null)
+        {
+            tagsList = (List<TagsVM>)ViewData["TagsList"];
+
+            var tagsListData = tagsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.TagTitle}",
+                Value = c.TagId
+            });
+
+            @Html.Raw("debugger; tagsList = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(tagsListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        int currentYear = 0;
+
+        @Html.Raw("var currentYear = 0;")
+        ;
+
+        if (ViewData["CurrentYear"] != null)
+        {
+            currentYear = (int)ViewData["CurrentYear"];
+
+            @Html.Raw("debugger; currentYear = " +
+                                      JsonConvert.DeserializeObject(JsonConvert.SerializeObject(currentYear)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+
+<style type="text/css">
+
+    .input-group {
+        z-index: 0;
+    }
+
+
+    #PropertyDescriptions,
+    #PropertyAddressVM_Address {
+        height: 70px !important;
+    }
+
+    .lblNewPerson {
+        margin-bottom: 0;
+        display: inline-flex;
+    }
+
+    .board {
+        padding: 5px;
+    }
+
+        .board img {
+            width: 64px;
+            height: 64px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .board .board-title {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+
+    .resultOfOfferPrice {
+        margin-left: 6px !important;
+        margin-top: auto;
+    }
+
+
+
+
+    .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+        margin-left: 0px;
+    }
+
+
+
+    .box {
+        direction: rtl;
+        display: flex;
+    }
+
+    .drop-zone {
+        /* min-width: 100px;*/
+        width: 15rem;
+        padding: 5px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        cursor: pointer;
+        color: black;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        margin-left: 20px;
+    }
+
+    .drop-zone--over {
+        border-style: solid;
+    }
+
+    .main-Image {
+        display: none;
+    }
+
+    .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #cccccc;
+        background-size: cover;
+        position: relative;
+    }
+
+    #addMultipleImage {
+        margin: 0;
+    }
+
+    .upload__box {
+        /*  margin-top: 40px;*/
+
+        width: 15rem;
+        padding: 5px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        cursor: pointer;
+        color: black;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        /*margin-left: 20px;*/
+    }
+
+    #other-Images {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .upload__btn {
+        margin-top: 2rem;
+        /*display: inline-block;
+                                font-weight: 600;
+                                color: black;
+                                text-align: center;
+                                min-width: 40px;
+                                padding: 5px;
+                                transition: all 0.3s ease;
+                                cursor: pointer;
+                                border: 2px dashed black;
+                                background-color: white;
+                                border-color: black;
+                                border-radius: 10px;
+                                line-height: 26px;
+                                font-size: 30px;*/
+    }
+
+    .upload__btn-box {
+        margin-bottom: 10px;
+    }
+
+    .upload__img-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -10px;
+    }
+
+    .upload__img-box {
+        width: 100px;
+        padding: 5px;
+        margin-right: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+    }
+
+    #DeleteMainImage {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+        line-height: 24px;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+        #DeleteMainImage:after {
+            content: "✖";
+            font-size: 14px;
+            color: white;
+        }
+
+    .upload__img-close {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+        line-height: 24px;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+        .upload__img-close:after {
+            content: "✖";
+            font-size: 14px;
+            color: white;
+        }
+
+    .img-bg {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        padding-bottom: 100%;
+    }
+
+    .not_validated {
+        box-shadow: 0 0 2px 2px #ffa1a1 !important;
+    }
+
+
+    .accordion-button.collapsed::after {
+        margin-right: 12.7rem !important;
+    }
+
+    .accordion-button:not(.collapsed)::after {
+        margin-right: 12.7rem !important;
+    }
+
+    .RebuiltInYearFa {
+        display: none;
+    }
+
+    .select2-container--default .select2-selection--single {
+        border-width: 0px;
+    }
+
+    .select2 {
+        font-size: 16px;
+    }
+
+    .chosen-container.chosen-container-multi {
+        vertical-align: middle !important;
+    }
+
+    // label {
+        // display:block !important;
+        //
+    }
+
+</style>
+
+<link href="~/lib/openlayers-v6.9.0/css/ol.css" rel="stylesheet" />
+<script src="~/lib/openlayers-v6.9.0/build/ol.js"></script>

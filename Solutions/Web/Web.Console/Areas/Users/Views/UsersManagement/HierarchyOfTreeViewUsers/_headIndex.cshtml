@@ -1,0 +1,76 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<link href="~/lib/jquery.fancytree/dist/skin-win7/ui.fancytree.css" rel="stylesheet" />
+<script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>
+
+<link href="~/lib/profile-cards/kl_profile_cards.min.css" rel="stylesheet" />
+
+<style type="text/css">
+    .error {
+        color: red;
+    }
+
+    /*span {
+            display: inline-block;
+            width: 150px;
+        }*/
+
+    input, select {
+        width: 150px;
+    }
+
+    .with-select > span,
+    .with-select > label.error {
+        vertical-align: top;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+    #infovis-label .col {
+        padding: 0;
+    }
+
+    /*#container2 {
+            position: relative;
+            margin: 0px auto;
+            padding: 0px;
+            width: 600px;
+            height: 400px;
+            overflow: auto;
+        }*/
+
+    /*#hierarchyOfUsers {
+            width: 4500px;
+            height: 400px;
+            overflow: hidden;
+            background-color: #eeeeee;
+            margin: auto;
+            position: relative;
+        }*/
+
+    #page-wrapper {
+        min-height: 660px !important;
+    }
+</style>
+
+<script type="text/javascript">
+    @{
+        @*if (Model != null)
+        {
+            if (ViewData["HierarchyOfUsersDataString"] != null)
+            {
+                @Html.Raw("var hierarchyOfUsersData = " +
+                    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ViewData["HierarchyOfUsersDataString"] as string)) + ";");
+            }
+        }*@
+    }
+</script>
+@*<link href="~/lib/profile-cards/cover.css" rel="stylesheet" />*@
+
+@*http://wwwendt.de/tech/fancytree/demo/index.html#sample-multi-ext.html*@
+

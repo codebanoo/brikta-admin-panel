@@ -1,0 +1,34 @@
+﻿@using VM.Console
+@using Services.Xml.Entities
+
+@{
+    Layout = "_Layout";
+}
+
+@section head{
+
+    <link href="~/lib/jquery-chosen/chosen.css" rel="stylesheet" />
+
+    @RenderSection("head", required: false)
+}
+
+@RenderBody()
+
+@section scripts{
+    <script src="~/lib/jquery-chosen/chosen.jquery.js"></script>
+
+    <link href="~/lib/jqueryloading/jquery.loading.css" rel="stylesheet" />
+    <script src="~/lib/jqueryloading/jquery.loading.js"></script>
+
+    <script src="~/js/public.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            $(document).Loading();
+        });
+                    //]]>
+    </script>
+}

@@ -1,0 +1,252 @@
+﻿@using Newtonsoft.Json
+@using VM.Console
+@using VM.Projects;
+@using VM.Public
+@using VM.Teniaco
+
+
+
+<script type="text/javascript">
+    @{
+        long constructionId = 0;
+        @Html.Raw("var constructionProjectId = 0;")
+        ;
+
+        if (ViewData["ConstructionProjectId"] != null)
+        {
+            constructionId = (long)ViewData["ConstructionProjectId"];
+
+
+            @Html.Raw("debugger; constructionProjectId =" + constructionId.ToString() + " ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<ConstructionProjectBillDelaysVM> constructionProjectBillDelaysList = new List<ConstructionProjectBillDelaysVM>();
+        if (ViewData["ConstructionProjectBillDelaysList"] != null)
+        {
+            constructionProjectBillDelaysList =
+            (List<ConstructionProjectBillDelaysVM>)ViewData["ConstructionProjectBillDelaysList"];
+
+            var constructionProjectBillDelaysListListData = constructionProjectBillDelaysList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.ConstructionProjectBillDelayTitle}",
+                Value = c.ConstructionProjectBillDelayId
+            });
+
+            @Html.Raw("debugger; var constructionProjectBillDelaysList = " +
+                 JsonConvert.DeserializeObject(JsonConvert.SerializeObject(constructionProjectBillDelaysListListData)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+
+@{
+
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<link href="~/lib/mobiscroll/css/mobiscroll.jquery.min.css" rel="stylesheet" />
+<script src="~/lib/mobiscroll/js/mobiscroll.jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.min.js"></script>
+
+
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+<style type="text/css">
+
+
+    .mbsc-calendar-cell.mbsc-flex-1-0-0.mbsc-calendar-year.mbsc-ios.mbsc-rtl > div:first-child {
+        display: none;
+    }
+
+
+    .mbsc-calendar-cell.mbsc-flex-1-0-0.mbsc-calendar-month.mbsc-ios.mbsc-rtl > div:first-child {
+        display: none;
+    }
+
+
+    .mbsc-calendar-cell.mbsc-flex-1-0-0.mbsc-calendar-day.mbsc-ios.mbsc-rtl > div:first-child {
+        display: none;
+    }
+
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    #listContainer .material-symbols-outlined {
+        font-size: 24px;
+    }
+
+
+
+    div.jtable-main-container table.jtable tbody th:nth-child(1),
+    div.jtable-main-container table.jtable tbody th:nth-child(2),
+    div.jtable-main-container table.jtable tbody th:nth-child(3) {
+        width: 1% !important;
+    }
+
+
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(1),
+    div.jtable-main-container table.jtable thead th:nth-child(2),
+    div.jtable-main-container table.jtable thead th:nth-child(3),
+    div.jtable-main-container table.jtable thead th:nth-child(13),
+    div.jtable-main-container table.jtable thead th:nth-child(14),
+    div.jtable-main-container table.jtable thead th:nth-child(15),
+    div.jtable-main-container table.jtable thead th:nth-child(16),
+    div.jtable-main-container table.jtable thead th:nth-child(17),
+    div.jtable-main-container table.jtable thead th:nth-child(18),
+    div.jtable-main-container table.jtable thead th:nth-child(19),
+    div.jtable-main-container table.jtable thead th:nth-child(20),
+    div.jtable-main-container table.jtable thead th:nth-child(21) {
+        min-width: 15rem;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(22) {
+        min-width: 30rem;
+    }
+
+
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8),
+    div.jtable-main-container table.jtable thead th:nth-child(9),
+    div.jtable-main-container table.jtable thead th:nth-child(10),
+    div.jtable-main-container table.jtable thead th:nth-child(11),
+    div.jtable-main-container table.jtable thead th:nth-child(12) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(10),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(11),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(12),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(23),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(24),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(25),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(26),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(27),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(28),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(29) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted,
+    .redirect-icon,
+    .description {
+        cursor: pointer;
+    }
+
+    .supInformation {
+        margin-top: 5px;
+        color: #160acf !important;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .numberCircle {
+        width: 1rem !important;
+        height: 1em;
+        /* box-sizing: initial; */
+        background: #417bb5;
+        border: 0.1em solid #417bb5 !important;
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        font-size: 12px;
+        /* box-sizing: content-box; */
+        margin: auto;
+        /* margin-top: 11px; */
+        width: 19px !important;
+        height: 19px !important;
+        position: relative !important;
+        /* vertical-align: middle; */
+        line-height: 12px !important;
+        left: 15px !important;
+        /* left: 48px !important; */
+        bottom: -33px !important;
+    }
+
+    #editBillDelay_chosen {
+        width: 100% !important;
+    }
+
+
+
+
+    /*mobiscroll persian date*/
+    .md-mobile-picker-header {
+        font-size: 14px;
+    }
+
+    input.md-mobile-picker-input {
+        color: initial;
+        width: 100%;
+        padding: 10px;
+        margin: 6px 0 12px 0;
+        border: 1px solid #ccc;
+        border-radius: 0;
+        font-family: arial, verdana, sans-serif;
+        font-size: 14px;
+        box-sizing: border-box;
+        -webkit-appearance: none;
+    }
+
+    .md-mobile-picker-button.mbsc-button {
+        font-size: 13px;
+        padding: 0 15px;
+        line-height: 36px;
+        float: right;
+        margin: 6px 0;
+        width: 100%;
+    }
+
+    .mbsc-col-no-padding {
+        padding-left: 0;
+    }
+
+    .md-mobile-picker-box-label.mbsc-textfield-wrapper-box,
+    .md-mobile-picker-box-label .mbsc-textfield-wrapper-box,
+    .md-mobile-picker-inline {
+        margin: 6px 0 12px 0;
+    }
+
+</style>

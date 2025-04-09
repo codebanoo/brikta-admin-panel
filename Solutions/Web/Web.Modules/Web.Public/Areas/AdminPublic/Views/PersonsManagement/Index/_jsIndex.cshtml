@@ -1,0 +1,675 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#searchBlock').hide(1000);
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'اشخاص', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminPublic/PersonsManagement/GetListOfPersons',
+                createAction: '/AdminPublic/PersonsManagement/AddToPersons',
+                updateAction: '/AdminPublic/PersonsManagement/UpdatePersons',
+                deleteAction: '/AdminPublic/PersonsManagement/CompleteDeletePersons'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                PersonId: {
+                    key: true,
+                    list: false
+                },
+                PersonTypeId: {
+                    title: 'نوع',
+                    options: personTypesList
+                },
+                Name: {
+                    title: 'نام',
+                    //inputclass: 'validate[required]',
+
+                },
+                Family: {
+                    title: 'نام&nbsp;خانوادگی',
+                    inputclass: 'validate[required]',
+                },
+                NationalCode: {
+                    title: 'کد&nbsp;ملی',
+                    create: false,
+                    edit: false,
+                    list: false,
+                    sorting: false,
+                },
+                PostalCode: {
+                    title: 'کد&nbsp;پستی',
+                    create: false,
+                    edit: false,
+                    list: false,
+                    sorting: false,
+                },
+                Phone: {
+                    title: 'شماره&nbsp;تماس',
+                    sorting: false,
+                    inputclass: 'validate[required]',
+                },
+                Mobail: {
+                    title: 'موبایل',
+                    create: false,
+                    edit: false,
+                    list: false,
+                    sorting: false,
+                },
+                StateId: {
+                    title: 'استان',
+                    create: false,
+                    edit: false,
+                    list: false,
+                    options: statesList
+                },
+                CityId: {
+                    title: 'شهر',
+                    create: false,
+                    edit: false,
+                    list: false,
+                    options: citiesList
+                },
+                BirthDateTime: {
+                    title: 'تاریخ&nbsp;تولد',
+                    create: false,
+                    edit: false,
+                    list: false,
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.BirthDateTime != '') {
+                                return '<input class="form-control input-sm" id="Edit-BirthDateTime" name="BirthDateTime" autocomplete="off" ' +
+                                    'data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom" ' +
+                                    'data-placeHolderReplacement="BirthDateTime"' +
+                                    ' placeholder="" ' +
+                                    ' value="' + data.record.BirthDateTime + '" />';
+                            }
+                            else {
+                                return '<input class="form-control input-sm" id="Edit-BirthDateTime" name="BirthDateTime" autocomplete="off" ' +
+                                    'data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom" ' +
+                                    'data-placeHolderReplacement="BirthDateTime"' +
+                                    ' placeholder="" ' +
+                                    ' />';
+                            }
+                        }
+                        else {
+                            return '<input class="form-control input-sm" id="Edit-BirthDateTime" name="BirthDateTime" autocomplete="off" ' +
+                                'data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom" ' +
+                                'data-placeHolderReplacement="BirthDateTime"' +
+                                ' placeholder="" ' +
+                                ' />';
+                        }
+                    },
+                },
+                Sexuality: {
+                    title: 'جنسیت',
+                    create: false,
+                    edit: false,
+                    list: false,
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.Sexuality == true) {
+                                return '<select id="Edit-Sexuality" name="Sexuality">' +
+                                    '<option value="true" selected>زن</option>' +
+                                    '<option value="false">مرد</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-Sexuality" name="Sexuality">' +
+                                    '<option value="true">زن</option>' +
+                                    '<option value="false" selected>مرد</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-Sexuality" name="Sexuality">' +
+                                '<option value="true">زن</option>' +
+                                '<option value="false">مرد</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'مرد',
+                        false: 'زن'
+                    },
+                    display: function(data) {
+                        ////debugger;
+                        if (data.record.Sexuality)
+                            return '<div class="sexuality pointer" data-PersonId="' +
+                                data.record.PersonId + '">زن</div>';
+                        else
+                            return '<div class="sexuality pointer" data-PersonId="' +
+                                data.record.PersonId + '">مرد</div>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function(data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-PersonId="' +
+                                data.record.PersonId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-PersonId="' +
+                                data.record.PersonId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function(data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-PersonId="' + data.record.PersonId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-PersonId="' + data.record.PersonId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function(event, data) {
+
+                data.form.find('input[name="Family"]').addClass(
+                    'validate[required]');
+
+                data.form.find('input[name="Phone"]').addClass(
+                    'validate[required]');
+
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                    //prettySelect: true,
+                    //useSuffix: "chosen-"
+                    //updatePromptsPosition: true,
+                    //autoPositionUpdate: true,
+                    //updatePromptsPosition: true,
+                    //inlineValidation: true,
+                    //prettySelect: true,
+                    //useSuffix: "_chosen"
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function() {
+                    return this.nodeType === 3;
+                }).remove();
+                      //$('.ui-dialog-titlebar-close').html('X');
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function() {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function() {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+                $('#Edit-BirthDateTime').MdPersianDateTimePicker({
+                    format: 'DD/MM/YYYY',
+                    EnableTimePicker: false
+                });
+
+                $('#Edit-StateId')
+                    .prepend($("<option></option>")
+                        .attr("value", '0')
+                        .text("----"));
+
+                $('#Edit-CityId')
+                    .prepend($("<option></option>")
+                        .attr("value", '0')
+                        .text("----"));
+
+
+                $("#Edit-StateId").change(function() {
+                    debugger;
+                    var stateId = this.value;
+
+                    $('#Edit-CityId').find('option')
+                        .remove()
+                        .end();
+
+                    $('#Edit-CityId')
+                        .append($("<option></option>")
+                            .attr("value", 0)
+                            .text('---'));
+
+                    let cities = citiesList.filter(word => word.StateId == stateId);
+
+                    var items = "";
+                    for (var i = 0; i < cities.length; i++) {
+                        var item = cities[i];
+                        items += "<option value='" + item.CityId + "'>" + item.CityName + "</option>";
+                        //$('#CityId')
+                        //    .append($("<option></option>")
+                        //        .attr("value", item.CityId)
+                        //        .text(item.CityName));
+
+                    }
+                    $("#Edit-CityId").append(items);
+
+                    $('#Edit-CityId').trigger("chosen:updated");
+
+                });
+
+
+                if (formName == 'edit') {
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+
+                    $('#Edit-StateId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-StateId').val(data.record.StateId + '').trigger("chosen:updated");
+
+                    $('#Edit-CityId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-CityId').val(data.record.CityId + '').trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+
+                        $('#Edit-StateId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-StateId').val('0').trigger("chosen:updated");
+
+                        $('#Edit-CityId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-CityId').val('0').trigger("chosen:updated");
+                    }
+
+            },
+            formSubmitting: function(event, data) {
+
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function(event, data) {
+
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+
+            },
+            selectionChanged: function() {
+
+            },
+            recordAdded: function(event, data) {
+
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.isActivated', function() {
+            debugger;
+            var _this = $(this);
+            var personId = _this.attr('data-PersonId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/PersonsManagement/ToggleActivationPersons",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'PersonId': personId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+                        var txtSearch = $('#txtSearch').val();
+
+                        if ((txtSearch != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'SearchText': txtSearch,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function() {
+            debugger;
+            var _this = $(this);
+            var personId = _this.attr('data-PersonId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/PersonsManagement/TemporaryDeletePersons",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'PersonId': personId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+                        var txtSearch = $('#txtSearch').val();
+
+                        if ((txtSearch != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'SearchText': txtSearch,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+
+        //Re-load records when user click 'load records' button.
+        $('#btnSearch').click(function(e) {
+
+            e.preventDefault();
+            var txtSearch = $('#txtSearch').val();
+
+            if ((txtSearch != null)) {
+
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    'SearchText': txtSearch,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage')
+                });
+
+            }
+        });
+
+        $('#btnReload').click(function(e) {
+            e.preventDefault();
+
+            $('#txtSearch').val(null);
+            $('#btnSearch').click();
+
+        });
+        $('#btnReset').click(function(e) {
+            e.preventDefault();
+
+            $('#txtSearch').val(null);
+            $('#btnSearch').click();
+
+        });
+
+
+    });
+
+
+</script>

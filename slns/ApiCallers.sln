@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCallers.PublicApiCaller", "..\ArashCmsSolution\ApiCallers\ApiCallers.PublicApiCaller\ApiCallers.PublicApiCaller.csproj", "{1646A221-4375-486E-83F0-4916583DA264}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCallers.TeniacoApiCaller", "..\ArashCmsSolution\ApiCallers\ApiCallers.TeniacoApiCaller\ApiCallers.TeniacoApiCaller.csproj", "{3A1C44E8-8146-4F29-8F1D-A88DCB09882B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCallers.AutomationApiCaller", "..\ArashCmsSolution\ApiCallers\ApiCallers.AutomationApiCaller\ApiCallers.AutomationApiCaller.csproj", "{AFE68F41-E297-45F3-A654-9BA80D67C7FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCallers.ProjectsApiCaller", "..\ArashCmsSolution\ApiCallers\ApiCallers.ProjectsApiCaller\ApiCallers.ProjectsApiCaller.csproj", "{BCB41748-6088-47C2-919C-42F56FD8ADBF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCallers.MelkavanApiCaller", "..\ArashCmsSolution\ApiCallers\ApiCallers.MelkavanApiCaller\ApiCallers.MelkavanApiCaller.csproj", "{FC73C6C4-9A34-41FE-BDE4-310A1FB6D868}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiCallers.TelegramBotApiCaller", "..\ArashCmsSolution\ApiCallers\ApiCallers.TelegramBotApiCaller\ApiCallers.TelegramBotApiCaller.csproj", "{98E52FF8-9F9E-404D-B876-A6D1D0F6AB0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1646A221-4375-486E-83F0-4916583DA264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1646A221-4375-486E-83F0-4916583DA264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1646A221-4375-486E-83F0-4916583DA264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1646A221-4375-486E-83F0-4916583DA264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A1C44E8-8146-4F29-8F1D-A88DCB09882B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A1C44E8-8146-4F29-8F1D-A88DCB09882B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A1C44E8-8146-4F29-8F1D-A88DCB09882B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A1C44E8-8146-4F29-8F1D-A88DCB09882B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFE68F41-E297-45F3-A654-9BA80D67C7FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFE68F41-E297-45F3-A654-9BA80D67C7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFE68F41-E297-45F3-A654-9BA80D67C7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFE68F41-E297-45F3-A654-9BA80D67C7FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCB41748-6088-47C2-919C-42F56FD8ADBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCB41748-6088-47C2-919C-42F56FD8ADBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCB41748-6088-47C2-919C-42F56FD8ADBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCB41748-6088-47C2-919C-42F56FD8ADBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC73C6C4-9A34-41FE-BDE4-310A1FB6D868}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC73C6C4-9A34-41FE-BDE4-310A1FB6D868}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC73C6C4-9A34-41FE-BDE4-310A1FB6D868}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC73C6C4-9A34-41FE-BDE4-310A1FB6D868}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E52FF8-9F9E-404D-B876-A6D1D0F6AB0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98E52FF8-9F9E-404D-B876-A6D1D0F6AB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98E52FF8-9F9E-404D-B876-A6D1D0F6AB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98E52FF8-9F9E-404D-B876-A6D1D0F6AB0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {723F2253-EAE3-4D1C-A365-6290B3608740}
+	EndGlobalSection
+EndGlobal

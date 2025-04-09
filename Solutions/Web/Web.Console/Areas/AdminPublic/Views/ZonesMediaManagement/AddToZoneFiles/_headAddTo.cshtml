@@ -1,0 +1,37 @@
+﻿@using VM.Public;
+@using Newtonsoft.Json;
+<script type="text/javascript">
+    @{
+        ZonesVM zonesList = new ZonesVM();
+
+        @Html.Raw("var zonesList;")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = ViewData["ZonesList"] as ZonesVM;
+
+            @Html.Raw("debugger; zonesList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+<script type="text/javascript">
+    @{
+        DistrictsVM districtsList = new DistrictsVM();
+
+                @Html.Raw("var districtsList;")
+        ;
+
+        if (ViewData["DistrictsList"] != null)
+        {
+            districtsList = ViewData["DistrictsList"] as DistrictsVM;
+
+                    @Html.Raw("debugger; districtsList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(districtsList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+

@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\APIs.Melkavan.Models\APIs.Melkavan.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="APIs.Public.Models">
+      <HintPath>..\..\APIs.Public\APIs.Public.Models\bin\Debug\net6.0\APIs.Public.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Public.Models.Business">
+      <HintPath>..\..\APIs.Public\APIs.Public.Models.Business\bin\Debug\net6.0\APIs.Public.Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Teniaco.Models">
+      <HintPath>..\..\APIs.Teniaco\APIs.Teniaco.Models\bin\Debug\net6.0\APIs.Teniaco.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Teniaco.Models.Business">
+      <HintPath>..\..\APIs.Teniaco\APIs.Teniaco.Models.Business\bin\Debug\net6.0\APIs.Teniaco.Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Models">
+      <HintPath>..\..\..\..\..\AllRef\Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\..\..\AllRef\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Melkavan">
+      <HintPath>..\..\..\..\..\AllRef\VM.Melkavan.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\..\VM\VM.Public\bin\Debug\net6.0\VM.Public.dll</HintPath>
+    </Reference>
+	  <Reference Include="VM.Teniaco">
+		  <HintPath>..\..\..\..\VM\VM.Teniaco\bin\Debug\net6.0\VM.Teniaco.dll</HintPath>
+	  </Reference>
+  </ItemGroup>
+
+</Project>

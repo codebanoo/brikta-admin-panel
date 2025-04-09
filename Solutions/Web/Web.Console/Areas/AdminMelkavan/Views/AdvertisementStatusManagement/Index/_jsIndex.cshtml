@@ -1,0 +1,1058 @@
+﻿<script src="~/lib/jquery-aschoice-master/dist/jquery-aschoice.js"></script>
+<script src="~/gentelella_theme/vendors/ion.rangeslider/js/ion.rangeslider.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //$('#searchBlock').hide(1000);
+
+
+        var propertyOwnerPersons = [];
+
+
+        $('#listContainer').jtable({
+            title: 'وضعیت آگهی ها', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminMelkavan/AdvertisementStatusManagement/GetListOfAdvertisementsForStatus',
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    }]
+
+            },
+            fields: {
+
+                StatusTitle: {
+                    title: 'وضعیت',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.StatusTitle) {
+                            debugger;
+                            if (data.record.StatusTitle == 'رد')
+                                return `<div class="text-danger" id="status-${data.record.AdvertisementId}">${data.record.StatusTitle}</div>`;
+                            if (data.record.StatusTitle == 'تایید')
+                                return `<div class="text-success" id="status-${data.record.AdvertisementId}">${data.record.StatusTitle}</div>`;
+                            if (data.record.StatusTitle == 'در انتظار تعیین وضعیت')
+                                return `<div class="text-warning" id="status-${data.record.AdvertisementId}">${data.record.StatusTitle}</div>`;
+
+                        }
+                        else {
+                            return `<div class="text-warning" id="status-${data.record.AdvertisementId}"></div>`;
+                        }
+
+                    }
+                },
+                ChangeStatus: {
+                    title: 'تغییر وضعیت',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="changeStatus pointer" data-RecordType="' + data.record.RecordType + '" data-AdvertisementId="' + data.record.AdvertisementId + '"> <span style="font-size : 25px !important;" class="mdi mdi-pulse"></span></div>';
+                    }
+
+                },
+                AdvertisementTitle: {
+                    title: 'عنوان',
+                    sorting: false,
+                    // display: function (data) {
+                    //     return '<div class="location pointer" data-RecordType="' + data.record.RecordType + '" data-PropertyId="' + data.record.AdvertisementId + '"><img src="/images/Location.png" class="" /></div>';
+                    // }
+                },
+                AdvertisementDescriptions: {
+                    title: 'توضیحات',
+                    sorting: false
+                },
+                AdvertiserDetails: {
+                    title: 'شماره و نام آگهی دهنده',
+                    sorting: false,
+                },
+                CreateFaDate: {
+                    title: 'تاریخ آگهی',
+                    sorting: false,
+                },
+                TagId: {
+                    title: 'برچسب ها',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.TagId != null) {
+
+                            let labels = [];
+                            if (data.record.TagId.includes("1")) {
+                                labels.push("فوری");
+                            }
+                            if (data.record.TagId.includes("2")) {
+                                labels.push("مشارکت");
+                            }
+                            if (data.record.TagId.includes("3")) {
+                                labels.push("معاوضه");
+                            }
+                            if (data.record.TagId.includes("4")) {
+                                labels.push("زیرقیمت");
+                            }
+                            if (data.record.TagId.includes("5")) {
+                                labels.push("کارشناسی");
+                            }
+                            let result = '<span class="EditLabel pointer" data-RecordType="' + data.record.RecordType + '" data-AdvertisementId="' + data.record.AdvertisementId + '">' + labels.join(',') + '</span>';
+
+                            return result;
+                        }
+                        return '<div class="EditLabel pointer" data-RecordType="' + data.record.RecordType + '" data-AdvertisementId="' + data.record.AdvertisementId + '"> <span style="font-size : 25px !important;" class="mdi mdi-tag-plus"></span></div>';
+                    }
+                },
+
+                LastPrice: {
+                    title: 'آخرین&nbsp;قیمت',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.LastPrice != null) {
+                            let number = data.record.LastPrice;
+                            var temp = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            return temp;
+                        }
+                    }
+                },
+                Media: {
+                    title: 'فیلم/عکس',
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        return '<div class="media pointer" data-RecordType="' + data.record.RecordType + '" data-AdvertisementId="' + data.record.AdvertisementId + '"><img src="/images/Video.png" class="" /><div class="numberCircle">' +
+                            ((data.record.CountOfMedia != null) ? data.record.CountOfMedia : '0') + '</div></div>';
+                    }
+                },
+
+
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+
+                    $('.jtable').basictable({
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+
+
+                $('.test').tooltip({
+                    content: "This is my content"
+                });
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+        // متدها و فیلد های مورد نیاز مدال عکس
+
+        //set array for storing id of deleted photos
+        let RemovedPhotosIDs = [];
+        let RemovedPhotosPaths = [];
+        let IsMainChanged = false;
+        var imgWrap = "";
+        var imgArray = [];
+        var AdvertisementFileUploadPVMList = [];
+        let advertisementId = "";
+        let advertisementType = "";
+
+        function updateThumbnailWithUrl(dropZoneElement, imageUrl) {
+            let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+            if (dropZoneElement.querySelector("#drop-zone__prompt")) {
+                dropZoneElement.querySelector("#drop-zone__prompt").remove();
+                dropZoneElement.querySelector("#mainImage").remove();
+            }
+
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div");
+                thumbnailElement.classList.add("drop-zone__thumb");
+                dropZoneElement.appendChild(thumbnailElement);
+            }
+
+            thumbnailElement.style.backgroundImage = `url('${imageUrl}')`;
+        }
+
+
+
+        function getFileType(url) {
+            const extension = url.split('.').pop().toLowerCase();
+            return (['mp4', 'webm', 'ogg'].includes(extension)) ? 'video' : 'image';
+        }
+
+
+
+        function createVideoThumbnail(videoUrl, callback) {
+            const video = document.createElement('video');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            video.src = videoUrl;
+            video.currentTime = 1; // Capture the thumbnail at 1 second
+
+            video.addEventListener('loadeddata', function () {
+                // Set canvas size to match video dimensions (scaled down if needed)
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const thumbnailUrl = canvas.toDataURL();
+                callback(thumbnailUrl); // Pass the thumbnail URL to the callback
+            });
+        }
+
+
+
+        function updateMultipleThumbnailWithUrl(imgWrap2, imageUrl, fileId, VideoUrl) {
+            const html = `
+                            <div class='upload__img-box'>
+                                    <div videoUrl="${VideoUrl}" style='background-image: url("${imageUrl}")'
+                                     data-file='${imageUrl}'
+                                     class='img-bg'>
+                                    <div class='upload__img-close' videoUrl="${VideoUrl}" fileurl='${imageUrl}' fileid='${fileId}'></div>
+                                </div>
+                            </div>`;
+            imgWrap2.append(html);
+        }
+
+
+
+        function updateThumbnail(dropZoneElement, file) {
+            let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+            // First time - remove the prompt
+            if (dropZoneElement.querySelector("#drop-zone__prompt")) {
+                dropZoneElement.querySelector("#drop-zone__prompt").remove();
+                dropZoneElement.querySelector("#mainImage").remove();
+            }
+
+            // First time - there is no thumbnail element, so lets create it
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div");
+                thumbnailElement.classList.add("drop-zone__thumb");
+                dropZoneElement.appendChild(thumbnailElement);
+            }
+
+            thumbnailElement.dataset.label = file.name;
+
+            // Show thumbnail for image files
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+                };
+            } else {
+                thumbnailElement.style.backgroundImage = null;
+            }
+        }
+
+
+
+        $('body').on('click', '#addMultipleImage', function (e) {
+            e.preventDefault();
+            $('#other-Images').click();
+        });
+
+
+        $('body').on('click', '#DeleteMainImage', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            debugger;
+            var _this = $(this);
+            $("#main-img-input").val("");
+            $($(".drop-zone__thumb")[0]).remove();
+            var label = $('<label class="form-label mb-1 titles" style="color: gray;" id="mainImage"></label>');
+            label.html('عکس اصلی');
+            var span = $('<span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="drop-zone__prompt"></span>');
+            $("#dz-main").append(label);
+            $("#dz-main").append(span);
+
+
+            //add main photo id to removedIDs
+            let removedId = $(this).attr('fileid');
+            if (removedId) {
+                RemovedPhotosIDs.push(removedId);
+            }
+
+
+            let removedPath = $(this).attr('fileurl');
+            if (removedPath) {
+                RemovedPhotosPaths.push(removedPath);
+            }
+
+            $("#main-img-input").val('');
+        });
+
+
+
+
+        $('#other-Images').each(function () {
+            $(this).on('change', function (e) {
+
+                debugger;
+                imgWrap = $('.upload__img-wrap');
+                var maxLength = $(this).attr('data-max_length');
+                var files = e.target.files;
+
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    AdvertisementFileUploadPVMList.push({ File: file });
+                }
+
+                var filesArr = Array.prototype.slice.call(files);
+                var iterator = 0;
+                filesArr.forEach(function (f, index) {
+                    if (imgArray.length > maxLength) {
+                        return false;
+                    }
+
+                    if (!f.type.match('image.*') && !f.type.match('video.*')) {
+                        return;
+                    }
+
+                    imgArray.push(f);
+
+                    var reader = new FileReader();
+                    if (f.type.match('image.*')) {
+                        // For image files
+                        reader.onload = function (e) {
+                            var html = "<div class='upload__img-box'><div style='background-image: url(" + e.target.result + ")' data-number='" + $(".upload__img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload__img-close' data-file='" + f.name + "'></div></div></div>";
+                            imgWrap.append(html);
+                            iterator++;
+                        };
+                        reader.readAsDataURL(f);
+                    } else if (f.type.match('video.*')) {
+                        // For video files
+                        var url = URL.createObjectURL(f);
+                        var video = document.createElement('video');
+                        var canvas = document.createElement('canvas');
+                        var context = canvas.getContext('2d');
+
+                        video.src = url;
+                        video.currentTime = 1; // Set time to capture thumbnail at 1 second
+
+                        video.addEventListener('loadeddata', function () {
+                            // Set canvas size to video dimensions (scaled down)
+                            canvas.width = video.videoWidth;
+                            canvas.height = video.videoHeight;
+                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                            // Convert canvas to data URL and use it as background
+                            var thumbnailUrl = canvas.toDataURL();
+                            var html = "<div class='upload__img-box'><div style='background-image: url(" + thumbnailUrl + ")' data-number='" + $(".upload__img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload__img-close' data-file='" + f.name + "'></div></div></div>";
+                            imgWrap.append(html);
+                            iterator++;
+
+                            // Revoke the URL after thumbnail is created
+                            URL.revokeObjectURL(url);
+                        });
+                    }
+                });
+            });
+        });
+
+
+
+        $('body').on('click', ".upload__img-close", function (e) {
+            $('#other-Images').val('');
+            var file = $(this).parent().data("file");
+            for (var i = 0; i < imgArray.length; i++) {
+                if (imgArray[i].name === file) {
+                    imgArray.splice(i, 1);
+                    break;
+                }
+            }
+            $(this).parent().parent().remove();
+
+            var fileName = $(this).attr('data-file');
+            var index = AdvertisementFileUploadPVMList.findIndex(fileObj => fileObj.File.name === fileName);
+            if (index !== -1) {
+                AdvertisementFileUploadPVMList.splice(index, 1);
+            }
+
+
+            //add side photos ids to removedIDs
+            let removedId = $(this).attr('fileid');
+            if (removedId) {
+                RemovedPhotosIDs.push(removedId);
+            }
+
+            let removedPath = '';
+            if ($(this).attr('videoUrl')) {
+                removedPath = $(this).attr('videoUrl');
+            }
+            else {
+                removedPath = $(this).attr('fileurl');
+            }
+            if (removedPath) {
+                RemovedPhotosPaths.push(removedPath);
+            }
+
+        });
+
+
+        //#region SingleUploadImage
+        document.querySelectorAll(".main-Image").forEach((inputElement) => {
+            debugger;
+            const dropZoneElement = inputElement.closest(".drop-zone");
+
+            dropZoneElement.addEventListener("click", (e) => {
+                if ($(".drop-zone__thumb")[0] == undefined) {
+                    inputElement.click();
+                }
+            });
+
+            inputElement.addEventListener("change", (e) => {
+                debugger;
+                if (inputElement.files.length) {
+                    IsMainChanged = true;
+
+                    updateThumbnail(dropZoneElement, inputElement.files[0]);
+                    if ($(".drop-zone__thumb")[0] != undefined) {
+                        if ($("#DeleteMainImage").html() == undefined)
+                            $($(".drop-zone__thumb")[0]).append($('<div id="DeleteMainImage"></div>'));
+                    }
+                }
+            });
+
+            dropZoneElement.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZoneElement.classList.add("drop-zone--over");
+            });
+
+            ["dragleave", "dragend"].forEach((type) => {
+                dropZoneElement.addEventListener(type, (e) => {
+                    dropZoneElement.classList.remove("drop-zone--over");
+                });
+            });
+
+            dropZoneElement.addEventListener("drop", (e) => {
+                e.preventDefault();
+
+                if (e.dataTransfer.files.length) {
+                    inputElement.files = e.dataTransfer.files;
+                    updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                }
+
+                dropZoneElement.classList.remove("drop-zone--over");
+            });
+        });
+
+
+
+
+        $('#dz-main').on("click", function (event) {
+
+
+            if ($(event.target).is("#DeleteMainImage")) {
+                // Skip showing the large preview if the close icon was clicked
+                return;
+            }
+
+            // Get the background image URL from the thumbnail
+            const bgImage = $('.drop-zone__thumb').css('background-image');
+
+
+            //put link for download
+            const imageUrl = bgImage.slice(5, -2);
+            $('#downloadImage').attr('href', imageUrl);
+
+            if (bgImage != undefined) {
+
+                $('#largeImageContainer').css('background-image', bgImage);
+                $('#largeImagePreview').fadeIn();
+                $('.modal').addClass('d-none');
+                $('.modal-backdrop').addClass('d-none');
+
+            }
+        });
+
+
+
+        $('.upload__img-wrap').on('click', '.upload__img-box', function (event) {
+
+
+            if ($(event.target).hasClass('upload__img-close')) {
+                // Skip showing the large preview if the close icon was clicked
+                return;
+            }
+
+            // Get the background image URL from the thumbnail
+            const bgImage = $(this).children(":first").css('background-image');
+            //put link for download
+            const background = $(this).children(":first");
+
+            //اگر تامبنیل ویدیو بود خود ویدیو رو دانلود بکنه
+            if (background.attr('videoUrl') != 'undefined') {
+                $('#downloadImage').attr('href', background.attr('videoUrl'));
+            }
+            //اگگه عکس بود خود عکس
+            else {
+                const imageUrl = bgImage.slice(5, -2);
+                $('#downloadImage').attr('href', imageUrl);
+            }
+
+
+
+            if (bgImage != undefined) {
+
+                $('#largeImageContainer').css('background-image', bgImage);
+                $('#largeImagePreview').fadeIn();
+                $('.modal').addClass('d-none'); //modal-backdrop
+                $('.modal-backdrop').addClass('d-none');
+            }
+        });
+
+
+        // Hide the overlay when clicking outside the large image container
+        $('#largeImagePreview').click(function (event) {
+            if ($(event.target).is('#largeImageContainer') || $(event.target).closest('#largeImageContainer').length === 0) {
+                $(this).fadeOut();
+                $('.modal').removeClass('d-none');
+                $('.modal-backdrop').removeClass('d-none');
+            }
+        });
+
+
+
+
+
+
+        //کلیک ثبت ها
+
+        $('body').on('click', '#modal-btn-yes-melkavanPictures', function (e) {
+
+
+            e.preventDefault();
+            debugger;
+
+            //اگر عکس اصلی انتخاب نکرده بود
+            if ($('.drop-zone__thumb').length == 0)
+                if ($('.upload__img-box').length != 0) {
+
+                    alert('انتخاب عکس اصلی ضروری است');
+
+
+                    return;
+                }
+
+
+
+            debugger;
+
+            var formData = new FormData();
+
+
+            var mainFile = $('#main-img-input');
+            if (mainFile.val()) {
+                AdvertisementFileUploadPVMList.push({
+                    File: mainFile[0].files[0]
+                });
+            }
+
+
+
+            if (AdvertisementFileUploadPVMList.length > 0) {
+                for (var i = 0; i < AdvertisementFileUploadPVMList.length; i++) {
+
+
+                    var file = AdvertisementFileUploadPVMList[i].File;
+                    if (file) {
+
+                        if (advertisementType == "Advertisement") {
+
+                            if (i + 1 == AdvertisementFileUploadPVMList.length) {
+                                formData.append("AdvertisementFileUploadPVMList[" + i + "].AdvertisementFileOrder", 1);
+                            }
+                            else {
+                                formData.append("AdvertisementFileUploadPVMList[" + i + "].AdvertisementFileOrder", i + 2);
+                            }
+                            formData.append("AdvertisementFileUploadPVMList[" + i + "].AdvertisementFileTitle", file.name);
+                            formData.append("AdvertisementFileUploadPVMList[" + i + "].File", file);
+
+                        }
+                        else if (advertisementType == "Properties") {
+
+
+                            if (i + 1 == AdvertisementFileUploadPVMList.length) {
+                                formData.append("PropertyFileUploadPVMList[" + i + "].PropertyFileOrder", 1);
+                            }
+                            else {
+                                formData.append("PropertyFileUploadPVMList[" + i + "].PropertyFileOrder", i + 2);
+                            }
+                            formData.append("PropertyFileUploadPVMList[" + i + "].PropertyFileTitle", file.name);
+                            formData.append("PropertyFileUploadPVMList[" + i + "].File", file);
+
+                        }
+
+
+
+
+                    }
+
+                }
+            }
+
+
+            if (AdvertisementFileUploadPVMList.length > 0 || RemovedPhotosIDs.length > 0) {
+
+                if (advertisementType == "Advertisement") {
+                    formData.append('AdvertisementId', advertisementId);
+                    RemovedPhotosPaths.forEach(id => formData.append('DeletedPhotosPaths', id));
+                    RemovedPhotosIDs.forEach(id => formData.append('DeletedPhotosIDs', id));
+                    formData.append('IsMainChanged', IsMainChanged);
+                }
+                else if (advertisementType == "Properties") {
+                    formData.append('PropertyId', advertisementId);
+                    RemovedPhotosPaths.forEach(id => formData.append('DeletedPhotosPaths', id));
+                    RemovedPhotosIDs.forEach(id => formData.append('DeletedPhotosIDs', id));
+                    formData.append('IsMainChanged', IsMainChanged);
+                }
+
+                let ajaxUrl = "";
+                if (advertisementType == "Advertisement") {
+                    ajaxUrl = '/AdminMelkavan/AdvertisementMediaManagement/AddToAdvertisementFiles';
+                }
+                else if (advertisementType == "Properties") {
+                    ajaxUrl = '/AdminTeniaco/PropertiesMediaManagement/AddToPropertyFiles';
+                }
+
+
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+
+                        if (result.Message != 'خطا') {
+
+                        }
+
+
+                        $('#showIn-melkavanPictures-modal').modal("hide");
+                    },
+                    error: function (jqXHR) {
+
+                    },
+                    complete: function (jqXHR, status) {
+                    }
+                });
+            }
+            else {
+                $('#error-alert').addClass('alert-danger');
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html('فایل جدید یا حذف شده ای یافت نشد');
+                window.setTimeout(function () { $('#error-alert').hide(1000); }, 4000);
+
+            }
+
+
+        });
+
+
+        $('body').on('click', '#modal-btn-yes-melkavanStatus', function (e) {
+
+            let statusIdValue = $('input[name="Status"]:checked').val();
+            let rejectReason = $('#rejectionReason').val();
+            var formData = new FormData();
+            formData.append('AdvertisementId', advertisementId);
+            formData.append('RecordType', advertisementType);
+            formData.append('StatusId', statusIdValue);
+            formData.append('RejectionReason', rejectReason);
+            $.ajax({
+                url: '/AdminMelkavan/AdvertisementStatusManagement/UpdateAdvertisementStatusId',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+
+
+                    if (result.Result == "OK") {
+                        let selectedStatusText = $('input[name="Status"]:checked').text();
+
+
+                        // if(data.record.StatusTitle=='رد')
+                        //      return `<div class="text-danger" id="status-${data.record.AdvertisementId}">${data.record.StatusTitle}</div>`;
+                        //      if(data.record.StatusTitle=='تایید')
+                        //       return `<div class="text-success" id="status-${data.record.AdvertisementId}">${data.record.StatusTitle}</div>`;
+                        //       if(data.record.StatusTitle=='در انتظار تایید')
+                        //       return `<div class="text-warning" id="status-${data.record.AdvertisementId}">${data.record.StatusTitle}</div>`;
+
+
+                        switch (statusIdValue) {
+                            case '1':
+                                $('#status-' + advertisementId).replaceWith(`<div class="text-success" id="status-${advertisementId}">تایید</div>`);
+                                break;
+                            case '2':
+                                $('#status-' + advertisementId).replaceWith(`<div class="text-danger" id="status-${advertisementId}">رد</div>`);
+                                break;
+                            case '3':
+                                $('#status-' + advertisementId).replaceWith(`<div class="text-warning" id="status-${advertisementId}">در انتظار تعیین وضعیت</div>`);
+                                break;
+                        }
+
+                        $('#showIn-melkavanStatus-modal').modal("hide");
+
+                    }
+                    if (result.Message != 'خطا') {
+
+                    }
+
+
+                    $('#showIn-melkavanPictures-modal').modal("hide");
+                },
+                error: function (jqXHR) {
+
+                },
+                complete: function (jqXHR, status) {
+                }
+            });
+
+        });
+
+
+        // ایجاد محدودیت عدم انتخاب بیشتر از 3 برچسب
+        $('input[name="Label"]').on('change', function () {
+            let checkedCount = $('input[name="Label"]:checked').length; // Count checked checkboxes
+            if (checkedCount > 3) {
+                $(this).prop('checked', false); // Uncheck the current one
+                alert('امکان انتخاب بیشتر از 3 برچسب وجود ندارد.');
+            }
+        });
+
+
+        $('body').on('click', '#modal-btn-yes-melkavanLabel', function (e) {
+            let tags = [];
+            $('input[name="Label"]').each(function () {
+                if ($(this).is(':checked')) {
+                    tags.push($(this).val());
+                }
+            });
+
+            var formData = new FormData();
+            formData.append('AdvertisementId', advertisementId);
+            formData.append('RecordType', advertisementType);
+            formData.append('AdvertisementDetailsVM.TagId', tags.join(','));
+            $.ajax({
+                url: '/AdminMelkavan/AdvertisementStatusManagement/UpdateAdvertisementTagId',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+
+
+                    if (result.Result == "OK") {
+
+                        let labels = [];
+
+                        if (tags.includes("1")) {
+                            labels.push("فوری");
+                        }
+                        if (tags.includes("2")) {
+                            labels.push("مشارکت");
+                        }
+                        if (tags.includes("3")) {
+                            labels.push("معاوضه");
+                        }
+                        if (tags.includes("4")) {
+                            labels.push("زیرقیمت");
+                        }
+                        if (tags.includes("5")) {
+                            labels.push("کارشناسی");
+                        }
+
+                        if (labels.length != 0) {
+                            $('.EditLabel[data-AdvertisementId="' + advertisementId + '"]').text(labels.join(','));
+                        }
+                        else {
+                            let tagPlus = '<div class="EditLabel pointer" data-RecordType="' + advertisementType + '" data-AdvertisementId="' + advertisementId + '"> <span style="font-size : 25px !important;" class="mdi mdi-tag-plus"></span></div>';
+                            $('.EditLabel[data-AdvertisementId="' + advertisementId + '"]').replaceWith(tagPlus);
+
+                        }
+
+
+
+
+                    }
+                    if (result.Message != 'خطا') {
+
+                    }
+
+
+                    $('#showIn-melkavanLabel-modal').modal("hide");
+                },
+                error: function (jqXHR) {
+
+                },
+                complete: function (jqXHR, status) {
+                }
+            });
+
+        });
+
+
+        // نمایش فیلد علت رد آگهی بعد انتخاب گزینه رد
+        $('input[name="Status"]').on('change', function () {
+            if ($(this).val() == 2) {
+                $('#rejectionDiv').removeClass('d-none');
+                $('#rejectionReason').val('');
+            }
+            else {
+                $('#rejectionDiv').addClass('d-none');
+            }
+        });
+
+        // کلیک روی آیکن ها
+
+
+        $('body').on('click', '.changeStatus', function (e) {
+
+
+            advertisementId = $(this).attr('data-AdvertisementId');
+            advertisementType = $(this).attr('data-RecordType');
+
+
+            $('#showIn-melkavanStatus-modal').modal("show");
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementStatusManagement/GetAdvertisementWithAdvertisementId",
+                data: { 'id': advertisementId, 'type': advertisementType },
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        debugger;
+                        switch (result.Record.StatusId) {
+                            case 1:
+                                $('#Confirm').prop('checked', true);
+                                $('#rejectionDiv').addClass('d-none');
+                                break;
+                            case 2:
+                                $('#Reject').prop('checked', true);
+                                $('#rejectionDiv').removeClass('d-none');
+                                $('#rejectionReason').val(result.Record.RejectionReason);
+                                break
+                            case 3:
+                                $('#Pending').prop('checked', true);
+                                $('#rejectionDiv').addClass('d-none');
+                                break;
+                            default:
+                                $('#Confirm').prop('checked', false);
+                                $('#Reject').prop('checked', false);
+                                $('#Pending').prop('checked', false);
+                                $('#rejectionDiv').addClass('d-none');
+                                break;
+                        }
+
+                    }
+                }
+
+
+            });
+        });
+
+        $('body').on('click', '.media', function (e) {
+            e.preventDefault();
+
+            // پاک کردن دیتا های قبلی مدال
+            $("#DeleteMainImage").click();
+            $(".upload__img-close").each(function () {
+                $(this).click();
+            });
+            RemovedPhotosIDs = [];
+            RemovedPhotosPaths = []
+            AdvertisementFileUploadPVMList = []
+            IsMainChanged = false;
+            advertisementId = "";
+            advertisementType = "";
+
+
+
+            $('#showIn-melkavanPictures-modal').modal("show");
+            advertisementId = $(this).attr('data-AdvertisementId');
+            advertisementType = $(this).attr('data-RecordType');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementStatusManagement/GetAdvertisementWithAdvertisementId",
+                data: { 'id': advertisementId, 'type': advertisementType },
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        //load Advertisement main photo
+                        if (result.Record.AdvertisementFilesVM[0]) {
+
+                            const dropZoneElement = document.querySelector(".drop-zone");
+                            let serverImagePath;
+                            if (advertisementType == 'Advertisement') {
+                                serverImagePath = '/Files/AdvertisementsFiles/melkavan.com/' + result.Record.AdvertisementId + '/Media/' + result.Record.AdvertisementFilesVM[0].AdvertisementFilePath;
+                            }
+                            else if (advertisementType == "Properties") {
+                                serverImagePath = '/Files/PropertiesFiles/my.teniaco.com/' + result.Record.AdvertisementId + '/Media/' + result.Record.AdvertisementFilesVM[0].AdvertisementFilePath;
+                            }
+
+                            if (serverImagePath) {
+                                updateThumbnailWithUrl(dropZoneElement, serverImagePath);
+                            }
+
+                            $($(".drop-zone__thumb")[0]).append($('<div fileurl="' + serverImagePath + '" fileid="' + result.Record.AdvertisementFilesVM[0].AdvertisementFileId + '" id="DeleteMainImage"></div>'));
+                        }
+
+                        // Load side photos
+                        const imgWrap2 = $('.upload__img-wrap');
+                        const serverImages = [];
+
+                        // Load images and videos from advertisement
+                        for (let i = 1; i < result.Record.AdvertisementFilesVM.length; i++) {
+                            const filePath = result.Record.AdvertisementFilesVM[i].AdvertisementFilePath;
+                            const fileId = result.Record.AdvertisementFilesVM[i].AdvertisementFileId;
+
+
+                            if (advertisementType == 'Advertisement') {
+                                serverImages.push({
+                                    imageUrl: '/Files/AdvertisementsFiles/melkavan.com/' + result.Record.AdvertisementId + '/Media/' + filePath,
+                                    fileId: fileId
+                                });
+                            }
+                            else if (advertisementType == "Properties") {
+                                serverImages.push({
+                                    imageUrl: '/Files/PropertiesFiles/my.teniaco.com/' + result.Record.AdvertisementId + '/Media/' + filePath,
+                                    fileId: fileId
+                                });
+                            }
+
+                        }
+
+                        // Process each image/video URL and fileId
+                        serverImages.forEach((imageData) => {
+                            const fileType = getFileType(imageData.imageUrl); // Helper to determine if the file is an image or video
+                            if (fileType === 'video') {
+                                let videoUrl = imageData.imageUrl;
+                                createVideoThumbnail(imageData.imageUrl, (thumbnailUrl) => {
+                                    updateMultipleThumbnailWithUrl(imgWrap2, thumbnailUrl, imageData.fileId, videoUrl);
+                                });
+                            } else {
+                                updateMultipleThumbnailWithUrl(imgWrap2, imageData.imageUrl, imageData.fileId);
+                            }
+                        });
+
+
+
+
+
+                    }
+                }
+            });
+        })
+
+        $('body').on('click', '.EditLabel', function (e) {
+
+            $('input[name="Label"]').prop('checked', false);
+            advertisementId = $(this).attr('data-AdvertisementId');
+            advertisementType = $(this).attr('data-RecordType');
+
+
+            $('#showIn-melkavanLabel-modal').modal("show");
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementStatusManagement/GetAdvertisementWithAdvertisementId",
+                data: { 'id': advertisementId, 'type': advertisementType },
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        if (result.Record.AdvertisementDetailsVM.TagId) {
+                            let tags = result.Record.AdvertisementDetailsVM.TagId.split(',');
+                            tags.forEach(tag => {
+                                $(`input[name="Label"][value="${tag}"]`).prop('checked', true);
+                            });
+                        }
+
+
+                    }
+                }
+
+
+            });
+
+        });
+
+
+
+    });
+
+
+</script>

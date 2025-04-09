@@ -1,0 +1,142 @@
+﻿@{
+    string sendedMessage = "";
+    if (ViewData["SendedMessage"] != null)
+    {
+        sendedMessage = ViewData["SendedMessage"].ToString();
+    }
+
+    string pending = "";
+    if (ViewData["Pending"] != null)
+    {
+        pending = ViewData["Pending"].ToString();
+    }
+
+    string unverifiedUsers= "";
+    if (ViewData["UnverifiedUsers"] != null)
+    {
+        unverifiedUsers = ViewData["UnverifiedUsers"].ToString();
+    }
+
+    string verifiedOrders = "";
+    if (ViewData["VerifiedOrders"] != null)
+    {
+        verifiedOrders = ViewData["VerifiedOrders"].ToString();
+    }
+
+    string observed = "";
+    if (ViewData["Observed"] != null)
+    {
+        observed = ViewData["Observed"].ToString();
+    }
+}
+
+<div class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
+    <div class="panel panel-primary boxShadow">
+        <div class="panel-heading" data-toggle="tooltip" data-placement="top" data-html="true"
+             title="SendedMessageTitle">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-comments fa-2x"></i>
+                </div>
+                <div class="col-xs-9 text-left">
+                    <div class="huge">
+                        @Html.Raw(sendedMessage)
+                    </div>
+                </div>
+                <div class="col col-xs-12 text-center">
+                    <div style="font-size: 12px;height: 25px;">
+                        SendedMessageTitle
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
+    <div class="panel panel-green boxShadow">
+        <div class="panel-heading" data-toggle="tooltip" data-placement="top" data-html="true"
+             title="PendingTitle">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-tasks fa-2x"></i>
+                </div>
+                <div class="col-xs-9 text-left">
+                    <div class="huge">
+                        @Html.Raw(pending)
+                    </div>
+                </div>
+                <div class="col col-xs-12 text-center">
+                    <div style="font-size: 12px;height: 25px;">
+                        PendingTitle
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
+    <div class="panel panel-yellow boxShadow">
+        <div class="panel-heading" data-toggle="tooltip" data-placement="top" data-html="true"
+             title="UnverifiedUsersTitle">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-user-circle fa-2x"></i>
+                </div>
+                <div class="col-xs-9 text-left">
+                    <div class="huge">
+                        @Html.Raw(unverifiedUsers)
+                    </div>
+                </div>
+                <div class="col col-xs-12 text-center">
+                    <div style="font-size: 12px;height: 25px;">
+                        UnverifiedUsersTitle
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
+    <div class="panel panel-red boxShadow">
+        <div class="panel-heading" data-toggle="tooltip" data-placement="top" data-html="true"
+             title="VerifiedOrdersTitle">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-list-ol fa-2x"></i>
+                </div>
+                <div class="col-xs-9 text-left">
+                    <div class="huge">
+                        @Html.Raw(verifiedOrders)
+                    </div>
+                </div>
+                <div class="col col-xs-12 text-center">
+                    <div style="font-size: 12px;height: 25px;">
+                        VerifiedOrdersTitle
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2 col-md-2 col-xs-4 col-sm-4">
+    <div class="panel panel-default boxShadow">
+        <div class="panel-heading" data-toggle="tooltip" data-placement="top" data-html="true"
+             title="ObservedTitle">
+            <div class="row">
+                <div class="col-xs-3">
+                    <i class="fa fa-eye fa-2x"></i>
+                </div>
+                <div class="col-xs-9 text-left">
+                    <div class="huge">
+                        @Html.Raw(observed)
+                    </div>
+                </div>
+                <div class="col col-xs-12 text-center">
+                    <div style="font-size: 12px;height: 25px;">
+                        ObservedTitle
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

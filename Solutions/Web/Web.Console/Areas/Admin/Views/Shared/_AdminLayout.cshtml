@@ -1,0 +1,361 @@
+﻿@using Services.Xml.Entities;
+@using VM.Console;
+
+@{
+    Layout = "_MainLayout";
+
+    DomainsSettingsVM domainsSettings = new DomainsSettingsVM();
+    if (ViewData["DomainsSettings"] != null)
+    {
+        domainsSettings = ViewData["DomainsSettings"] as DomainsSettingsVM;
+    }
+}
+
+@section head{
+
+    <link href="/fonts/Material.css" rel="stylesheet">
+
+    <link href="/Gentelella_theme/bootstrap-v4-rtl-main/dist/css/bootstrap-rtl.min.css" rel="stylesheet">
+
+    <meta name="fontiran.com:license" content="5VM66X">
+    <link href="/Gentelella_theme/build/css/iranyekan/fontiran.css" rel="stylesheet">
+    <link href="/Gentelella_theme/build/css/iranyekan/iranyekan.css" rel="stylesheet">
+
+    <link href="/Gentelella_theme/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/Gentelella_theme/nprogress/nprogress.css" rel="stylesheet">
+    <link href="/Gentelella_theme/animate.css/animate.min.css" rel="stylesheet">
+
+    <link href="/Gentelella_theme/build/css/custom-rtl.css" rel="stylesheet">
+
+    <link href="~/lib/bootstrap-persiandatetimepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+
+    <script src="/Gentelella_theme/vendors/jquery/dist/jquery.js"></script>
+
+    <script src="~/lib/fancybox-2.1.7/source/jquery.fancybox.js"></script>
+
+    <style type="text/css">
+        div.jtable-main-container div.jtable-title {
+            text-align: center !important;
+            padding-right: 10px;
+        }
+
+        div.jtable-main-container > table.jtable > thead th.jtable-column-header div.jtable-column-header-container {
+            text-align: right !important;
+            padding-left: 10px;
+            background-position: left !important;
+        }
+
+        div.jtable-main-container table.jtable thead th {
+            text-align: right !important;
+            padding-right: 10px;
+        }
+
+        .jtable-dialog-form input,
+        .jtable-dialog-form select {
+            width: 100%;
+        }
+
+        .ui-dialog .ui-dialog-title {
+            width: 100%;
+        }
+    </style>
+
+                                        @RenderSection("head", required: false)
+}
+
+@RenderBody()
+<div class="modal" tabindex="-1" role="dialog" id="my-warning-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <p class="text-right" id="error"></p>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="my-details-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row p-5">
+                    <div id="details-block"></div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="my-confirm-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">تایید</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <p>
+                        آیا مطمئن هستید؟
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-Success btn-sm" id="modal-btn-yes">بله</button>
+                <button type="button" class="btn btn-Primary btn-sm" id="modal-btn-no">خیر</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script src="/Gentelella_theme/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/Gentelella_theme/vendors/fastclick/lib/fastclick.js"></script>
+    <script src="/Gentelella_theme/vendors/nprogress/nprogress.js"></script>
+    <script src="/Gentelella_theme/vendors/Chart.js/dist/Chart.min.js"></script>
+    <script src="/Gentelella_theme/vendors/gauge.js/dist/gauge.min.js"></script>
+    <script src="/Gentelella_theme/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="/Gentelella_theme/vendors/iCheck/icheck.min.js"></script>
+    <script src="/Gentelella_theme/vendors/skycons/skycons.js"></script>
+    <script src="/Gentelella_theme/vendors/Flot/jquery.flot.js"></script>
+    <script src="/Gentelella_theme/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="/Gentelella_theme/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="/Gentelella_theme/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="/Gentelella_theme/vendors/Flot/jquery.flot.resize.js"></script>
+    <script src="/Gentelella_theme/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="/Gentelella_theme/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="/Gentelella_theme/vendors/flot.curvedlines/curvedLines.js"></script>
+    <script src="/Gentelella_theme/vendors/DateJS/build/date.js"></script>
+    <script src="/Gentelella_theme/vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="/Gentelella_theme/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="/Gentelella_theme/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <script src="/Gentelella_theme/vendors/moment/min/moment.min.js"></script>
+    @*<script src="/Gentelella_theme/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>*@
+
+    @* <script src="/Gentelella_theme/build/js/custom.min.js"></script> *@
+    <script src="/Gentelella_theme/build/js/custom.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap-persiandatetimepicker/calendar.js"></script>
+    <script src="~/lib/bootstrap-persiandatetimepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+
+    @*    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function() {
+
+        })
+        //]]>
+    </script>*@
+
+    <script type="text/javascript">
+        //<![CDATA[
+        rtl = true;
+        chosenConfig.rtl = rtl;
+
+        @{
+            if (domainsSettings.DomainSettingId != 0)
+            {
+                if (domainsSettings.NumberOfChosenItemsShow.HasValue)
+                {
+                    @Html.Raw("numberOfChosenItemsShow = " + domainsSettings.NumberOfChosenItemsShow.Value)
+                    ;
+                }
+            }
+        }
+
+            //]]>
+    </script>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        //var numberOfChosenItemsShow = 10;
+
+        @{
+            if (domainsSettings.DomainSettingId != 0)
+            {
+                if (domainsSettings.NumberOfChosenItemsShow.HasValue)
+                {
+                    @Html.Raw("numberOfChosenItemsShow = " + domainsSettings.NumberOfChosenItemsShow.Value)
+                    ;
+                }
+            }
+        }
+
+        //]]>
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function() {
+
+            $('input[type="checkbox"]').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $(this).parent().addClass('selected');
+                }
+                else {
+                    $(this).parent().removeClass('selected');
+                }
+            });
+
+            $('body').addClass('nav-md');
+
+
+            if (numberOfChosenItemsShow > 0) {
+                debugger;
+                var chosens = $('.chosen-container');
+                var selects = [];
+                for (var i = 0; i < chosens.length; i++) {
+                    var chosen = chosens[i];
+                    selects.push($(chosen).prev());
+                }
+
+                for (var i = 0; i < selects.length; i++) {
+                    var select = selects[i];
+
+                    search_contains = true;
+                    rtl = true;
+                    chosenConfig.max_shown_results = numberOfChosenItemsShow;
+                    chosenConfig.search_contains = search_contains;
+                    chosenConfig.rtl = rtl;
+
+                    $(select).chosen('destroy').chosen(chosenConfig);
+
+
+                    //$(select).next().attr('style', 'width: 88% !important;');
+                    //$(select).next().after('<label class="lblShowAllChosenItem"><input type="checkbox" ' +
+                    //    'data-placement="top" data-toggle="tooltip"' +
+                    //    'title="نمایش همه" class="showAllChosenItem"></label>');
+                    //var label = $(select).next().next();
+                    //label.css('height', $(select).next().height());
+
+                    if ($(select).prop('multiple')) {
+                        debugger;
+                        if ($(select).find('option').length > numberOfChosenItemsShow)
+                            $(select).next().after('<div class="chosenManagement" style="display:inline-table;"><div style="height:16px;"><label class="lblShowAllChosenItem"><input type="checkbox" ' +
+                                'data-placement="top" data-toggle="tooltip"' +
+                                'title="نمایش همه" class="showAllChosenItem"></label></div>' +
+                                '<div style="height:16px;"><label class="lblSelectAllChosenItem"><input type="checkbox" ' +
+                                'data-placement="top" data-toggle="tooltip"' +
+                                'title="انتخاب همه" class="selectAllChosenItem"></label></div>' +
+                                '</div>');
+                        else {
+                            debugger;
+                            $(select).next().after('<div class="chosenManagement" style="display:inline-table;">' +
+                                '<div style="height:16px;"><label class="lblSelectAllChosenItem"><input type="checkbox" ' +
+                                'data-placement="top" data-toggle="tooltip"' +
+                                'title="انتخاب همه" class="selectAllChosenItem"></label></div>' +
+                                '</div>');
+                        }
+                        $(select).next().attr('style', 'width: 88% !important;');
+                    }
+                    else {
+                        debugger;
+                        if ($(select).find('option').length > numberOfChosenItemsShow) {
+                            $(select).next().after('<div class="chosenManagement" style="display:inline-table;"><div style="height:16px;"><label class="lblShowAllChosenItem"><input type="checkbox" ' +
+                                'data-placement="top" data-toggle="tooltip"' +
+                                'title="نمایش همه" class="showAllChosenItem"></label></div>' +
+                                '</div>');
+                            $(select).next().attr('style', 'width: 88% !important;');
+                        } else {
+                            //$(select).next().after('<div class="chosenManagement" style="display:inline-table;"><div style="height:16px;"><label class="lblShowAllChosenItem"><input type="checkbox" ' +
+                            //    'data-placement="top" data-toggle="tooltip"' +
+                            //    'title="نمایش همه" class="showAllChosenItem"></label></div>' +
+                            //    '</div>');
+                            $(select).next().attr('style', 'width: 100% !important;');
+                        }
+                    }
+
+                var labelShowAll = $(select).next().next();
+                labelShowAll.css('height', $(select).next().height());
+                }
+
+                $('.lblShowAllChosenItem').on('click', function() {
+                    debugger;
+                    //var _this = $(this);
+                    //var select = _this.parent().parent().prev().prev();
+                    //if (_this.find('input[type="checkbox"]').is(':checked')) {
+                    //    chosenConfig.max_shown_results = numberOfChosenItemsShow;
+                    //    $(this).addClass('selected');
+                    //    $(this).css('background-position', '-22px 0');
+
+                    //}
+                    //else {
+                    //    chosenConfig.max_shown_results = numberOfChosenItemsShow;
+                    //    $(this).removeClass('selected')
+                    //    $(this).css('background-position', 'unset');
+                    //}
+                    //$(select).chosen('destroy').chosen(chosenConfig);
+                    //$(select).attr('style', 'width: 88% !important;');
+
+                                var _this = $(this);
+            var select = _this.parent().parent().prev().prev();
+            if (_this.find('input[type="checkbox"]').is(':checked')){
+                chosenConfig.max_shown_results = 1000;
+                $(this).addClass('selected');
+                $(this).css('background-position', '-22px 0');
+            }
+            else{
+                chosenConfig.max_shown_results = numberOfChosenItemsShow;
+                $(this).removeClass('selected');
+                $(this).css('background-position', 'unset');
+            }
+            $(select).chosen('destroy').chosen(chosenConfig);
+            _this.parent().parent().prev().attr('style', 'width: 88% !important;');
+                });
+            }
+            else {
+                numberOfChosenItemsShow = 1000
+            }
+
+            $('a[href="/AdminAutomation/AutomationPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/AutomationPanel/Desk"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index2"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index3"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index4"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/SecretariatPanel/Index5"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/OrgChartManagement/Index2"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/WorkFlowsManagement/WorkFlowDesign"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/WorkFlowsManagement/Index"]').addClass('colorRed');
+            $('a[href="/AdminAutomation/AutomationPanel/Desk"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/PropertiesManagement/CompareProperties2"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/InvestorsManagement/AnswerSheet2"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/MapLayerCategoriesManagement/Index2"]').addClass('colorRed');
+            $('a[href="/AdminProjects/OutterProjectsPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminTeniaco/EvaluationCategoriesManagement/Index2"]').addClass('colorRed');
+            $('a[href="/AdminConfigSite/ConfigSitePanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminDashboardConfig/DashboardConfigPanel/Index"]').addClass('colorRed');
+            $('a[href="/AdminPublic/RatesPanel/Index"]').addClass('colorRed');
+
+            //        if ('.checkbox label input[type="checkbox"]').is(':checked'))
+            //{
+            //    $(this).addClass('selected');
+            //    $(this).css('background-position', '-22px 0');
+
+            //}
+
+        });
+                                        //]]>
+    </script>
+
+}
+

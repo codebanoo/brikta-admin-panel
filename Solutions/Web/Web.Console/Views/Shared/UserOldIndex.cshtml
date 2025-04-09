@@ -1,0 +1,83 @@
+﻿@using Services.Xml.Entities;
+
+@{
+    string areaName = "";
+    if (ViewData["AreaName"] != null)
+    {
+        areaName = ViewData["AreaName"] as string;
+    }
+
+    string controllerName = "";
+    if (ViewData["ControllerName"] != null)
+    {
+        controllerName = ViewData["ControllerName"] as string;
+    }
+
+    string actionName = "";
+    if (ViewData["ActionName"] != null)
+    {
+        actionName = ViewData["ActionName"] as string;
+    }
+    Layout = "_" + "UserOldLayout";
+}
+
+@section head{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_headOldIndex.cshtml");
+    }
+
+}
+
+<div class="flex" style="direction: rtl;">
+    @await Component.InvokeAsync("UserTeniacoOldNavigation")
+    <!-- Content-Section-Start -->
+    <div class="w-full">
+        <div class="dashboard-header">
+            <a class="sidebar-collapse-btn sidebar-collapse-btn-mobile">
+                <span class="icon-menu"></span>
+            </a>
+            <h3 class="header-title">داشبورد</h3>
+            <ul class="dashboard-navbar">
+
+                <li>
+                    <a href="#" class="profile-pic w-full">
+                        <img src="~/outter_theme/assets/img/profile-pic-small.jpg" alt="">
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon-alarm"></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon-haedphone"></span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="header-diagrams-section w-full">
+
+            @await Component.InvokeAsync("UserTeniacoOldDashboard")
+
+        </div>
+        @{
+            Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_htmlOldIndex.cshtml");
+        }
+
+    </div>
+    <!-- Content-Section-End -->
+</div>
+
+@section scripts{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_jsOldIndex.cshtml");
+    }
+
+}

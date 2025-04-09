@@ -1,0 +1,248 @@
+﻿<div class="x_panel" id="searchBlock">
+
+    <div class="x_content">
+        <!-- start accordion -->
+        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel">
+                @* <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h4 class="panel-title">جستجو</h4>
+                </a>*@
+                <div id="collapseOne" class="panel-collapse  in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body row">
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع ملک
+                            </div>
+                            <select class="form-control ml-3" id="slcPropertyTypeId" name="slcPropertyTypeId"
+                                    placeholder="نوع ملک">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        @*                         <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                        <div>
+                        دسته بندی
+                        </div>
+                        <select class="form-control ml-3" id="slcFeaturesCategoriesId" name="slcFeaturesCategoriesId"
+                        placeholder="دسته بندی">
+                        <option value="">---</option>
+                        </select>
+
+                        </div> *@
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div class="mx-2">
+                                عنوان
+                            </div>
+                            <input class="form-control" id="txtFeatureTitleSearch" name="txtFeatureTitleSearch"
+                                   placeholder="عنوان" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="clearfix"></div>
+            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                <div class="empty-block">&nbsp;</div>
+                <button id="btnSearch" name="btnSearch" class="btn btn-success btn-sm">
+                    جستجو
+                </button>
+                <button id="btnReload" name="btnReload" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="بارگذاری مجدد">
+                    <i class="fa fa-refresh"></i>
+                </button>
+                <button id="btnReset" name="btnReset" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top"
+                        title="پاک کردن فرم">
+                    <i class="fa fa-undo"></i>
+                </button>
+                <button id="btnRemoveSelectedRows" name="btnRemoveSelectedRows" class="btn btn-danger btn-sm"
+                        data-toggle="tooltip" data-placement="top"
+                        title="حذف سطرهای انتخاب شده"
+                        data-href="/Admin/UsersManagement/CompleteDeleteUsers">
+                    <i class="fa fa-remove "></i>
+                </button>
+            </div>
+        </div>
+        <!-- end of accordion -->
+
+
+    </div>
+</div>
+
+<hr class="full-splitter" />
+<div id="listContainer"></div>
+
+
+
+<div style="z-index:1051;" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="create-FeatureCategory-modal">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button id="closeCategoryModal" type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title col-12" id="myModalLabel">تعریف دسته بندی</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نام دسته بندی
+                        </div>
+
+                        <input type='text' class="form-control" id="txtCategoryName" name="txtCategoryName" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-Create-category btn-sm" id="modal-btn-yes">ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="create-Feature-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title col-12" id="myModalLabel">تعریف امکانات</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نوع ملک
+                        </div>
+
+                        <select class="form-control" id="propertyTypeId" name="propertyTypeId">
+                        </select>
+                    </div>
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+
+                        <div class="mx-2">
+                            <label id="addCategory">
+                                <img src="/images/add.png">
+                            </label>
+                            دسته بندی
+                        </div>
+
+                        <select class="form-control" id="categories" name="categories">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            عنوان
+                        </div>
+
+                        <input type="text" class="form-control" id="FeatureName" name="FeatureName" />
+                    </div>
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نوع المان
+                        </div>
+
+                        <select class="form-control" id="elementTypeId" name="elementTypeId">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            اجباری
+                        </div>
+
+                        <select class="form-control" id="IsRequired" name="IsRequired">
+                            <option value="true">بله</option>
+                            <option selected value="false">خیر</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-sm" id="modal-btn-CreateFeature">ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="edit-Feature-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title col-12" id="myModalLabel">ویرایش امکانات</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نوع ملک
+                        </div>
+
+                        <select class="form-control" id="editPropertyTypeId" name="editPropertyTypeId">
+                        </select>
+                    </div>
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+
+                        <div class="mx-2">
+                            دسته بندی
+                        </div>
+
+                        <select class="form-control" id="editCategories" name="editCategories">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            عنوان
+                        </div>
+
+                        <input type="text" class="form-control" id="editFeatureName" name="editFeatureName" />
+                    </div>
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            نوع المان
+                        </div>
+
+                        <select class="form-control" id="editElementTypeId" name="editElementTypeId">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                            اجباری
+                        </div>
+
+                        <select class="form-control" id="editIsRequired" name="editIsRequired">
+                            <option value="true">بله</option>
+                            <option selected value="false">خیر</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" class="btn btn-success btn-sm" id="modal-btn-EditFeature">ویرایش</button>
+            </div>
+        </div>
+    </div>
+</div>

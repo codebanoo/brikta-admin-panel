@@ -1,0 +1,158 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<EvaluationCategoriesVM> evaluationCategoriesList = new List<EvaluationCategoriesVM>();
+        @Html.Raw("var evaluationCategoriesList  = [];")
+        ;
+
+        if (ViewData["EvaluationCategoriesList"] != null)
+        {
+            evaluationCategoriesList = (List<EvaluationCategoriesVM>)ViewData["EvaluationCategoriesList"];
+
+            evaluationCategoriesList.Insert(0, new EvaluationCategoriesVM()
+                {
+                    EvaluationCategoryTitle = "---",
+                    EvaluationCategoryId = 0,
+                    EvaluationParentCategoryId = null
+                });
+
+            var evaluationCategoriesListData = evaluationCategoriesList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.EvaluationCategoryTitle}",
+                Value = a.EvaluationCategoryId,
+                Data_Parent = a.EvaluationParentCategoryId
+            });
+
+            @Html.Raw("debugger; evaluationCategoriesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationCategoriesListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+<script type="text/javascript">
+    @{
+        EvaluationsVM evaluation = new EvaluationsVM();
+        @Html.Raw("var evaluation ;")
+        ;
+
+        if (ViewData["Evaluation"] != null)
+        {
+            evaluation = (EvaluationsVM)ViewData["Evaluation"];
+
+            @Html.Raw("debugger; evaluation =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluation))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<EvaluationsVM> evaluationsVMList = new List<EvaluationsVM>();
+        @Html.Raw("var evaluationsVMList =[];")
+        ;
+
+        if (ViewData["EvaluationsList"] != null)
+        {
+            evaluationsVMList = (List<EvaluationsVM>)ViewData["EvaluationsList"];
+
+            var evaluationsVMListData = evaluationsVMList.Select(a =>
+
+                new
+                {
+                    DisplayText = $"{a.EvaluationTitle}",
+                    Value = a.EvaluationId
+                });
+
+            @Html.Raw("debugger; evaluationsVMList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationsVMListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8) {
+        width: 1% !important;
+    }
+
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    .EvaluationQuestions {
+        width: 47px;
+        height: 35px;
+        text-align: center;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+
+    .numberCircle {
+        /* font: 18px Arial, sans-serif; */
+        /* width: 1em; */
+        /* height: 1em; */
+        /* box-sizing: initial; */
+        background: #417bb5;
+        /* border: 0.1em solid #417bb5; */
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        font-size: 12px;
+        /* box-sizing: content-box; */
+        margin: auto;
+        /* margin-top: 11px; */
+        width: 22px;
+        height: 22px;
+        position: absolute;
+        vertical-align: middle;
+        line-height: 12px;
+        left: 5px;
+        bottom: -10px;
+        /* z-index: 999;*/
+    }
+</style>

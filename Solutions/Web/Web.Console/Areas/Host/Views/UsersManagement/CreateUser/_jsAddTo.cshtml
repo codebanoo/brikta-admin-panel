@@ -1,0 +1,496 @@
+﻿<script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+            $('#IsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsDeleted').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#Sexuality').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#Sexuality').val('true').trigger("chosen:updated");
+
+            $('#DomainSettingId')
+                .append('<option value="" disabled>---</option>');
+
+            for (var i = 0; i < domainsSettingsList.length; i++) {
+                var item = domainsSettingsList[i];
+                $('#DomainSettingId')
+                    .append($("<option></option>")
+                        .attr("value", item.Value)
+                        .text(item.DisplayText));
+            }
+
+            $('#DomainSettingId').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+
+            $('#RoleIds')
+                .append('<option value="" disabled>---</option>');
+
+            for (var i = 0; i < rolesList.length; i++) {
+                var item = rolesList[i];
+                $('#RoleIds')
+                    .append($("<option></option>")
+                        .attr("value", item.RoleId)
+                        .attr("data-DomainSettingId", item.DomainSettingId)
+                        .text(item.RoleName));
+            }
+
+            $('#RoleIds').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+
+            $('#LevelIds')
+                .append('<option value="" disabled>---</option>');
+
+            $('#LevelIds').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+                //placeholder_text_multiple: placeholder_text_multiple
+            });
+
+            $('#ParentUserId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" disabled>---</option>');
+
+            $('#ParentUserId').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+
+            $('#RoleIds').change(function () {
+                debugger;
+                var _this = $(this);
+                var roleIds = _this.val();
+
+                $('#LevelIds').find('option')
+                    .remove()
+                    .end()
+                    .append('<option value="" disabled>---</option>');
+
+                $('#LevelIds').trigger("chosen:updated");
+
+                //$('#ParentUserId').find('option')
+                //    .remove()
+                //    .end()
+                //    .append('<option value="" disabled>---</option>');
+
+                //$('#ParentUserId').trigger("chosen:updated");
+
+                var domainSettingId = $('#DomainSettingId').val();
+                //var roleId = $('#RoleId').val();
+                //debugger;
+
+                //$.ajax({
+                //    cache: false,
+                //    type: "Post",
+                //    url: "/Host/UsersManagement/GetUsersList",
+                //    data: /*JSON.stringify(*/{
+                //        'DomainSettingId': domainSettingId,
+                //        'RoleId': roleId,
+                //    }/*)*/,
+                //    //contentType: 'application/json',
+                //    //dataType: "json",
+                //    success: function (result) {
+                //        if (result.Result == "OK") {
+                //            debugger;
+                //            var usersList = result.Records;
+
+                //            for (var i = 0; i < usersList.length; i++) {
+                //                var item = usersList[i];
+                //                $('#ParentUserId')
+                //                    .append($("<option></option>")
+                //                        .attr("value", item.UserId)
+                //                        .text(item.UserName +
+                //                        ((item.Name == null) ? '' : ' - ' + item.Name) +
+                //                        ((item.Family == null) ? '' : ' - ' + item.Family)));
+                //            }
+                //            $('#ParentUserId').chosen({
+                //                placeholder_text_single: ' ',
+                //                placeholder_text_multiple: ' ',
+                //                search_contains: true,
+                //                max_shown_results: numberOfChosenItemsShow,
+                //                rtl: rtl
+                //            });
+                //            $('#ParentUserId').trigger("chosen:updated");
+                //        }
+                //        else
+                //            if (result.Result == "ERROR") {
+                //                $('#my-warning-modal').find('.modal-title').html('خطا');
+                //                $('#myModal').find('#error').html(result.Message);
+                //                $('#myModal').modal("show");
+                //            }
+                //    },
+                //    error: function (xhr, ajaxOptions, thrownError) {
+                //        $('#my-warning-modal').find('.modal-title').html('خطا');
+                //        $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                //        $('#my-warning-modal').modal("show");
+                //    }
+                //});
+
+                debugger;
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/Host/UsersManagement/GetLevelsList",
+                    data: /*JSON.stringify(*/{
+                        'DomainSettingId': domainSettingId,
+                        'RoleIds': roleIds,
+                    }/*)*/,
+                    //contentType: 'application/json',
+                    //dataType: "json",
+                    success: function (result) {
+                        if (result.Result == "OK") {
+                            debugger;
+                            var levelsList = result.Records;
+
+                            for (var i = 0; i < levelsList.length; i++) {
+                                var item = levelsList[i];
+                                $('#LevelIds')
+                                    .append($("<option></option>")
+                                        .attr("value", item.LevelId)
+                                        .text(item.LevelName));
+                            }
+                            $('#LevelIds').chosen({
+                                placeholder_text_single: ' ',
+                                placeholder_text_multiple: ' ',
+                                search_contains: true,
+                                max_shown_results: numberOfChosenItemsShow,
+                                rtl: rtl
+                            });
+                            $('#LevelIds').trigger("chosen:updated");
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#myModal').find('#error').html(result.Message);
+                                $('#myModal').modal("show");
+                            }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                        $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                        $('#my-warning-modal').modal("show");
+                    }
+                });
+            });
+
+            $('#DomainSettingId').change(function () {
+                debugger;
+                var _this = $(this);
+                var domainSettingId = _this.val();
+                var roleIds = $('#RoleIds').val();
+
+                $('#LevelIds').find('option')
+                    .remove()
+                    .end()
+                    .append('<option value="" disabled>---</option>');
+
+                $('#LevelIds').trigger("chosen:updated");
+
+                $('#ParentUserId').find('option')
+                    .remove()
+                    .end()
+                    .append('<option value="" disabled>---</option>');
+
+                $('#ParentUserId').trigger("chosen:updated");
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/Host/UsersManagement/GetUsersList",
+                    data: /*JSON.stringify(*/{
+                        'DomainSettingId': domainSettingId,
+                        //'RoleId': roleId,
+                    }/*)*/,
+                    //contentType: 'application/json',
+                    //dataType: "json",
+                    success: function (result) {
+                        if (result.Result == "OK") {
+                            //debugger;
+                            var usersList = result.Records;
+
+                            $('#ParentUserId').find('option')
+                                .remove()
+                                .end()
+                                .append('<option value="" disabled>---</option>');
+
+                            $('#ParentUserId').trigger("chosen:updated");
+
+                            for (var i = 0; i < usersList.length; i++) {
+                                var item = usersList[i];
+                                $('#ParentUserId')
+                                    .append($("<option></option>")
+                                        .attr("value", item.UserId)
+                                        .text(item.UserName +
+                                        ((item.Name == null) ? '' : ' - ' + item.Name) +
+                                        ((item.Family == null) ? '' : ' - ' + item.Family)));
+                            }
+                            $('#ParentUserId').chosen({
+                                placeholder_text_single: ' ',
+                                placeholder_text_multiple: ' ',
+                                search_contains: true,
+                                max_shown_results: numberOfChosenItemsShow,
+                                rtl: rtl
+                            });
+                            $('#ParentUserId').trigger("chosen:updated");
+
+                            //$('#LevelId').find('option')
+                            //    .remove()
+                            //    .end()
+                            //    .append('<option value="" disabled>---</option>');
+
+                            //$('#LevelId').chosen({
+                            //    placeholder_text_single: ' ',
+                            //    placeholder_text_multiple: ' ',
+                            //    search_contains: true,
+                            //    max_shown_results: numberOfChosenItemsShow,
+                            //    rtl: rtl
+                            //});
+
+                            //$('#LevelId').trigger("chosen:updated");
+
+                            //var ParentUserId = $('#ParentUserId').val();
+
+                            //if (roleId != '') {
+                            //    for (var i = 0; i < levelsList.length; i++) {
+                            //        var item = levelsList[i];
+                            //        if ((item.RoleId == roleId) &&
+                            //            ((ParentUserId != '') ?
+                            //                (item.UserIdCreator == ParentUserId) :
+                            //                (item.UserIdCreator == userId))) {
+                            //            //if (item.RoleId == roleId) {
+                            //            $('#LevelId')
+                            //                .append($("<option></option>")
+                            //                    .attr("value", item.RoleId)
+                            //                    .attr("data-RoleId", item.roleId)
+                            //                    .text(item.LevelName));
+                            //        }
+                            //    }
+                            //    $('#LevelId').chosen({
+                            //        placeholder_text_single: ' ',
+                            //        placeholder_text_multiple: ' ',
+                            //        search_contains: true,
+                            //        max_shown_results: numberOfChosenItemsShow,
+                            //        rtl: rtl
+                            //    });
+                            //    $('#LevelId').trigger("chosen:updated");
+                            //}
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#myModal').find('#error').html(result.Message);
+                                $('#myModal').modal("show");
+                            }
+                    },
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    //    $('#my-warning-modal').find('#error').html('خطا');
+                    //    $('#my-warning-modal').modal("show");
+                   // }
+                });
+
+                debugger;
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/Host/UsersManagement/GetLevelsList",
+                    data: /*JSON.stringify(*/{
+                        'DomainSettingId': domainSettingId,
+                        'RoleIds': roleIds,
+                    }/*)*/,
+                    //contentType: 'application/json',
+                    //dataType: "json",
+                    success: function (result) {
+                        if (result.Result == "OK") {
+                            debugger;
+                            var levelsList = result.Records;
+
+                            for (var i = 0; i < levelsList.length; i++) {
+                                var item = levelsList[i];
+                                $('#LevelIds')
+                                    .append($("<option></option>")
+                                        .attr("value", item.LevelId)
+                                        .text(item.LevelName));
+                            }
+                            $('#LevelIds').chosen({
+                                placeholder_text_single: ' ',
+                                placeholder_text_multiple: ' ',
+                                search_contains: true,
+                                max_shown_results: numberOfChosenItemsShow,
+                                rtl: rtl
+                            });
+                            $('#LevelIds').trigger("chosen:updated");
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html(result.Message);
+                                $('#my-warning-modal').modal("show");
+                            }
+                    },
+                    //error: function (xhr, ajaxOptions, thrownError) {
+                    //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    //    $('#my-warning-modal').find('#error').html('خطا');
+                    //    $('#my-warning-modal').modal("show");
+                   // }
+                });
+            });
+
+            $('#DomainSettingId').change();
+
+            $('#ParentUserId').change(function () {
+                debugger;
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        });
+
+        function OnBegin(e) {
+            debugger;
+            //$('#AjaxLoading').show();
+            return true;
+        }
+
+        function OnSuccess(response, status, xhr) {
+            debugger;
+            if (response.Result == 'OK') {
+                if(document.getElementById("Picture").value != "") {
+                    var userId = response.UserId;
+
+                    var formData = new FormData();
+                    formData.append('file', $('#Picture')[0].files[0]);
+                    formData.append('UserId', userId);
+
+                    var _url = '@Url.Action("UploadFile", "UsersManagement")';
+
+                    $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (result) {
+                                $('#error-alert').removeClass('alert-danger');
+                                $('#error-alert').addClass('alert-success');
+
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                                $('#error-alert').show(500);
+                                //$('#AjaxLoading').hide();
+                            },
+                            error: function (jqXHR) {
+                                $('#error-alert').removeClass('alert-success');
+                                $('#error-alert').addClass('alert-danger');
+
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(response.Message + '. ' + result.Message);
+                                $('#error-alert').show(500);
+                                //$('#AjaxLoading').hide();
+                            },
+                            complete: function (jqXHR, status) {
+                            }
+                        });
+                }
+                else {
+                    $('#error-alert').removeClass('alert-danger');
+                    $('#error-alert').addClass('alert-success');
+
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html(response.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                    $('#error-alert').show(500);
+
+                    //$('#AjaxLoading').hide();
+                }
+            }
+            else {
+                $('#error-alert').removeClass('alert-success');
+                $('#error-alert').addClass('alert-danger');
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+
+        function OnComplete() {
+            debugger;
+            clearValidationSummary();
+            //var validationSummary = $('.validation-summary-errors');
+            //$('.validation-summary-errors').css('display', 'none');
+            //validationSummary.removeClass('validation-summary-errors').addClass('validation-summary-valid');
+        };
+
+        function OnFailed(context) {
+            debugger;
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+            $('#error-alert').html(context.Message);
+            $('#error-alert').show(500);
+            //$('#AjaxLoading').hide();
+        };
+</script>

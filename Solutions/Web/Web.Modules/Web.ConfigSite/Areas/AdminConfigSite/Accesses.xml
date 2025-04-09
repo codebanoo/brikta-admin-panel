@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Accesses>
+	<Access AreaNameFa="ملکاوان" AreaName="AdminConfigSite" AreaSort="4" AreaClass="fa-circle-o " RoleId="" RoleName="Admins" ShowAreaNameInMenu="false" AreaImage="" ControllerNameFa="ملکاوان" ControllerName="ConfigSitePanel" ControllerClass="fa-list-ul" ControllerSort="100" ControllerImage="" ShowControllerNameInMenu="false" IsActivated="true" IsInstalledModule="false" IsDynamicView="false" ShowPublicErrorPage="false" IsStandAlone="true" HasCharts="false" HasNotifications="false">
+		<Action ActionNameFa="ملکاوان" ActionName="Index" RelatedActions="" QueryString="" QueryStringValues="" MenusGroups="MainMenu" ActionSort="1000" ActionClass="fa-dashboard" Styles="" Scripts="" MetaTags="" DescTags="" IsActivated="true" ActionImage="" IsAjax="false"></Action>
+	</Access>
+	<Access AreaNameFa="داشبورد سرمایه گذاران" AreaName="AdminDashboardConfig" AreaSort="4" AreaClass="fa-circle-o " RoleId="" RoleName="Admins" ShowAreaNameInMenu="false" AreaImage="" ControllerNameFa="داشبورد سرمایه گذاران" ControllerName="DashboardConfigPanel" ControllerClass="fa-list-ul" ControllerSort="100" ControllerImage="" ShowControllerNameInMenu="false" IsActivated="true" IsInstalledModule="false" IsDynamicView="false" ShowPublicErrorPage="false" IsStandAlone="true" HasCharts="false" HasNotifications="false">
+		<Action ActionNameFa="داشبورد سرمایه گذاران" ActionName="Index" RelatedActions="" QueryString="" QueryStringValues="" MenusGroups="MainMenu" ActionSort="1000" ActionClass="fa-dashboard" Styles="" Scripts="" MetaTags="" DescTags="" IsActivated="true" ActionImage="" IsAjax="false"></Action>
+	</Access>
+</Accesses>

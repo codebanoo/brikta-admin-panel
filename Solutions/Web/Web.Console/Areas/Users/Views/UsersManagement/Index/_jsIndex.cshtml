@@ -1,0 +1,447 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.my-select-all').click(function () {
+            $('#my_select option').prop('selected', true); // Selects all options
+        });
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'لیست', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/Users/UsersManagement/GetListOfUsers',
+                deleteAction: '/Users/UsersManagement/CompleteDeleteUser'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'راهنمایی',
+                        click: function () {
+                            ////debugger;
+                            $('#my-warning-modal').find('.modal-title').html('راهنمایی');
+                            $('#my-warning-modal').find('#error').html('<div class="row">' +
+                                '<div class="col col-md-12 col-xs-12 col-sm-12 col-lg-12">' +
+                                '<i class="fa fa-2x fa-square-o" style=""></i>' +
+                                'فعال/حذف نشده' +
+                                '<br />' +
+                                '<i class="fa fa-2x fa-square" style="color:#cc9999"></i>' +
+                                'حذف شده/فعال' +
+                                '<br />' +
+                                '<i class="fa fa-2x fa-square" style="color:#ff3333"></i>' +
+                                'حدف شده/غیر فعال' +
+                                '<br />' +
+                                '<i class="fa fa-2x fa-square" style="color:#f0ad4e"></i>' +
+                                'حذف نشده/غیر فعال' +
+                                '</div>' +
+                                '</div>');
+                            $('#my-warning-modal').modal("show");
+                        }
+                    },
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Users/UsersPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                UserId: {
+                    key: true,
+                    list: false
+                },
+                Picture: {
+                    title: 'تصویر',
+                    display: function (data) {
+                        //debugger;
+                        if (data.record.Picture != null) {
+                            if (data.record.Picture != '') {
+                                return '<a class="fancybox userThumbImage" href="/Files/UserFiles/' + data.record.DomainName + '/' +
+                                    data.record.UserId + '/' + data.record.Picture + '" data-fancybox-group="gallery" ' +
+                                    'title=""><img src="/Files/UserFiles/' + data.record.DomainName + '/' +
+                                    data.record.UserId + '/thumb_' + data.record.Picture + '" alt="" ' +
+                                    'data-caption="' + data.record.UserName + '" data-url="/Users/UserManagement/GetUserDetails/' +
+                                    data.record.UserId + '" /></a>'
+                                //return '<img src="/Files/UserFiles/' + data.record.DomainName + '/' +
+                                //    data.record.UserId + '/thumb_' + data.record.Picture + '" class="userThumbImage" />';
+                            }
+                        }
+                        else {
+                            return '<div class="align-center"><i class="fa fa-3x fa-user">&nbsp;</i></div>';
+                        }
+                    }
+                },
+                UserName: {
+                    title: 'نام&nbsp;کاربری',
+                    display: function (data) {
+                        return '<div class="isActivated" style="display:none;">' + data.record.IsActivated + '</div>' +
+                            '<div class="isDeleted" style="display:none;">' + data.record.IsDeleted + '</div>' +
+                            data.record.UserName;
+                    }
+                },
+                Email: {
+                    title: 'ایمیل',
+                },
+                Name: {
+                    title: 'نام',
+                },
+                Family: {
+                    title: 'نام&nbsp;خانوادگی',
+                },
+                NameFamilyOfUserCreator: {
+                    title: 'کاربر&nbsp;تعریف&nbsp;کننده',
+                },
+                Phone: {
+                    title: 'تلفن',
+                    sorting: false,
+                },
+                Mobile: {
+                    title: 'همراه',
+                    sorting: false,
+                },
+                Address: {
+                    title: 'آدرس',
+                    sorting: false,
+                },
+                CertificateId: {
+                    title: 'شماره&nbsp;شناسنامه',
+                    sorting: false,
+                },
+                NationalCode: {
+                    title: 'کد&nbsp;ملی',
+                    sorting: false,
+                },
+                BirthDateTime: {
+                    title: 'تاریخ&nbsp;تولد',
+                },
+                RegisterDate: {
+                    title: 'تاریخ&nbsp;ثبت&nbsp;نام',
+                },
+                HierarchyOfUsers: {
+                    title: 'ساختار&nbsp;سلسله&nbsp;مراتبی',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="hierarchyOfUsers pointer" data-UserId="' + data.record.UserId + '"><i class="fa fa-sitemap"></i></div>';
+                    }
+                },
+                HierarchyOfTreeViewUsers: {
+                    title: 'ساختار&nbsp;درخنی',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="HierarchyOfTreeViewUsers pointer" data-UserId="' + data.record.UserId + '"><i class="fa fa-sitemap"></i></div>';
+                    }
+                },
+                UserDetails: {
+                    title: 'جزئیات',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="userDetails pointer" data-UserId="' + data.record.UserId + '"><i class="fa fa-list-alt"></i></div>';
+                    }
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-UserId="' + data.record.UserId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-UserId="' + data.record.UserId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-UserId="' + data.record.UserId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-UserId="' + data.record.UserId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditUser: {
+                    title: 'ویرایش',
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editUser pointer" data-UserId="' + data.record.UserId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                }
+            },
+            formCreated: function (event, data) {
+
+            },
+            formSubmitting: function (event, data) {
+
+            },
+            formClosed: function (event, data) {
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+                //debugger;
+
+                var rows = $('.jtable-data-row');
+                for (var i = 0; i < rows.length; i++) {
+                    var row = $('.jtable-data-row')[i];
+                    var isActivated = $(row).find('td:nth-child(2) div.isActivated').html();
+                    var isDeleted = $(row).find('td:nth-child(2) div.isDeleted').html();
+                    if (isActivated == 'true' && isDeleted == 'false') {
+                        //$(row).css('background-color', '#5cb85c');//green
+                    }
+                    else
+                        if (isActivated == 'true' && isDeleted == 'true') {
+                            $(row).css('background-color', '#cc9999');//red
+                            //$(row).css('opacity', '0.5');//opacity=0.5
+                        }
+                        else
+                            if (isActivated == 'false' && isDeleted == 'true') {
+                                $(row).css('background-color', '#ff3333');//red
+                            }
+                            else
+                                if (isActivated == 'false' && isDeleted == 'false') {
+                                    $(row).css('background-color', '#f0ad4e');//yellow
+                                }
+                }
+
+                debugger;
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            //breakpoint: 2000
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+            debugger;
+
+            var txtUserNameSearch = $('#txtUserNameSearch').val();
+            var txtRegisterDateTimeFromSearch = $('#txtRegisterDateTimeFromSearch').val();
+            var txtRegisterDateTimeToSearch = $('#txtRegisterDateTimeToSearch').val();
+            var txtNameSearch = $('#txtNameSearch').val();
+            var txtFamilySearch = $('#txtFamilySearch').val();
+            var txtEmailSearch = $('#txtEmailSearch').val();
+            var txtPhoneSearch = $('#txtPhoneSearch').val();
+            var txtMobileSearch = $('#txtMobileSearch').val();
+            var txtAddressSearch = $('#txtAddressSearch').val();
+            var txtCertificateIdSearch = $('#txtCertificateIdSearch').val();
+            var txtNationalCodeSearch = $('#txtNationalCodeSearch').val();
+            var txtBirthDateTimeFromSearch = $('#txtBirthDateTimeFromSearch').val();
+            var txtBirthDateTimeToSearch = $('#txtBirthDateTimeToSearch').val();
+
+            if (txtUserNameSearch != '' ||
+                txtRegisterDateTimeFromSearch != '' ||
+                txtRegisterDateTimeToSearch != '' ||
+                txtNameSearch != '' ||
+                txtFamilySearch != '' ||
+                txtEmailSearch != '' ||
+                txtPhoneSearch != '' ||
+                txtMobileSearch != '' ||
+                txtAddressSearch != '' ||
+                txtCertificateIdSearch != '' ||
+                txtNationalCodeSearch != '' ||
+                txtBirthDateTimeFromSearch != '' ||
+                txtBirthDateTimeToSearch != '') {
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    UserName: txtUserNameSearch,
+                    Name: txtNameSearch,
+                    Family: txtFamilySearch,
+                    Email: txtEmailSearch,
+                    Phone: txtPhoneSearch,
+                    Mobile: txtMobileSearch,
+                    Address: txtAddressSearch,
+                    CertificateId: txtCertificateIdSearch,
+                    NationalCode: txtNationalCodeSearch,
+                    BirthDateTimeFrom: txtBirthDateTimeFromSearch,
+                    BirthDateTimeTo: txtBirthDateTimeToSearch,
+                    RegisterDateTimeFrom: txtRegisterDateTimeFromSearch,
+                    RegisterDateTimeTo: txtRegisterDateTimeToSearch,
+                    IsActivated: null
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('راهنمایی');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+        $('#btnReload').click(function () {
+            $('#btnReset').click();
+            $('#slcPropertyElementTypeSearch').val('').trigger("chosen:updated");
+            $('#txtPropertyElementLabelSearch').val('');
+            $('#listContainer').jtable('load');
+        });
+
+        $('.jtable-toolbar-item:nth-child(2) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-warning"></i>&nbsp;&nbsp;</div>');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(3) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(3) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.hierarchyOfUsers', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var userId = _this.attr('data-UserId');
+            window.location.href = '/Users/UsersManagement/HierarchyOfUsers/' + userId;
+        });
+
+        $('body').on('click', '.HierarchyOfTreeViewUsers', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var userId = _this.attr('data-UserId');
+            window.location.href = '/Users/UsersManagement/HierarchyOfTreeViewUsers/' + userId;
+        });
+
+        $('body').on('click', '.userDetails', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var userId = _this.attr('data-UserId');
+            window.location.href = '/Users/UsersManagement/GetUserDetails/' + userId;
+        });
+
+        $('#searchBlock').hide(1000);
+    });
+</script>

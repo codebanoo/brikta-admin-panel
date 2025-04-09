@@ -1,0 +1,544 @@
+﻿<div class="x_panel" id="searchBlock">
+
+    <div class="x_content">
+        <!-- start accordion -->
+        <div class="row d-flex justify-content-between my-3">
+            @*             <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+            جستجوی سریع (جدا کننده;)
+            </div>
+            <input id="txtQuickSearch" name="txtQuickSearch" class="form-control"
+            placeholder="کلمات جستجو" />
+
+            </div> *@
+            <div class="col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div id="slcPlatformBlock">
+                    <select id="slcPlatform" name="slcPlatform" class="form-control ml-3" multiple
+                            placeholder="پلتفرم">
+                        <option value="1">داخلی</option>
+                        <option value="0">ملکاوان</option>
+                    </select>
+                </div>
+                <div id="propertyTypeIdsBlock">
+                    <select id="slcPropertyTypeId" name="slcPropertyTypeId" class="form-control ml-3"
+                            placeholder="نوع ملک">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xl-6 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div id="priceBlock">
+                    <select id="slcPrice" name="slcPrice" class="form-control ml-3"
+                            placeholder="قیمت">
+                        <option value="1" selected>قیمت</option>
+                    </select>
+                    <input type="text" id="priceRange" value="" name="priceRange" />
+                    @* <div id="priceSlider"></div> *@
+                </div>
+                <br />
+                <div id="areaBlock">
+                    <select id="slcArea" name="slcArea" class="form-control ml-3"
+                            placeholder="مساحت">
+                        <option value="1" selected>مساحت</option>
+                    </select>
+                    <input type="text" id="areaRange" value="" name="areaRange" />
+                    @* <div id="areaSlider"></div> *@
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div id="propertyTypeIdsBlock">
+                    <input id="txtAddress" name="txtAddress" class="form-control"
+                           placeholder="موقعیت" style="width:50rem" />
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                <div id="propertyTypeIdsBlock">
+                    <input id="txtFeaturesAndDesc" name="txtFeaturesAndDesc" class="form-control"
+                           placeholder="امکانات و توضیحات" style="width:50rem" />
+                </div>
+            </div>
+
+
+            <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+
+                <div id="propertyTypeIdsBlock">
+                    <input id="txtPropertyCodeName" name="txtPropertyCodeName" class="form-control"
+                           placeholder=" عنوان ملک" style="width:50rem" />
+                </div>
+            </div>
+        </div>
+        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel">
+                <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <h4 class="panel-title">اطلاعات پایه</h4>
+                </a>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                    <div class="panel-body row">
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع کاربری
+                            </div>
+                            <select id="slcTypeOfUseId" name="slcTypeOfUseId" class="form-control ml-3"
+                                    placeholder="نوع کاربری">
+                                <option value="" selected>---</option>
+                            </select>
+
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع سند
+                            </div>
+                            <select id="slcDocumentTypeId" name="slcDocumentTypeId" class="form-control ml-3"
+                                    placeholder="نوع سند">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع ریشه سند
+                            </div>
+                            <select id="slcDocumentRootTypeId" name="slcDocumentRootTypeId" class="form-control ml-3"
+                                    placeholder=" نوع ریشه سند">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                نوع مالکیت سند
+                            </div>
+                            <select id="slcDocumentOwnershipTypeId" name="slcDocumentOwnershipTypeId" class="form-control ml-3"
+                                    placeholder=" نوع مالکیت سند">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+
+
+                        <div style="margin-top:3rem; margin-right:1.5rem;">
+                            <div style="display: inline-flex; align-items: center;">
+
+                                <input class="form-control" type="checkbox" style="opacity: 1; margin-right: 5px;" id="Participable" />
+                                <span style="margin-right:9px !important">قابل مشارکت</span>
+                            </div>
+
+
+                            <div style="display: inline-flex; align-items: center; margin-right:5rem;">
+                                <input class="form-control" type="checkbox" style="opacity: 1; margin-right: 5px;" id="Exchangeable" />
+                                <span style="margin-right:9px !important">قابل معاوضه</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+
+                <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    <h4 class="panel-title">مساحت و قیمت</h4>
+                </a>
+                <div id="collapseFive" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                    <div class="panel-body row">
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                قیمت (از)
+                            </div>
+                            <div id="FromPriceText">
+                                <input id="FromPriceText" name="FromPriceText" class="form-control"
+                                       placeholder="ریال" />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                              قیمت (تا)
+                            </div>
+                            <div id="ToPriceText">
+                                <input id="ToPriceText" name="ToPriceText" class="form-control"
+                                       placeholder="ریال" />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                مساحت (از)
+                            </div>
+                            <div id="FromAreaText">
+                                <input id="FromAreaText" name="FromAreaText" class="form-control"
+                                       placeholder="متر مربع" />
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                مساحت (تا)
+                            </div>
+                            <div id="ToAreaText">
+                                <input id="ToAreaText" name="ToAreaText" class="form-control"
+                                       placeholder="متر مربع" />
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <br />
+
+
+                <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    <h4 class="panel-title">اشخاص حقیقی</h4>
+                </a>
+                <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                    <div class="panel-body row">
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                مشاور
+                            </div>
+                            <select class="form-control ml-3" id="ConsultantUserId" name="ConsultantUserId"
+                                    placeholder="مشاور">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3" id="ownerDiv">
+                            <div>
+                                مالک (اشخاص)
+                            </div>
+                            <select class="form-control input-sm" id="OwnerId" name="OwnerId"
+                                    placeholder="  مالک (اشخاص)">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3" id="InvestorDiv">
+                            <div>
+                                مالک (سرمایه گذار)
+                            </div>
+                            <select class="form-control input-sm" id="InvestorId" name="InvestorId"
+                                    placeholder="مالک (سرمایه گذار)">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3" id="OwnerSimpleDiv" style="display:none">
+                            <div>
+                                مالک
+                            </div>
+                            <select class="form-control input-sm" id="Owner" name="Owner"
+                                    placeholder="مالک">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                آگهی دهنده
+                            </div>
+                            <select class="form-control input-sm" id="AdvertiserId" name="AdvertiserId"
+                                    placeholder="آگهی دهنده">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <h4 class="panel-title">امکانات</h4>
+                </a>
+                <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="true">
+                    <div class="panel-body featuresBlock">
+                        @*                         <select id="slcFeatures" name="slcFeatures" class="form-control ml-3" multiple>
+
+                        </select> *@
+                        @*                         <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+
+                        </div> *@
+                    </div>
+                </div>
+                <br />
+                <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <h4 class="panel-title">موقعیت</h4>
+                </a>
+                <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree" aria-expanded="true">
+                    <div class="panel-body row">
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                استان
+                            </div>
+                            <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                                    placeholder="استان">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                بخش ها /مراکز شهرستان
+                            </div>
+                            <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                                    placeholder="بخش ها /مراکز شهرستان">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                شهر / منطقه
+                            </div>
+                            <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                                    placeholder="شهر / منطقه">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+                            <div>
+                                ناحیه / روستا
+                            </div>
+                            <select id="slcDistrictId" name="slcDistrictId" class="form-control ml-3"
+                                    placeholder="ناحیه / روستا">
+                                <option value="" selected>---</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="clearfix"></div>
+            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                <div class="empty-block">&nbsp;</div>
+                <button id="btnSearch" name="btnSearch" class="btn btn-success btn-sm">
+                    جستجو
+                </button>
+                @* <button id="btnReload" name="btnReload" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top"
+                title="بارگذاری مجدد">
+                <i class="fa fa-refresh"></i>
+                </button>
+                <button id="btnReset" name="btnReset" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top"
+                title="پاک کردن فرم">
+                <i class="fa fa-undo"></i>
+                </button>
+                <button id="btnRemoveSelectedRows" name="btnRemoveSelectedRows" class="btn btn-danger btn-sm"
+                data-toggle="tooltip" data-placement="top"
+                title="حذف سطرهای انتخاب شده"
+                data-href="/Admin/UsersManagement/CompleteDeleteUsers">
+                <i class="fa fa-remove "></i>
+                </button> *@
+            </div>
+        </div>
+        <!-- end of accordion -->
+
+
+    </div>
+</div>
+<hr class="full-splitter" />
+<div id="listContainer"></div>
+
+
+@* مدال نمایش در ملکاوان *@
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="showIn-melkavan-modal">
+    <div class="modal-dialog modal-lg">
+        <form method="post">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div class="modal-content">
+                <div class="modal-header justify-content-start">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title col-12" id="myModalLabel">نمایش در ملکاوان</h4>
+                    <input value="" id="PropertyId-melkavan" style="display:none;" />
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                            <div class="mx-2">
+                                عنوان آگهی
+                            </div>
+                            <input type='text' class="form-control" id="PropertyCodeName-melkavan" name="PropertyCodeName-melkavan" />
+                        </div>
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                            <div class="mx-2">
+                                نوع آگهی
+                            </div>
+
+                            <select id="slcAdvertisementTypeId-melkavan" class="form-control ml-3"
+                                    placeholder="نوع آگهی">
+                            </select>
+                        </div>
+
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                            <div class="mx-2">
+                                استان
+                            </div>
+
+                            <select id="slcStateId-melkavan" class="form-control ml-3"
+                                    placeholder="استان">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                            <div class="mx-2">
+                                شهرستان
+                            </div>
+
+                            <select id="slcCityId-melkavan" class="form-control ml-3"
+                                    placeholder="شهرستان">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                            <div class="mx-2">
+                                شهر/منطقه
+                            </div>
+
+                            <select id="slcZoneId-melkavan" class="form-control ml-3"
+                                    placeholder="شهر/منطقه">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                            <div class="mx-2">
+                                نام محله
+                            </div>
+
+                            <input type='text' class="form-control" id="TownName-melkavan" name="TownName-melkavan" />
+                        </div>
+
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 d-none' id="SalePriceDiv" name="SalePriceDiv">
+                            <div class="mx-2">
+                                قیمت
+                            </div>
+                            <input type='number' class="form-control" id="OfferPrice-melkavan" name="OfferPrice-melkavan" />
+
+                        </div>
+
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 d-none' id="AfterPriceDiv" name="AfterPriceDiv">
+                            <div class="mx-2">
+                            </div>
+                        </div>
+
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 d-none' name="RentPriceDiv1" id="RentPriceDiv1">
+
+                            <div class="mx-2">
+                                قیمت اجاره
+                            </div>
+                            <input type='number' class="form-control" id="RentPrice-melkavan" name="RentPrice-melkavan" />
+                        </div>
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 d-none' name="RentPriceDiv2" id="RentPriceDiv2">
+                            <div class="mx-2">
+                                قیمت ودیعه
+                            </div>
+                            <input type='number' class="form-control" id="DepositPrice-melkavan" name="DepositPrice-melkavan" />
+                        </div>
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 d-none' id="MatrialStatusDiv" name="MatrialStatusDiv">
+                            <div class="mx-2">
+                                وضعیت تاهل
+                            </div>
+
+                            <select id="slcMaritalStatusId-melkavan" class="form-control ml-3"
+                                    placeholder="وضعیت تاهل">
+                                <option value="0">هردو</option>
+                                <option value="1">متاهل</option>
+                                <option value="2">مجرد</option>
+                            </select>
+                        </div>
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 d-none' id="ConvertableDiv" name="ConvertableDiv">
+                            <input class="lblShowAllChosenItem" id="Convertable-melkavan" name="Convertable-melkavan" value="0" type="checkbox" style="opacity: 1;" />
+                            <label style="margin-top:23px;font-weight:normal !important; margin-right: 6px">
+                                قابل تبدیل
+                            </label>
+                        </div>
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3' id="ConsultantDiv" name="ConsultantDiv">
+                            <div class="mx-2">
+                                آگهی دهنده
+                            </div>
+
+                            <select id="slcConsultant-melkavan" class="form-control ml-3"
+                                    placeholder="  آگهی دهنده">
+                                <option value="">---</option>
+                            </select>
+                        </div>
+
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3' id="AdvertiserNumDiv" name="AdvertiserNumDiv">
+                            <div class="mx-2">
+                                تماس
+                            </div>
+
+                            <select id="slcAdvertiserNum-melkavan" class="form-control ml-3"
+                                    placeholder="تماس">
+                                <option value="0" data-callerType="agency">آژانس املاک</option>
+                                <option value="1" data-callerType="advertiser">آگهی دهنده</option>
+                                <option value="2" data-callerType="both">هردو</option>
+                            </select>
+
+                        </div>
+
+
+
+                        <div class='col-6 my-3'>
+                            <div class="mx-2">
+                                توضیحات تکمیلی
+                            </div>
+                            <textarea disabled id="slcDescription-melkavan" class="form-control " rows="4"
+                                      placeholder="توضیحات"></textarea>
+                        </div>
+
+                        <div class='col-6 my-3'>
+                            <div class="mx-2">
+                                توضیحات آگهی
+                            </div>
+                            <textarea id="slcDescription-Secondmelkavan" class="form-control " rows="4"
+                                      placeholder="توضیحات"></textarea>
+                        </div>
+
+
+                        @* <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                        شماره آگهی دهنده
+                        </div>
+                        <input type='number' class="form-control" id="AdvertiserNum-melkavan" name="AdvertiserNum-melkavan" />
+                        </div>
+
+                        <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <div class="mx-2">
+                        نام خانوادگی آگهی دهنده
+                        </div>
+                        <input type='text' class="form-control" id="AdvertiserFamily-melkavan" name="AdvertiserFamily-melkavan" />
+                        </div> *@
+
+
+                        @* <div class='col-xl-6 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3'>
+                        <span id="DescriptionOfUser-melkavan"></span>
+                        </div> *@
+
+                    </div>
+                    <div class="row">
+
+                        <div style="width:100% !important; height:200px !important; margin:10px">
+                            <div id="mapLeft" class="" style="height:200px !important; width: 100% !important;"></div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-start">
+                    <button type="button" class="btn btn-success btn-Create-person btn-sm" id="modal-btn-yes-melkavan">ثبت آگهی</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="modal-btn-no-melkavan" data-dismiss="modal">حذف آگهی</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

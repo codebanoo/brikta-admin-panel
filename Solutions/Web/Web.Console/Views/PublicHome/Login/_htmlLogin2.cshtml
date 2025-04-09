@@ -1,0 +1,88 @@
+﻿@{
+    Layout = null;
+}
+
+@using VM.Console;
+
+@model LoginVM
+
+@{    
+    bool showCaptcha = false;
+    if (ViewData["ShowCaptcha"] != null)
+    {
+        showCaptcha = (bool)ViewData["ShowCaptcha"];
+    }
+}
+
+<div class="container">
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    ورود
+                </h3>
+                <button id="btnBackPage" class="btn btn-primary" name="btnBackPage" data-back-url="/fa/home/Index"
+                        data-toggle="tooltip" data-placement="top"
+                        title="بازگشت">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+            </div>
+            <div class="panel-body">
+                <form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+                      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+                      data-ajax="true" data-ajax-method="POST">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="form-group">
+                            @{
+                                <div id='error-alert' class="form-group alert alert-danger">
+                                </div>
+                            }
+                        </div>
+                        <div class="form-group">
+                            نام کاربری
+                            <input asp-for="UserName" class="form-control input-sm"
+                                   placeholder="نام کاربری" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            رمز عبور
+                            <input asp-for="Password" class="form-control input-sm"
+                                   placeholder="رمز عبور" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label id="lblRememberMe" asp-for="RememberMe">
+                                    <input asp-for="RememberMe" class="input-sm" />
+                                    مرا به خاطر بسپار
+                                </label>
+                            </div>
+                        </div>
+                        @{
+                            if (showCaptcha)
+                            {
+                                <div class="form-group">
+                                    کد را وارد کنید
+                                    <input id="txtCaptchaCode" name="txtCaptchaCode" class="form-control input-sm"
+                                       placeholder="کد را وارد کنید" />
+                                    <div id="captchaParentBlock">
+                                        <img src="/Home/GetCaptchaImage" class="captcha" />
+                                        <i class="fa fa-2x fa-repeat reloadCaptcha pointer">&nbsp;</i>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <button class="btn btn-primary btn-block input-sm" type="submit">
+                                ورود
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

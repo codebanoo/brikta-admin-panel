@@ -1,0 +1,32 @@
+﻿<div id="searchBlock">
+    @*<div class="row">
+            <div class="col col-md-6 col-xs-12 col-sm-12 col-lg-6">
+                <div>
+                    <label>
+                        @Html.Raw(pageTexts.FirstOrDefault(p => p.PropertyName.Equals("CourseNameSearch")).Value)
+                    </label>
+                </div>
+                <input class="form-control input-sm" id="txtCourseNameSearch" name="txtCourseNameSearch"
+                       placeholder="@Html.Raw(pageTexts.FirstOrDefault(p => p.PropertyName.Equals("CourseNameSearch")).Value)" />
+            </div>
+            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                <div class="empty-block">&nbsp;</div>
+                <button id="btnSearch" name="btnSearch" class="btn btn-default input-sm">
+                    @Html.Raw(publicTexts.FirstOrDefault(p => p.PropertyName.Equals("BtnSearchTitle")).Value)
+                </button>
+                <button id="btnReload" name="btnReload" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                        title="@Html.Raw(publicTexts.FirstOrDefault(p => p.PropertyName.Equals("BtnReloadTitle")).Value)">
+                    <i class="fa fa-refresh"></i>
+                </button>
+                <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                        title="@Html.Raw(publicTexts.FirstOrDefault(p => p.PropertyName.Equals("BtnResetTitle")).Value)">
+                    <i class="fa fa-undo"></i>
+                </button>
+            </div>
+            <div class="col col-md-2 col-xs-2 col-sm-2 col-lg-2">
+                &nbsp;
+            </div>
+        </div>*@
+</div>
+<hr class="full-splitter" />
+<div id="listContainer"></div>

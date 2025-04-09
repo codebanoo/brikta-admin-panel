@@ -1,0 +1,44 @@
+﻿@using Services.Xml.Entities;
+
+@{
+    Layout = "_Layout";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head{
+
+        <link href="~/css/sb_admin_2/plugins/metisMenu/metisMenu.min.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/plugins/timeline.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/sb_admin_2rtl.css" rel="stylesheet" />
+    <link href="~/css/sb_admin_2/plugins/morris.css" rel="stylesheet" />
+
+    @RenderSection("head", required: false)
+}
+
+    @RenderBody()
+
+    @section scripts{
+
+    <script src="~/js/tooltip.js" type="text/javascript"></script>
+
+
+    <link href="~/lib/jqueryloading/jquery.loading.css" rel="stylesheet" />
+    <script src="~/lib/jqueryloading/jquery.loading.js"></script>
+
+    <script src="~/js/public.js"></script>
+
+    @{
+        //await Html.RenderPartialAsync("sb_admin_2Js");
+    }
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function() {
+            $(window).load(function() { $('#AjaxLoading').hide(); });
+            $(document).Loading();
+        })
+                            //]]>
+    </script>
+}
+

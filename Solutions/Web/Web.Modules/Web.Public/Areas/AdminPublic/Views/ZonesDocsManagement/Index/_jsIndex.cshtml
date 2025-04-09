@@ -1,0 +1,384 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+        debugger;
+        var zoneId = zonesList.ZoneId;
+
+        $('#listContainer').jtable({
+            title: 'اسناد', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminPublic/ZonesDocsManagement/GetListOfZoneFiles',
+                updateAction: '/AdminPublic/ZonesDocsManagement/UpdateZoneFiles',
+                deleteAction: '/AdminPublic/ZonesDocsManagement/CompleteDeleteZoneFiles'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function () {
+                            window.location.href = '/AdminPublic/ZonesDocsManagement/AddToZoneFiles/' + zoneId
+                        }
+                    }]
+
+            },
+            fields: {
+                ZoneFileId: {
+                    key: true,
+                    list: false
+                },
+                ZoneId: {
+                    list: false,
+                    create: false,
+                    edit: false
+                },
+                ZoneFileTitle: {
+                    title: 'عنوان',
+                    sorting: false,
+                },
+                ZoneFilePath: {
+                    title: 'فایل',
+                    sorting: false,
+                    edit: false,
+                    display: function (data) {
+                        debugger;
+                        switch (data.record.ZoneFileExt) {
+                            case ".jpeg":
+                            case ".jpg":
+                            case ".png":
+                            case ".gif":
+                            case ".bmp":
+                                return '<div style="position: relative; display: inline-block;">' +
+                                    '<a class="fancybox mediaThumbImage" href="/Files/ZoneFiles/' + domainName + '/' +
+                                    data.record.ZoneId + '/Docs/' + data.record.ZoneFilePath + '" data-fancybox-group="gallery" ' +
+                                    'title=""><img src="/Files/ZoneFiles/' + domainName + '/' +
+                                    data.record.ZoneId + '/Docs/thumb_' + data.record.ZoneFilePath + '" alt="" ' +
+                                    'data-caption="' + data.record.ZoneFileTitle + '" data-url="#" /></a>' + '</div>'
+                                break;
+                            case ".pdf":
+                                return '<div class="pdfThumbImage pointer" data-file-url="/Files/ZoneFiles/' + domainName + '/' +
+                                    data.record.ZoneId + '/Docs/' + data.record.ZoneFilePath + '"><img src="/images/pdf.png" /></div>';
+                                break;
+                            default:
+                                return '<div class="fileThumbImage pointer" data-ZoneFileId="' + data.record.ZoneFileId + '"><img src="/images/File.png" /></div>';
+                        }
+                    }
+                },
+                ZoneFileExt: {
+                    title: 'فرمت',
+                    sorting: false,
+                    edit: false,
+                },
+                ZoneFileOrder: {
+                    title: 'مرتب&nbsp;سازی',
+                    sorting: false,
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    edit: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-ZoneFileId="' +
+                                data.record.ZoneFileId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-ZoneFileId="' +
+                                data.record.ZoneFileId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    edit: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-ZoneFileId="' + data.record.ZoneFileId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-ZoneFileId="' + data.record.ZoneFileId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function (event, data) {
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+                      //$('.ui-dialog-titlebar-close').html('X');
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+            },
+            formSubmitting: function (event, data) {
+
+            },
+            formClosed: function (event, data) {
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', {
+            'ZoneId': zoneId,
+        });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var zoneFileId = _this.attr('data-ZoneFileId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/ZonesDocsManagement/ToggleActivationZoneFiles",
+
+                data: { 'ZoneFileId': zoneFileId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var txtZoneFileTitle = $('#txtZoneFileTitle').val();
+
+                        if ((txtZoneFileTitle != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ZoneId': zoneId,
+                                'ZoneFileTitle': txtZoneFileTitle,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ZoneId': zoneId,
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            debugger;
+            var _this = $(this);
+            var zoneFileId = _this.attr('data-ZoneFileId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminPublic/ZonesDocsManagement/TemporaryDeleteZoneFiles",
+
+                data: { 'ZoneFileId': zoneFileId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        var txtZoneFileTitle = $('#txtZoneFileTitle').val();
+
+                        if ((txtZoneFileTitle != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ZoneId': zoneId,
+                                'ZoneFileTitle': txtZoneFileTitle,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ZoneId': zoneId,
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+            var txtZoneFileTitle = $('#txtZoneFileTitle').val();
+
+            if ((txtZoneFileTitle != null)) {
+
+                $('#listContainer').jtable('load', {
+                    'ZoneId': zoneId,
+                    'ZoneFileTitle': txtZoneFileTitle,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load', {
+                    'ZoneId': zoneId,
+                });
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            $('#txtZoneFileTitle').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+            $('#txtZoneFileTitle').val(null);
+
+            e.preventDefault();
+        });
+
+        $('body').on('click', '.pdfThumbImage', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var fileUrl = _this.attr('data-file-url');
+
+            window.open(fileUrl, '_blank').focus();
+        });
+
+        $('body').on('click', '.fileThumbImage', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var zoneFileId = _this.attr('data-ZoneFileId');
+
+            window.open('/AdminPublic/ZonesDocsManagement/FileDownload/' + zoneFileId, '_blank').focus();
+        });
+    });
+
+
+</script>

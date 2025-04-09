@@ -1,0 +1,63 @@
+﻿@using Newtonsoft.Json;
+@using VM.Teniaco;
+
+
+<script type="text/javascript">
+    @{
+        EvaluationQuestionsVM evaluationQuestion = new EvaluationQuestionsVM();
+        @Html.Raw("var evaluationQuestion ;")
+        ;
+
+        if (ViewData["EvaluationQuestionsVM"] != null)
+        {
+            evaluationQuestion = (EvaluationQuestionsVM)ViewData["EvaluationQuestionsVM"];
+
+            @Html.Raw("debugger; evaluationQuestion =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationQuestion))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6) {
+        width: 1% !important;
+    }
+
+
+    
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+</style>

@@ -1,0 +1,72 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<EvaluationSubjectsVM> evaluationSubjectsList = new List<EvaluationSubjectsVM>();
+        @Html.Raw("var evaluationSubjectsList =[];")
+        ;
+
+        if (ViewData["EvaluationSubjectsList"] != null)
+        {
+            evaluationSubjectsList  = (List<EvaluationSubjectsVM>)ViewData["EvaluationSubjectsList"];
+
+            var evaluationSubjectsListData = evaluationSubjectsList.Select(a =>
+
+                new
+                {
+                    DisplayText = $"{a.Title}",
+                    Value = a.EvaluationSubjectId
+                });
+
+            @Html.Raw("debugger; evaluationSubjectsList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationSubjectsListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8),
+    div.jtable-main-container table.jtable thead th:nth-child(9) {
+        width: 1% !important;
+    }
+
+    
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+</style>

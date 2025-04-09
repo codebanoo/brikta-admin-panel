@@ -1,0 +1,143 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+        $('#Sexuality').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            rtl: rtl
+        });
+
+        //$('#Sexuality').val('true').trigger("chosen:updated");
+        //$('#BirthDateTime').MdPersianDateTimePicker({
+        //    Placement: 'bottom',
+        //    //Trigger: 'click',
+        //    //EnableTimePicker: false,
+        //    //TargetSelector: '#ElementId',
+        //    //GroupId: '',
+        //    //ToDate: false,
+        //    //FromDate: false,
+        //    //DisableBeforeToday: false,
+        //    //Disabled: false,
+        //    Format: 'yyyy/MM/dd',
+        //    //IsGregorian: false,
+        //    //EnglishNumber: false,
+        //});
+
+        //$('#BirthDateTime').datepicker({
+        //    dateFormat: 'yy/mm/dd',
+        //    autoclose: true,
+        //    isrtl: rtl,
+        //});
+
+        //$('#BirthDateTime').datepicker({
+        //    isrtl: rtl,
+        //    dateFormat: "yyyy/mm/dd",
+        //    language: 'fa',
+        //    //leftArrow: '&laquo;',
+        //    //rightArrow: '&raquo;',
+        //    leftArrow: '<i class="fa fa-long-arrow-left"></i>',
+        //    rightArrow: '<i class="fa fa-long-arrow-right"></i>',
+        //    todayHighlight: true,
+        //    todayBtn: true,
+        //    autoclose: true,
+        //    /*linked: 'linked',
+        //    linked: true,
+        //    maxViewMode: 3*/
+        //});
+
+        //$('#BirthDateTime').datepicker({
+        //    locale: 'fa'
+        //});
+    });
+
+    function OnBegin() {
+        //$('#AjaxLoading').show();
+        return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        
+        if (response.Result == 'OK') {
+            if ((document.getElementById("Picture").value != "") ||
+                (document.getElementById("CertificateCardFile").value != "") ||
+                (document.getElementById("NationalCardFile").value != "") ||
+                (document.getElementById("ResumeFile").value != "") ||
+                (document.getElementById("ContractFile").value != "")) {
+
+                var userId = response.UserId;
+
+                var formData = new FormData();
+                formData.append('pitureFile', $('#Picture')[0].files[0]);
+                formData.append('certificateCardFile', $('#CertificateCardFile')[0].files[0]);
+                formData.append('nationalCardFile', $('#NationalCardFile')[0].files[0]);
+                formData.append('resumeFile', $('#ResumeFile')[0].files[0]);
+                formData.append('contractFile', $('#ContractFile')[0].files[0]);
+                formData.append('UserId', userId);
+
+                var _url = '@Url.Action("UploadFile", "AdminUserConfig")';
+
+                $.ajax({
+                    url: _url,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                        $('#error-alert').show(500);
+                        //$('#AjaxLoading').hide();
+                    },
+                    error: function (jqXHR) {
+                        $('#error-alert').removeClass('alert-success');
+                        $('#error-alert').addClass('alert-danger');
+
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(response.Message + '. ' + result.Message);
+                        $('#error-alert').show(500);
+                        //$('#AjaxLoading').hide();
+                    },
+                    complete: function (jqXHR, status) {
+                    }
+                });
+            }
+            else {
+                $('#error-alert').removeClass('alert-danger');
+                $('#error-alert').addClass('alert-success');
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+        }
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $('#error-alert').show(1000);
+        $('#error-alert').html(response.Message);
+        $('#error-alert').show(500);
+        //$('#AjaxLoading').hide();
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+        //$('#AjaxLoading').hide();
+    };
+</script>

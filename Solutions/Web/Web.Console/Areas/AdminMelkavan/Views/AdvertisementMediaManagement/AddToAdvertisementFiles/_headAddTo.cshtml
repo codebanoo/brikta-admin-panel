@@ -1,0 +1,182 @@
+﻿@using VM.Melkavan
+@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+       @{
+        AdvertisementVM advertisementVM = new AdvertisementVM();
+
+        @Html.Raw("var advertisementVM;");
+
+        if (ViewData["AdvertisementVM"] != null)
+        {
+            advertisementVM = ViewData["AdvertisementVM"] as AdvertisementVM;
+
+            @Html.Raw(" advertisementVM = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(advertisementVM)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<link rel="stylesheet" href="/dactorapp/vender/materialdesign/css/materialdesignicons.min.css">
+
+<style type="text/css">
+
+    .drop-zone {
+        /* min-width: 100px;*/
+        width: 15rem;
+        padding: 5px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        cursor: pointer;
+        color: black;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        margin-left: 20px;
+    }
+
+    .drop-zone--over {
+        border-style: solid;
+    }
+
+    .main-Image {
+        display: none;
+    }
+
+    .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #cccccc;
+        background-size: cover;
+        position: relative;
+    }
+
+    #addMultipleImage {
+        margin: 0;
+    }
+
+    .upload__box {
+        /*  margin-top: 40px;*/
+
+        width: 15rem;
+        padding: 5px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        cursor: pointer;
+        color: black;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        /*margin-left: 20px;*/
+    }
+
+    #other-Images {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .upload__btn {
+        margin-top: 2rem;
+        /*display: inline-block;
+                        font-weight: 600;
+                        color: black;
+                        text-align: center;
+                        min-width: 40px;
+                        padding: 5px;
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                        border: 2px dashed black;
+                        background-color: white;
+                        border-color: black;
+                        border-radius: 10px;
+                        line-height: 26px;
+                        font-size: 30px;*/
+    }
+
+    .upload__btn-box {
+        margin-bottom: 10px;
+    }
+
+    .upload__img-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -10px;
+    }
+
+    .upload__img-box {
+        width: 100px;
+        padding: 5px;
+        margin-right: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+    }
+
+    #DeleteMainImage {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+        line-height: 24px;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+        #DeleteMainImage:after {
+            content: "✖";
+            font-size: 14px;
+            color: white;
+        }
+
+    .upload__img-close {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+        line-height: 24px;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+        .upload__img-close:after {
+            content: "✖";
+            font-size: 14px;
+            color: white;
+        }
+
+    .img-bg {
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        padding-bottom: 100%;
+    }
+
+</style>

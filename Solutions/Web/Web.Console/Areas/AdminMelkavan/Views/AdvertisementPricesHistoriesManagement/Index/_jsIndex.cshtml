@@ -1,0 +1,245 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        debugger;
+        var advertisementId = advertisement.AdvertisementId;
+
+        $('#listContainer').jtable({
+            title: 'تاریخچه قیمت ها', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminMelkavan/AdvertisementPricesHistoriesManagement/GetListOfAdvertisementPricesHistories',
+                //createAction: '/AdminTeniaco/AgencyStaffsManagement/AddToAgencyStaffs',
+                //updateAction: '/AdminTeniaco/AgencyStaffsManagement/UpdateAgencyStaffs',
+                //deleteAction: '/AdminTeniaco/AgencyStaffsManagement/CompleteDeleteAgencyStaffs'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                ]
+            },
+            fields: {
+                AdvertisementPriceHistoryId: {
+                    key: true,
+                    list: false
+                },
+                OfferPrice: {
+                    title: 'قیمت&nbsp;پیشنهادی',
+                    sorting: false,
+                    display: function (data) {
+                        let number = data.record.OfferPrice;
+                        debugger;
+                        var temp = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return temp;
+                    }
+                },
+                OfferPriceType: {
+                    title: 'نوع&nbsp;قیمت',
+                    sorting: false,
+                    display: function (data) {
+                        // if (data.record.OfferPriceType == 0) {
+                        //     return '<div>متری بر مبنای میلیون</div>';
+                        // } else {
+                        //     return '<div>کل بر مبنای میلیارد</div>';
+                        // }
+
+                        if (data.record.OfferPriceType == 0) {
+                            return '<div>متری</div>';
+                        } else {
+                            return '<div>کل</div>';
+                        }
+                    }
+                },
+                CalculatedOfferPrice: {
+                    title: 'قیمت&nbsp;محاسبه&nbsp;شده',
+                    sorting: false,
+                    display: function (data) {
+                        let number = data.record.CalculatedOfferPrice;
+                        var temp = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return temp;
+                    }
+                },
+                RentPrice: {
+                    title: 'قیمت&nbsp;اجاره',
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        let number = data.record.RentPrice;
+                        if (!number) {
+                            return 0;
+                        }
+
+
+                        var temp = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return temp;
+                    }
+                },
+                DepositPrice: {
+                    title: 'قیمت&nbsp;ودیعه',
+                    sorting: false,
+                    display: function (data) {
+                        debugger;
+                        let number = data.record.DepositPrice;
+                        if (!number) {
+                            return 0;
+                        }
+                        var temp = number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+
+                        return temp;
+                    }
+                },
+                CreateEnDate: {
+                    title: 'تاریخ',
+                    sorting: false
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+            },
+            formCreated: function (event, data) {
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+                //$('.ui-dialog-titlebar-close').html('X');
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'grid');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'grid');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+
+
+        });
+
+        $('#listContainer').jtable('load', {
+            'AdvertisementId': advertisementId
+        });
+
+
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+    });
+
+
+
+
+</script>

@@ -1,0 +1,252 @@
+﻿@using VM.Automation;
+@model MyCompaniesVM
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    <input asp-for="MyCompanyId" type="hidden" value="@Model.MyCompanyId" />
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row">
+        <div class="form-group col col-md-12">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    MyCompanyName
+                </label>
+            </div>
+            <input asp-for="MyCompanyName" class="form-control input-sm"
+                   placeholder="MyCompanyName" />
+            <span asp-validation-for="MyCompanyName" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>MyCompanyRealName</label>
+            </div>
+            <input asp-for="MyCompanyRealName" class="form-control input-sm"
+                   placeholder="MyCompanyRealName" />
+            <span asp-validation-for="MyCompanyRealName" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>CompanyLogo</label>
+            </div>
+            <input type="file" asp-for="CompanyLogo" class="form-control input-sm"
+                   onchange="ImageCheck(this,NoImageSelectedMessage,ErrorSelectedFileMessage,badImageSizeMessage,1500);"
+                   placeholder="CompanyLogo" />
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>WaterMarkImage</label>
+            </div>
+            <input type="file" asp-for="WaterMarkImage" class="form-control input-sm"
+                   onchange="ImageCheck(this,NoImageSelectedMessage,ErrorSelectedFileMessage,badImageSizeMessage,1500);"
+                   placeholder="WaterMarkImage" />
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    WaterMarkText
+                </label>
+            </div>
+            <input asp-for="WaterMarkText" class="form-control input-sm"
+                   placeholder="ArticleFileTitle" />
+            <span asp-validation-for="WaterMarkText" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>Header</label>
+            </div>
+            <input asp-for="Header" class="form-control input-sm"
+                   placeholder="Header" />
+            <span asp-validation-for="Header" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>RealHeader</label>
+            </div>
+            <input asp-for="RealHeader" class="form-control input-sm"
+                   placeholder="RealHeader" />
+            <span asp-validation-for="RealHeader" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>Footer</label>
+            </div>
+            <input asp-for="Footer" class="form-control input-sm"
+                   placeholder="Footer" />
+            <span asp-validation-for="Footer" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>RealFooter</label>
+            </div>
+            <input asp-for="RealFooter" class="form-control input-sm"
+                   placeholder="RealFooter" />
+            <span asp-validation-for="RealFooter" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>CommercialCode1</label>
+            </div>
+            <input asp-for="CommercialCode1" class="form-control input-sm"
+                   placeholder="CommercialCode1" />
+            <span asp-validation-for="CommercialCode1" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>CommercialCode2</label>
+            </div>
+            <input asp-for="CommercialCode2" class="form-control input-sm"
+                   placeholder="CommercialCode2" />
+            <span asp-validation-for="CommercialCode2" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>RegisterNumber</label>
+            </div>
+            <input asp-for="RegisterNumber" class="form-control input-sm"
+                   placeholder="RegisterNumber" />
+            <span asp-validation-for="RegisterNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>PostalCode</label>
+            </div>
+            <input asp-for="PostalCode" class="form-control input-sm"
+                   placeholder="PostalCode" />
+            <span asp-validation-for="PostalCode" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>Faxes</label>
+            </div>
+            <input asp-for="Faxes" class="form-control input-sm"
+                   placeholder="Faxes" />
+            <span asp-validation-for="Faxes" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>NationalCode</label>
+            </div>
+            <input asp-for="NationalCode" class="form-control input-sm"
+                   placeholder="NationalCode" />
+            <span asp-validation-for="NationalCode" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>Industry</label>
+            </div>
+            <input asp-for="Industry" class="form-control input-sm"
+                   placeholder="Industry" />
+            <span asp-validation-for="Industry" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>Phones</label>
+            </div>
+            <input asp-for="Phones" class="form-control input-sm"
+                   placeholder="Phones" />
+            <span asp-validation-for="Phones" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>EstablishedDateTime</label>
+            </div>
+            <input asp-for="EstablishedDateTime" class="form-control input-sm" data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom" autocomplete="off"
+                   placeholder="FromDate" />
+            <span asp-validation-for="EstablishedDateTime" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>CentralOffice</label>
+            </div>
+            <select asp-for="CentralOffice" class="form-control input-sm"
+                    placeholder="CentralOffice">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>IsActivated</label>
+            </div>
+            <select asp-for="IsActivated" class="form-control input-sm"
+                    placeholder="IsActivated">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>IsDeleted</label>
+            </div>
+            <select asp-for="IsDeleted" class="form-control input-sm"
+                    placeholder="IsDeleted">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    MyCompanyDirectorId
+                </label>
+            </div>
+            <select asp-for="MyCompanyDirectorId" class="form-control input-sm"
+                    placeholder="MyCompanyDirectorId">
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    StateId
+                </label>
+            </div>
+            <select asp-for="StateId" class="form-control input-sm"
+                    placeholder="StateId">
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    CityId
+                </label>
+            </div>
+            <select asp-for="CityId" class="form-control input-sm"
+                    placeholder="CityId">
+            </select>
+        </div>
+
+        <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+            <div>
+                <label>Address</label>
+            </div>
+            <input asp-for="Address" class="form-control input-sm"
+                   placeholder="Address" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div class="empty-block">&nbsp;</div>
+            <button class="btn btn-default input-sm" type="submit">
+                Submit
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="BtnResetTitle">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+    </div>
+</form>

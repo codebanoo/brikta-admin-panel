@@ -1,0 +1,83 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json
+
+<script type="text/javascript">
+    @{
+        @*if (ViewData["DomainsSettingsList"] != null)
+        {
+            List<DomainsSettingsVM> domainsSettingsList =
+                (List<DomainsSettingsVM>)ViewData["DomainsSettingsList"];
+
+            var domainsSettingsListData = domainsSettingsList.Select(c =>
+                      new
+                      {
+                          /*text = c.FullNumber + " - " + c.FarsiName,
+                          slug = c.FullNumber + " - " + c.FarsiName,
+                          id = c.Id*/
+                          DisplayText = $"{c.DomainName}",
+                          Value = c.DomainSettingId
+                      });
+
+            @Html.Raw("debugger; var domainsSettingsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(domainsSettingsListData)) + "; debugger;");
+        }*@
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        if (ViewData["CustomUsersVMList"] != null)
+        {
+            List<CustomUsersVM> customUsersVMList =
+                (List<CustomUsersVM>)ViewData["CustomUsersVMList"];
+
+            var customUsersVMListData = customUsersVMList.Select(c =>
+                      new
+                      {
+                                  /*text = c.FullNumber + " - " + c.FarsiName,
+                                  slug = c.FullNumber + " - " + c.FarsiName,
+                                  id = c.Id*/
+                          DisplayText = $"{(!string.IsNullOrEmpty(c.Name) ? c.Name : !string.IsNullOrEmpty(c.Family) ? " - " + c.Family : !string.IsNullOrEmpty(c.UserName) ? " - " + c.UserName : "")}",
+                          Value = c.UserId
+                      });
+
+            @Html.Raw("var customUsersVMList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(customUsersVMListData)) + ";");
+        }
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+        float: right;
+    }
+
+    div.jtable-main-container table.jtable thead th {
+        text-align: right;
+    }
+
+        div.jtable-main-container table.jtable thead th:nth-child(4) {
+            width: 1% !important;
+        }
+
+    /*div.jtable-main-container table.jtable tbody > tr > td:nth-child(1),
+        div.jtable-main-container table.jtable tbody > tr > td:nth-child(2),*/
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(3) {
+        direction: ltr;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4) {
+        width: 1% !important;
+        text-align: center;
+    }
+</style>

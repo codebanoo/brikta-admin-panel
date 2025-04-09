@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null;
+}
+
+@using VM.Console;
+
+@model LoginVM
+
+@{
+    bool showCaptcha = false;
+    if (ViewData["ShowCaptcha"] != null)
+    {
+        showCaptcha = (bool)ViewData["ShowCaptcha"];
+    }
+}
+
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                <form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+                      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+                      data-ajax="true" data-ajax-method="POST">
+                    @Html.AntiForgeryToken()
+                    <h1>فرم ورود</h1>
+                    <div class="form-group">
+                        @{
+                            <div id='error-alert' class="form-group alert alert-danger">
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <input asp-for="UserName" class="form-control"
+                               placeholder="نام کاربری" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <input asp-for="Password" class="form-control"
+                               placeholder="رمز عبور" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label class="lblRememberMe">
+                            <span>
+                                مرا به خاطر بسپار
+                            </span>
+                            <input asp-for="RememberMe" class="form-control"
+                                   placeholder="" />
+                        </label>
+                    </div>
+                    <div>
+                        <button class="btn btn-default submit" type="submit">
+                            ورود
+                        </button>
+                        <a class="reset_pass" href="#">رمز عبور خود را فراموش کرده اید؟</a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <p class="change_link">
+                            کاربر جدید هستید؟
+                            <a href="#signup" class="to_register"> ثبت نام </a>
+                        </p>
+
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div>
+                            <h1>
+                                @*<i class="fa fa-paw"></i> *@
+                                <img src="/images/login-logo.png" style="width: 24px;" />
+                                <span style="color: #6dbadd;">T</span>eniaco
+                            </h1>
+                            <p><span style="direction:ltr;">2023©</span> تمامی حقوق این سامانه برای تنیاکو محفوظ است.<br /><a href="#signup" class="to_register"> حریم خصوصی و شرایط</a></p>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div id="register" class="animate form registration_form">
+            <section class="login_content">
+                <form>
+                    <h1>Create Account</h1>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Username" required="" />
+                    </div>
+                    <div>
+                        <input type="email" class="form-control" placeholder="Email" required="" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Password" required="" />
+                    </div>
+                    <div>
+                        <a class="btn btn-default submit" href="index.html">Submit</a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <p class="change_link">
+                            Already a member ?
+                            <a href="#signin" class="to_register"> Log in </a>
+                        </p>
+
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div>
+                            <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                            <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 4 template. Privacy and Terms</p>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>

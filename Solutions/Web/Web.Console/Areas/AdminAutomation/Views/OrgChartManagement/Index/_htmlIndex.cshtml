@@ -1,0 +1,270 @@
+﻿<div class="row col-md-12">
+    <div class="colors-block col-md-12 justify-content-center row">
+        @*        <div class="btn-save-block">
+        <button id="btnSave" name="btnSave" class="btn btn-default btn-success">
+        ذخیره
+        </button>
+        </div>*@
+        <div class="color-block">
+            <div class="colorInfo" style="background-color: #3131e5 !important;">
+                &nbsp;
+            </div>
+            &nbsp;
+            گروه
+            &nbsp;
+        </div>
+        <div class="color-block">
+            <div class="colorInfo" style="background-color: #5959e9 !important;">
+                &nbsp;
+            </div>
+            &nbsp;
+            دفتر
+            &nbsp;
+        </div>
+        @*        <div class="color-block">
+        <div class="colorInfo" style="background-color: slategrey;">
+        &nbsp;
+        </div>
+        &nbsp;
+        معاونت
+        &nbsp;
+        </div>*@
+        <div class="color-block">
+            <div class="colorInfo" style="background-color: #9090dd !important;">
+                &nbsp;
+            </div>
+            &nbsp;
+            بخش
+            &nbsp;
+        </div>
+        <div class="color-block">
+            <div class="colorInfo" style="background-color: #6161a3 !important;">
+                &nbsp;
+            </div>
+            &nbsp;
+            پروژه
+            &nbsp;
+        </div>
+        @*        <div class="color-block">
+        <div class="colorInfo" style="background-color: cadetblue;">
+        &nbsp;
+        </div>
+        پست سازمانی
+        &nbsp;
+        </div>*@
+        <div class="color-block">
+            <div class="colorInfo" style="background-color: lavender !important;">
+                &nbsp;
+            </div>
+            &nbsp;
+            شخص
+            &nbsp;
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 ">
+        <div id="infovis"></div>
+    </div>
+    
+</div>
+
+
+
+
+<!--Modal Box to Add Members-->
+<div class="modal " id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="direction: rtl;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addModalLabel">اعضا</h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 20px 0 !important;">
+                <form id="addMemberForm">
+                    <div class="form-group m-t-lg">
+                        <div>
+                            <label>مدیر عامل:</label>
+                        </div>
+                        <select id="ceo_member" class="form-control" name="ceo_member">
+                        </select>
+                    </div>
+                    <div class="form-group m-t-lg">
+                        <div>
+                            <label>اعضا:</label>
+                        </div>
+                        <select id="new_members" class="form-control" name="new_members" multiple>
+                        </select>
+                    </div>
+                    <input type="submit" id="submit_add_member" style="display:none;" />
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: none">
+                <button class="btn  btn-primary" data-dismiss="modal">لغو</button>
+                <button class="btn btn-primary" id="add_member" >ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Modal Box to Add Members-->
+<!--Modal Box to Add Entity-->
+<div class="modal " id="addNodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="direction: rtl;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addModalLabel">افزودن</h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 20px 0 !important;">
+                <form id="addNodeForm">
+                    <div class="form-group m-t-lg">
+                        <div>
+                            <label>عنوان:</label>
+                        </div>
+                        <input id="new_node_name" type="text" class="form-control" name="add_node_name" required>
+                    </div>
+                    <div class="form-group m-t-lg">
+                        <div>
+                            <label>نوع:</label>
+                        </div>
+                        <select id="new_node_type" class="form-control" name="new_node_type" required>
+                            <option value="4">گروه</option>
+                            <option value="5">دفتر</option>
+                            @*
+                            <option value="6">معاونت</option>*@
+                            <option value="7">بخش</option>
+                            <option value="9">پروژه</option>
+                            @*
+                            <option value="5">پست</option>*@
+                            <option value="8">شخص</option>
+                        </select>
+                    </div>
+                    <div class="form-group m-t-lg new_supervisor_block">
+                        <div>
+                            <label>سرپرست:</label>
+                        </div>
+                        <select id="new_supervisor" class="form-control" name="new_supervisor">
+                        </select>
+                    </div>
+                    <div class="form-group m-t-lg new_employee_block">
+                        <div>
+                            <label>شخص:</label>
+                        </div>
+                        <select id="new_employees" class="form-control" name="new_employees" multiple>
+                        </select>
+                    </div>
+                    <div class="form-group m-t-lg">
+                        <label>توضیحات:</label>
+                        <textarea id="new_node_description" class="form-control" name="add_node_description" rows="3"></textarea>
+                    </div>
+                    <input type="submit" id="submit_add_node" style="display:none;" />
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: none">
+                <button class="btn  btn-primary" data-dismiss="modal">لغو</button>
+                <button class="btn btn-primary" id="add_node">افزودن</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ends Modal Box to Add Entity-->
+<!--Modal Box to Delete Entity-->
+<div class="modal " id="deleteNodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="direction: rtl;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">حذف</h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 20px 0 !important;">
+                <input type="hidden" id="node_to_remove_id" name="node_to_remove">
+                <div class="form-group" id="delete_message_container">
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none">
+                <button type="button" class="btn btn-white" data-dismiss="modal">لغو</button>
+                <button id="delete_node" class="btn btn-danger" >حذف</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ends Modal Box to Delete Entity-->
+<!--Modal Box to Info Entity-->
+<div class="modal " id="infoNodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="direction: rtl;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Node information</h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 20px 0 !important;">
+                <input type="hidden" id="node_id" name="node_to_remove">
+                <div class="form-group" id="info_message_container">
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: none">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ends Modal Box to Info Entity-->
+<!--Modal Box to Edit Entity-->
+<div class="modal " id="editNodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="direction: rtl;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">ویرایش</h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 20px 0 !important;">
+                <form id="editNodeForm">
+                    <div class="form-group m-t-lg">
+                        <div>
+                            <label>عنوان:</label>
+                        </div>
+                        <input id="edit_node_name" type="text" class="form-control" name="edit_node_name" required>
+                    </div>
+                    <div class="form-group m-t-lg">
+                        <div>
+                            <label>نوع:</label>
+                        </div>
+                        <select id="edit_node_type" class="form-control" name="edit_node_type" required disabled>
+                            <option value="4">گروه</option>
+                            <option value="5">دفتر</option>
+                            @*
+                            <option value="6">معاونت</option>*@
+                            <option value="7">بخش</option>
+                            <option value="9">پروژه</option>
+                            @*
+                            <option value="5">پست</option>*@
+                            <option value="8">شخص</option>
+                        </select>
+                    </div>
+                    <div class="form-group m-t-lg edit_supervisor_block">
+                        <div>
+                            <label>سرپرست:</label>
+                        </div>
+                        <select id="edit_supervisor" class="form-control" name="edit_supervisor">
+                        </select>
+                    </div>
+                    <div class="form-group m-t-lg edit_employee_block">
+                        <div>
+                            <label>شخص:</label>
+                        </div>
+                        <select id="edit_employee" class="form-control" name="edit_employee" disabled>
+                        </select>
+                    </div>
+                    <div class="form-group m-t-lg">
+                        <label>توضیحات:</label>
+                        <textarea id="edit_node_description" class="form-control" name="edit_node_description" rows="3"></textarea>
+                    </div>
+                    <input type="submit" id="submit_edit_node" style="display:none;" />
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: none">
+                <button class="btn btn-primary" data-dismiss="modal">لغو</button>
+                <button class="btn btn-primary" id="edit_node">ویرایش</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ends Modal Box to Edit Entity-->

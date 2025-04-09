@@ -1,0 +1,43 @@
+﻿@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+<style type="text/css">
+    body {
+        direction: rtl;
+    }
+
+    .ui-tabs .ui-tabs-nav li {
+        float: right;
+    }
+
+    #tabs ul.ui-tabs-nav {
+        float: right;
+    }
+    #tabs .showAllChosenItem 
+    {
+        display:none;
+    }
+    #tabs li.ui-tabs-tab
+    {
+        border:none;
+        
+        direction:rtl;
+        text-align:center;
+    }
+    #tabs ul.ui-tabs-nav
+    {
+        background-color:transparent;
+        border:none;
+    }
+    #tabs .head li {
+       
+        border: none;
+        cursor: pointer;
+       
+        font-size: 17px;
+        color:transparent !important;
+    }
+</style>

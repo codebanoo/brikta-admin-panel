@@ -1,0 +1,383 @@
+﻿@using VM.Teniaco;
+
+@{
+    FeaturesVM featuresVM = new FeaturesVM();
+    if (ViewData["FeaturesVM"] != null)
+    {
+        featuresVM = ViewData["FeaturesVM"] as FeaturesVM;
+    }
+}
+
+
+<script type="text/javascript">
+
+    var featureId = '@featuresVM.FeatureId';
+
+    $(document).ready(function() {
+
+        //$('#searchBlock').hide(1000);
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'آیتمها', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminTeniaco/FeaturesOptionsManagement/GetListOfFeaturesOptions',
+                createAction: '/AdminTeniaco/FeaturesOptionsManagement/AddToFeaturesOptions',
+                updateAction: '/AdminTeniaco/FeaturesOptionsManagement/UpdateFeaturesOptions',
+                deleteAction: '/AdminTeniaco/FeaturesOptionsManagement/CompleteDeleteFeaturesOptions'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                FeatureOptionId: {
+                    key: true,
+                    list: false
+                },
+                FeatureOptionText: {
+                    title: 'عنوان',
+                    inputclass: 'validate[required]',
+                },
+                FeatureOptionValue: {
+                    title: 'مقدار',
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<input type="hidden" id="Edit-FeatureId" name="FeatureId">' +
+                                    '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<input type="hidden" id="Edit-FeatureId" name="FeatureId">' +
+                                    '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<input type="hidden" id="Edit-FeatureId" name="FeatureId">' +
+                                '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function(data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-FeatureOptionId="' +
+                                data.record.FeatureOptionId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-FeatureOptionId="' +
+                                data.record.FeatureOptionId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function(data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-FeatureOptionId="' + data.record.FeatureOptionId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-FeatureOptionId="' + data.record.FeatureOptionId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function(event, data) {
+
+                data.form.find('input[name="FeatureOptionText"]').addClass(
+                    'validate[required]');
+
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                    //prettySelect: true,
+                    //useSuffix: "chosen-"
+                    //updatePromptsPosition: true,
+                    //autoPositionUpdate: true,
+                    //updatePromptsPosition: true,
+                    //inlineValidation: true,
+                    //prettySelect: true,
+                    //useSuffix: "_chosen"
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function() {
+                    return this.nodeType === 3;
+                }).remove();
+                      //$('.ui-dialog-titlebar-close').html('X');
+                $(".jtable-dialog-form .jtable-input-field-container").each(function() {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function() {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                if (formName == 'edit') {
+
+
+                }
+                else
+                    if (formName == 'create') {
+
+                    }
+
+            },
+            formSubmitting: function(event, data) {
+
+                $('#Edit-FeatureId').val(featureId);
+
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function(event, data) {
+
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+
+            },
+            selectionChanged: function() {
+
+            },
+            recordAdded: function(event, data) {
+
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', {
+            'FeatureId': featureId
+        });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.isActivated', function() {
+            debugger;
+            var _this = $(this);
+            var featureOptionId = _this.attr('data-FeatureOptionId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/FeaturesOptionsManagement/ToggleActivationFeaturesOptions",
+                data: { 'FeatureOptionId': featureOptionId },
+                success: function(result) {
+                    if (result.Result == "OK") {
+                        debugger;
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'FeatureId': featureId
+                        });
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function() {
+            debugger;
+            var _this = $(this);
+            var featureOptionId = _this.attr('data-FeatureOptionId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/FeaturesOptionsManagement/TemporaryDeleteFeaturesOptions",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'FeatureOptionId': featureOptionId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'FeatureId': featureId
+                        });
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+    });
+
+</script>

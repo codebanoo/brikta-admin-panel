@@ -1,0 +1,61 @@
+﻿@using Services.Xml.Entities;
+
+@{
+    string areaName = "";
+    if (ViewData["AreaName"] != null)
+    {
+        areaName = ViewData["AreaName"] as string;
+    }
+
+    string controllerName = "";
+    if (ViewData["ControllerName"] != null)
+    {
+        controllerName = ViewData["ControllerName"] as string;
+    }
+
+    string actionName = "";
+    if (ViewData["ActionName"] != null)
+    {
+        actionName = ViewData["ActionName"] as string;
+    }
+    Layout = "_" + "UserLayout";
+}
+
+@section head{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_headIndex.cshtml");
+    }
+
+}
+
+ <div class="flex overflow-hidden"> 
+    @await Component.InvokeAsync("UserNavigation")
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_htmlIndex.cshtml");
+    }
+ </div> 
+@* <div data-url="side-menu-dark-dashboard-overview-4.html" class="dark-mode-switcher cursor-pointer shadow-md fixed bottom-0 left-0 box dark:bg-dark-2 border rounded-full w-40 h-12 flex items-center justify-center z-50 mb-10 ml-10">
+    <div class="ml-4 text-gray-700 dark:text-gray-300">Dark Mode</div>
+    <div class="dark-mode-switcher__toggle border"></div>
+</div> *@
+
+
+@section scripts{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_jsIndex.cshtml");
+    }
+
+}
+
+@*    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function () {
+            debugger;
+            //$('body').addClass('py-5 md:py-0');
+        })
+        //]]>
+    </script>*@
+
+

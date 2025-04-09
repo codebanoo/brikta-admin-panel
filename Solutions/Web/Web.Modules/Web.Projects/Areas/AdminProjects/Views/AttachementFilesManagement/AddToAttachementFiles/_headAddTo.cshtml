@@ -1,0 +1,70 @@
+﻿@using VM.Public;
+@*@using VM.Melkavan;*@
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        long constructionProjectId = 0;
+                @Html.Raw("var constructionProjectId = 0;")
+        ;
+
+        if (ViewData["ConstructionProjectId"] != null)
+        {
+            constructionProjectId = (long)ViewData["ConstructionProjectId"];
+
+
+                    @Html.Raw(" constructionProjectId =" + constructionProjectId.ToString() +" ;")
+            ;
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    @{
+        long constructionId = 0;
+                @Html.Raw("var parentId = 0;")
+        ;
+
+        if (ViewData["ParentId"] != null)
+        {
+            constructionId = (long)ViewData["ParentId"];
+
+
+                    @Html.Raw(" parentId =" + constructionId.ToString() +" ;")
+            ;
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    @{
+        string TableName = "";
+                @Html.Raw("var tableName = 0;")
+        ;
+
+        if (ViewData["TableName"] != null)
+        {
+            TableName = (string)ViewData["TableName"];
+
+
+                    @Html.Raw(" tableName ='" + TableName +"' ;")
+            ;
+        }
+    }
+</script>
+
+<script>
+    string dataBackUrl = "";
+    if (ViewData["DataBackUrl"] != null)
+    {
+        dataBackUrl = ViewData["DataBackUrl"] as string;
+    }
+</script>
+
+
+<style type="text/css">
+    .no-top-margin{
+        margin-top : 0px !important;
+    }
+</style>

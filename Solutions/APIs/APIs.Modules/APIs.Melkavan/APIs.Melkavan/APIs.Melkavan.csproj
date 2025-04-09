@@ -1,0 +1,102 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+  
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>D:\ArashCms\ArashCmsSolution\APIs\APIs.Modules\APIs.Melkavan\APIs.Public\APIs.Melkavan.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Swashbuckle" Version="5.6.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.1" />
+    <!--<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />-->
+    <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="6.17.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.17.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.17.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\APIs.Melkavan.Models.Business\APIs.Melkavan.Models.Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="APIs.Automation.Models.Business">
+      <HintPath>..\..\APIs.Automation\APIs.Automation.Models.Business\bin\Debug\net6.0\APIs.Automation.Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Core">
+      <HintPath>..\..\..\..\..\AllRef\APIs.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.CustomAttributes">
+      <HintPath>..\..\..\..\..\AllRef\APIs.CustomAttributes.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Projects.Models">
+      <HintPath>..\..\APIs.Projects\APIs.Projects.Models\bin\Debug\net6.0\APIs.Projects.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Projects.Models.Business">
+      <HintPath>..\..\APIs.Projects\APIs.Projects.Models.Business\bin\Debug\net6.0\APIs.Projects.Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Public.Models">
+      <HintPath>..\..\APIs.Public\APIs.Public.Models\bin\Debug\net6.0\APIs.Public.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Public.Models.Business">
+      <HintPath>..\..\APIs.Public\APIs.Public.Models.Business\bin\Debug\net6.0\APIs.Public.Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.TelegramBot.Models">
+      <HintPath>..\..\..\..\..\AllRef\APIs.TelegramBot.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.TelegramBot.Models.Business">
+      <HintPath>..\..\APIs.TelegramBot\APIs.TelegramBot.Models.Business\bin\Debug\net6.0\APIs.TelegramBot.Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Teniaco.Models">
+      <HintPath>..\..\APIs.Teniaco\APIs.Teniaco.Models\bin\Debug\net6.0\APIs.Teniaco.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="APIs.Teniaco.Models.Business">
+      <HintPath>..\..\APIs.Teniaco\APIs.Teniaco.Models.Business\bin\Debug\net6.0\APIs.Teniaco.Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\..\..\AllRef\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Models">
+      <HintPath>..\..\..\..\..\AllRef\Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\..\..\AllRef\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\..\..\AllRef\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Melkavan">
+	  <HintPath>..\..\..\..\VM\VM.Melkavan\bin\Debug\net6.0\VM.Melkavan.dll</HintPath>
+	</Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\..\VM\VM.Public\bin\Debug\net6.0\VM.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Teniaco">
+      <HintPath>..\..\..\..\VM\VM.Teniaco\bin\Debug\net6.0\VM.Teniaco.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+</Project>

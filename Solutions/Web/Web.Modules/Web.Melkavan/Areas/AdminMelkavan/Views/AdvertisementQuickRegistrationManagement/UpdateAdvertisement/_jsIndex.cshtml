@@ -1,0 +1,1246 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+
+        //initiallize some properties
+
+        let descriptionsVal = advertisementVM.AdvertisementDescriptions;
+        $("#AdvertisementDescriptions").val(descriptionsVal);
+
+        let title = advertisementVM.AdvertisementTitle;
+        $('#AdvertisementTitle').val(title);
+
+        let rentPrice = advertisementVM.AdvertisementPricesHistoriesVM.RentPrice;
+        if (rentPrice !== null && rentPrice !== undefined) {
+            $('#RentPrice').val(rentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+        } else {
+            $('#RentPrice').val('');
+        }
+        $('#resultOfRentPrice').html(parseFloat(rentPrice) + ' تومان');
+
+
+        let depositPrice = advertisementVM.AdvertisementPricesHistoriesVM.DepositPrice
+        if (rentPrice !== null && rentPrice !== undefined) {
+            $('#DepositPrice').val(depositPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+        } else {
+            $('#DepositPrice').val('');
+        }
+        $('#resultOfDepositPrice').html(parseFloat(depositPrice) + ' تومان');
+
+
+        let offerPrice = advertisementVM.AdvertisementPricesHistoriesVM.OfferPrice
+        if (offerPrice !== null && offerPrice !== undefined) {
+            $('#OfferPrice').val(offerPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+        } else {
+            $('#OfferPrice').val('');
+        }
+        $('#resultOfOfferPrice').html(parseFloat(offerPrice) + ' تومان');
+
+
+
+        let areaVal = advertisementVM.Area;
+        $("#Area").val(areaVal);
+
+        let foundationVal = advertisementVM.AdvertisementDetailsVM.Foundation;
+        $("#Foundation").val(foundationVal);
+
+        let rebuiltVal = advertisementVM.RebuiltInYearFa;
+        $("#RebuiltInYearFa").val(rebuiltVal);
+
+        let convertableVal = advertisementVM.AdvertisementDetailsVM.Convertable;
+        if (convertableVal == true) {
+            $('#Convertable').prop('checked', true);
+        }
+
+
+
+        //#region Select elements
+
+        for (var i = 0; i < ownersList.length; i++) {
+
+            var item = ownersList[i];
+            $('.OwnerId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+        $('.OwnerId').val(advertisementVM.OwnerId);
+
+        $('.OwnerId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        for (var i = 0; i < ConsultantsList.length; i++) {
+
+            debugger;
+            var item = ConsultantsList[i];
+            $('.ConsultantId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+        $('.ConsultantId').val(advertisementVM.ConsultantUserId);
+
+        $('.ConsultantId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+
+
+        for (var i = 0; i < buildingLifesList.length; i++) {
+            //debugger;
+            var item = buildingLifesList[i];
+            $('#slcBuildingLifeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcBuildingLifeId').val(advertisementVM.AdvertisementDetailsVM.BuildingLifeId);
+
+        $('#slcBuildingLifeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < tagsList.length; i++) {
+            //debugger;
+            var item = tagsList[i];
+            $('#slcTagId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+        debugger;
+        if (advertisementVM.AdvertisementDetailsVM.TagId != null) {
+            $('#slcTagId').val(advertisementVM.AdvertisementDetailsVM.TagId.split(','));
+        }
+
+        $('#slcTagId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        for (var i = 0; i < advertisementTypeList.length; i++) {
+
+            var item = advertisementTypeList[i];
+            var option = $("<option></option>");
+            option.attr("value", item.Value).text(item.DisplayText);
+            $('#slcAdvertisementTypeId').append(option);
+            if (item.DisplayText == "معاوضه") {
+                option.attr("disabled", "disabled")
+            }
+        }
+
+
+        $('#slcAdvertisementTypeId').val(advertisementVM.AdvertisementDetailsVM.AdvertisementTypeId);
+
+        $('#slcAdvertisementTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < propertyTypesList.length; i++) {
+            //debugger;
+            var item = propertyTypesList[i];
+            $('#slcPropertyTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+
+        $('#slcPropertyTypeId').val(advertisementVM.PropertyTypeId);
+        $('#slcPropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < typeOfUsesList.length; i++) {
+            //debugger;
+            var item = typeOfUsesList[i];
+            $('#slcTypeOfUseId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+
+        $('#slcTypeOfUseId').val(advertisementVM.TypeOfUseId);
+        $('#slcTypeOfUseId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < documentTypesList.length; i++) {
+            //debugger;
+            var item = documentTypesList[i];
+            $('#slcDocumentTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+
+        $('#slcDocumentTypeId').val(advertisementVM.DocumentTypeId);
+        $('#slcDocumentTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < documentRootTypesList.length; i++) {
+            //debugger;
+            var item = documentRootTypesList[i];
+            $('#slcDocumentRootTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+        $('#slcDocumentRootTypeId').val(advertisementVM.DocumentRootTypeId);
+        $('#slcDocumentRootTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        for (var i = 0; i < documentOwnershipTypesVMList.length; i++) {
+            //debugger;
+            var item = documentOwnershipTypesVMList[i];
+            $('#slcDocumentOwnershipTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+        $('#slcDocumentOwnershipTypeId').val(advertisementVM.DocumentOwnershipTypeId);
+        $('#slcDocumentOwnershipTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        $('#slcMaritalStatusId').val(advertisementVM.AdvertisementDetailsVM.MaritalStatusId);
+        $('#slcMaritalStatusId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        //#endregion
+
+
+        //#region Change select elements
+
+
+        $('body').on('change', '#slcAdvertisementTypeId', function (e) {
+
+            var _this = $(this);
+
+            var advertisementTypeId = parseInt(_this.val());
+
+            $('#adInfo1').removeClass('d-none');
+            $('#adInfo2').removeClass('d-none');
+            $('#adInfo3').removeClass('d-none');
+            $('#adInfo6').removeClass('d-none');
+            $('#adInfo7').removeClass('d-none');
+            $('#adInfo9').removeClass('d-none');
+            $('#adInfo10').removeClass('d-none');
+            $('#ownerDiv').removeClass('d-none');
+            $('#consultantDiv').removeClass('d-none');
+            $('#tagDiv').removeClass('d-none');
+
+            $('#adInfoAddress').removeClass('d-none');
+            $('#saveButton').removeClass('d-none');
+
+
+            if (advertisementTypeId != null && advertisementTypeId == 1) {
+
+                //اجاره
+                $('#RentadInfo4').removeClass('d-none');
+                $('#SaleadInfo5').addClass('d-none');
+                $('#adInfo8').addClass('d-none');
+
+            } else if (advertisementTypeId != null && advertisementTypeId == 2) {
+                //فروش
+                $('#SaleadInfo5').removeClass('d-none');
+                $('#RentadInfo4').addClass('d-none');
+                $('#adInfo8').removeClass('d-none');
+
+
+            } else {
+                _this.val('2');
+                _this.trigger('change');
+            }
+        });
+
+
+        $('body').on('change', '#Area', function (e) {
+            var _this = $(this);
+
+
+
+            var area = _this.val();
+
+            var offerPrice = $('#OfferPrice').val();
+            var offerPriceType = $('#OfferPriceType').val();
+
+            if ((offerPrice != '') &&
+                (offerPriceType != null) &&
+                (area != '')) {
+                switch (offerPriceType) {
+                    case '0'://متری
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) * parseFloat(area));
+                        $('#spnOfferPrice').html('(متری)');
+                        $('#spnCalculatedOfferPrice').html('(کل)');
+                        break;
+                    case '1'://کل
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) / parseFloat(area));
+                        $('#spnOfferPrice').html('(کل)');
+                        $('#spnCalculatedOfferPrice').html('(متری)');
+                        break;
+                }
+            }
+            else
+                $('#CalculatedOfferPrice').val('');
+
+        });
+
+
+
+
+        // برای جلوگیری از انتخاب همزمان مالک و مشاور
+        $('.OwnerId').on('change', function () {
+            $('.ConsultantId').val($('.ConsultantId option:first').val());
+            $('.ConsultantId').trigger("chosen:updated");
+        });
+
+        $('.ConsultantId').on('change', function () {
+            $('.OwnerId').val($('.OwnerId option:first').val());
+            $('.OwnerId').trigger("chosen:updated");
+        });
+
+
+        // execute change event to show all properties based on AdvertisementType
+        $('#slcAdvertisementTypeId').trigger('change');
+
+
+        function convertToEnglishNumber(input) {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            return input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+        }
+
+
+        // Allow only English and Persian numbers, and convert Persian numbers to English
+        $('body').on('input', '#txtOwnerPhone', function () {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            let input = $(this).val();
+            const convertedInput = input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+            const validInput = convertedInput.replace(/[^0-9]/g, '');
+
+            $(this).val(validInput);
+        });
+
+
+        // Prevent pasting non-numeric characters and convert Persian to English
+        $('body').on('paste', '#txtOwnerPhone', function (e) {
+
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!/^[\d۰-۹]+$/.test(clipboardData)) {
+                e.preventDefault();
+            } else {
+                setTimeout(() => {
+                    var input = $(this).val();
+                    $(this).val(convertToEnglishNumber(input));
+                }, 0);
+            }
+        });
+
+
+
+
+        // Allow only English and Persian numbers, and convert Persian numbers to English
+        $('body').on('input', '#txtConsultantPhone', function () {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            let input = $(this).val();
+            const convertedInput = input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+            const validInput = convertedInput.replace(/[^0-9]/g, '');
+
+            $(this).val(validInput);
+        });
+
+
+        // Prevent pasting non-numeric characters and convert Persian to English
+        $('body').on('paste', '#txtConsultantPhone', function (e) {
+
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!/^[\d۰-۹]+$/.test(clipboardData)) {
+                e.preventDefault();
+            } else {
+                setTimeout(() => {
+                    var input = $(this).val();
+                    $(this).val(convertToEnglishNumber(input));
+                }, 0);
+            }
+        });
+
+
+
+
+        // Allow only English and Persian numbers, and convert Persian numbers to English
+        $('body').on('input', '#Area', function () {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            let input = $(this).val();
+            const convertedInput = input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+            const validInput = convertedInput.replace(/[^0-9]/g, '');
+
+            $(this).val(validInput);
+        });
+
+
+        // Prevent pasting non-numeric characters and convert Persian to English
+        $('body').on('paste', '#Area', function (e) {
+
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!/^[\d۰-۹]+$/.test(clipboardData)) {
+                e.preventDefault();
+            } else {
+                setTimeout(() => {
+                    var input = $(this).val();
+                    $(this).val(convertToEnglishNumber(input));
+                }, 0);
+            }
+        });
+
+
+
+        // Allow only English and Persian numbers, and convert Persian numbers to English
+        $('body').on('input', '#Foundation', function () {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            let input = $(this).val();
+            const convertedInput = input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+            const validInput = convertedInput.replace(/[^0-9]/g, '');
+
+            $(this).val(validInput);
+        });
+
+
+        // Prevent pasting non-numeric characters and convert Persian to English
+        $('body').on('paste', '#Foundation', function (e) {
+
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!/^[\d۰-۹]+$/.test(clipboardData)) {
+                e.preventDefault();
+            } else {
+                setTimeout(() => {
+                    var input = $(this).val();
+                    $(this).val(convertToEnglishNumber(input));
+                }, 0);
+            }
+        });
+
+
+        // Allow only English and Persian numbers, and convert Persian numbers to English
+        $('body').on('input', '#OfferPrice', function () {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            let input = $(this).val();
+            const convertedInput = input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+            const validInput = convertedInput.replace(/[^0-9]/g, '');
+
+            $(this).val(validInput);
+        });
+
+
+        // Prevent pasting non-numeric characters and convert Persian to English
+        $('body').on('paste', '#OfferPrice', function (e) {
+
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!/^[\d۰-۹]+$/.test(clipboardData)) {
+                e.preventDefault();
+            } else {
+                setTimeout(() => {
+                    var input = $(this).val();
+                    $(this).val(convertToEnglishNumber(input));
+                }, 0);
+            }
+        });
+
+
+
+
+
+        // Allow only English and Persian numbers, and convert Persian numbers to English
+        $('body').on('input', '#DepositPrice', function () {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            let input = $(this).val();
+            const convertedInput = input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+            const validInput = convertedInput.replace(/[^0-9]/g, '');
+
+            $(this).val(validInput);
+        });
+
+
+        // Prevent pasting non-numeric characters and convert Persian to English
+        $('body').on('paste', '#DepositPrice', function (e) {
+
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!/^[\d۰-۹]+$/.test(clipboardData)) {
+                e.preventDefault();
+            } else {
+                setTimeout(() => {
+                    var input = $(this).val();
+                    $(this).val(convertToEnglishNumber(input));
+                }, 0);
+            }
+        });
+
+
+
+
+        // Allow only English and Persian numbers, and convert Persian numbers to English
+        $('body').on('input', '#RentPrice', function () {
+            const persianDigits = '۰۱۲۳۴۵۶۷۸۹';
+            const englishDigits = '0123456789';
+            let input = $(this).val();
+            const convertedInput = input.replace(/[۰-۹]/g, (d) => englishDigits[persianDigits.indexOf(d)]);
+            const validInput = convertedInput.replace(/[^0-9]/g, '');
+
+            $(this).val(validInput);
+        });
+
+
+        // Prevent pasting non-numeric characters and convert Persian to English
+        $('body').on('paste', '#RentPrice', function (e) {
+
+            var clipboardData = (e.originalEvent || e).clipboardData.getData('text');
+            if (!/^[\d۰-۹]+$/.test(clipboardData)) {
+                e.preventDefault();
+            } else {
+                setTimeout(() => {
+                    var input = $(this).val();
+                    $(this).val(convertToEnglishNumber(input));
+                }, 0);
+            }
+        });
+
+
+
+        $('body').on('click', '.lblNewOwner', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+
+            var title = _this.attr('data-modal-title');
+
+            $('#create-owner-modal').find('.modal-title').html('تعریف ' + title);
+
+            $('#txtOwnerName').val('');
+            $('#txtOwnerFamily').val('');
+            $('#txtOwnerPhone').val('');
+
+            $('#create-owner-modal').modal("show");
+        });
+
+
+        $('body').on('click', '.lblNewConsultant', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+
+            var title = _this.attr('data-modal-title');
+
+            $('#create-consultant-modal').find('.modal-title').html('تعریف ' + title);
+
+            $('#txtConsultantName').val('');
+            $('#txtConsultantFamily').val('');
+            $('#txtConsultantPhone').val('');
+
+            $('#create-consultant-modal').modal("show");
+        });
+
+
+        $('#slcTagId').on('change', function () {
+
+            const selectedOptions = $('#slcTagId option:selected');
+
+            if (selectedOptions.length > 4) {
+
+                $('#slcTagId').val('').trigger("chosen:updated");
+
+                $('#my-warning-modal').find('.modal-title').html('اخطار');
+                $('#my-warning-modal').find('#error').html('امکان انتخاب بیش از 3 برچسب وجود ندارد');
+                $('#my-warning-modal').modal("show");
+
+            }
+        });
+
+
+
+        $('body').on('click', '.btn-create-owner', function (e) {
+            e.preventDefault();
+
+            var name = $('#txtOwnerName').val();
+            var family = $('#txtOwnerFamily').val();
+            var phone = $('#txtOwnerPhone').val();
+            var Type = 'مالک';
+
+            if (phone == '') {
+                alert('لطفا اطلاعات را وارد کنید');
+                return;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementQuickRegistrationManagement/AddOwnerOrConcultant",
+                data: {
+                    'Name': name,
+                    'Family': family,
+                    'Phone': phone,
+                    'Type': Type
+                },
+
+
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+
+                        $.ajax({
+                            cache: false,
+                            type: "Post",
+                            url: "/AdminMelkavan/AdvertisementQuickRegistrationManagement/GetAllOwnersList",
+                            success: function (result) {
+                                debugger;
+                                if (result.Result == "OK") {
+
+                                    ownersList = result.Records;
+
+                                    $('.OwnerId').find('option')
+                                        .remove()
+                                        .end()
+                                        .append('<option value="" selected>---</option>');
+
+                                    for (var i = 0; i < ownersList.length; i++) {
+
+                                        var item = ownersList[i];
+
+                                        item.Value = item.UserId;
+                                        item.DisplayText = item.Name + " " + item.Family + " - " + item.UserName + " - " + item.Mobile;
+
+                                        $('.OwnerId')
+                                            .append($("<option></option>")
+                                                .attr("value", item.Value)
+                                                .text(item.DisplayText));
+                                    }
+
+                                    $('.OwnerId').trigger("chosen:updated");
+
+                                    $('#my-warning-modal').find('.modal-title').html('پیام');
+                                    $('#my-warning-modal').find('#error').html('مالک با موفقیت افزوده شد');
+                                    $('#my-warning-modal').modal("show");
+
+                                    $('#create-owner-modal').modal("hide");
+                                }
+                                else
+                                    if (result.Result == "ERROR") {
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html(result.Message);
+                                        $('#my-warning-modal').modal("show");
+                                    }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html('خطا');
+                                $('#my-warning-modal').modal("show");
+                            }
+                        });
+
+
+                        //کد های زیر مخصوص اضافه شدن بدوم ریلود است
+                        // $('.OwnerId option:first')
+                        //     .after(
+                        //         $("<option></option>")
+                        //             .attr("value", result.Records.UserId)
+                        //             .text(name + ' ' + family + ' - ' + phone)
+                        //     );
+
+                        // $('#my-warning-modal').find('.modal-title').html('پیام');
+                        // $('#my-warning-modal').find('#error').html('مالک با موفقیت افزوده شد');
+                        // $('#my-warning-modal').modal("show");
+
+
+                        // $('.OwnerId').trigger("chosen:updated");
+
+                        // $('#create-owner-modal').modal("hide");
+                        //پایان کد ها
+
+
+                    } else if (result.Result == "ERROR") {
+                        $('#my-warning-modal').find('.modal-title').html('اخطار');
+                        $('#my-warning-modal').find('#error').html(result.Message);
+                        $('#my-warning-modal').modal("show");
+                        $('#create-owner-modal').modal("hide");
+                    }
+                },
+
+            });
+        });
+
+
+
+        $('body').on('click', '.btn-create-consultant', function (e) {
+            e.preventDefault();
+
+            var name = $('#txtConsultantName').val();
+            var family = $('#txtConsultantFamily').val();
+            var phone = $('#txtConsultantPhone').val();
+            var Type = 'مشاور';
+
+            if (phone == '') {
+                alert('لطفا اطلاعات را وارد کنید');
+                return;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementQuickRegistrationManagement/AddOwnerOrConcultant",
+                data: {
+                    'Name': name,
+                    'Family': family,
+                    'Phone': phone,
+                    'Type': Type
+                },
+
+
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        $.ajax({
+                            cache: false,
+                            type: "Post",
+                            url: "/AdminMelkavan/AdvertisementQuickRegistrationManagement/GetAllConsultantsList",
+                            success: function (result) {
+                                debugger;
+                                if (result.Result == "OK") {
+
+                                    ConsultantsList = result.Records;
+
+                                    $('.ConsultantId').find('option')
+                                        .remove()
+                                        .end()
+                                        .append('<option value="" selected>---</option>');
+
+
+                                    for (var i = 0; i < ConsultantsList.length; i++) {
+
+                                        var item = ConsultantsList[i];
+
+                                        item.Value = item.UserId;
+                                        item.DisplayText = item.Name + " " + item.Family + " - " + item.UserName + " - " + item.Mobile;
+
+
+                                        $('.ConsultantId')
+                                            .append($("<option></option>")
+                                                .attr("value", item.Value)
+                                                .text(item.DisplayText));
+                                    }
+
+
+                                    $('.ConsultantId').trigger("chosen:updated");
+
+                                    $('#create-consultant-modal').modal("hide");
+                                }
+                                else
+                                    if (result.Result == "ERROR") {
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html(result.Message);
+                                        $('#my-warning-modal').modal("show");
+                                    }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html('خطا');
+                                $('#my-warning-modal').modal("show");
+                            }
+                        });
+
+                        $.ajax({
+                            cache: false,
+                            type: "Post",
+                            url: "/AdminMelkavan/AdvertisementQuickRegistrationManagement/GetAllOwnersList",
+                            success: function (result) {
+                                debugger;
+                                if (result.Result == "OK") {
+
+                                    ownersList = result.Records;
+
+                                    $('.OwnerId').find('option')
+                                        .remove()
+                                        .end()
+                                        .append('<option value="" selected>---</option>');
+
+                                    for (var i = 0; i < ownersList.length; i++) {
+
+                                        var item = ownersList[i];
+
+                                        item.Value = item.UserId;
+                                        item.DisplayText = item.Name + " " + item.Family + " - " + item.UserName + " - " + item.Mobile;
+
+                                        $('.OwnerId')
+                                            .append($("<option></option>")
+                                                .attr("value", item.Value)
+                                                .text(item.DisplayText));
+                                    }
+
+                                    $('.OwnerId').trigger("chosen:updated");
+
+                                    $('#my-warning-modal').find('.modal-title').html('پیام');
+                                    $('#my-warning-modal').find('#error').html('مشاور با موفقیت افزوده شد');
+                                    $('#my-warning-modal').modal("show");
+
+                                    $('#create-owner-modal').modal("hide");
+                                }
+                                else
+                                    if (result.Result == "ERROR") {
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html(result.Message);
+                                        $('#my-warning-modal').modal("show");
+                                    }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html('خطا');
+                                $('#my-warning-modal').modal("show");
+                            }
+                        });
+
+
+
+                        //کد های زیر مخصوص اضافه شدن بدوم ریلود است
+                        // $('.ConsultantId option:first')
+                        //     .after(
+                        //         $("<option></option>")
+                        //             .attr("value", result.Records.UserId)
+                        //             .text(name + ' ' + family + ' - ' + phone)
+                        //     );
+
+                        // $('#my-warning-modal').find('.modal-title').html('پیام');
+                        // $('#my-warning-modal').find('#error').html('مشاور با موفقیت افزوده شد');
+                        // $('#my-warning-modal').modal("show");
+
+
+                        // $('.ConsultantId').trigger("chosen:updated");
+
+                        // $('#create-consultant-modal').modal("hide");
+
+                        // //اگر مالک با این شماره موبایل وجود داشت حذفش کن
+                        // $('.OwnerId option').each(function () {
+                        //     if ($(this).text().includes(phone)) {
+                        //         $(this).remove();
+                        //         $('.OwnerId').trigger("chosen:updated");
+                        //     }
+                        // });
+                        //پایان کد ها
+
+
+                    }
+                    else if (result.Result == "ERROR") {
+                        $('#my-warning-modal').find('.modal-title').html('اخطار');
+                        $('#my-warning-modal').find('#error').html(result.Message);
+                        $('#my-warning-modal').modal("show");
+                        $('#create-owner-modal').modal("hide");
+                    }
+
+                },
+
+            });
+        });
+
+
+        // $('select').val('').chosen({
+        //     placeholder_text_single: ' ',
+        //     placeholder_text_multiple: ' ',
+        //     search_contains: true,
+        //     max_shown_results: numberOfChosenItemsShow,
+        //     rtl: rtl
+        // });
+
+
+
+        $('body').on('click', '#saveButton', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+
+            $('#loadingModal').modal('show');
+
+            if (!$('.ConsultantId').val() && !$('.OwnerId').val()) {
+
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('انتخاب یک مشاور یا مالک اجباری است');
+                $('#my-warning-modal').modal("show");
+                return;
+            }
+
+
+
+
+            // #region validation
+            if (
+                //در هر حالت اگر این ها خالی بودن
+                ($('#slcAdvertisementTypeId').val() == null || $('#slcAdvertisementTypeId').val().length <= 0) ||
+                ($('#slcPropertyTypeId').val() == null || $('#slcPropertyTypeId').val().length <= 0) ||
+                ($('#Area').val() == null || $('#Area').val().length <= 0) ||
+                ($('#AdvertisementTitle').val() == null || $('#AdvertisementTitle').val().length <= 0) ||
+                ($('#slcTypeOfUseId').val() == null || $('#slcTypeOfUseId').val().length <= 0) ||
+                //اگر اجاره بود و ودیعه یا اجاره خالی بود
+                (
+                    ($('#slcAdvertisementTypeId').val() == 1 || $('#slcAdvertisementTypeId').val() == "1") && (
+                        ($('#RentPrice').val() == null || $('#RentPrice').val().length <= 0) ||
+                        ($('#DepositPrice').val() == null || $('#DepositPrice').val().length <= 0))
+                )
+            ) {
+                var inputsToValidate = [$('#slcPropertyTypeId'), $('#Area'), $('#AdvertisementTitle'), $('#RentPrice'), $('#DepositPrice'), $('#slcTypeOfUseId')]
+
+                debugger;
+                for (var i = 0; i < inputsToValidate.length; i++) {
+                    let input = inputsToValidate[i];
+                    let parent_div = input.parent();
+
+                    // Check if input value is empty
+                    if (input.val() == null || input.val().length <= 0) {
+                        // Check if input is a select element
+                        if (input.is('select')) {
+                            let chosenDiv = $('#' + input.attr('id') + '_chosen');
+                            chosenDiv.addClass("not_validated");
+                        } else {
+                            input.addClass("not_validated");
+                        }
+                    } else {
+                        // Remove validation classes if value is present
+                        if (input.is('select')) {
+                            let chosenDiv = $('#' + input.attr('id') + '_chosen');
+                            chosenDiv.removeClass("not_validated");
+                        } else {
+                            input.removeClass("not_validated");
+                        }
+                    }
+                }
+
+
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('لطفا تمام فیلد های اجباری را پر کنید');
+                $('#my-warning-modal').modal("show");
+
+
+                return;
+            }
+
+            if ($('#RebuiltInYearFa').val().length > 0 && $('#RebuiltInYearFa').val().length != 4) {
+
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('سال بازسازی باید 4 رقمی  باشد');
+                $('#my-warning-modal').modal("show");
+
+                return;
+            }
+
+
+
+
+
+            debugger;
+            var _this = $(this);
+            var formData = new FormData();
+
+            var advertisementTypeId = $('#slcAdvertisementTypeId').val();
+            var propertyTypeId = $('#slcPropertyTypeId').val();
+            var typeOfUseId = $('#slcTypeOfUseId').val();
+            var advertisementTitle = $('#AdvertisementTitle').val();
+            var area = $('#Area').val().replace(" متر مربع", '');
+            var advertisementDescriptions = $('#AdvertisementDescriptions').val();
+            var builtInYearFa = $('#BuiltInYearFa').val();
+            var rebuiltInYearFa = $('#RebuiltInYearFa').val();
+            var buildingLife = $('#slcBuildingLifeId').val();
+            var foundation = $('#Foundation').val().replace(" متر مربع", '');
+            var tagId = $("#slcTagId").val();
+            var ownerId = $(".OwnerId").val();
+            var consultantId = $(".ConsultantId").val();
+
+
+
+
+
+
+            if (advertisementTypeId !== null && advertisementTypeId == 1 || advertisementTypeId == "1") {
+                //اجاره
+                var rentPrice = $('#RentPrice').val().replace(/\,/g, "").replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+                var depositePrice = $('#DepositPrice').val().replace(/\,/g, "").replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+                var martialStatusId = parseInt($('#slcMaritalStatusId').val());
+                var convertable = $('#Convertable').prop("checked");
+
+
+            } else if (advertisementTypeId !== null && advertisementTypeId == 2 || advertisementTypeId == "2") {
+                //فروش
+                var offerPrice = $('#OfferPrice').val().replace(/\,/g, "").replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+
+
+                // if (parseFloat(offerPrice) <= 100000000) {
+                //     $('#OfferPrice').addClass("not_validated");
+
+
+                //     $('#my-warning-modal').find('.modal-title').html('خطا');
+                //     $('#my-warning-modal').find('#error').html('قیمت کل نباید زیر 100 میلیون تومان باشد');
+                //     $('#my-warning-modal').modal("show");
+
+                //     return;
+                // }
+
+                var documentTypeId = $('#slcDocumentTypeId').val();
+                var documentRootTypeId = $('#slcDocumentRootTypeId').val();
+                var documentOwnershipTypeId = $('#slcDocumentOwnershipTypeId').val();
+
+
+                var calculatedOfferPrice = parseFloat(parseFloat(offerPrice) / parseFloat(area));
+
+            }
+
+
+
+            debugger;
+            formData.append('AdvertisementId', advertisementVM.AdvertisementId);
+            formData.append('AdvertisementDetailsVM.AdvertisementTypeId', advertisementTypeId);
+            formData.append('PropertyTypeId', propertyTypeId);
+            formData.append('TypeOfUseId', typeOfUseId);
+            formData.append('AdvertisementTitle', advertisementTitle);
+            formData.append('Area', area);
+            formData.append('AdvertisementPricesHistoriesVM.RentPrice', rentPrice);
+            formData.append('AdvertisementPricesHistoriesVM.DepositPrice', depositePrice);
+            formData.append('AdvertisementDetailsVM.MaritalStatusId', martialStatusId);
+            formData.append('AdvertisementDetailsVM.Convertable', convertable);
+            formData.append('AdvertisementDetailsVM.TagId', tagId);
+
+
+            formData.append('AdvertisementPricesHistoriesVM.OfferPrice', offerPrice); //قیمت وارد شده
+            formData.append('AdvertisementPricesHistoriesVM.OfferPriceType', 1); // نوع قیمت - کل بر مبنای میلیارد
+            formData.append('AdvertisementPricesHistoriesVM.CalculatedOfferPrice', calculatedOfferPrice); //قیمت محاسبه شده
+
+            formData.append('DocumentTypeId', documentTypeId);
+            formData.append('DocumentRootTypeId', documentRootTypeId);
+            formData.append('DocumentOwnershipTypeId', documentOwnershipTypeId);
+            formData.append('AdvertisementDescriptions', advertisementDescriptions);
+            formData.append('RebuiltInYearFa', rebuiltInYearFa);
+            formData.append('BuiltInYearFa', builtInYearFa);
+            formData.append('AdvertisementDetailsVM.BuildingLifeId', buildingLife);
+            formData.append('AdvertisementDetailsVM.Foundation', foundation);
+
+
+            if (advertisementVM.PublishType == 'Quick') {
+
+                formData.append('PublishType', 'Quick');
+
+                if (consultantId) {
+                    formData.append('ConsultantUserId', consultantId);
+                }
+
+                if (ownerId) {
+                    formData.append('OwnerId', ownerId);
+                    formData.append('AdvertisementOwnersVM.OwnerId', ownerId);
+                    formData.append('AdvertisementOwnersVM.Share', 6);
+                    formData.append('AdvertisementOwnersVM.SharePercent', 100);
+                    formData.append('AdvertisementOwnersVM.OwnerType', 'users');
+                }
+
+            }
+            else {
+                formData.append('PublishType', 'Melkavan');
+            }
+
+
+
+
+
+            $.ajax({
+                url: '/AdminMelkavan/AdvertisementQuickRegistrationManagement/UpdateAdvertisement',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                //contentType: 'application/json',
+                //dataType:'json',
+                success: function (result) {
+
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message);
+                        $('#error-alert').show(500);
+                        window.setTimeout(function () { window.location.reload(); }, 2500);
+
+
+                    } else {
+
+                        $('#error-alert').removeClass('alert-success');
+                        $('#error-alert').addClass('alert-danger');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html('عملیات با خطا رو به رو شد...');
+                        $('#error-alert').show(500);
+                        window.setTimeout(function () { $('#error-alert').hide(100); }, 2500);
+
+                    }
+                },
+                error: function (jqXHR) {
+
+                    $('#error-alert').removeClass('alert-success');
+                    $('#error-alert').addClass('alert-danger');
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html('عملیات با خطا رو به رو شد...');
+                    $('#error-alert').show(500);
+                    window.setTimeout(function () { $('#error-alert').hide(100); }, 2500);
+
+                },
+                complete: function (jqXHR, status) {
+                }
+            });
+
+        });
+
+
+
+
+        //#endregion
+
+
+
+        $('body').on('keypress', '#Area', function (e) {
+            // Allow only digits (0-9)
+            var charCode = e.which ? e.which : e.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault(); // Prevent entry if it's not a digit
+            }
+        });
+
+        $('body').on('keypress', '#Foundation', function (e) {
+            // Allow only digits (0-9)
+            var charCode = e.which ? e.which : e.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault(); // Prevent entry if it's not a digit
+            }
+        });
+
+        $('body').on('keypress', '#OfferPrice', function (e) {
+            // Allow only digits (0-9)
+            var charCode = e.which ? e.which : e.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault(); // Prevent entry if it's not a digit
+            }
+        });
+
+        $('body').on('keypress', '#RentPrice', function (e) {
+            // Allow only digits (0-9)
+            var charCode = e.which ? e.which : e.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault(); // Prevent entry if it's not a digit
+            }
+        });
+
+        $('body').on('keypress', '#DepositPrice', function (e) {
+            // Allow only digits (0-9)
+            var charCode = e.which ? e.which : e.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault(); // Prevent entry if it's not a digit
+            }
+        });
+
+
+        $('body').on('keypress', '#RebuiltInYearFa', function (e) {
+            // Allow only digits (0-9)
+            var charCode = e.which ? e.which : e.keyCode;
+            if (charCode < 48 || charCode > 57) {
+                e.preventDefault(); // Prevent entry if it's not a digit
+            }
+        });
+
+
+
+
+        $('body').on('keyup', '#OfferPrice', function (e) {
+            var num = $("#OfferPrice").val().replace(/\,/g, "").replace(/(.)(?=(.{3})+(?!.))/g, '$1,');
+            $("#OfferPrice").val(num);
+        });
+
+        $('body').on('keyup', '#RentPrice', function (e) {
+            var num = $("#RentPrice").val().replace(/\,/g, "").replace(/(.)(?=(.{3})+(?!.))/g, '$1,');
+            $("#RentPrice").val(num);
+        });
+
+        $('body').on('keyup', '#DepositPrice', function (e) {
+            var num = $("#DepositPrice").val().replace(/\,/g, "").replace(/(.)(?=(.{3})+(?!.))/g, '$1,');
+            $("#DepositPrice").val(num);
+        });
+
+    });
+</script>

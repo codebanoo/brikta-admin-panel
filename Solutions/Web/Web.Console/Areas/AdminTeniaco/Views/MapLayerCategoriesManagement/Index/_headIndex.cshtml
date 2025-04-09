@@ -1,0 +1,92 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<MapLayerCategoriesVM> mapLayerCategoriesList = new List<MapLayerCategoriesVM>();
+        @Html.Raw("var mapLayerCategoriesList  = [];")
+        ;
+
+        if (ViewData["MapLayerCategoriesList"] != null)
+        {
+            mapLayerCategoriesList = (List<MapLayerCategoriesVM>)ViewData["MapLayerCategoriesList"];
+
+            mapLayerCategoriesList.Insert(0, new MapLayerCategoriesVM()
+                {
+                    MapLayerCategoryTitle = "---",
+                    MapLayerCategoryId = 0,
+                    ParentMapLayerCategoryId = null
+                });
+
+            var mapLayerCategoriesListData = mapLayerCategoriesList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.MapLayerCategoryTitle}",
+                Value = a.MapLayerCategoryId,
+                Data_Parent = a.ParentMapLayerCategoryId
+            });
+
+            @Html.Raw("debugger; mapLayerCategoriesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mapLayerCategoriesListData))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+@*@{
+    await Html.RenderPartialAsync("RequireCssJs");
+}*@
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7),
+    div.jtable-main-container table.jtable thead th:nth-child(8) {
+        width: 1% !important;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+
+    .MapLayer,
+    .ShowAllMapLayers {
+        /*width: 47px;*/
+        height: 35px;
+        text-align: center;
+        display: inline-flex;
+    }
+</style>

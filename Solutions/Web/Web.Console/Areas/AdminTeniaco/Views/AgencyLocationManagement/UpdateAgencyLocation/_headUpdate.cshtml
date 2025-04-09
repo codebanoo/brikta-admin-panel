@@ -1,0 +1,52 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        AgenciesVM agenciesList = new AgenciesVM();
+
+        @Html.Raw("var agenciesList;")
+        ;
+
+        if (ViewData["AgenciesList"] != null)
+        {
+            agenciesList = ViewData["AgenciesList"] as AgenciesVM;
+
+            @Html.Raw("debugger; agenciesList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(agenciesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<link href="~/lib/openlayers-v6.9.0/css/ol.css" rel="stylesheet" />
+<script src="~/lib/openlayers-v6.9.0/build/ol.js"></script>
+
+<style type="text/css">
+    #mapContainer {
+        height: 700px;
+        overflow: hidden;
+        width: 100%;
+    }
+
+        #mapContainer .ol-viewport {
+            height: 700px !important;
+        }
+
+    #mapLeft,
+    #mapRight {
+        height: 700px;
+        overflow: hidden;
+        /*width: 100%;*/
+    }
+
+    #mapLeft {
+        float: left;
+    }
+
+    #mapRight {
+        float: right;
+    }
+</style>

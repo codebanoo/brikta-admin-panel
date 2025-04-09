@@ -1,0 +1,221 @@
+﻿@{
+
+}
+
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+                    $('#IsActivated').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+
+            $('#IsActivated').val(@(Model.IsActivated.Equals(true) ? @Html.Raw("'True'") : @Html.Raw("'False'"))).trigger("chosen:updated");
+
+            $('#IsDeleted').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+            $('#IsDeleted').val(@(Model.IsDeleted.Equals(true) ? @Html.Raw("'True'") : @Html.Raw("'False'"))).trigger("chosen:updated");
+
+            $('#CentralOffice').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+            });
+            $('#CentralOffice').val(@(Model.CentralOffice.Equals(true) ? @Html.Raw("'True'") : @Html.Raw("'False'"))).trigger("chosen:updated");
+
+            $('#MyCompanyDirectorId')
+                .append($("<option></option>")
+                    .attr("value", 0)
+                    .text('---'));
+
+            for (var i = 0; i < usersList.length; i++) {
+                var item = usersList[i];
+                $('#MyCompanyDirectorId')
+                    .append($("<option></option>")
+                        .attr("value", item.UserId)
+                        .text(item.UserName));
+            }
+
+            $('#MyCompanyDirectorId').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+              if (@(Model.MyCompanyDirectorId)!= null)
+                  $('#MyCompanyDirectorId').val(@(Model.MyCompanyDirectorId)).trigger("chosen:updated");
+
+
+            $('#StateId')
+                .append($("<option></option>")
+                    .attr("value", 0)
+                    .text('---'));
+
+            for (var i = 0; i < statesList.length; i++) {
+                var item = statesList[i];
+                $('#StateId')
+                    .append($("<option></option>")
+                        .attr("value", item.StateId)
+                        .text(item.StateName));
+            }
+
+            $('#StateId').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+
+            if (@(Model.StateId)!= null)
+            $('#StateId').val(@(Model.StateId)).trigger("chosen:updated");
+
+            let cities = citiesList.filter(word => word.StateId == @(Model.StateId));
+
+            for (var i = 0; i < cities.length; i++) {
+                var item = cities[i];
+                $('#CityId')
+                    .append($("<option></option>")
+                        .attr("value", item.CityId)
+                        .text(item.CityName));
+
+            }
+            $('#CityId').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                max_shown_results: numberOfChosenItemsShow,
+                rtl: rtl
+            });
+            $('#CityId').val(@(Model.CityId)).trigger("chosen:updated");
+
+            $("#StateId").change(function () {
+                debugger;
+                var stateId = this.value;
+
+                $('#CityId').find('option')
+                    .remove()
+                    .end();
+
+                $('#CityId')
+                    .append($("<option></option>")
+                        .attr("value", 0)
+                        .text('---'));
+                $('#CityId').val('0').trigger("chosen:updated");
+
+
+                let cities = citiesList.filter(word => word.StateId == stateId);
+
+                for (var i = 0; i < cities.length; i++) {
+                    var item = cities[i];
+                    $('#CityId')
+                        .append($("<option></option>")
+                            .attr("value", item.CityId)
+                            .text(item.CityName));
+
+                }
+                $('#CityId').trigger("chosen:updated");
+
+            });
+        });
+
+        function OnBegin(e) {
+            //debugger;
+            //$('#AjaxLoading').show();
+            return true;
+        }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+            if (response.Result == 'OK') {
+                if ((document.getElementById("CompanyLogo").value != "") || (document.getElementById("WaterMarkImage").value != ""))
+                    {
+                    var myCompanyId = response.MyCompanyId;
+
+                    var formData = new FormData();
+
+                    if (document.getElementById("CompanyLogo").value != "")
+                        formData.append('companyLogo', $('#CompanyLogo')[0].files[0]);
+
+                    if (document.getElementById("WaterMarkImage").value != "")
+                        formData.append('waterMarkImage', $('#WaterMarkImage')[0].files[0]);
+
+                    formData.append('MyCompanyId', myCompanyId);
+
+                    var _url = '@Url.Action("UploadFile", "MyCompaniesManagement")';
+
+                    $.ajax({
+                            url: _url,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (result) {
+                                $('#error-alert').removeClass('alert-danger');
+                                $('#error-alert').addClass('alert-success');
+
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(response.Message + ' ' + result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                                $('#error-alert').show(500);
+                                //$('#AjaxLoading').hide();
+                            },
+                            error: function (jqXHR) {
+                                $('#error-alert').removeClass('alert-success');
+                                $('#error-alert').addClass('alert-danger');
+
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(response.Message + '. ' + result.Message);
+                                $('#error-alert').show(500);
+                                //$('#AjaxLoading').hide();
+                            },
+                            complete: function (jqXHR, status) {
+                            }
+                        });
+                }
+                else {
+                    $('#error-alert').removeClass('alert-danger');
+                    $('#error-alert').addClass('alert-success');
+
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html(response.Message);
+                    window.setTimeout(function () { window.location.reload(); }, 2500);
+                    $('#error-alert').show(500);
+                    //$('#AjaxLoading').hide();
+                }
+            }
+            else {
+                $('#error-alert').removeClass('alert-success');
+                $('#error-alert').addClass('alert-danger');
+
+
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html(response.Message);
+                $('#error-alert').show(500);
+                //$('#AjaxLoading').hide();
+            }
+        }
+        function OnComplete() {
+            debugger;
+            clearValidationSummary();
+        };
+
+        function OnFailed(context) {
+            debugger;
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+            $('#error-alert').html(context.Message);
+            $('#error-alert').show(500);
+        };
+</script>

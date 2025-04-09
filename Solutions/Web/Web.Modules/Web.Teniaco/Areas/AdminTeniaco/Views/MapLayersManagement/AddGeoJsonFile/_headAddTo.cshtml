@@ -1,0 +1,23 @@
+﻿
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        MapLayersVM mapLayers = new MapLayersVM();
+
+        @Html.Raw("var mapLayers;")
+        ;
+
+        if (ViewData["MapLayersVM"] != null)
+        {
+            mapLayers = (MapLayersVM)ViewData["MapLayersVM"];
+
+            @Html.Raw("debugger; mapLayers=" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mapLayers))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+

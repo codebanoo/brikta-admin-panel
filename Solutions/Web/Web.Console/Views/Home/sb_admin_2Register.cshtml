@@ -1,0 +1,262 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using VM.Console;
+@using Services.Xml.Entities;
+
+@model RegisterVM
+
+@{
+    bool showCaptcha = false;
+    if (ViewData["ShowCaptcha"] != null)
+    {
+        showCaptcha = (bool)ViewData["ShowCaptcha"];
+    }
+
+    Layout = "_" + "LoginLayout";
+    ViewData["Title"] = "PageTitle";
+    string ReturnUrl = ViewData["ReturnUrl"] as string;
+}
+
+@section head {
+
+}
+
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    RegisterFormTitle
+                    @*ورود هاست*@
+                </h3>
+                <button id="btnBackPage" class="btn btn-primary" name="btnBackPage" data-back-url="/fa/home/Index"
+                        data-toggle="tooltip" data-placement="top"
+                        title="بازگشت">
+                        <i class="fa fa-arrow-left"></i>
+                </button>
+            </div>
+            <div class="panel-body">
+                <form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+                      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+                      data-ajax="true" data-ajax-method="POST">
+                    @Html.AntiForgeryToken()
+                    <fieldset>
+                        <div class="form-group">
+                            @{
+                                <div id='error-alert' class="form-group alert alert-danger">
+                                </div>
+                            }
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label id="lblOldUser" asp-for="OldUser">
+                                    <input asp-for="OldUser" class="input-sm" />
+                                    OldUser
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: none;">
+                            NationalCode
+                            <input asp-for="NationalCode" class="form-control input-sm"
+                                   placeholder="کد ملی" />
+                            <span asp-validation-for="NationalCode" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col col-md-6 col-lg-6 col-xs-12 col-sm-12" style="display: none;">
+                            <button id="btnCheckNationalCode" class="btn btn-default btn-block input-sm" type="submit">
+                                Check
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            UserName
+                            <input asp-for="UserName" class="form-control input-sm"
+                                   placeholder="نام کاربری" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            Password
+                            <input asp-for="Password" class="form-control input-sm"
+                                   placeholder="رمز" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            ReplayPass
+                            <input asp-for="ReplayPass" class="form-control input-sm"
+                                   placeholder="ReplayPass" />
+                            <span asp-validation-for="ReplayPass" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <button id="btnSubmit" class="btn btn-primary btn-block input-sm" type="submit">
+                                Submit
+                            </button>
+                        </div>
+                        <div class="form-group col col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <a class="btn btn-default btn-block btn-sm" id="aLogin" href="/fa/home/Login">
+                                Login
+                            </a>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="userInfo-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                اطلاعات
+            </div>
+            <div class="modal-body">
+                <h4>
+                    ConfitmText
+                </h4>
+                <div id="userInfo"></div>
+                <div class="row">
+                    <div class="col col-md-4 col-lg-4 col-xs-12 col-sm-12 col-lg-offset-4 col-md-offset-4">
+                        <button id="btnConfitm" class="btn btn-primary btn-block input-sm" type="button">
+                            Confitm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+            $('#OldUser').change(function () {
+                if (this.checked) {
+                    $("#UserName").parent().hide(400);
+                    $("#Password").parent().hide(400);
+                    $("#ReplayPass").parent().hide(400);
+                    $('#btnSubmit').parent().hide(400);
+                    $('#NationalCode').parent().show(400);
+                    $('#btnCheckNationalCode').parent().show(400);
+                }
+                else {
+                    $("#UserName").parent().show(400);
+                    $("#Password").parent().show(400);
+                    $("#ReplayPass").parent().show(400);
+                    $('#btnSubmit').parent().show(400);
+                    $('#NationalCode').parent().hide(400);
+                    $('#btnCheckNationalCode').parent().hide(400);
+                }
+            });
+
+            $('#btnCheckNationalCode').click(function (e) {
+                e.preventDefault();
+                var txtNationalCode = $('#NationalCode').val();
+                if (txtNationalCode == '') {
+                    alert('لطفا کد ملی را وارد کنید');
+                    return;
+                }
+
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/Home/CheckNationalCode",
+                    data: {
+                        'nationalCode': txtNationalCode,
+                    },
+                    success: function (result) {
+                        if (result.Result == "OK") {
+                            debugger;
+                            var record = result.Record;
+
+                            var obj = JSON.parse(record);
+
+                            var userInfo = '<div class="row">';
+
+                            for (key in obj) {
+                                if (typeof (obj[key]) != 'object') {
+                                    userInfo += '<div class="col col-lg-3">&nbsp;</div>';
+                                    userInfo += '<div class="col col-lg-3"><strong>' + key + '</strong></div>';
+                                    userInfo += '<div class="col col-lg-3">' + obj[key] + '</div>';
+                                    userInfo += '<div class="col col-lg-3">&nbsp;</div>';
+                                }
+                            }
+
+                            userInfo += '</div>';
+
+                            $('#userInfo').html(userInfo);
+
+                            $('#userInfo-modal').modal("show");
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#myModal').find('#error').html(result.Message);
+                                $('#myModal').modal("show");
+                            }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                        $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                        $('#my-warning-modal').modal("show");
+                    }
+                });
+            });
+
+            $('#btnConfitm').click(function (e) {
+                e.preventDefault();
+                debugger;
+
+                $('#UserName').val($('#NationalCode').val());
+                $('#Password').val($('#NationalCode').val());
+                $('#ReplayPass').val($('#NationalCode').val());
+                $('#OldUser').val(true);
+                $('#OldUser').prop('checked', true);
+
+                $('#btnSubmit').click();
+            });
+        });
+
+        function OnBegin() {
+            $('#error-alert').hide(500);
+
+            return true;
+        }
+
+        function OnSuccess(response, status, xhr) {
+            debugger;
+            if (response.Result == 'OK') {
+                $('#error-alert').removeClass('alert-danger');
+                $('#error-alert').addClass('alert-success');
+                window.setTimeout(function () {
+                    window.location.href = response.LoginUrl;
+                }, 2000);
+            }
+            else {
+                window.setTimeout(function () {
+                    window.location.reload();
+                }, 3000);
+                $('#error-alert').removeClass('alert-success');
+                $('#error-alert').addClass('alert-danger');
+            }
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(500);
+        }
+
+        function OnComplete() {
+            clearValidationSummary();
+        };
+
+        function OnFailed(context) {
+            debugger;
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+            $('#error-alert').html(context.Message);
+            $('#error-alert').show(500);
+        };
+    </script>
+}

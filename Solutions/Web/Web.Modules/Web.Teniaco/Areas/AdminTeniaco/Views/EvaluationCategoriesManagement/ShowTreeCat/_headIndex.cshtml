@@ -1,0 +1,40 @@
+﻿@using Newtonsoft.Json
+@using VM.Teniaco
+
+<style type="text/css">
+  .BoldTree {
+      background-color:yellow;
+      color:black !important;
+     
+  }
+
+
+  
+</style>
+<script type="text/javascript">
+    @{
+        List<EvaluationCategoriesNodeWithDataVM> catMapEvalTreeCategoriesListDataList = new List<EvaluationCategoriesNodeWithDataVM>();
+
+                                @Html.Raw("var jsonData;")
+        ;
+        
+
+        if (ViewData["EvalTreeCategoriesList"] != null)
+        {
+            catMapEvalTreeCategoriesListDataList = ViewData["EvalTreeCategoriesList"] as List<EvaluationCategoriesNodeWithDataVM>;
+
+                                    @Html.Raw(" jsonData = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(catMapEvalTreeCategoriesListDataList)) + "; ")
+        ;
+        }
+    }
+</script>
+
+
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/lib/jquery.fancytree/dist/skin-win7/ui.fancytree.css" rel="stylesheet" />
+<script src="~/lib/jquery.fancytree/dist/jquery.fancytree-all.js"></script>

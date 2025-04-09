@@ -1,0 +1,73 @@
+﻿@using VM.Public;
+@using Newtonsoft.Json
+
+<script type="text/javascript">
+    @{
+        ZonesVM zonesList = new ZonesVM();
+
+        @Html.Raw("var zonesList;")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = ViewData["ZonesList"] as ZonesVM;
+
+            @Html.Raw("debugger; zonesList = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesList)) + "; debugger;")
+            ;
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        string domainName = "";
+
+        @Html.Raw("var domainName;")
+        ;
+
+        if (ViewData["DomainName"] != null)
+        {
+            domainName = ViewData["DomainName"] as string;
+
+            @Html.Raw("debugger; domainName = '" + domainName + "'; debugger;")
+            ;
+        }
+    }
+</script>
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+</style>

@@ -1,0 +1,272 @@
+﻿<script type="text/javascript">
+
+    var investorId = 0;
+
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+
+        for (var i = 0; i < personsList.length; i++) {
+            var item = personsList[i];
+           $('#RepresentativeId')
+           .append($("<option></option>")
+               .attr("value", item.Value)
+               .text(item.DisplayText));
+        }
+
+        for (var i = 0; i < guildCategoriesList.length; i++) {
+            var item = guildCategoriesList[i];
+            $('#GuildCategoryId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+          for (var i = 0; i < fundsList.length; i++) {
+            var item = fundsList[i];
+            $('#FundId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+
+            $('#TradableNumber')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+           for (var i = 0; i < personTypesList.length; i++) {
+            debugger;
+            var item = personTypesList[i];
+            $('#slcPersonTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcPersonTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#RepresentativeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#GuildCategoryId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#FundId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#TradableNumber').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+           $('body').on('click', '.lblNewPerson', function (e) {
+            e.preventDefault();
+
+            $('#txtName').val('');
+            $('#txtFamily').val('');
+            $('#txtPhone').val('');
+
+            $('#create-person-modal').modal("show");
+        });
+
+         $('body').on('click', '.btn-Create-person', function (e) {
+             debugger;
+            e.preventDefault();
+
+            var name = $('#txtName').val();
+            var family = $('#txtFamily').val();
+            var phone = $('#txtPhone').val();
+            // var personTypeId = $('#slcPersonTypeId').val();
+            var personTypeId = 1;
+
+            if (family == '' || phone == '') {
+                alert('لطفا اطلاعات را وارد کنید');
+                return;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/InvestorsManagement/AddToPersons",
+                data: {
+                    'Name': name,
+                    'Family': family,
+                    'Phone': phone,
+                    'PersonTypeId': personTypeId
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+                        $.ajax({
+                            cache: false,
+                            type: "Post",
+                            url: "/AdminTeniaco/InvestorsManagement/GetAllPersonsList",
+                            success: function (result) {
+                                debugger;
+                                if (result.Result == "OK") {
+
+                                    personsList = result.Records;
+
+                                    $('#ConsultantUserId').find('option')
+                                        .remove()
+                                        .end()
+                                        .append('<option value="" selected>---</option>');
+
+                                    for (var i = 0; i < personsList.length; i++) {
+                                        debugger;
+                                        var item = personsList[i];
+                                        $('#ConsultantUserId')
+                                            .append($("<option></option>")
+                                                .attr("value", item.PersonId)
+                                                .text(item.Name + ' ' + item.Family + ' - ' + item.Phone));
+                                    }
+
+                                    $('#ConsultantUserId').trigger("chosen:updated");
+
+                                    $('#OwnerId').find('option')
+                                        .remove()
+                                        .end()
+                                        .append('<option value="" selected>---</option>');
+
+                                    $('#OwnerId').html($('#ConsultantUserId').html());
+                                    $('#OwnerId').trigger("chosen:updated");
+
+                                    $('#create-person-modal').modal("hide");
+                                }
+                                else
+                                    if (result.Result == "ERROR") {
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html(result.Message);
+                                        $('#my-warning-modal').modal("show");
+                                    }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html('خطا');
+                                $('#my-warning-modal').modal("show");
+                            }
+                        });
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html(result.Message);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('خطا');
+                    $('#my-warning-modal').modal("show");
+                }
+            });
+        });
+
+
+
+
+        $('#btnReset').click(function (e) {
+
+            $('#CustomUsersVM_Mobile').val(null);
+            $('#CustomUsersVM_NationalCode').val(null);
+            $('#CustomUsersVM_Family').val(null);
+            $('#CustomUsersVM_Name').val(null);
+            $('#RepresentativeId').val(null);
+            $('#CustomUsersVM.UserName').val(null);
+            $('#CustomUsersVM.Password').val(null);
+            $('#CustomUsersVM.Email').val(null);
+            $('#CompanyName').val(null);
+            $('#CompanyPhone').val(null);
+            $('#CompanyAddress').val(null);
+            $('#DescriptionOfCompany').val(null);
+            $('#GuildCategoryId').val(null);
+            $('#Job').val(null);
+            $('#FundId').val(null);
+            $('#TradableNumber').val(null);
+            $('#DescriptionOfFund').val(null);
+            $('#CountOfProperties').val(null);
+            $('#RelatedPersons').val(null);
+            $('#BusinessSpirit').val(null);
+            $('#PersonalSpirit').val(null);
+            $('#PastTransactions').val(null);
+            $('#RepresentativeId').val(null).trigger("chosen:updated");
+
+
+            e.preventDefault();
+        });
+
+    });
+
+    function OnBegin(e) {
+        debugger;
+        
+        return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+        if (response.Result == 'OK') {
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(2000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(2000);
+
+            console.log(response.Record);
+
+            investorId = response.Record.InvestorId;
+
+            window.setTimeout(function () { window.location.reload(); }, 2500);
+
+            $('#moreInfo-modal').modal("show");
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(500);
+        }
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        debugger;
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+    };
+
+</script>

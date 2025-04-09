@@ -1,0 +1,434 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <MvcRazorExcludeViewFilesFromBuild>false</MvcRazorExcludeViewFilesFromBuild>
+    <MvcRazorExcludeViewFilesFromPublish>true</MvcRazorExcludeViewFilesFromPublish>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\UserTeniaco\Views\MyProjectsManagement\**" />
+    <Content Remove="Areas\UserTeniaco\Views\MyProjectsManagement\**" />
+    <EmbeddedResource Remove="Areas\UserTeniaco\Views\MyProjectsManagement\**" />
+    <None Remove="Areas\UserTeniaco\Views\MyProjectsManagement\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\UserTeniaco\Controllers\MyProjectsManagementController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Areas\AdminTeniaco\Views\InvestorsManagement\UpdateInvestors\_headUpdate.cshtml" />
+    <Content Remove="Areas\AdminTeniaco\Views\InvestorsManagement\UpdateInvestors\_htmlUpdate.cshtml" />
+    <Content Remove="Areas\AdminTeniaco\Views\InvestorsManagement\UpdateInvestors\_jsUpdate.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ApiCallers.BaseApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.BaseApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.MelkavanApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.MelkavanApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.ProjectsApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.ProjectsApiCaller\bin\Debug\net6.0\ApiCallers.ProjectsApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.PublicApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.PublicApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.TeniacoApiCaller">
+      <HintPath>..\..\..\..\AllRef\ApiCallers.TeniacoApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomAttributes">
+      <HintPath>..\..\..\..\AllRef\CustomAttributes.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Aspnet.Core">
+      <HintPath>..\..\..\..\AllRef\Microsoft.Aspnet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Models">
+      <HintPath>..\..\..\..\AllRef\Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\..\AllRef\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Business">
+      <HintPath>..\..\..\..\AllRef\Services.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Public">
+      <HintPath>..\..\..\..\AllRef\Services.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Xml">
+      <HintPath>..\..\..\..\AllRef\Services.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Automation">
+      <HintPath>..\..\..\..\AllRef\VM.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\..\AllRef\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\..\AllRef\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Melkavan">
+      <HintPath>..\..\..\VM\VM.Melkavan\bin\Debug\net6.0\VM.Melkavan.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Projects">
+      <HintPath>..\..\..\..\AllRef\VM.Projects.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\..\AllRef\VM.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Teniaco">
+      <HintPath>..\..\..\..\AllRef\VM.Teniaco.dll</HintPath>
+    </Reference>
+    <Reference Include="Web.Core">
+      <HintPath>..\..\..\..\AllRef\Web.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\AdminTeniaco\Views\Shared\Components\AdminDashboard\" />
+    <Folder Include="Areas\AdminTeniaco\Views\Shared\Components\AdminNavigation\" />
+    <Folder Include="Areas\UserTeniaco\Views\UserUserConfig\" />
+    <Folder Include="wwwroot\outter_theme\assets\svg\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\AdminTeniaco\Views\AgenciesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgenciesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgenciesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgencyLocationManagement\UpdateAgencyLocation\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgencyLocationManagement\UpdateAgencyLocation\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgencyLocationManagement\UpdateAgencyLocation\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgencyStaffsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgencyStaffsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AgencyStaffsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AnswerSheetManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AnswerSheetManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\AnswerSheetManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ChartMapCatManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ChartMapCatManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ChartMapCatManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ColleaguesManagement\ListOfAgencies\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ColleaguesManagement\ListOfAgencies\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ColleaguesManagement\ListOfAgencies\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ColleaguesManagement\ListOfContractors\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ColleaguesManagement\ListOfContractors\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ColleaguesManagement\ListOfContractors\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ContractorsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ContractorsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ContractorsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\ShowSubjects\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\ShowSubjects\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\ShowSubjects\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\ShowTreeCat\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\ShowTreeCat\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationCategoriesManagement\ShowTreeCat\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationChartManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationChartManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationChartManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationInvestorValuesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationInvestorValuesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationInvestorValuesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationItemsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationItemsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationItemsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationQuestionsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationQuestionsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationQuestionsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationTreeManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationTreeManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\EvaluationTreeManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FeaturesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FeaturesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FeaturesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FeaturesOptionsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FeaturesOptionsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FeaturesOptionsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FundsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FundsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\FundsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\AddToInvestors\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\AddToInvestors\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\AddToInvestors\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\AnswerSheet\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\AnswerSheet\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\AnswerSheet\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\EvaluationOfInvestors\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\EvaluationOfInvestors\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\EvaluationOfInvestors\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\ListOfBaseInvestors\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\ListOfBaseInvestors\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\ListOfBaseInvestors\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\UpdateInvestors\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\UpdateInvestors\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\InvestorsManagement\UpdateInvestors\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\CompareMapLayers\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\CompareMapLayers\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\CompareMapLayers\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\DrawOnTheMap\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\DrawOnTheMap\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\DrawOnTheMap\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\PriceLayerIndex\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\PriceLayerIndex\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\PriceLayerIndex\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\ShowTreeMapLayer\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\ShowTreeMapLayer\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayerCategoriesManagement\ShowTreeMapLayer\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\AddGeoJsonFile\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\AddGeoJsonFile\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\AddGeoJsonFile\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\AddToMapLayerFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\AddToMapLayerFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\AddToMapLayerFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\DrawOnTheMap\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\DrawOnTheMap\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\DrawOnTheMap\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\FeaturesOnTheMap\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\FeaturesOnTheMap\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\FeaturesOnTheMap\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\ReDrawOnTheMap\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\ReDrawOnTheMap\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\ReDrawOnTheMap\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\ShowAllMapLayers\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\ShowAllMapLayers\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapLayersManagement\ShowAllMapLayers\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MapsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesDocsManagement\AddToMyPropertyFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesDocsManagement\AddToMyPropertyFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesDocsManagement\AddToMyPropertyFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesDocsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesDocsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesDocsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesFeaturesManagement\UpdateMyPropertyFeatures\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesFeaturesManagement\UpdateMyPropertyFeatures\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesFeaturesManagement\UpdateMyPropertyFeatures\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesLocationManagement\UpdateMyPropertylocation\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesLocationManagement\UpdateMyPropertylocation\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesLocationManagement\UpdateMyPropertylocation\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\AddToMyProperties\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\AddToMyProperties\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\AddToMyProperties\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\AddToPrivateProperties\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\AddToPrivateProperties\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\AddToPrivateProperties\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\CompareMyProperties\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\CompareMyProperties\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\CompareMyProperties\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\GetMyPropertyDetailsWithPropertyId\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\GetMyPropertyDetailsWithPropertyId\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\GetMyPropertyDetailsWithPropertyId\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\ListOfFeatures\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\ListOfFeatures\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\ListOfFeatures\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\UpdateMyProperties\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\UpdateMyProperties\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\UpdateMyProperties\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\UpdatePrivateProperties\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\UpdatePrivateProperties\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesManagement\UpdatePrivateProperties\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMapsManagement\AddToMyPropertyFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMapsManagement\AddToMyPropertyFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMapsManagement\AddToMyPropertyFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMapsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMapsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMapsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMediaManagement\AddToMyPropertyFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMediaManagement\AddToMyPropertyFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMediaManagement\AddToMyPropertyFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMediaManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMediaManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesMediaManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesPricesHistoriesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesPricesHistoriesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\MyPropertiesPricesHistoriesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesDocsManagement\AddToPropertyFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesDocsManagement\AddToPropertyFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesDocsManagement\AddToPropertyFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesDocsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesDocsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesDocsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesFeaturesManagement\UpdatePropertyFeatures\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesFeaturesManagement\UpdatePropertyFeatures\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesFeaturesManagement\UpdatePropertyFeatures\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesLocationManagement\UpdatePropertylocation\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesLocationManagement\UpdatePropertylocation\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesLocationManagement\UpdatePropertylocation\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\AddToProperties\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\AddToProperties\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\AddToProperties\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\CompareProperties\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\CompareProperties\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\CompareProperties\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\GetPropertyDetailsWithPropertyId\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\GetPropertyDetailsWithPropertyId\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\GetPropertyDetailsWithPropertyId\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\ListOfFeatures\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\ListOfFeatures\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\ListOfFeatures\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\UpdateProperties\_headUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\UpdateProperties\_htmlUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesManagement\UpdateProperties\_jsUpdate.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMapsManagement\AddToPropertyFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMapsManagement\AddToPropertyFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMapsManagement\AddToPropertyFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMapsManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMapsManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMapsManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMediaManagement\AddToPropertyFiles\_headAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMediaManagement\AddToPropertyFiles\_htmlAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMediaManagement\AddToPropertyFiles\_jsAddTo.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMediaManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMediaManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesMediaManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesPricesHistoriesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesPricesHistoriesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\PropertiesPricesHistoriesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ShowTreeCat\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ShowTreeCat\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\ShowTreeCat\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\TeniaoPanel\Index2\_headIndex2.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\TeniaoPanel\Index2\_htmlIndex2.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\TeniaoPanel\Index2\_jsIndex2.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\TeniaoPanel\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\TeniaoPanel\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\TeniaoPanel\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\UseLayersManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\UseLayersManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\UseLayersManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\AdminTeniaco\Views\_ViewImports.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\MelkavanPropertiesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\MelkavanPropertiesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\MelkavanPropertiesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\AddTo.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Components\UserTeniacoDashboard\UserTeniacoDashboard.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Components\UserTeniacoNavigation\UserTeniacoNavigation.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Components\UserTeniacoOldDashboard\UserTeniacoOldDashboard.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Components\UserTeniacoOldNavigation\UserTeniacoOldNavigation.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Index.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Login.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Register.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\Update.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\_UserLayout.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\_UserLoginLayout.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\Shared\_UserOldLayout.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPanel\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPanel\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPanel\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPanel\OldIndex\_headOldIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPanel\OldIndex\_htmlOldIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPanel\OldIndex\_jsOldIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPropertiesManagement\Index\_headIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPropertiesManagement\Index\_htmlIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\TeniacoPropertiesManagement\Index\_jsIndex.cshtml" />
+    <None Include="Areas\UserTeniaco\Views\_ViewImports.cshtml" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\.DS_Store" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\.DS_Store" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\font-awesome\fontawesome-webfont.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\font-awesome\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-Black.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-Bold.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-DemiBold.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-ExtraBlack.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-ExtraBold.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-Heavy.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-Light.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-Medium.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-Regular.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-Thin.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\fonts\iranyekan\IRANYekanX-UltraLight.woff2" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\.DS_Store" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\bg-login-page-dark.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\bg-login-page.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\bg-main-dark.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\bg-main.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\error-illustration.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\Group 1.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\Group 2.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\illustration.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\illustration2.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\logo.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\map-marker-dark.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\map-marker-region-dark.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\map-marker-region.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\map-marker.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\phone-illustration.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\placeholders\.DS_Store" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\images\woman-illustration.svg" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\js\.DS_Store" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\js\app.js" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\js\ckeditor-balloon-block.js" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\js\ckeditor-balloon.js" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\js\ckeditor-classic.js" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\js\ckeditor-document.js" />
+    <None Include="wwwroot\Enigma v1.0.5\dist\js\ckeditor-inline.js" />
+    <None Include="wwwroot\outter_theme\assets\css\fonts.css.map" />
+    <None Include="wwwroot\outter_theme\assets\css\fonts.scss" />
+    <None Include="wwwroot\outter_theme\assets\css\jquery.min.js" />
+    <None Include="wwwroot\outter_theme\assets\css\reposnive.css.map" />
+    <None Include="wwwroot\outter_theme\assets\css\reposnive.scss" />
+    <None Include="wwwroot\outter_theme\assets\css\style.css.map" />
+    <None Include="wwwroot\outter_theme\assets\css\style.scss" />
+    <None Include="wwwroot\outter_theme\assets\fonts\icons\teniacoicons.svg" />
+    <None Include="wwwroot\outter_theme\assets\fonts\svg\iransans.svg" />
+    <None Include="wwwroot\outter_theme\assets\fonts\svg\iransansbold.svg" />
+    <None Include="wwwroot\outter_theme\assets\fonts\svg\iransanslight.eot.svg" />
+    <None Include="wwwroot\outter_theme\assets\fonts\Woff2\iransans.woff2" />
+    <None Include="wwwroot\outter_theme\assets\fonts\Woff2\iransansbold.woff2" />
+    <None Include="wwwroot\outter_theme\assets\fonts\Woff2\iransanslight.eot.woff2" />
+    <None Include="wwwroot\outter_theme\assets\js\bootstrap.min.js" />
+    <None Include="wwwroot\outter_theme\assets\js\index.min.js" />
+    <None Include="wwwroot\outter_theme\assets\js\jquery.js" />
+    <None Include="wwwroot\outter_theme\assets\js\owl.carousel.min.js" />
+    <None Include="wwwroot\outter_theme\assets\js\scripts.js" />
+    <None Include="wwwroot\outter_theme\assets\js\tailwind.js" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\Web\Web.Console\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminTeniaco&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminTeniaco&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserTeniaco&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserTeniaco&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminTeniaco/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminTeniaco\Views&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserTeniaco/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserTeniaco\Views&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Teniaco\Areas\AdminTeniaco\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminTeniaco\Accesses.xml&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Teniaco\Areas\UserTeniaco\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserTeniaco\Accesses.xml&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Teniaco\Areas\AdminTeniaco\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminTeniaco\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Teniaco\Areas\UserTeniaco\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserTeniaco\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Teniaco\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.Teniaco\wwwroot&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\wwwroot&quot;" />
+  </Target>
+
+</Project>

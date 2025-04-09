@@ -1,0 +1,95 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+
+
+
+        $('#error-alert').hide(100);
+
+
+
+        $('body').on('click', '#btnCancel', function(e) {
+            e.preventDefault();
+            window.location.href = '/AdminMelkavan/BannersManagement/Index';
+        });
+
+
+
+        $('body').on('click', '#btnSubmit', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var filesElm = $('input[type=file]');
+            var file = filesElm[0];
+
+            var bannerTitle = $('#BannerTitle').val();
+            var bannerFileOrder = $('#BannerFileOrder').val();
+            var bannerLink = $('#BannerLink').val();
+
+            if (
+                (bannerTitle == undefined) ||
+                (bannerTitle == null) ||
+                (bannerTitle.length == "") ||
+                (bannerTitle.length < 1) ||
+                //(bannerLink == undefined) ||
+                //(bannerLink == null) ||
+                //(bannerLink.length == "") ||
+                //(bannerLink.length < 1) ||
+                (file == null) ||
+                (file.files[0] == null) ||
+                (file.files[0].size == 0) 
+                            ) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('لطفا فیلد های لازم را پر کنید');
+                $('#my-warning-modal').modal("show");
+                return;
+            }
+
+
+            var formData = new FormData();
+            if (file != null) {
+                debugger;
+                if (file.files[0] != null) {
+                    if (file.files[0].size > 0) {
+                        formData.append('File', file.files[0]);
+                        formData.append('BannersVM.BannerTitle', bannerTitle);
+                        formData.append('BannersVM.BannerFileOrder', bannerFileOrder);
+                        formData.append('BannersVM.BannerLink', bannerLink);
+
+                    }
+                }
+            }
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/BannersManagement/AddToBanners",
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                success: function(result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message);
+                        $('#error-alert').show(500);
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+
+
+        });
+
+    });
+</script>

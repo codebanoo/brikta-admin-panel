@@ -1,0 +1,419 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#searchBlock').hide(1000);
+
+
+        var propertyId = propertiesVM.PropertyId;
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'اسناد', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminTeniaco/MyPropertiesDocsManagement/GetListOfMyPropertyFiles',
+                //createAction: '/AdminTeniaco/PropertiesDocsManagement/AddToProperties',
+                updateAction: '/AdminTeniaco/MyPropertiesDocsManagement/UpdateMyPropertyFiles',
+                deleteAction: '/AdminTeniaco/MyPropertiesDocsManagement/CompleteDeleteMyPropertyFiles'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function() {
+                            window.location.href = '/AdminTeniaco/MyPropertiesDocsManagement/AddToMyPropertyFiles/' + propertyId;
+                        }
+                    }]
+
+            },
+            fields: {
+                PropertyFileId: {
+                    key: true,
+                    list: false
+                },
+                PropertyFileTitle: {
+                    title: 'عنوان',
+                    sorting: false,
+                },
+                PropertyFilePath: {
+                    title: 'فایل',
+                    sorting: false,
+                    edit: false,
+                    display: function(data) {
+
+                        switch (data.record.PropertyFileExt) {
+                            case ".jpeg":
+                            case ".jpg":
+                            case ".png":
+                            case ".gif":
+                            case ".bmp":
+                                return '<div style="position: relative; display: inline-block;">' +
+                                    '<a class="fancybox mediaThumbImage" href="/Files/PropertiesFiles/' + domainName + '/' +
+                                    data.record.PropertyId + '/Docs/' + data.record.PropertyFilePath + '" data-fancybox-group="gallery" ' +
+                                    'title=""><img src="/Files/PropertiesFiles/' + domainName + '/' +
+                                    data.record.PropertyId + '/Docs/thumb_' + data.record.PropertyFilePath + '" alt="" ' +
+                                    'data-caption="' + data.record.PropertyFileTitle + '" data-url="#" /></a>' + '</div>'
+                                break;
+                            case ".pdf":
+                                return '<div class="pdfThumbImage pointer" data-file-url="/Files/PropertiesFiles/' + domainName + '/' +
+                                    data.record.PropertyId + '/Docs/' + data.record.PropertyFilePath + '"><img src="/images/pdf.png" /></div>';
+                                break;
+                            default:
+                                return '<div class="fileThumbImage pointer" data-PropertyFileId="' + data.record.PropertyFileId + '"><img src="/images/File.png" /></div>';
+                        }
+                    }
+                },
+                PropertyFileExt: {
+                    title: 'فرمت',
+                    sorting: false,
+                    edit: false,
+                },
+                PropertyFileOrder: {
+                    title: 'مرتب&nbsp;سازی',
+                    sorting: false,
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    edit: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function(data) {
+                        ////
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-PropertyFileId="' +
+                                data.record.PropertyFileId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-PropertyFileId="' +
+                                data.record.PropertyFileId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    edit: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function(data) {
+                        ////
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-PropertyFileId="' + data.record.PropertyFileId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-PropertyFileId="' + data.record.PropertyFileId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                //EditProperty: {
+                //    title: 'ویرایش',
+                //    sorting: false,
+                //    display: function (data) {
+                //        return '<div class="editPropertyFile pointer" data-PropertyFileId="' + data.record.PropertyFileId + '"><i class="fa fa-edit"></i></div>';
+                //    }
+                //}
+            },
+            formCreated: function(event, data) {
+                $('.ui-dialog-titlebar-close').contents().filter(function() {
+                    return this.nodeType === 3;
+                }).remove();
+                //$('.ui-dialog-titlebar-close').html('X');
+                $(".jtable-dialog-form .jtable-input-field-container").each(function() {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function() {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+            },
+            formSubmitting: function(event, data) {
+
+            },
+            formClosed: function(event, data) {
+
+            },
+            selectionChanged: function() {
+
+            },
+            recordAdded: function(event, data) {
+
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', {
+            'PropertyId': propertyId,
+        });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.editPropertyFile', function(e) {
+
+            e.preventDefault();
+            var _this = $(this);
+            var propertyFileId = _this.attr('data-PropertyFileId');
+            window.location.href = '/AdminTeniaco/MyPropertiesDocsManagement/UpdateMyPropertyFiles/' + propertyFileId;
+        });
+
+        $('body').on('click', '.isActivated', function() {
+
+            var _this = $(this);
+            var propertyFileId = _this.attr('data-PropertyFileId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/MyPropertiesDocsManagement/ToggleActivationMyPropertyFiles",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'PropertyFileId': propertyFileId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function(result) {
+                   if (result.Result == "OK") {
+                                  var txtPropertyFileTitle = $('#txtPropertyFileTitle').val();
+                        if ((txtPropertyFileTitle != null && txtPropertyFileTitle != "")) {
+                            debugger;
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyId': propertyId,
+                                'PropertyFileTitle': txtPropertyFileTitle,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyId': propertyId,
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function() {
+
+            var _this = $(this);
+            var propertyFileId = _this.attr('data-PropertyFileId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/MyPropertiesDocsManagement/TemporaryDeleteMyPropertyFiles",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'PropertyFileId': propertyFileId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function(result) {
+                    if (result.Result == "OK") {
+                                  var txtPropertyFileTitle = $('#txtPropertyFileTitle').val();
+                        if ((txtPropertyFileTitle != null && txtPropertyFileTitle != "")) {
+                            debugger;
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyId': propertyId,
+                                'PropertyFileTitle': txtPropertyFileTitle,
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'PropertyId': propertyId,
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('#btnSearch').click(function(e) {
+            e.preventDefault();
+
+            var txtPropertyFileTitle = $('#txtPropertyFileTitle').val();
+
+            if ((txtPropertyFileTitle != null)) {
+
+                $('#listContainer').jtable('load', {
+                    'PropertyId': propertyId,
+                    'PropertyFileTitle': txtPropertyFileTitle,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load', {
+                    'PropertyId': propertyId,
+                });
+
+            }
+        });
+
+        $('#btnReload').click(function(e) {
+            $('#txtPropertyFileTitle').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function(e) {
+            $('#txtPropertyFileTitle').val(null);
+
+            e.preventDefault();
+        });
+
+        $('body').on('click', '.pdfThumbImage', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var fileUrl = _this.attr('data-file-url');
+
+            window.open(fileUrl, '_blank').focus();
+        });
+
+        $('body').on('click', '.fileThumbImage', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var propertyFileId = _this.attr('data-PropertyFileId');
+
+            window.open('/AdminTeniaco/MyPropertiesDocsManagement/FileDownload/' + propertyFileId, '_blank').focus();
+        });
+    });
+
+
+</script>

@@ -1,0 +1,30 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+<script>
+    @{
+         List<PropertyTypesVM> propertyTypes = new List<PropertyTypesVM>();
+
+        @Html.Raw("var propertyTypes =[];")
+        ;
+        if (ViewData["PropertyTypesVMs"] != null)
+        {
+            propertyTypes = ViewData["PropertyTypesVMs"] as List<PropertyTypesVM>;
+
+            @Html.Raw(" propertyTypes = " +
+        JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertyTypes)) + "; ")
+            ;
+        }
+    }
+</script>
+
+
+<style>
+
+    .chosen-container{
+        width : auto !important;
+        display : inline !important;
+    }
+</style>

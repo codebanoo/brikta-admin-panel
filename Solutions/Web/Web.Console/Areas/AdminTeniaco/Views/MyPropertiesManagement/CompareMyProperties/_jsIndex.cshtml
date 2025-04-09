@@ -1,0 +1,245 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+
+          $('#slcPropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        for (var i = 0; i < MypropertiesCompareTopicList.length; i++) {
+            debugger;
+            var item = MypropertiesCompareTopicList[i];
+            console.log(item);
+            $('#PropertyLeftId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+            $('#PropertyRightId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+            $('#PropertyMiddleId')
+             .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+                     $('#PropertyMiddleId')
+            $('#PropertyFourId')
+                     .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+
+        }
+        $('#PropertyLeftId,#PropertyRightId,#PropertyMiddleId,#PropertyFourId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: 200,
+            rtl: rtl
+        });
+        $('#PropertyLeftId,#PropertyRightId,#PropertyMiddleId,#PropertyFourId').on('change', ChangeProperty);
+    });
+    function ChangeProperty(e) {
+        let id = $(this).attr('id');
+        let _PropertyId = this.value;
+        debugger;
+        if (!_PropertyId) 
+        {
+            let side = id == 'PropertyLeftId' ? 'L_' : id == 'PropertyRightId' ? 'R_' : id == 'PropertyFourId' ? 'F_' : 'M_';
+            $('.' + side + 'Val').html('--');
+            $('[id ^=' + side + 'FeatureId_]').html('');
+             let ids = $('[id ^=' + side + 'FeatureId_]');
+            $.each(ids, function(key, value) {
+                console.log(value.id.split('_'));
+                let tem = value.id.split('_');
+                if ($('#L_' + tem[1] + '_' + tem[2]).is(':empty') && $('#M_' + tem[1] + '_' + tem[2]).is(':empty') && $('#R_' + tem[1] + '_' + tem[2]).is(':empty') && $('#F_' + tem[1] + '_' + tem[2]).is(':empty')) {
+                    $("#Rw" + tem[2]).remove();
+                }
+            });
+            $('#' + side + 'Map').empty();
+            return;
+          
+        }
+
+        let propertyTypeId = MypropertiesCompareTopicList.filter(function(item) {
+            return item.Value == _PropertyId;
+        })[0].PropertyTypeId;
+        console.log(propertyTypeId);
+       GetDataBasic(_PropertyId, id);
+       GetFeaturesData(_PropertyId, id);
+    }
+    function GetDataBasic(_PropertyId, kind) {
+        debugger;
+        const _url = '/AdminTeniaco/MyPropertiesManagement/GetMyPropBasicInfo';
+
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: { 'PropertyId': _PropertyId },
+            success: function(result) {
+                debugger;
+                if (result.Result == "OK") {
+                    DisplayBasicInfo(result.Record, kind);
+                }
+                else {
+                    alert('خطا رخ داده است')
+                }
+
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+            }
+        });
+    }
+    function DisplayBasicInfo(_data, kind) 
+    {
+        let side = kind == 'PropertyLeftId' ? 'L_' : kind == 'PropertyRightId' ? 'R_' : kind == 'PropertyFourId' ? 'F_' : 'M_';
+        setLocation(_data.LocationLat, _data.LocationLon, side);
+        
+        $('#' + side + 'PropertyCodeName').html(_data.PropertyCodeName);
+        $('#' + side + 'PropertyTypesName').html(_data.PropertyTypesName);
+        $('#' + side + 'DocumentTypes').html(_data.TypeOfUses);
+        $('#' + side + 'Area').html(_data.Area);
+        $('#' + side + 'State').html(_data.StateName);
+        $('#' + side + 'City').html(_data.CityName);
+        $('#' + side + 'Zone').html(_data.ZoneName);
+        
+    }
+     function setLocation(_LocationLat, _LocationLon, side) 
+     {
+         console.log(_LocationLat, _LocationLon, side);
+         if (!_LocationLat || !_LocationLon)
+          return;
+         let $map = side + 'Map';
+          var raster = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+       
+        var mapLeft = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+            layers: [raster],
+            target: $map,
+            view: view
+        });
+        
+
+        var tmpEvt = {
+            LocationLon: _LocationLon,
+            LocationLat: _LocationLat,
+        }
+
+        var iconGeometry = new ol.geom.Point(ol.proj.transform([_LocationLon, _LocationLat], 'EPSG:4326', 'EPSG:3857'));
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [
+                    new ol.Feature({
+                        geometry: iconGeometry
+                    })
+                ]
+            }),
+            style: new ol.style.Style({
+                image: new ol.style.Icon({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    src: '/images/mapmarker1.png'
+                })
+            })
+        });
+      
+
+        
+
+      
+        mapLeft.addLayer(layer);
+
+        mapLeft.on('singleclick', function (evt) {
+            debugger;
+
+            var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+            tmpEvt = {
+                LocationLon: lonlat[0],
+                LocationLat: lonlat[1]
+            };
+            iconGeometry.setCoordinates(evt.coordinate);
+        });
+
+     }
+
+
+     function GetFeaturesData(_PropertyId, kind) {
+         const _url = '/AdminTeniaco/MyPropertiesManagement/GetMyPropertyFeaturesValues';
+
+        $.ajax({
+            cache: false,
+            type: "Post",
+            url: _url,
+            data: { 'PropertyId': _PropertyId},
+            success: function(result) {
+                console.log(result);
+                if (result.Result == "OK") {
+                    DisplayFeaturesValues(result.Record, kind);
+                }
+                else {
+                    alert('خطا رخ داده است')
+                }
+
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+
+            }
+        });
+    }
+
+
+function DisplayFeaturesValues(data, kind) {
+    let _$parent = $('#collapseTwo > .panel-body')[0];
+
+    $.each(data, function(key, value) {
+        
+         if ( $("#Rw"+value.FeatureId).length == 0 ) {
+
+            console.log(value.FeatureTitle, value.FeatureId, value.FeatureValue);
+            let dives = '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="L_FeatureId_' + value.FeatureId + '"></span></div>';
+            dives += '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="M_FeatureId_' + value.FeatureId + '"></span></div>';
+            dives += '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="R_FeatureId_' + value.FeatureId + '"></span></div>';
+            dives += '<div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span id="F_FeatureId_' + value.FeatureId + '"></span></div>';
+            $(_$parent).append('<div class = "row feat" id="Rw' + value.FeatureId + '"><div class="form-group col col-md-2 col-lg-2 col-xs-12 col-sm-12"><span style="float:right;font-weight:bold">' + value.FeatureTitle + '</span></div>' + dives + '</div>');
+        }
+
+
+        let side = kind == 'PropertyLeftId' ? 'L_' : kind == 'PropertyRightId' ? 'R_' : kind == 'PropertyFourId' ? 'F_' : 'M_';
+
+        $.each(data, function(key, value) {
+            console.log('#' + side + '_FeatureId_' + value.FeatureId);
+            $('#' + side + 'FeatureId_' + value.FeatureId).html(value.FeatureValue);
+        });
+    });
+}
+        
+   
+</script>

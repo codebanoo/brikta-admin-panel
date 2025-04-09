@@ -1,0 +1,104 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+
+
+
+        $('#error-alert').hide(100);
+
+
+
+        $('body').on('click', '#btnCancel', function(e) {
+            e.preventDefault();
+            window.location.href = "/AdminProjects/InitialPlansManagement/Index/"+constructionProjectId;
+        });
+
+
+
+        $('body').on('click', '#btnSubmit', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var filesElm = $('input[type=file]');
+            var file = filesElm[0];
+
+            var initialPlanTitle = $('#InitialPlanTitle').val();
+            var initialPlanNumber = $('#InitialPlanNumber').val();
+            var initialPlanDescription = $('#InitialPlanDescription').val();
+            var initialPlanFileOrder = $('#InitialPlanFileOrder').val();
+
+
+
+            var missingField = '';
+                  if (
+                      (initialPlanTitle == undefined) ||
+                      (initialPlanTitle == null) ||
+                      (initialPlanTitle.length == "") ||
+                      (initialPlanTitle.length < 1)
+                  ) {
+                      missingField = 'عنوان ';
+                  } else if (
+                      (file == null) ||
+                      (file.files[0] == null) ||
+                      (file.files[0].size == 0)
+                  ) {
+                      missingField = 'فایل ';
+                  }
+
+                  if (missingField !== '') {
+                      $('#my-warning-modal').find('.modal-title').html('خطا');
+                      $('#my-warning-modal').find('#error').html('لطفا فیلد ' + missingField + ' را پر کنید');
+                      $('#my-warning-modal').modal("show");
+                      return;
+                  }
+
+
+            var formData = new FormData();
+            if (file != null) {
+                debugger;
+                if (file.files[0] != null) {
+                    if (file.files[0].size > 0) {
+                        formData.append('File', file.files[0]);
+                        formData.append('InitialPlansVM.InitialPlanTitle', initialPlanTitle);
+                        formData.append('InitialPlansVM.InitialPlanNumber', initialPlanNumber);
+                        formData.append('InitialPlansVM.InitialPlanDescription', initialPlanDescription);
+                        formData.append('InitialPlansVM.InitialPlanFileOrder', initialPlanFileOrder);
+                        formData.append('InitialPlansVM.ConstructionProjectId', constructionProjectId);
+
+                    }
+                }
+            }
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/InitialPlansManagement/AddToInitialPlans",
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                success: function(result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message);
+                        $('#error-alert').show(500);
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html(result.Message);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+
+
+        });
+
+    });
+</script>

@@ -1,0 +1,83 @@
+﻿@using VM.Projects
+@{
+    ConstructionProjectsVM project = new ConstructionProjectsVM();
+
+    if (ViewData["ConstructionProject"] != null)
+    {
+        project = (ConstructionProjectsVM)ViewData["ConstructionProject"];
+    }
+}
+
+<div id="searchBlock" class="col-12">
+     <div class="row">
+        <div class="col-md-3 col-xs-12 col-sm-12 col-lg-3 col-xl-3">
+            <div>
+                عنوان پروژه:
+                @Html.Raw(project.ConstructionProjectTitle)
+            </div>
+        </div>
+    </div>
+</div>
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete" data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-4 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 ">
+
+
+            <div class="mx-2">
+                عنوان
+            </div>
+            <input type="text" id="PartnershipAgreementTitle" name="PartnershipAgreementTitle" class="form-control"
+                   placeholder="عنوان"  />
+        </div>
+      @*   <div class="col-xl-4 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 ">
+            <div class="mx-2">
+                شماره قرارداد
+            </div>
+            <input type="number" id="PartnershipAgreementNumber" name="PartnershipAgreementNumber" class="form-control" value="0" />
+        </div> *@
+    </div>
+   @*  <div class="row">
+        <div class="col-xl-4 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 ">
+            <div class="mx-2">
+                فایل
+            </div>
+            <input type="file" id="file" name="file" class="no-top-margin" style="margin-top : 0px !important"
+                   placeholder="فایل" />
+        </div>
+        <div class="col-xl-4 col-md-6 col-xs-12 col-sm-12 col-lg-6 my-3 ">
+            <div class="mx-2">
+                اولویت فایل
+            </div>
+            <input type="number" id="PartnershipAgreementFileOrder" name="PartnershipAgreementFileOrder" class="form-control"
+                   value="0" />
+        </div>
+        <div class="col-xl-12 col-md-12 col-xs-12 col-sm-12 col-lg-12 my-3 ">
+            <div class="mx-2">
+                توضیحات تکمیلی
+            </div>
+            <textarea id="PartnershipAgreementDescription" name="PartnershipAgreementDescription" class="form-control" rows="10"
+                      placeholder="توضیحات تکمیلی"></textarea>
+        </div>
+
+    </div> *@
+
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>
+            <button id="btnCancel" type="button" class="btn btn-primary btn-md">لغو</button>
+        </div>
+    </div>
+</form>

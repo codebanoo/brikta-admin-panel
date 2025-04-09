@@ -1,0 +1,44 @@
+﻿<hr class="full-splitter" />
+@using VM.Projects
+@{
+    ConstructionProjectsVM project = new ConstructionProjectsVM();
+
+    if (ViewData["ConstructionProject"] != null)
+    {
+        project = (ConstructionProjectsVM)ViewData["ConstructionProject"];
+    }
+}
+<div  class="col-12">
+     <div class="row">
+        <div class="col-md-3 col-xs-12 col-sm-12 col-lg-3 col-xl-3">
+            <div>
+                عنوان پروژه:
+                @Html.Raw(project.ConstructionProjectTitle)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="listContainer"></div>
+
+
+<div class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="Chat-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="height:auto; min-height:50rem;max-height:87rem; overflow:auto;">
+            <div class="modal-header justify-content-start">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close" style="margin:0px!important"><span aria-hidden="true">&times;</span></button>
+                <h4 style="margin:auto;margin-right: inherit" class="ChatHeader">مکاتبه</h4>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;max-height: 400px;">
+                <div class="">
+                    <div class="mainMessages">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer justify-content-start">
+            </div>
+        </div>
+    </div>
+</div>

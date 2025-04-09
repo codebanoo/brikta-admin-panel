@@ -1,0 +1,364 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+
+        var raster = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var vectorSource = new ol.source.Vector({
+            wrapX: false,
+            format: new ol.format.GeoJSON()
+        });
+
+        var coordinates;
+        var strPolygon = '';
+
+
+        const style = new ol.style.Style({
+            geometry: function (feature) {
+                debugger;
+                const modifyGeometry = feature.get('modifyGeometry');
+                return modifyGeometry ? modifyGeometry.geometry : feature.getGeometry();
+            },
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 255, 255, 0.2)',
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ffcc33',
+                width: 2,
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#ffcc33',
+                }),
+            }),
+        });
+
+        function calculateCenter(geometry) {
+
+            let center, coordinates, minRadius;
+            const type = 'Polygon';
+            if (type === 'Polygon') {
+                let x = 0;
+                let y = 0;
+                let i = 0;
+                coordinates = geometry.getCoordinates()[0].slice(1);
+                coordinates.forEach(function (coordinate) {
+                    x += coordinate[0];
+                    y += coordinate[1];
+                    i++;
+                });
+                center = [x / i, y / i];
+            } else if (type === 'LineString') {
+                center = geometry.getCoordinateAt(0.5);
+                coordinates = geometry.getCoordinates();
+            } else {
+                center = getCenter(geometry.getExtent());
+            }
+            let sqDistances;
+            if (coordinates) {
+                sqDistances = coordinates.map(function (coordinate) {
+                    const dx = coordinate[0] - center[0];
+                    const dy = coordinate[1] - center[1];
+                    return dx * dx + dy * dy;
+                });
+                minRadius = Math.sqrt(Math.max.apply(Math, sqDistances)) / 3;
+            } else {
+                minRadius =
+                    Math.max(
+                        getWidth(geometry.getExtent()),
+                        getHeight(geometry.getExtent())
+                    ) / 3;
+            }
+            return {
+                center: center,
+                coordinates: coordinates,
+                minRadius: minRadius,
+                sqDistances: sqDistances,
+            };
+        }
+
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            style: function (feature) {
+
+                const styles = [style];
+
+                const modifyGeometry = feature.get('modifyGeometry');
+                const geometry = modifyGeometry ? modifyGeometry.geometry : feature.getGeometry();
+                const result = calculateCenter(geometry);
+                const center = result.center;
+                if (center) {
+                    styles.push(
+                        new ol.style.Style({
+                            geometry: new ol.geom.Point(center),
+                            image: new ol.style.Circle({
+                                radius: 4,
+                                fill: new ol.style.Fill({
+                                    color: '#ff3333',
+                                }),
+                            }),
+                        })
+                    );
+
+                    const coordinates = result.coordinates;
+                    if (coordinates) {
+                        const minRadius = result.minRadius;
+                        const sqDistances = result.sqDistances;
+                        const rsq = minRadius * minRadius;
+                        const points = coordinates.filter(function (coordinate, index) {
+                            return sqDistances[index] > rsq;
+                        });
+                        styles.push(
+                            new ol.style.Style({
+                                geometry: new ol.geom.MultiPoint(points),
+                                image: new ol.style.Circle({
+                                    radius: 4,
+                                    fill: new ol.style.Fill({
+                                        color: '#33cc33',
+                                    }),
+                                }),
+                            })
+                        );
+                    }
+                }
+
+                return styles;
+            },
+        });
+
+        var select = new ol.interaction.Select();
+
+        var translate = new ol.interaction.Translate({
+            features: select.getFeatures()
+        });
+
+        var view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+        var map = new ol.Map({
+            interactions: ol.interaction.defaults().extend([select, translate]),
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+
+            layers: [raster, vectorLayer],
+            target: 'map',
+            view: view
+        });
+
+
+        const defaultStyle = new ol.interaction.Modify({ source: vectorSource }).getOverlay().getStyleFunction();
+
+
+        const modify = new ol.interaction.Modify({
+            source: vectorSource,
+            style: function (feature) {
+                feature.get('features').forEach(function (modifyFeature) {
+                    const modifyGeometry = modifyFeature.get('modifyGeometry');
+                    if (modifyGeometry) {
+                        const point = feature.getGeometry().getCoordinates();
+                        let modifyPoint = modifyGeometry.point;
+                        if (!modifyPoint) {
+
+                            modifyPoint = point;
+                            modifyGeometry.point = modifyPoint;
+                            modifyGeometry.geometry0 = modifyGeometry.geometry;
+
+                            const result = calculateCenter(modifyGeometry.geometry0);
+                            modifyGeometry.center = result.center;
+                            modifyGeometry.minRadius = result.minRadius;
+                        }
+
+                        const center = modifyGeometry.center;
+                        const minRadius = modifyGeometry.minRadius;
+                        let dx, dy;
+                        dx = modifyPoint[0] - center[0];
+                        dy = modifyPoint[1] - center[1];
+                        const initialRadius = Math.sqrt(dx * dx + dy * dy);
+
+                        if (initialRadius > minRadius) {
+                            const initialAngle = Math.atan2(dy, dx);
+                            dx = point[0] - center[0];
+                            dy = point[1] - center[1];
+                            const currentRadius = Math.sqrt(dx * dx + dy * dy);
+                            if (currentRadius > 0) {
+                                const currentAngle = Math.atan2(dy, dx);
+                                const geometry = modifyGeometry.geometry0.clone();
+                                geometry.scale(currentRadius / initialRadius, undefined, center);
+                                geometry.rotate(currentAngle - initialAngle, center);
+                                modifyGeometry.geometry = geometry;
+                            }
+                        }
+                    }
+                });
+                return defaultStyle(feature);
+            },
+        });
+
+        modify.on('modifystart', function (event) {
+            event.features.forEach(function (feature) {
+                feature.set(
+                    'modifyGeometry',
+                    { geometry: feature.getGeometry().clone() },
+                    true
+                );
+            });
+        });
+
+        modify.on('modifyend', function (event) {
+            event.features.forEach(function (feature) {
+                const modifyGeometry = feature.get('modifyGeometry');
+                if (modifyGeometry) {
+                    feature.setGeometry(modifyGeometry.geometry);
+                    feature.unset('modifyGeometry', true);
+                }
+            });
+        });
+
+
+        debugger;
+        var coord2 = JSON.parse(mapLayersVM.StrPolygon);
+
+        var points = [];
+        for (var j = 0; j < coord2.length; j++) {
+            points[j] = ol.proj.transform([Number(coord2[j][0]), Number(coord2[j][1])], 'EPSG:4326', 'EPSG:3857');
+        }
+        var feature = new ol.Feature({
+            geometry: new ol.geom.Polygon([points]),
+            featureName: 'test',
+            type: 'Point',
+            desc: "Custom objects bound to this description"
+        });
+
+        vectorSource.addFeature(feature);
+        //map.addLayer(vectorLayer);
+
+        var mapSatellite = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+
+            target: 'mapSatellite',
+            view: view
+        });
+
+        var worldImagery = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                zoom: 12,
+                maxZoom: 17,
+                minZoom: 1,
+            })
+        });
+        mapSatellite.addLayer(worldImagery);
+
+
+        debugger;
+
+        $('#btnReset').click(function (e) {
+            e.preventDefault();
+
+            window.location.reload();
+        });
+
+
+        map.addInteraction(modify);
+
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            debugger;
+
+            var mapLayerId = mapLayersVM.MapLayerId;
+            var mapLayerCategoryId = mapLayersVM.MapLayerCategoryId;
+
+            var coords = feature.getGeometry().getCoordinates()[0];
+
+            if (coords == null) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('ناحیه روی نقشه مشخص نشده است');
+                $('#my-warning-modal').modal("show");
+                return;
+            }
+
+            var points = [];
+            for (var j = 0; j < coords.length; j++) {
+                points[j] = ol.proj.transform([Number(coords[j][0]), Number(coords[j][1])], 'EPSG:3857', 'EPSG:4326');
+            }
+
+            strPolygon = JSON.stringify(points);
+
+
+            if ((mapLayerId != '') &&
+                (mapLayerCategoryId != '') &&
+                (strPolygon != '')) {
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/AdminTeniaco/MapLayersManagement/UpdateMapLayers",
+
+                    data: {
+                        'MapLayerId': mapLayerId,
+                        'MapLayerCategoryId': mapLayerCategoryId,
+                        'StrPolygon': strPolygon,
+                        'IsActivated': true,
+                        'IsDeleted': false
+                    },
+                    success: function (result) {
+                        debugger;
+                        if (result.Result == "OK") {
+
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message);
+                            $('#error-alert').show(500);
+
+                            window.setTimeout(function () { window.location.reload(); }, 2500);
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#error-alert').removeClass('alert-success');
+                                $('#error-alert').addClass('alert-danger');
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(result.Message);
+                                $('#error-alert').show(500);
+                            }
+                    },
+
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+
+    });
+</script>

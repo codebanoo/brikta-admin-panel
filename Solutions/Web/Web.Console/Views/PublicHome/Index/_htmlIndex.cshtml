@@ -1,0 +1,153 @@
+﻿<div class="bg-white shadow-sm">
+    <div class="d-flex align-items-center justify-content-between mb-auto p-3 osahan-header">
+
+        <div class="d-flex align-items-center gap-2">
+            <a class="toggle bg-white shadow rounded-circle icon d-flex align-items-center justify-content-center"
+               href="#"><i class="bi bi-list text-primary fs-5 d-flex"></i></a>
+            <a href="notification.html" class="bg-white shadow rounded-circle icon">
+                <span class="mdi mdi-bell-outline mdi-18px text-primary"></span>
+            </a>
+            <a href="favorite-doctor.html" class="bg-white shadow rounded-circle icon">
+                <span class="mdi mdi-cards-heart-outline mdi-18px text-primary"></span>
+            </a>
+            <a href="javascript:void(0)" id="show-search-form" class="bg-white shadow rounded-4 ps-4 pe-2 item-start search-bar">
+                <span class="mdi mdi-magnify mdi-18px text-primary ms-1"></span>
+                جستجو ...
+            </a>
+        </div>
+        <div class="d-flex align-items-center gap-2 me-auto bg-danger text-white px-2 py-1 rounded-4">
+            پیشنهاد ویژه
+            @*                   <div class="ps-1">
+            <p class="text-orange m-0 small">خوش آمدید</p>
+            <p class="fw-bold mb-0 text-primary fw-bold">سلام, کاربر عزیز!</p>
+            </div>
+            <a href="doctor-profile.html">
+            <img src="img/favorite/favorite-4.jpg" alt=""
+            class="img-fluid rounded-circle icon">
+            </a>*@
+        </div>
+    </div>
+    <div id="search-form" class="px-3 pb-3 " style="display:none">
+        <form>
+            <div class="input-group rounded-4 shadow py-1 px-3 bg-light">
+                <span class="input-group-text bg-transparent text-muted border-0 p-0" id="search">
+                    <span class="mdi mdi-magnify mdi-24px text-primary"></span>
+                </span>
+                <input type="text" class="form-control bg-transparent text-muted rounded-0 border-0 px-3"
+                       placeholder="شهر، منطقه، ناحیه، شهرک..." aria-label="Search" aria-describedby="search">
+                <a href="javascript:void(0)" class="input-group-text bg-transparent text-muted border-0 border-end ps-0" id="search-btn">
+                    <span class="mdi mdi-filter-outline mdi-18px"></span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- body -->
+<div class="vh-100 my-auto overflow-auto body-fix-osahan-footer">
+    <div class="mb-0 pt-2">
+        <div class="available-doctor ps-2 ms-1">
+            <div class="available-doctor-item">
+                <div class="bg-primary text-white rounded-4 p-2 doctor-book-back" style="height:100px">
+                    <h1 class="mb-1 doctor-book-back-title">
+                        عضویت در کلاب سرمایه گذاران
+                    </h1>
+                    <a href="request-appointment.html" class="btn btn-sm btn-book btn-secondary">عضو شوید <i class="bi bi-arrow-left"></i></a>
+                </div>
+            </div>
+            <div class="available-doctor-item">
+                <div class="bg-warning  text-dark rounded-4 p-2 doctor-book-back" style="height:100px">
+                    <h1 class="mb-1 doctor-book-back-title">
+                        سیستم جستجوی هوشمند
+                    </h1>
+                    <a href="request-appointment.html" class="btn btn-sm btn-dark btn-book"> جستجو کنید <i class="bi bi-arrow-left"></i></a>
+                </div>
+
+            </div>
+            <div class="available-doctor-item">
+                <div class="btn-info text-white rounded-4 p-2 doctor-book-back" style="height:100px">
+                    <h1 class="mb-1 doctor-book-back-title">
+                        بهترین موقعیت های سرمایه گذاری
+                    </h1>
+                    <a href="#" class="btn btn-sm btn-primary btn-book">جستجو کنید <i class="bi bi-arrow-left"></i></a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Properties List -->
+    @for (int i = 1; i < 20; i++)
+    {
+        <a class="d-flex justify-content-between gap-3 bg-white p-2 my-1 rounded-4 mx-2 shadow-sm rounded-5 shadow-sm property-card" asp-action="PropertyDetails">
+
+            <div>
+                <h6 class="mb-1 fs-14 fw-bold">ویلا  کلارآباد350 متر استخر دار نزدیک دریا</h6>
+                @*  <div>
+            <span class="badge badge-pill bg-secondary">دریا</span>
+            <span class="badge badge-pill bg-secondary">جنگل</span>
+            </div>*@
+                <div>
+                    <span class="badge badge-pill bg-danger">فوری</span>
+                </div>
+                <div class="mb-1 fs-14 pl-2 card-price">120,000,000,000 تومان </div>
+                <div class="mt-3">
+                    <span class="float-end">کلارآباد، شهرک صدف</span>
+                    <span class="pl-2 float-start">5 روز پیش</span>
+                </div>
+
+
+            </div>
+            <img src="~/dactorapp/img/R.jpg" alt="" class="img-fluid rounded favorite-img">
+        </a>
+
+    }
+</div>
+<div class="footer mt-auto  pt-1 fix-osahan-footer">
+    <div class="mx-1 my-1 d-flex align-items-center justify-content-between rounded-4 shadow overflow-hidden bottom-nav-main">
+        <a href="home.html" class="col footer-bottom-nav active">
+            <span class="mdi mdi-home-variant-outline mdi-24px footer-bottom-nav-span-mdi"></span>
+            <span>ملکاوان</span>
+        </a>
+        <a href="search.html" class="col footer-bottom-nav">
+            <span class="mdi mdi-magnify mdi-24px footer-bottom-nav-span-mdi"></span>
+            <span>جستجو</span>
+        </a>
+        <a href="video.html" class="col footer-bottom-nav">
+            <span class="mdi mdi-application-edit-outline mdi-24px footer-bottom-nav-span-mdi"></span>
+            <span>ثبت</span>
+        </a>
+        <a href="message.html" class="col footer-bottom-nav">
+            <span class="mdi md mdi-message-processing-outline mdi-24px footer-bottom-nav-span-mdi"></span>
+            <span>چت</span>
+        </a>
+        <a href="my-profile.html" class="col footer-bottom-nav">
+            <span class="mdi mdi-account-outline mdi-24px footer-bottom-nav-span-mdi"></span>
+            <span>پروفایل</span>
+        </a>
+    </div>
+</div>
+@*
+<div class="d-flex justify-content-between gap-3 bg-white p-2 my-1 shadow-sm">
+
+    <div>
+        <h6 class="mb-1 fs-14 fw-bold">ویلا  کلارآباد350 متر استخر دار نزدیک دریا</h6>
+        <p class="mb-1 fs-14 fw-bold pl-2 "><span class="badge badge-pill bg-danger">فوری</span> <span class="float-start"> 8,000,000,000 تومان </span>     </p>
+        <div>
+
+            <span class="badge badge-pill bg-secondary">دریا</span>
+            <span class="badge badge-pill bg-secondary">جنگل</span>
+        </div>
+
+        <div class="mt-3">
+
+            <span>کلارآباد، شهرک صدف</span>
+            <span class="pl-2 float-start">5 روز پیش</span>
+        </div>
+
+
+    </div>
+    <img src="/dactorapp/img/favorite/favorite-1.jpg" alt="" class="img-fluid rounded favorite-img">
+</div>
+
+*@

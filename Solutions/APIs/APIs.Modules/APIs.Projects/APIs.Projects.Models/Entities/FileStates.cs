@@ -1,0 +1,49 @@
+﻿using FrameWork;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace APIs.Projects.Models.Entities
+{
+    public class FileStates : BaseEntity
+    {
+        [Key]
+        public int FileStateId { get; set; }
+
+        /// <summary>
+        /// 0=آپلود شده
+        /// 1=ارسال شده
+        /// 2=دیده شده
+        /// 3=تایید شده
+        /// 4=لغو شده
+        /// </summary>
+        public string FileStateTitle { get; set; }
+
+        //public bool? IsConfirm { get; set; }
+
+        //public long? UserIdConfirmation { get; set; }
+
+        //public DateTime? ConfirmationDate { get; set; }
+
+        //public string? ConfirmationTime { get; set; }
+
+        //public bool? IsView { get; set; }
+
+        //public long? UserIdViewer { get; set; }
+
+        //public DateTime? ViewDate { get; set; }
+
+        //public string? ViewTime { get; set; }
+
+        //public bool? IsSend { get; set; }
+
+        //public long? UserIdSender { get; set; }
+
+        //public DateTime? SendDate { get; set; }
+
+        //public string? SendTime { get; set; }
+    }
+}

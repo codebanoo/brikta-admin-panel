@@ -1,0 +1,151 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#listContainer').jtable({
+            title: 'لیست', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: false,
+            actions: {
+                listAction: '/Host/ShortCutKeysManagement/GetListOfShortCutKeys',
+                createAction: '/Host/ShortCutKeysManagement/AddToShortCutKeys',
+                updateAction: '/Host/ShortCutKeysManagement/UpdateShortCutKeys',
+                deleteAction: '/Host/ShortCutKeysManagement/CompleteDeleteShortCutKeys'
+            },
+            fields: {
+                ShortCutKeyId: {
+                    key: true,
+                    list: false
+                },
+                ShortCutKey: {
+                    title: 'کلید&nbsp;میانبر',
+                    sorting: false,
+                },
+                ShortCutDescription: {
+                    title: 'توصیحات',
+                    sorting: false,
+                },
+                Operations: {
+                    title: 'عملیات',
+                    sorting: false,
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-ShortCutKeyId="' + data.record.IsActivated +
+                                '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-ShortCutKeyId="' + data.record.IsActivated +
+                                '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function (event, data) {
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+            },
+            formSubmitting: function (event, data) {
+
+            },
+            formClosed: function (event, data) {
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var shortCutKeyId = _this.attr('data-ShortCutKeyId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Host/ShortCutKeysManagement/ToggleActivationShortCutKeys",
+                data: { 'ShortCutKeyId': shortCutKeyId },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+    });
+</script>

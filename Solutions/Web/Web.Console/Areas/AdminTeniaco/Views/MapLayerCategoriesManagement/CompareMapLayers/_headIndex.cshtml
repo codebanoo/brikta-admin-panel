@@ -1,0 +1,271 @@
+﻿@using VM.Teniaco;
+@using Newtonsoft.Json;
+@using VM.Public;
+
+
+<script type="text/javascript">
+    @{
+        List<MapLayerCategoriesVM> mapLayerCategoriesList = new List<MapLayerCategoriesVM>();
+        @Html.Raw("var mapLayerCategoriesList  = [];")
+        ;
+
+        if (ViewData["MapLayerCategoriesList"] != null)
+        {
+            mapLayerCategoriesList = (List<MapLayerCategoriesVM>)ViewData["MapLayerCategoriesList"];
+
+            var mapLayerCategoriesListData = mapLayerCategoriesList.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.MapLayerCategoryTitle}",
+                Value = a.MapLayerCategoryId,
+                Data_Parent = a.ParentMapLayerCategoryId
+            });
+
+            @Html.Raw(" mapLayerCategoriesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mapLayerCategoriesListData))+" ;")
+            ;
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+        @Html.Raw("var statesList=[];")
+        ;
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            var statesListData = statesList.Select(s =>
+         new
+         {
+             DisplayText = $"{s.StateName}",
+             Value = s.StateId
+         });
+
+            @Html.Raw(" statesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesListData)) +" ;")
+            ;
+        }
+
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+        @Html.Raw("var citiesList=[];")
+        ;
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            var citiesListData = citiesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.CityName}",
+                Value = c.CityId,
+                Data_StateId = c.StateId
+            });
+
+            @Html.Raw(" citiesList = " +
+               JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesListData)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+        @Html.Raw("var zonesList = [];")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            var zonesListData = zonesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.ZoneName}",
+                Value = c.ZoneId,
+                Data_CityId = c.CityId
+            });
+
+            @Html.Raw(" zonesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesListData)) + "; ")
+            ;
+        }
+    }
+</script>
+<script type="text/javascript">
+    @{
+        List<DistrictsVM> districtsList = new List<DistrictsVM>();
+
+        @Html.Raw("var districtsList = [];")
+        ;
+
+        if (ViewData["DistrictsList"] != null)
+        {
+            districtsList = (List<DistrictsVM>)ViewData["DistrictsList"];
+
+            var districtsListData = districtsList.Select(z =>
+           new
+           {
+               DisplayText = $"{z.DistrictName}",
+               Value = z.DistrictId,
+               Data_ZoneId = z.ZoneId
+           });
+
+
+            @Html.Raw(" districtsList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(districtsListData)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<MapLayersVM> mapLayerList = new List<MapLayersVM>();
+
+        @Html.Raw("var mapLayerList  = [];")
+        ;
+
+        if (ViewData["MapLayersList"] != null)
+        {
+            mapLayerList = (List<MapLayersVM>)ViewData["MapLayersList"];
+
+            @Html.Raw(" mapLayerList  = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mapLayerList )) + "; ")
+            ;
+        }
+    }
+</script>
+
+
+
+<!-- jQuery -->
+
+<link href="~/lib/ol-ext/dist/ol.css" rel="stylesheet" />
+<script type="text/javascript" src="~/lib/ol-ext/dist/ol.js"></script>
+<script src="~/lib/ol-ext/dist/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL,Object.assign"></script>
+
+
+<link rel="stylesheet" href="~/lib/ol-ext/dist/ol-ext.css" />
+<script type="text/javascript" src="~/lib/ol-ext/dist/ol-ext.js"></script>
+
+<style type="text/css">
+
+    .map-container {
+        display: flex;
+        margin: 2rem 2rem;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .tools {
+        text-align: center;
+        display: inline-block;
+        width: 2.5em;
+        height: 500px;
+        background: #eee;
+    }
+
+
+        .tools i {
+            font-size: 2em;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+    #compare {
+        position: relative;
+        float: left;
+        height: 500px;
+        width: 100%;
+    }
+
+    .fullscreen .tools {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        padding: 6em 0;
+        touch-action: none;
+    }
+
+    .fullscreen #compare {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        height: auto;
+    }
+
+    #map,
+    #map2 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #compare.view1 #map2 {
+        display: none;
+    }
+
+    #compare.view2 #map {
+        display: none;
+    }
+
+    #compare.swipev #map .ol-control,
+    #compare.swipeh #map .ol-control,
+    #compare.clip #map .ol-control {
+        display: none;
+    }
+
+    #compare.swipev .ol-target-overlay,
+    #compare.swipeh .ol-target-overlay {
+        display: none;
+    }
+
+    .compare #map {
+        width: 50%;
+    }
+
+    .compare #map2 {
+        left: 50%;
+        width: 50%;
+    }
+
+    .ol-popup {
+        max-width: 300px;
+        min-width: 100px;
+        min-height: 1em;
+        z-index: 1;
+    }
+
+        .ol-popup img {
+            float: left;
+            margin: 0 0.5em 0 0;
+            max-width: 100px;
+            max-height: 100px;
+        }
+    .box-m {
+    box-shadow: 0px 3px 20px #0000000b;
+    position: relative;
+    border-radius: 0.375rem;
+    border-color: transparent;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+</style>

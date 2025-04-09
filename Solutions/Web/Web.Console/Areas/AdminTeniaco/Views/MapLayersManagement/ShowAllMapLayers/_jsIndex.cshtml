@@ -1,0 +1,240 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+        debugger;
+
+        var raster = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var vectorSource = new ol.source.Vector({
+            wrapX: false
+        });
+
+        var coordinates;
+        var strPolygon = '';
+
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            style: [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)'
+                    })
+                }),
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'darkblue'
+                        })
+                    }),
+
+                })
+            ]
+        });
+
+        var view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+        var map = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+
+            layers: [raster],
+            target: 'map',
+            view: view
+        });
+
+        debugger;
+        var coords = [];
+        for (i = 0; i < mapLayersVM.length; i++) {
+            //coords.push(mapLayersVM[i].StrPolygon);
+            debugger;
+            coords.push(JSON.parse(mapLayersVM[i].StrPolygon));
+            debugger;
+        }
+        debugger;
+
+        var polygonList = [];
+        for (var i = 0; i < coords.length; i += 1) {
+            var pointList = [];
+            for (var j = 0; j < coords[i].length; j += 1) {
+                //var point = new ol.geom.Point(coord[i][j][0], coord[i][j][1]);
+                var point = ol.proj.transform([Number(coords[i][j][0]), Number(coords[i][j][1])], 'EPSG:4326', 'EPSG:3857');
+                pointList.push(point);
+            }
+            //var linearRing = new ol.geom.LinearRing(pointList);
+            //var polygon = new ol.geom.Polygon([linearRing]);
+
+            //var linearRing = new ol.geom.LinearRing(pointList);
+            var polygon = new ol.geom.Polygon([pointList]);
+
+            polygonList.push(polygon);
+        }
+
+        var multuPolygonGeometry = new ol.geom.MultiPolygon(polygonList);
+        var multiPolygonFeature = new ol.Feature(multuPolygonGeometry);
+
+        //vectorLayer.addFeatures(multiPolygonFeature);
+        vectorSource.addFeature(multiPolygonFeature);
+
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            style: function (feature) {
+                debugger;
+                //var label = 'test ' + i;
+                var labelStyle = new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 1,
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)',
+                        //color: 'rgba(174, 189, 221, 0.1)',
+                        //color: 'rgba(85, 128, 168, 0.5)',
+                    }),
+                    text: new ol.style.Text({
+                        font: '12px Calibri,sans-serif',
+                        overflow: true,
+                        fill: new ol.style.Fill({
+                            color: 'red',
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: '#fff',
+                            width: 3,
+                        }),
+                    }),
+                });
+                labelStyle.getText().setText(feature.A.featureName);
+                return labelStyle;
+            },
+        });
+
+        map.addLayer(vectorLayer);
+
+        //var points = [];
+        //for (var j = 0; j < coords.length; j++) {
+        //    debugger;
+        //    for (var i = 0; i < coords.length; i++) {
+        //        var a = coords[j];
+        //        debugger;
+        //        points[j] = ol.proj.transform([Number(a[i][0]), Number(a[i][1])], 'EPSG:4326', 'EPSG:3857');
+        //    }
+        //}
+        //var feature = new ol.Feature({
+        //    geometry: new ol.geom.Polygon([points]),
+        //    featureName: 'test',
+        //    type: 'Point',
+        //    desc: "Custom objects bound to this description"
+        //});
+
+        //vectorSource.addFeature(feature);
+        //map.addLayer(vectorLayer);
+
+        var mapSatellite = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+
+            target: 'mapSatellite',
+            view: view
+        });
+
+        var worldImagery = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                zoom: 12,
+                maxZoom: 17,
+                minZoom: 1,
+            })
+        });
+        mapSatellite.addLayer(worldImagery);
+
+
+        var modify = new ol.interaction.Modify({
+            source: vectorSource,
+
+        });
+
+        map.addInteraction(modify);
+
+
+        //var draw;
+
+       
+        //function addInteraction() {
+            //    debugger;
+            //    var value = 'Polygon';
+            //    if (value !== 'None') {
+            //        var geometryFunction, maxPoints;
+            //        if (value === 'Square') {
+            //            value = 'Circle';
+            //            geometryFunction = ol.interaction.Draw.createRegularPolygon(4);
+            //        } else if (value === 'Box') {
+            //            value = 'LineString';
+            //            maxPoints = 2;
+            //            geometryFunction = function (coordinates, geometry) {
+            //                debugger;;
+            //                if (!geometry) {
+            //                    geometry = new ol.geom.Polygon(null);
+            //                }
+            //                var start = coordinates[0];
+            //                var end = coordinates[1];
+            //                geometry.setCoordinates([
+            //                    [start, [start[0], end[1]], end, [end[0], start[1]], start]
+            //                ]);
+            //                debugger;
+            //                return geometry;
+            //            };
+            //        }
+            //        draw = new ol.interaction.Draw({
+            //            source: vectorSource,
+            //            type: ('Polygon'),
+            //            geometryFunction: geometryFunction,
+            //            maxPoints: maxPoints
+            //        });
+
+            //        map.addInteraction(draw);
+            //        snap = new ol.interaction.Snap({ source: vectorSource });
+            //        map.addInteraction(snap);
+
+            //    }
+        //}
+
+       // addInteraction();
+
+
+
+        let event = new PointerEvent('singleclick', {
+            clientX: xy[0],
+            clientY: xy[1],
+            shiftKey: false
+        });
+        map.handleMapBrowserEvent(new MapBrowserPointerEvent('singleclick', map, event))
+
+    });
+</script>

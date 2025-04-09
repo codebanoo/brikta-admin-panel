@@ -1,0 +1,1447 @@
+﻿<script type="text/javascript">
+
+    var propertyId = propertiesVM.PropertyId;
+
+    var tmpPersons = [];
+
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+
+        for (var i = 0; i < propertyTypesList.length; i++) {
+
+            var item = propertyTypesList[i];
+
+            $('#PropertyTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#PropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#PropertyTypeId').val(propertiesVM.PropertyTypeId).trigger("chosen:updated");
+
+        for (var i = 0; i < typeOfUsesList.length; i++) {
+            //debugger;
+            var item = typeOfUsesList[i];
+            $('#TypeOfUseId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#TypeOfUseId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#TypeOfUseId').val(propertiesVM.TypeOfUseId).trigger("chosen:updated");
+
+
+        //نوع سند
+        for (var i = 0; i < documentTypesList.length; i++) {
+            //debugger;
+            var item = documentTypesList[i];
+            $('#DocumentTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#DocumentTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#DocumentTypeId').val(propertiesVM.DocumentTypeId).trigger("chosen:updated");
+
+
+        //ریشه سند
+        for (var i = 0; i < documentRootTypesList.length; i++) {
+            //debugger;
+            var item = documentRootTypesList[i];
+            $('#DocumentRootTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#DocumentRootTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#DocumentRootTypeId').val(propertiesVM.DocumentRootTypeId).trigger("chosen:updated");
+
+
+
+        //مالکیت سند
+        for (var i = 0; i < documentOwnershipTypesList.length; i++) {
+            //debugger;
+            var item = documentOwnershipTypesList[i];
+            $('#DocumentOwnershipTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#DocumentOwnershipTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#DocumentOwnershipTypeId').val(propertiesVM.DocumentOwnershipTypeId).trigger("chosen:updated");
+
+
+
+        //عمر بنا
+        for (var i = 0; i < buildingLifesList.length; i++) {
+            //debugger;
+            var item = buildingLifesList[i];
+            $('#PropertiesDetailsVM_BuildingLifeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#PropertiesDetailsVM_BuildingLifeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        if (propertiesVM.PropertiesDetailsVM.BuildingLifeId != null) {
+            $('#PropertiesDetailsVM_BuildingLifeId').val(propertiesVM.PropertiesDetailsVM.BuildingLifeId).trigger("chosen:updated");
+        }
+
+
+        if (propertiesVM.PropertiesDetailsVM.Foundation != null) {
+            //زیر بنا
+            $('#PropertiesDetailsVM_Foundation').val(propertiesVM.PropertiesDetailsVM.Foundation).trigger("chosen:updated");
+        }
+
+
+        //توضیحات تکمیلی
+        $('#PropertyDescriptions').val(propertiesVM.PropertyDescriptions).trigger("chosen:updated");
+
+
+        //مشاور
+        for (var i = 0; i < agencyStaffsList.length; i++) {
+            debugger;
+            var item = agencyStaffsList[i];
+            $('#ConsultantUserId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#ConsultantUserId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        debugger;
+        $('#ConsultantUserId').val(propertiesVM.ConsultantUserId).trigger("chosen:updated");
+
+
+        //مالکین
+        for (var i = 0; i < personsList.length; i++) {
+            //debugger;
+            var item = personsList[i];
+            $('.OwnerId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#OwnerId').html($('#ConsultantUserId').html());
+
+        $('#OwnerId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('.OwnerId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#OwnerId').val(propertiesVM.OwnerId).trigger("chosen:updated");
+
+
+          for (var i = 0; i < buyersList.length; i++) {
+            debugger;
+            var item = buyersList[i];
+            $('.BuyerId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('.BuyerId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        var BuyerIdValues = [];
+        for(var i=0;i<propertiesVM.PropertyBuyersVM.length;i++){
+
+            let personId = propertiesVM.PropertyBuyersVM[i].PersonId;
+            let buyerDescription = propertiesVM.PropertyBuyersVM[i].BuyerDescription;
+            let optionText = $('.BuyerId option[value="' + personId + '"]').text();
+            BuyerIdValues.push(personId);
+
+
+             const newRow = `
+                        <div id="${personId}" class="row buyer">
+                            <div class='col-12 my-3'>
+                                <div class="mx-2">
+                                    توضیحات ${optionText}
+                                </div>
+                                <textarea PersonId="${personId}" asp-for="PropertyDescriptions"
+                                    class="form-control" rows="3">${buyerDescription}</textarea>
+                            </div>
+                        </div>
+                    `;
+                    $('#buyersDescriptions').append(newRow);
+
+        }
+
+        $('.BuyerId').val(BuyerIdValues).trigger("chosen:updated");
+
+
+                 $('.BuyerId').on('change', function () {
+            const selectedOptions = $(this).find('option:selected');
+            const allOptions = $(this).find('option');
+
+            // Remove rows for deselected options
+            allOptions.each(function () {
+                if (!this.selected) {
+                    $(`#${this.value}`).remove();
+                }
+            });
+
+            // Add rows for newly selected options
+            selectedOptions.each(function () {
+                const value = $(this).val();
+                const text = $(this).text();
+
+
+                if ($(`#${value}`).length === 0) { // Add row only if it doesn't already exist
+                    const newRow = `
+                        <div id="${value}" class="row buyer">
+                            <div class='col-12 my-3'>
+                                <div class="mx-2">
+                                    توضیحات ${text}
+                                </div>
+                                <textarea PersonId="${value}" asp-for="PropertyDescriptions"
+                                    class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    `;
+                    $('#buyersDescriptions').append(newRow);
+                }
+            });
+        });
+
+
+
+
+        for (var i = 0; i < investorsList.length; i++) {
+            debugger;
+            var item = investorsList[i];
+            $('.InvestorId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('.InvestorId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+
+        $('#OfferPriceType').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+        $('#PriceTypeRegister').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#StrCalculatedOfferPrice').val(Spliter(propertiesVM.PropertiesPricesHistoriesVM.CalculatedOfferPrice)).trigger("chosen:updated");
+
+        
+        
+        if (propertiesVM.PropertiesDetailsVM.Exchangeable != null) {
+             debugger;
+             if (propertiesVM.PropertiesDetailsVM.Exchangeable == true || propertiesVM.PropertiesDetailsVM.Exchangeable == 'true') {
+             
+             $('#PropertiesDetailsVM_Exchangeable').prop('checked', true);
+             }else{
+              $('#PropertiesDetailsVM_Exchangeable').prop('checked', false);
+             }
+            
+        }
+
+
+        if (propertiesVM.PropertiesDetailsVM.Participable != null) {
+
+            debugger;
+             if (propertiesVM.PropertiesDetailsVM.Participable == true || propertiesVM.PropertiesDetailsVM.Participable == 'true') {
+             
+             $('#PropertiesDetailsVM_Participable').prop('checked', true);
+             }else{
+              $('#PropertiesDetailsVM_Participable').prop('checked', false);
+             }
+            
+        }
+
+ 
+        debugger;
+
+        var propertyOwnerPersons = propertiesVM.PropertyOwnersVM;
+
+        if (propertyOwnerPersons != null) {
+            if (propertyOwnerPersons.length > 0) {
+                for (var i = 0; i < propertyOwnerPersons.length; i++) {
+
+
+                    var ownerPerson = propertyOwnerPersons[i];
+
+                    //var OwnerId = propertyOwnerPersons[i].OwnerId;
+                    var optionsForPersons = '';
+                    var optionsForUsers = '';
+
+                    if (ownerPerson.OwnerType == "persons") {
+                        for (var j = 0; j < personsList.length; j++) {
+                            //debugger;
+                            var item = personsList[j];
+                            if (item.Value == ownerPerson.OwnerId) {
+                                optionsForPersons += '<option value="' + item.Value + '" selected>' + item.DisplayText + '</option>';
+                            } else {
+                                optionsForPersons += '<option value="' + item.Value + '" >' + item.DisplayText + '</option>';
+
+                            }
+                        }
+                        for (var d = 0; d < investorsList.length; d++) {
+                            var investor = investorsList[d];
+                            optionsForUsers += '<option value="' + investor.Value + '" >' + investor.DisplayText + '</option>';
+
+                        }
+
+                    }
+
+
+                    if (ownerPerson.OwnerType == "users") {
+                        for (var j = 0; j < investorsList.length; j++) {
+                            //debugger;
+                            var item = investorsList[j];
+                            if (item.Value == ownerPerson.OwnerId) {
+                                optionsForUsers += '<option value="' + item.Value + '" selected>' + item.DisplayText + '</option>';
+                            } else {
+                                optionsForUsers += '<option value="' + item.Value + '" >' + item.DisplayText + '</option>';
+
+                            }
+                        }
+                        for (var z = 0; z < personsList.length; z++) {
+                            //debugger;
+                            var person = personsList[z];
+                            optionsForPersons += '<option value="' + person.Value + '" >' + person.DisplayText + '</option>';
+
+
+                        }
+
+                    }
+
+
+
+
+                    //if(i == 1){
+                    var newElements = '<div class="x_content PropertyOwnersVM"><div class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3">' +
+                        '<div>' +
+                        '<!--<label class="lblNewPerson pointer" style="height: 15px;">' +
+                        '<img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""' +
+                        'class="" data-original-title="جدید">' +
+                        '</label>-->' +
+                        'مالک (اشخاص)' +
+                        '</div>' +
+                        '<select class="form-control ml-3 OwnerId"' +
+                        'placeholder="مالک (اشخاص)">' +
+                        '<option></option>' + '' + optionsForPersons + '' +
+                        '</select>' +
+                        '</div>' +
+                        '<div class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3">' +
+                        '<div class="mx-2">' +
+                        'مالک (سرمایه گذار)' +
+                        '</div>' +
+                        '<select class="form-control ml-3 InvestorId" placeholder="مالک (سرمایه گذار)">' +
+                        '<option></option>' + '' + optionsForUsers + '' +
+                        '</select>' +
+                        '</div>' +
+                        '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                        '<div class="mx-2">' +
+                        'سهم (دنگ)' +
+                        '</div>' +
+                        '<input class="form-control share" readonly type="number" value="' + propertyOwnerPersons[i].Share + '" max="6" min="0.01" step="0.01" />' +
+                        '</div>' +
+                        '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3 sharePercent2">' +
+                        '<div class="mx-2">' +
+                        'سهم (درصد)' +
+                        '</div>' +
+                        '<input class="form-control sharePercent" type="number" value="' + propertyOwnerPersons[i].SharePercent + '" max="100.0" min="0.01" step="0.01" />' +
+                        '</div>' +
+                        '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                        '<div class="mx-2">' +
+                        'سهم بر مبنای' +
+                        '</div>' +
+                        '<select class="form-control ml-3 shareBasedOn2"  ' +
+                        'placeholder="">' +
+                        '<option value="2" selected>درصد</option>' +
+                        '<option value="1">دنگ</option>' +
+                        '</select>' +
+                        '</div>' +
+                        '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                        '<div class="mx-2">' +
+                        '&nbsp;' +
+                        '</div>' +
+                        '<i class="fa fa-2x fa-remove my-2 pointer removeOwner">&nbsp;</i>' +
+                        '</div>' +
+                        '</div>';
+
+                    $(newElements).insertAfter($('.test').last());
+
+
+                    //debugger;
+                    var firstShare = $(".shareBasedOn").first();
+                    $(firstShare).prop('disabled', true).trigger('chosen:updated');
+
+                    // $(".shareBasedOn").prop('disabled', true).trigger('chosen:updated');
+                    //}else{
+                    //     var newElements = '<div class="x_content PropertyOwnersVM"><div class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3">' +
+                    //    '<div>' +
+                    //    '<!--<label class="lblNewPerson pointer" style="height: 15px;">' +
+                    //    '<img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""' +
+                    //    'class="" data-original-title="جدید">' +
+                    //    '</label>-->' +
+                    //    'نام مالک/شماره تماس' +
+                    //    '</div>' +
+                    //    '<select class="form-control ml-3 OwnerId"' +
+                    //    'placeholder=" نام مالک/شماره تماس">' +
+                    //    '<option></option>'+''+options+'' +
+                    //    '</select>' +
+                    //    '</div>' +
+                    //    '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                    //    '<div class="mx-2">' +
+                    //    'سهم (دنگ)' +
+                    //    '</div>' +
+                    //    '<input class="form-control share" readonly type="number" value="' + propertyOwnerPersons[i].Share + '" max="6" min="0.01" step="0.01" />' +
+                    //    '</div>' +
+                    //    '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3 sharePercent2">' +
+                    //    '<div class="mx-2">' +
+                    //    'سهم (درصد)' +
+                    //    '</div>' +
+                    //    '<input class="form-control sharePercent" type="number" value="' + propertyOwnerPersons[i].SharePercent + '" max="100.0" min="0.01" step="0.01" />' +
+                    //    '</div>' +
+                    //    '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                    //    '<div class="mx-2">' +
+                    //    'سهم بر مبنای' +
+                    //    '</div>' +
+                    //    '<select class="form-control ml-3 shareBasedOn"  ' +
+                    //    'placeholder="">' +
+                    //    '<option value="2" selected>درصد</option>' +
+                    //    '<option value="1">دنگ</option>' +
+                    //    '</select>' +
+                    //    '</div>'+
+                    //    '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                    //    '<div class="mx-2">' +
+                    //    '&nbsp;' +
+                    //    '</div>' +
+                    //    '<i class="fa fa-2x fa-remove my-2 pointer removeOwner">&nbsp;</i>' +
+                    //    '</div>' +
+                    //    '</div>';
+
+                    //      $(newElements).insertAfter($('.test').last());
+                    //   $(".shareBasedOn").prop('disabled', true).trigger('chosen:updated');
+
+                    //}
+
+                    // $(newElements).insertAfter($('.test').last());
+
+
+                    $('.shareBasedOn').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        //max_shown_results: numberOfChosenItemsShow,
+                        max_shown_results: 1000,
+                        rtl: rtl
+                    });
+
+
+                    $('.shareBasedOn2').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        //max_shown_results: numberOfChosenItemsShow,
+                        max_shown_results: 1000,
+                        rtl: rtl
+                    });
+
+
+                    $('.OwnerId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        //max_shown_results: numberOfChosenItemsShow,
+                        max_shown_results: 1000,
+                        rtl: rtl
+                    });
+
+                    $('.OwnerId').trigger("chosen:updated");
+
+                    $('.InvestorId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        //max_shown_results: numberOfChosenItemsShow,
+                        max_shown_results: 1000,
+                        rtl: rtl
+                    });
+
+                    $('.InvestorId').trigger("chosen:updated");
+
+
+                    $('.shareBasedOn').trigger("chosen:updated");
+
+                    $('.shareBasedOn2').trigger("chosen:updated");
+                }
+            }
+        }
+
+
+        $('#PropertyTypeId').on('change',function(){
+
+            let PropertyTypeValue = $(this).val();
+            if(PropertyTypeValue==5 || PropertyTypeValue==7){
+                $("#PropertiesDetailsVM_Foundation").val(null);
+                $(".foundationDiv").addClass('d-none');
+            }
+            else{
+                $(".foundationDiv").removeClass('d-none');
+            }
+
+        });
+
+        if( $('#PropertyTypeId').val()==5 || $('#PropertyTypeId').val()==7 ){
+             $(".foundationDiv").addClass('d-none');
+        }
+
+
+
+        $('body').on('click', '.lblNewPerson', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+
+            var title = _this.attr('data-modal-title');
+
+            $('#create-person-modal').find('.modal-title').html('تعریف ' + title);
+            $('#create-person-modal').find('#slcPersonTypeId').prev().html(title);
+
+            $('#txtName').val('');
+            $('#txtFamily').val('');
+            $('#txtPhone').val('');
+
+            $('#create-person-modal').modal("show");
+        });
+
+        $('body').on('click', '.btn-Create-person', function (e) {
+            e.preventDefault();
+
+            var name = $('#txtName').val();
+            var family = $('#txtFamily').val();
+            var phone = $('#txtPhone').val();
+            var personTypeId = $('#slcPersonTypeId').val();
+
+            if (family == '' || phone == '') {
+                alert('لطفا اطلاعات را وارد کنید');
+                return;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/PropertiesManagement/AddToPersons",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: {
+                    'Name': name,
+                    'Family': family,
+                    'Phone': phone,
+                    'PersonTypeId': personTypeId
+                },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    //debugger;
+                    if (result.Result == "OK") {
+                        $.ajax({
+                            cache: false,
+                            type: "Post",
+                            url: "/AdminTeniaco/PropertiesManagement/GetAllPersonsList",
+                            success: function (result) {
+                                //debugger;
+                                if (result.Result == "OK") {
+
+                                    personsList = result.Records;
+
+                                    $('#ConsultantUserId').find('option')
+                                        .remove()
+                                        .end()
+                                        .append('<option value="" selected>---</option>');
+
+                                    for (var i = 0; i < personsList.length; i++) {
+                                        //debugger;
+                                        var item = personsList[i];
+                                        $('#ConsultantUserId')
+                                            .append($("<option></option>")
+                                                .attr("value", item.PersonId)
+                                                .text(item.Name + ' ' + item.Family + ' - ' + item.Phone));
+                                    }
+
+                                    $('#ConsultantUserId').trigger("chosen:updated");
+
+                                    $('#OwnerId').find('option')
+                                        .remove()
+                                        .end()
+                                        .append('<option value="" selected>---</option>');
+
+                                    $('#OwnerId').html($('#ConsultantUserId').html());
+                                    $('#OwnerId').trigger("chosen:updated");
+
+                                    $('#create-person-modal').modal("hide");
+                                }
+                                else
+                                    if (result.Result == "ERROR") {
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html(result.Message);
+                                        $('#my-warning-modal').modal("show");
+                                    }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html('خطا');
+                                $('#my-warning-modal').modal("show");
+                            }
+                        });
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html(result.Message);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('خطا');
+                    $('#my-warning-modal').modal("show");
+                }
+            });
+        });
+
+        $("#StrOfferPrice").bind("keypress", function (evt) {
+            var charCode = (evt.which) ? evt.which : window.event.keyCode;
+
+            if (charCode <= 13) {
+                return true;
+            }
+            else {
+                var keyChar = String.fromCharCode(charCode);
+                var re = /[0-9]/
+                return re.test(keyChar);
+
+
+            }
+        });
+
+        $('body').on('keyup', '#StrOfferPrice', function (e) {
+            debugger;
+            var num = $("#StrOfferPrice").val().replace(/\,/g, "").replace(/(.)(?=(.{3})+(?!.))/g, '$1,');
+            $("#StrOfferPrice").val(num);
+        });
+
+        $('body').on('change', '#Area', function (e) {
+            var _this = $(this);
+            debugger;
+
+            var area = _this.val();
+
+            var offerPrice = $('#StrOfferPrice').val().trim().replace(/\,/g, "");
+            var offerPriceType = $('#OfferPriceType').val().trim();
+
+            if ((offerPrice != '') &&
+                (offerPriceType != null) &&
+                (area != '')) {
+                switch (offerPriceType) {
+                    case '0'://متری
+                        $('#StrCalculatedOfferPrice').val(Spliter(parseFloat(offerPrice.replace(/\,/g, "")) * parseFloat(area)));
+                        $('#spnOfferPrice').html('(متری)');
+                        $('#spnCalculatedOfferPrice').html('(کل)');
+                        break;
+                    case '1'://کل
+                        $('#StrCalculatedOfferPrice').val(Spliter(parseFloat(offerPrice.replace(/\,/g, "")) / parseFloat(area)));
+                        $('#spnOfferPrice').html('(کل)');
+                        $('#spnCalculatedOfferPrice').html('(متری)');
+                        break;
+                }
+            }
+            else
+                $('#StrCalculatedOfferPrice').val('');
+        });
+
+        $('body').on('change', '#StrOfferPrice', function (e) {
+            var _this = $(this);
+
+            debugger;
+
+            var offerPrice = _this.val().replace(/\,/g, "");
+
+            var offerPriceType = $('#OfferPriceType').val().trim();
+            var area = $('#Area').val().trim();
+
+            if ((offerPrice != '') &&
+                (offerPriceType != null) &&
+                (area != '')) {
+                switch (offerPriceType) {
+                    case '0'://متری
+                        $('#StrCalculatedOfferPrice').val(Spliter(parseFloat(offerPrice.replace(/\,/g, "")) * parseFloat(area)));
+                        $('#spnOfferPrice').html('(متری)');
+                        $('#spnCalculatedOfferPrice').html('(کل)');
+                        break;
+                    case '1'://کل
+                        $('#StrCalculatedOfferPrice').val(Spliter(parseFloat(offerPrice.replace(/\,/g, "")) / parseFloat(area)));
+                        $('#spnOfferPrice').html('(کل)');
+                        $('#spnCalculatedOfferPrice').html('(متری)');
+                        break;
+                }
+            }
+            else
+                $('#StrCalculatedOfferPrice').val('');
+        });
+
+        $('#StrOfferPrice').change();
+
+        $('body').on('change', '#OfferPriceType', function (e) {
+            var _this = $(this);
+
+            debugger;
+
+            var offerPriceType = _this.val();
+
+            var offerPrice = $('#StrOfferPrice').val().trim().replace(/\,/g, "");
+            var area = $('#Area').val().trim();
+
+            if ((offerPrice != '') &&
+                (offerPriceType != null) &&
+                (area != '')) {
+                switch (offerPriceType) {
+                    case '0'://متری
+                        $('#StrCalculatedOfferPrice').val(Spliter(parseFloat(offerPrice.replace(/\,/g, "")) * parseFloat(area)));
+                        $('#spnOfferPrice').html('(متری)');
+                        $('#spnCalculatedOfferPrice').html('(کل)');
+                        break;
+                    case '1'://کل
+                        $('#StrCalculatedOfferPrice').val(Spliter(parseFloat(offerPrice.replace(/\,/g, "")) / parseFloat(area)));
+                        $('#spnOfferPrice').html('(کل)');
+                        $('#spnCalculatedOfferPrice').html('(متری)');
+                        break;
+                }
+            }
+            else
+                $('#StrCalculatedOfferPrice').val('');
+        });
+
+        $('#StrOfferPrice').keyup();
+
+    });
+
+
+
+    $('body').on('click', '.maps', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/PropertiesMapsManagement/Index/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.features', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/PropertiesFeaturesManagement/UpdatePropertyFeatures/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.location', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/PropertiesLocationManagement/UpdatePropertyLocation/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.docs', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/PropertiesDocsManagement/Index/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.media', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/PropertiesMediaManagement/Index/" + propertyId, '_blank').focus();
+    });
+
+
+
+    $('body').on('change', '.shareBasedOn2', function (e) {
+
+        //debugger;
+        var _this = $(this);
+
+        var shareBasedOn = _this.val();
+
+        var shareBasedOns = $('.shareBasedOn');
+        for (var i = 0; i < shareBasedOns.length; i++) {
+            var item = shareBasedOns[i];
+
+            //$(item).prop('disabled', false).trigger('chosen:updated')
+            $(item).val(shareBasedOn);
+            //$(item).prop('disabled', true).trigger('chosen:updated')
+            $(item).trigger('chosen:update');
+
+            var sharePercent = $(item).parent().prev().find('.sharePercent');
+            var share = $(item).parent().prev().prev().find('.share');
+
+            switch (shareBasedOn) {
+                case '2':
+                    $(sharePercent).prop('readonly', '');
+                    $(share).prop('readonly', 'readonly');
+                    break;
+                case '1':
+                    $(sharePercent).prop('readonly', 'readonly');
+                    $(share).prop('readonly', '');
+                    break;
+            }
+
+            //$(item).prop('readonly', 'readonly');
+        }
+
+        var sharePercent = _this.parent().prev().find('.sharePercent');
+        var share = _this.parent().prev().prev().find('.share');
+
+        switch (shareBasedOn) {
+            case '2':
+                $(sharePercent).prop('readonly', '');
+                $(share).prop('readonly', 'readonly');
+                break;
+            case '1':
+                $(sharePercent).prop('readonly', 'readonly');
+                $(share).prop('readonly', '');
+                break;
+        }
+
+        //GetAllOwnerPersons();
+        //$('.OwnerId').html($('#ConsultantUserId').html());
+        //$('.OwnerId').trigger("chosen:updated");
+    });
+
+
+    $('body').on('click', '.removeOwner', function (e) {
+        var _this = $(this);
+
+        _this.parent().parent().remove();
+
+        //GetAllOwnerPersons();
+    });
+
+
+    $('#btnReset').click(function (e) {
+
+        e.preventDefault();
+
+
+        $('#TypeOfUseId').val('').trigger("chosen:updated");
+        $('#DocumentTypeId').val('').trigger("chosen:updated");
+        $('#DocumentRootTypeId').val('').trigger("chosen:updated");
+        $('#DocumentOwnershipTypeId').val('').trigger("chosen:updated");
+        $('#ConsultantUserId').val('').trigger("chosen:updated");
+        $('#PropertiesDetailsVM_BuildingLifeId_chosen').val('').trigger("chosen:updated");
+        $('.OwnerId').val('').trigger("chosen:updated");
+        $('#txtPropertyCodeName').val(null);
+        $('.InvestorId').val('').trigger("chosen:updated");
+        $('#PropertyTypeId').val('').trigger("chosen:updated");
+        $('#PropertyCodeName').val('');
+        $('#Area').val('');
+        $('#RebuiltInYearFa').val('');
+        $('#PropertyDescriptions').val('');
+        $('#StrOfferPrice').val('');
+        $('#StrCalculatedOfferPrice').val('');
+        $('#PropertiesDetailsVM_Foundation').val('');
+
+    });
+
+
+    $('body').on('change', '.sharePercent', function (e) {
+        //debugger;
+        var _this = $(this);
+
+
+        var sum = 0;
+
+        var PropertyOwnersVM = $('.PropertyOwnersVM');
+        for (var i = 0; i < PropertyOwnersVM.length; i++) {
+            var x_content = PropertyOwnersVM[i];
+            //debugger;
+            var sharePercent = $(x_content).find('.sharePercent');
+            var sharePercentValue = parseFloat(sharePercent.val());
+
+            var share = $(x_content).find('.share');
+            var shareValue = ((sharePercentValue * 6) / 100.0).toFixed(2);
+
+            $(share).val(shareValue);
+
+            sum += sharePercentValue;
+        }
+
+        if (sum < 100) {
+            var dif = (100.0 - sum).toFixed(2);
+
+            var shareBasedOn = $('.shareBasedOn').val();
+
+            var newElements =
+                '<div class="x_content PropertyOwnersVM"><div class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3">' +
+                '<div>' +
+                '<!--<label class="lblNewPerson pointer" style="height: 15px;">' +
+                '<img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""' +
+                'class="" data-original-title="جدید">' +
+                '</label>-->' +
+                'مالک (اشخاص)' +
+                '</div>' +
+                '<select class="form-control ml-3 OwnerId"' +
+                'placeholder="مالک (اشخاص)">' +
+                '<option value="">---</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3">' +
+                '<div class="mx-2">' +
+                'مالک (سرمایه گذار)' +
+                '</div>' +
+                '<select class="form-control ml-3 InvestorId" placeholder="مالک (سرمایه گذار)">' +
+                '<option value="">---</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                'سهم (دنگ)' +
+                '</div>' +
+                '<input class="form-control share" readonly type="number" value="' + ((dif * 6) / 100).toFixed(2) + '" max="6" min="0.1" step="0.1" />' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                'سهم (درصد)' +
+                '</div>' +
+                '<input class="form-control sharePercent" type="number" value="' + dif + '" max="100.0" min="0.1" step="0.1" />' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                'سهم بر مبنای' +
+                '</div>' +
+                '<select class="form-control ml-3 shareBasedOn" readonly ' +
+                'placeholder="">' +
+                '<option value="2">درصد</option>' +
+                '<option value="1">دنگ</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                '&nbsp;' +
+                '</div>' +
+                '<i class="fa fa-2x fa-remove my-2 pointer removeOwner">&nbsp;</i>' +
+                '</div>' +
+                '</div>';
+
+            $(newElements).insertAfter($('.PropertyOwnersVM').last());
+            $(".shareBasedOn").prop('disabled', true).trigger('chosen:updated');
+
+            $('.shareBasedOn').val(shareBasedOn);
+
+            $('.shareBasedOn').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                //max_shown_results: numberOfChosenItemsShow,
+                max_shown_results: 1000,
+                rtl: rtl
+            });
+
+
+
+            $($('.PropertyOwnersVM').last().find('.OwnerId')[0]).html($('.OwnerId').eq(0).html());
+
+            $($('.PropertyOwnersVM').last().find('.OwnerId')[0]).val('');//.trigger("chosen:updated");
+
+            $($('.PropertyOwnersVM').last().find('.OwnerId')[0]).chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                //max_shown_results: numberOfChosenItemsShow,
+                max_shown_results: 1000,
+                rtl: rtl
+            });
+            ShowCheckBoxBeforeChosenForSpecificElement($('.PropertyOwnersVM').last().find('.OwnerId')[0])
+
+            $($('.PropertyOwnersVM').last().find('.InvestorId')[0]).html($('.InvestorId').eq(0).html());
+
+            $($('.PropertyOwnersVM').last().find('.InvestorId')[0]).val('');//.trigger("chosen:updated");
+
+            $($('.PropertyOwnersVM').last().find('.InvestorId')[0]).chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                //max_shown_results: numberOfChosenItemsShow,
+                max_shown_results: 1000,
+                rtl: rtl
+            });
+            ShowCheckBoxBeforeChosenForSpecificElement($('.PropertyOwnersVM').last().find('.InvestorId')[0])
+
+
+
+
+            $(".shareBasedOn").prop('disabled', true).trigger('chosen:updated')
+        }
+
+    });
+
+
+    $('body').on('change', '.share', function (e) {
+        //debugger;
+        var _this = $(this);
+
+        var sum = 0;
+        var PropertyOwnersVM = $('.PropertyOwnersVM');
+
+        for (var i = 0; i < PropertyOwnersVM.length; i++) {
+            var x_content = PropertyOwnersVM[i];
+
+            var share = $(x_content).find('.share');
+            var shareValue = parseFloat(share.val());
+
+            var sharePercent = $(x_content).find('.sharePercent');
+            var sharePercentValue = parseFloat(((shareValue * 100) / 6.0).toFixed(2));
+
+            $(sharePercent).val(sharePercentValue);
+
+            sum += shareValue;
+        }
+
+        if (sum < 6) {
+            var dif = (6.0 - sum).toFixed(2);
+            //debugger;
+            var shareBasedOn = $('.shareBasedOn').val();
+
+            var newElements = '<div class="x_content PropertyOwnersVM"><div class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3">' +
+                '<div>' +
+                '<!--<label class="lblNewPerson pointer" style="height: 15px;">' +
+                '<img src="/images/add.png" data-placement="top" data-toggle="tooltip" title=""' +
+                'class="" data-original-title="جدید">' +
+                '</label>-->' +
+                'نام مالک/شماره تماس' +
+                '</div>' +
+                '<select class="form-control ml-3 OwnerId"' +
+                'placeholder=" نام مالک/شماره تماس">' +
+                '<option value="">---</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="col-xl-3 col-md-3 col-xs-12 col-sm-12 col-lg-3 my-3">' +
+                '<div>' +
+                'سرمایه گذار' +
+                '</div>' +
+                '<select class="form-control ml-3 InvestorId" placeholder="سرمایه گذار">' +
+                '<option value="">---</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                'سهم (دنگ)' +
+                '</div>' +
+                '<input class="form-control share" type="number" value="' + dif + '" max="6" min="0.1" step="0.1" />' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                'سهم (درصد)' +
+                '</div>' +
+                '<input class="form-control sharePercent" readonly type="number" value="' + ((dif * 100) / 6).toFixed(2) + '" max="100.0" min="0.1" step="0.1" />' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                'سهم بر مبنای' +
+                '</div>' +
+                '<select class="form-control ml-3 shareBasedOn" readonly ' +
+                'placeholder="">' +
+                '<option value="2">درصد</option>' +
+                '<option value="1">دنگ</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3">' +
+                '<div class="mx-2">' +
+                '&nbsp;' +
+                '</div>' +
+                '<i class="fa fa-2x fa-remove my-2 pointer removeOwner">&nbsp;</i>' +
+                '</div>' +
+                '</div>';
+
+            $(newElements).insertAfter($('.PropertyOwnersVM').last());
+            $(".shareBasedOn").prop('disabled', true).trigger('chosen:updated');
+
+            $('.shareBasedOn').val(shareBasedOn);
+
+            $('.shareBasedOn').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                //max_shown_results: numberOfChosenItemsShow,
+                max_shown_results: 1000,
+                rtl: rtl
+            });
+
+
+
+            $($('.PropertyOwnersVM').last().find('.OwnerId')[0]).html($('.OwnerId').eq(0).html());
+
+            $($('.PropertyOwnersVM').last().find('.OwnerId')[0]).val('');//.trigger("chosen:updated");
+
+            $($('.PropertyOwnersVM').last().find('.OwnerId')[0]).chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                //max_shown_results: numberOfChosenItemsShow,
+                max_shown_results: 1000,
+                rtl: rtl
+            });
+            ShowCheckBoxBeforeChosenForSpecificElement($('.PropertyOwnersVM').last().find('.OwnerId')[0])
+
+
+
+            $($('.PropertyOwnersVM').last().find('.InvestorId')[0]).html($('.InvestorId').eq(0).html());
+
+            $($('.PropertyOwnersVM').last().find('.InvestorId')[0]).val('');//.trigger("chosen:updated");
+
+            $($('.PropertyOwnersVM').last().find('.InvestorId')[0]).chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                search_contains: true,
+                //max_shown_results: numberOfChosenItemsShow,
+                max_shown_results: 1000,
+                rtl: rtl
+            });
+            ShowCheckBoxBeforeChosenForSpecificElement($('.PropertyOwnersVM').last().find('.InvestorId')[0])
+
+        }
+
+        //GetAllOwnerPersons();
+    });
+
+
+    OnlyAccseptDigitsAndNumbers('.share');
+    OnlyAccseptDigitsAndNumbers('.sharePercent');
+
+
+    $('#updateProperty').click(function (e) {
+        e.preventDefault();
+
+        //debugger;
+
+        var result = GetAllOwnerPersons();
+
+        if (result) {
+            $('#formUpdateProperty').submit();
+        } else {
+            $('#my-warning-modal').find('.modal-title').html('خطا');
+            $('#my-warning-modal').modal("show");
+        }
+
+    });
+
+
+    $('body').on('change', '.OwnerId', function (e) {
+        debugger;
+
+
+        var PropertyOwnersVM = $('.PropertyOwnersVM');
+
+        for (var k = 0; k < PropertyOwnersVM.length; k++) {
+            var propertyOwnerPerson = PropertyOwnersVM[k];
+
+            var investor = $(propertyOwnerPerson).find('.InvestorId')[0].value;
+            var ownerPerson = $(propertyOwnerPerson).find('.OwnerId')[0].value;
+
+            if (ownerPerson !== "") {
+                if (investor.value !== "") {
+                    //investor.value = '';
+                    $(propertyOwnerPerson).find('.InvestorId')[0].value = '';
+                    $('.InvestorId').trigger("chosen:updated");
+                }
+            }
+
+        }
+    });
+
+
+    $('body').on('change', '.InvestorId', function (e) {
+        debugger;
+
+        var PropertyOwnersVM = $('.PropertyOwnersVM')
+        for (var k = 0; k < PropertyOwnersVM.length; k++) {
+            var propertyOwnerPerson = PropertyOwnersVM[k];
+
+            var investor = $(propertyOwnerPerson).find('.InvestorId')[0].value;
+            var ownerPerson = $(propertyOwnerPerson).find('.OwnerId')[0].value;
+
+            if (investor !== "") {
+                if (investor.value !== "") {
+                    //investor.value = '';
+                    $(propertyOwnerPerson).find('.OwnerId')[0].value = '';
+                    $('.OwnerId').trigger("chosen:updated");
+                }
+            }
+
+        }
+
+    });
+
+
+    function GetAllOwnerPersons() {
+
+
+          tmpBuyers = [];
+                var Buyers = $('.buyer');
+
+                for(var i=0;i<Buyers.length;i++){
+
+                    let PersonId = $(Buyers[i]).attr('id');
+                    let BuyerDescription = $('textarea[personid="'+PersonId+'"]').val();
+
+                                    tmpBuyers.push({
+                        'PersonId': PersonId,
+                        'PropertyId': propertyId,
+                        'BuyerDescription': BuyerDescription
+                    });
+                }
+
+                if(tmpBuyers){
+                     $('#StrPropertyBuyersVM').val(JSON.stringify(tmpBuyers));
+                }
+
+
+
+
+        debugger;
+        tmpPersons = [];
+        var PropertyOwnersVM = $('.PropertyOwnersVM');
+
+        for (var k = 0; k < PropertyOwnersVM.length; k++) {
+            ////debugger;
+
+            var propertyOwnerPerson = PropertyOwnersVM[k];
+
+            var share = $(propertyOwnerPerson).find('.share')[0].value;
+
+            var sharePercnet = $(propertyOwnerPerson).find('.sharePercent')[0].value;
+
+            var ownerPerson = $(propertyOwnerPerson).find('.OwnerId')[0].value;
+
+            var investor = $(propertyOwnerPerson).find('.InvestorId')[0].value;
+            if (ownerPerson == "") {
+                if (
+                    (share != null) &&
+                    (sharePercnet != null) &&
+                    (investor != "")) {
+
+                    tmpPersons.push({
+                        'Share': share,
+                        'SharePercent': sharePercnet,
+                        'OwnerId': investor,
+                        'OwnerType': "users"
+                    });
+
+
+                } else {
+
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('انتخاب سرمایه گذار اجباری است.');
+                    $('#my-warning-modal').modal("show");
+                    return false;
+
+
+                }
+            } else if (investor == "") {
+
+                if (
+                    (share != null) &&
+                    (sharePercnet != null) &&
+                    (ownerPerson != "")) {
+
+                    tmpPersons.push({
+                        'Share': share,
+                        'SharePercent': sharePercnet,
+                        'OwnerId': ownerPerson,
+                        'OwnerType': "persons"
+                    });
+
+
+                } else {
+
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('انتخاب مالک اجباری است.');
+                    $('#my-warning-modal').modal("show");
+                    return false;
+
+
+                }
+
+            } else {
+
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('توجه فرمایید در هر ردیف فقط میتوانید یک مالک انتخاب نمایید.');
+                $('#my-warning-modal').modal("show");
+                return false;
+
+
+            }
+
+
+        }
+
+        if (tmpPersons.length == 0) {
+            return false;
+        } else {
+            var tempShare = 0;
+            var tempPercentShare = 0;
+
+            for (var i = 0; i < tmpPersons.length; i++) {
+                tempShare += parseFloat(tmpPersons[i].Share);
+                tempPercentShare += parseFloat(tmpPersons[i].SharePercent);
+
+            }
+
+             tempPercentShare = (tempPercentShare * 100) / 100;
+             tempPercentShare = parseFloat(tempPercentShare.toFixed(0))
+
+            if (tempShare !== 6 || tempPercentShare !== 100) {
+                $('#my-warning-modal').find('.modal-title').html('لطفا جمع سهم ها را چک کنید');
+                $('#my-warning-modal').modal("show");
+                return false;
+            } else if (tempShare == 0 || tempPercentShare == 0) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('انتخاب حداقل یک مالک اجباری است.');
+                $('#my-warning-modal').modal("show");
+                return false;
+            }
+        }
+
+        $('#StrPropertyOwnersVM').val(JSON.stringify(tmpPersons));
+        return true;
+    }
+
+    function OnBegin(e) {
+        //debugger;
+        return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        //debugger;
+
+        if (response.Result == 'OK') {
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(500);
+
+            //console.log(response.Record);
+
+            propertyId = propertiesVM.PropertyId;
+
+            window.setTimeout(function () { window.location.reload(); }, 2500);
+
+            $('#moreInfo-modal').modal("show");
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(500);
+
+        }
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        console.log("virayesh");
+        //debugger;
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+    };
+
+</script>

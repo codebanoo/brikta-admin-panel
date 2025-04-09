@@ -1,0 +1,504 @@
+﻿@using VM.Console;
+
+@{
+    List<int> roleIds = new List<int>();
+    if (ViewData["RoleIds"] != null)
+    {
+        roleIds = ((string)ViewData["RoleIds"]).Split(',').Select(int.Parse).ToList();
+    }
+
+    List<int> levelIds = new List<int>();
+    if (ViewData["LevelIds"] != null)
+    {
+        levelIds = ((string)ViewData["LevelIds"]).Split(',').Select(int.Parse).ToList();
+    }
+}
+
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-top-links">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">arashcms v1.0</a>
+    </div>
+    @{
+        if ((roleIds.Count() == 1) && (levelIds.Count() == 1))
+        {
+            <!--<ul class="nav navbar-top-links navbar-right@*@Html.Raw(ViewData["Arrow"] as string)*@" aria-expanded="true">-->
+            <ul class="nav navbar-top-links navbar-left" aria-expanded="true">
+                @Html.Raw(ViewData["TopMenu"] as string)
+            </ul>
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav in" id="side-menu">
+                        @Html.Raw(ViewData["MainMenu"] as string)
+                    </ul>
+                </div>
+            </div>
+        }
+        else
+        {
+            List<RolesVM> roles = new List<RolesVM>();
+            if (ViewData["Roles"] != null)
+            {
+                roles = (List<RolesVM>)ViewData["Roles"];
+            }
+
+            List<LevelsVM> levels = new List<LevelsVM>();
+
+            if (ViewData["Levels"] != null)
+            {
+                levels = (List<LevelsVM>)ViewData["Levels"];
+            }
+
+            Dictionary<string, string> strMainMenu = new Dictionary<string, string>();
+            if (ViewData["MainMenu"] != null)
+            {
+                strMainMenu = (Dictionary<string, string>)ViewData["MainMenu"];
+            }
+
+            Dictionary<string, string> strTopMenu = new Dictionary<string, string>();
+            if (ViewData["TopMenu"] != null)
+            {
+                strTopMenu = (Dictionary<string, string>)ViewData["TopMenu"];
+            }
+
+            @*<div class="collapse navbar-collapse">*@
+            <ul class="nav navbar-top-links navbar-left">
+                @{
+                    foreach (var level in levels)
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">@level.LevelName <span class="caret"></span></a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                @Html.Raw(strTopMenu.Where(tm => tm.Key.Equals(
+                                    level.RoleId.ToString() + "_" +
+                                    level.LevelId.ToString())).FirstOrDefault().Value.
+                                    Replace("class=\"dropdown\"", "class=\"dropdown-submenu\"").
+                                    Replace("<i class=\"fa fa-caret-down\"></i>", ""))
+                                @{
+                                    if (roles.FirstOrDefault(r => r.RoleId.Equals(level.RoleId)).RoleName.Equals("Hosts"))
+                                    {
+
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+                @*<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">AFC <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a class="submenu" data-toggle="dropdown" href="#">AFC South <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+
+                                    <li class="dropdown-submenu">
+                                        <a class="submenu" data-toggle="dropdown" href="#">Colts <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Red </a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">AFC <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a class="submenu" data-toggle="dropdown" href="#">AFC South <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+
+                                    <li class="dropdown-submenu">
+                                        <a class="submenu" data-toggle="dropdown" href="#">Colts <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Red </a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>*@
+            </ul>
+            @*</div>*@
+
+            @*<div class="topmenu dropdown">
+                    @{ foreach (var level in levels)
+                        {
+                            <a id="dLabel" role="button" data-toggle="dropdown" class="btn" data-target="#" href="#">
+                                @level.LevelName
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                @Html.Raw(strTopMenu.Where(tm => tm.Key.Equals(
+                                    level.RoleId.ToString() + "_" +
+                                    level.LevelId.ToString())).FirstOrDefault().Value)
+                            </ul>
+                        }
+                    }
+                </div>*@
+            @*<div class="topmenu dropdown">
+                    <a id="dLabel" role="button" data-toggle="dropdown" class="btn" data-target="#" href="#">
+                        Dropdown <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        <li class="dropdown-submenu">
+                            <a tabindex="-1" href="#">Hover me for more options</a>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="-1" href="#">Second level</a></li>
+                                <li><a href="#">Second level</a></li>
+                                <li><a href="#">Second level</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>*@
+
+            @*<ul class="nav navbar-top-links navbar-@Html.Raw(ViewData["Arrow"] as string)" aria-expanded="true">
+                    @{
+                        foreach (var level in levels)
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown">
+                                    @level.LevelName
+                                    <i class="fa fa-caret-down">
+                                    </i>
+                                </a>
+                                <ul class="dropdown-menu in">
+                                    @Html.Raw(strTopMenu.Where(tm => tm.Key.Equals(
+                                        level.RoleId.ToString() + "_" + level.LevelId.ToString())).FirstOrDefault().Value)
+                                    @{
+                                        if (roles.FirstOrDefault(r => r.RoleId.Equals(level.RoleId)).RoleName.Equals("Hosts"))
+                                        {
+                                            <li class="section-Themes-List dropdown">
+                                                <a class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+                                                    <img class="changeTheme" src="~/images/changeTheme.jpg" /><i class="fa fa-caret-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-section-Themes in left-openning">
+                                                    @{
+                                                        if (themesList.Count > 0)
+                                                        {
+                                                            int i = 0;
+                                                            foreach (var theme in themesList)
+                                                            {
+                                                                i++;
+                                                                <li>
+                                                                    <a class="ChangeTheme pointer" data-themeName="@theme.ThemeName"
+                                                                       data-href="/Host/HostPanel/ChangeTheme">
+                                                                        <i class="fa fa-paint-brush"></i>
+                                                                        @theme.ThemeName
+                                                                        @{
+                                                                            if (themeName == theme.ThemeName)
+                                                                            {
+                                                                                <i class="fa fa-check"></i>
+                                                                            }
+                                                                        }
+                                                                    </a>
+                                                                </li>
+                                                                if (!i.Equals(themesList.Count))
+                                                                {
+                                                                    <li class="divider"></li>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                </ul>
+                                            </li>
+                                            <li class="countries-Flag-List dropdown">
+                                                <a class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+                                                    <img class="countriesFlag" src="~/images/countriesFlag/countriesFlag.png" /><i class="fa fa-caret-down"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-fa-language in left-openning">
+                                                    @{
+                                                        if (countriesFlagList.Count > 0)
+                                                        {
+                                                            int i = 0;
+                                                            foreach (var countriesFlag in countriesFlagList)
+                                                            {
+                                                                i++;
+                                                                <li>
+                                                                    <a class="ChangeLanguage pointer" data-lang="@countriesFlag.Language" data-href="/Host/HostPanel/ChangeLanguage">
+                                                                        <img class="countriesFlag" src="@countriesFlag.ImagePath" />
+                                                                        @countriesFlag.Language
+                                                                        @{
+                                                                            if ("fa" == countriesFlag.Language)
+                                                                            {
+                                                                                <i class="fa fa-check"></i>
+                                                                            }
+                                                                        }
+                                                                    </a>
+                                                                </li>
+                                                                if (!i.Equals(countriesFlagList.Count))
+                                                                {
+                                                                    <li class="divider"></li>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>*@
+            @*<div class="nav navbar-top-links">
+                    <section class="sec_acc">
+                        @{
+                            foreach (var level in levels)
+                            {
+                                @Html.Raw("<div class=\"hor_acc_item\">" + level.LevelName + "</div>")
+                                <div class="info">
+                                    <ul class="nav navbar-@Html.Raw(ViewData["Arrow"] as string)" aria-expanded="true">
+                                        @Html.Raw(strTopMenu.Where(tm => tm.Key.Equals(
+                                            level.RoleId.ToString() + "_" + level.LevelId.ToString())).FirstOrDefault().Value)
+                                        @{
+                                            if (roles.FirstOrDefault(r => r.RoleId.Equals(level.RoleId)).RoleName.Equals("Hosts"))
+                                            {
+                                                <li class="section-Themes-List dropdown">
+                                                    <a class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+                                                        <img class="changeTheme" src="~/images/changeTheme.jpg" /><i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-section-Themes in left-openning">
+                                                        @{
+                                                            if (themesList.Count > 0)
+                                                            {
+                                                                int i = 0;
+                                                                foreach (var theme in themesList)
+                                                                {
+                                                                    i++;
+                                                                    <li>
+                                                                        <a class="ChangeTheme pointer" data-themeName="@theme.ThemeName"
+                                                                           data-href="/Host/HostPanel/ChangeTheme">
+                                                                            <i class="fa fa-paint-brush"></i>
+                                                                            @theme.ThemeName
+                                                                            @{
+                                                                                if (themeName == theme.ThemeName)
+                                                                                {
+                                                                                    <i class="fa fa-check"></i>
+                                                                                }
+                                                                            }
+                                                                        </a>
+                                                                    </li>
+                                                                    if (!i.Equals(themesList.Count))
+                                                                    {
+                                                                        <li class="divider"></li>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                                <li class="countries-Flag-List dropdown">
+                                                    <a class="dropdown-toggle active" data-toggle="dropdown" aria-expanded="false">
+                                                        <img class="countriesFlag" src="~/images/countriesFlag/countriesFlag.png" /><i class="fa fa-caret-down"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-fa-language in left-openning">
+                                                        @{
+                                                            if (countriesFlagList.Count > 0)
+                                                            {
+                                                                int i = 0;
+                                                                foreach (var countriesFlag in countriesFlagList)
+                                                                {
+                                                                    i++;
+                                                                    <li>
+                                                                        <a class="ChangeLanguage pointer" data-lang="@countriesFlag.Language" data-href="/Host/HostPanel/ChangeLanguage">
+                                                                            <img class="countriesFlag" src="@countriesFlag.ImagePath" />
+                                                                            @countriesFlag.Language
+                                                                            @{
+                                                                                if ("fa" == countriesFlag.Language)
+                                                                                {
+                                                                                    <i class="fa fa-check"></i>
+                                                                                }
+                                                                            }
+                                                                        </a>
+                                                                    </li>
+                                                                    if (!i.Equals(countriesFlagList.Count))
+                                                                    {
+                                                                        <li class="divider"></li>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        }
+                    </section>
+                </div>*@
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    @{
+                        <div id="mainMenuAccordion">
+                            @foreach (var level in levels)
+                            {
+                                @Html.Raw("<h3>" + level.LevelName + "</h3>")
+                                <div style="height: 100% !important;">
+                                    <ul class="nav in" id="side-menu-@level.LevelId">
+                                        @Html.Raw(strMainMenu.Where(tm => tm.Key.Equals(level.RoleId.ToString() + "_" + level.LevelId.ToString())).FirstOrDefault().Value)
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            @*<div id="mainMenuAccordion">
+                    <h3>Section 1</h3>
+                    <div>
+                        <p>
+                            Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+                            ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+                            amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+                            odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+                        </p>
+                    </div>
+                    <h3>Section 2</h3>
+                    <div>
+                        <p>
+                            Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+                            purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+                            velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+                            suscipit faucibus urna.
+                        </p>
+                    </div>
+                    <h3>Section 3</h3>
+                    <div>
+                        <p>
+                            Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+                            Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+                            ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+                            lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+                        </p>
+                        <ul>
+                            <li>List item one</li>
+                            <li>List item two</li>
+                            <li>List item three</li>
+                        </ul>
+                    </div>
+                    <h3>Section 4</h3>
+                    <div>
+                        <p>
+                            Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+                            et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+                            faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+                            mauris vel est.
+                        </p>
+                        <p>
+                            Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+                            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+                            inceptos himenaeos.
+                        </p>
+                    </div>
+                </div>*@
+            @*<div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav in" id="side-menu">
+                            @Html.Raw(strMainMenu.FirstOrDefault().Value)
+                        </ul>
+                    </div>
+                </div>*@
+            @*<section>
+                    <div class="item">
+                        Item
+                    </div>
+                    <div class="info">
+                        Info
+                    </div>
+                    <div class="item">
+                        Item
+                    </div>
+                    <div class="info">
+                        Info
+                    </div>
+                    <div class="item">
+                        Item
+                    </div>
+                    <div class="info">
+                        Info
+                    </div>
+                    <div class="item">
+                        Item
+                    </div>
+                    <div class="info">
+                        Info
+                    </div>
+                </section>*@
+
+            <script type="text/javascript">
+                $(function () {
+
+                    //'use strict';
+
+                    //$('.hor_acc_item').first().addClass('hor_acc_active');
+
+                    //$('.info').first().show().animate({ width: '40%' }, 0);
+
+                    //$('.hor_acc_item').click(function () {
+
+                    //    $(this).addClass("hor_acc_active").siblings('.hor_acc_item').removeClass('hor_acc_active');
+
+                    //    //$(this).next().show().animate({ width: '40%' }).siblings('.info').animate({ width: 0 }, function () {
+                    //    $(this).next().show().animate({ width: '40%' }, 0).siblings('.info').animate({ width: 0 }, 0, function () {
+
+                    //        $(this).hide();
+
+                    //    });
+
+                    //});
+
+                    $("#mainMenuAccordion").accordion();
+
+                    var i = 0;
+
+                    $('#mainMenuAccordion h3').each(function () {
+                        debugger;
+                        var _this = $(this);
+                        if (i != 0) {
+                            var arrow = _this.find('.ui-accordion-header-icon');
+                            $(arrow).removeClass('ui-icon-triangle-1-e');
+                            $(arrow).addClass('ui-icon-triangle-1-w');
+                        }
+                        i++;
+                    });
+
+                    $('#mainMenuAccordion h3.ui-accordion-header').click(function () {
+                        debugger;
+                        $('#mainMenuAccordion h3').each(function () {
+                            debugger;
+                            var _this = $(this);
+                            var arrow = _this.find('.ui-accordion-header-icon');
+                            $(arrow).removeClass('ui-icon-triangle-1-e');
+                            $(arrow).addClass('ui-icon-triangle-1-w');
+                        });
+                        var _this = $(this);
+                        var arrow = _this.find('.ui-accordion-header-icon');
+                        $(arrow).removeClass('ui-icon-triangle-1-w');
+                        $(arrow).addClass('ui-icon-triangle-1-s');
+                        //$('.ui-accordion-header-icon', _this).toggleClass('ui-icon-triangle-1-s ui-icon-triangle-1-w');
+                        //_this.next().slideToggle();
+                        return false;
+                    });
+
+                });
+            </script>
+        }
+    }
+</nav>

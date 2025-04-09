@@ -1,0 +1,126 @@
+﻿@using VM.Console;
+
+@model UsersConfigsVM
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    <div class="form-group col col-md-12">
+        @{
+            <div id='error-alert' class="form-group alert alert-danger">
+            </div>
+        }
+    </div>
+    @*    <div class="row">
+    <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+    <div>
+    <label data-htmlReplacement="Language">
+    </label>
+    </div>
+    <select asp-for="Language" class="form-control input-sm" id="Language" name="Language"
+    data-placeHolderReplacement="Language"
+    placeholder="">
+    <option value="">---</option>
+    </select>
+    </div>
+    <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+    <div>
+    <label data-htmlReplacement="FontName">
+    </label>
+    </div>
+    <select asp-for="FontName" class="form-control input-sm" id="FontName" name="FontName"
+    data-placeHolderReplacement="FontName"
+    placeholder="">
+    <option value="">---</option>
+    </select>
+    </div>
+    <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+    <div>
+    <label data-htmlReplacement="ThemeName">
+    </label>
+    </div>
+    <select asp-for="ThemeName" class="form-control input-sm" id="ThemeName" name="ThemeName"
+    data-placeHolderReplacement="ThemeName"
+    placeholder="">
+    <option value="">---</option>
+    </select>
+    </div>
+    </div>*@
+    @*    <div class="row">
+    <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+    <div>
+    <label data-htmlReplacement="JtableThemeName">
+    </label>
+    </div>
+    <select asp-for="JtableThemeName" class="form-control input-sm" id="JtableThemeName" name="JtableThemeName"
+    data-placeHolderReplacement="JtableThemeName"
+    placeholder="">
+    <option value="">---</option>
+    </select>
+    </div>
+    <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+    <div>
+    <label data-htmlReplacement="PageFontSize">
+    </label>
+    </div>
+    <select asp-for="PageFontSize" class="form-control input-sm" id="PageFontSize" name="PageFontSize"
+    data-placeHolderReplacement="PageFontSize"
+    placeholder="">
+    <option value="">---</option>
+    </select>
+    </div>
+    <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+    <div>
+    <label data-htmlReplacement="JtableFontSize">
+    </label>
+    </div>
+    <select asp-for="JtableFontSize" class="form-control input-sm" id="JtableFontSize" name="JtableFontSize"
+    data-placeHolderReplacement="JtableFontSize"
+    placeholder="">
+    <option value="">---</option>
+    </select>
+    </div>
+    </div>*@
+    <div class="row">
+        @*        <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+        <div>
+        <label data-htmlReplacement="UiName">
+        </label>
+        </div>
+        <select asp-for="UiName" class="form-control input-sm" id="UiName" name="UiName"
+        data-placeHolderReplacement="UiName"
+        placeholder="">
+        <option value="">---</option>
+        </select>
+        </div>*@
+        <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+            <div>
+                <label data-toggle="tooltip" data-placement="top"
+                       title="نمایش لیست جدول داده ها متناسب با صفحه">
+                    نمایش لیست
+                </label>
+            </div>
+            <select asp-for="IsResponsiveList" class="form-control input-sm" id="IsResponsiveList" name="IsResponsiveList"
+                    placeholder="نمایش لیست">
+                <option value="">
+                    اتوماتیک
+                </option>
+                <option value="True">
+                    نمایش سطری هر رکورد در یک خط
+                </option>
+                <option value="False">
+                    نمایش ستونی هر رکورد در یک خط
+                </option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+            <label>
+                &nbsp;
+            </label>
+            <button class="form-control col col-md-2 btn btn-default input-sm" type="submit">
+                ارسال
+            </button>
+        </div>
+    </div>
+</form>

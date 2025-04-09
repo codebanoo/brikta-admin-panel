@@ -1,0 +1,221 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<MyPropertyTypesVM> propertyTypesList = new List<MyPropertyTypesVM>();
+
+                                                            @Html.Raw("var propertyTypesList = [];");
+
+        if (ViewData["MyPropertyTypesList"] != null)
+        {
+            propertyTypesList = (List<MyPropertyTypesVM>)ViewData["MyPropertyTypesList"];
+
+            var propertyTypesListData = propertyTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.PropertyTypeTilte}",
+                Value = c.PropertyTypeId
+            });
+
+                                                                @Html.Raw("debugger; propertyTypesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertyTypesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<TypeOfUsesVM> typeOfUsesList = new List<TypeOfUsesVM>();
+
+                                                            @Html.Raw("var typeOfUsesList = [];");
+
+        if (ViewData["TypeOfUsesList"] != null)
+        {
+            typeOfUsesList = (List<TypeOfUsesVM>)ViewData["TypeOfUsesList"];
+
+            var typeOfUsesListData = typeOfUsesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.TypeOfUseTitle}",
+                Value = c.TypeOfUseId
+            });
+
+                                                                @Html.Raw("debugger; typeOfUsesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(typeOfUsesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<DocumentTypesVM> documentTypesList = new List<DocumentTypesVM>();
+
+                                            @Html.Raw("var documentTypesList = [];");
+
+        if (ViewData["DocumentTypesList"] != null)
+        {
+            documentTypesList = (List<DocumentTypesVM>)ViewData["DocumentTypesList"];
+
+            var documentTypesListData = documentTypesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.DocumentTypeTitle}",
+                Value = c.DocumentTypeId
+            });
+
+                                                @Html.Raw("debugger; documentTypesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(documentTypesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    @{
+        List<PersonsVM> personsList = new List<PersonsVM>();
+
+                                                            @Html.Raw("var personsList = [];");
+
+        if (ViewData["PersonsList"] != null)
+        {
+            personsList = (List<PersonsVM>)ViewData["PersonsList"];
+
+            var personsListData = personsList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.Name + " " + c.Family + " - " + c.Phone}",
+                Value = c.PersonId
+            });
+
+                                                                @Html.Raw("debugger; personsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personsListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+
+                                        @Html.Raw("var statesList = [];");
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            var statesListData = statesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.StateName}",
+                Value = c.StateId
+            });
+
+                                                                @Html.Raw("debugger; statesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+
+                                                            @Html.Raw("var citiesList = [];");
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            var citiesListData = citiesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.CityName}",
+                Value = c.CityId,
+                Data_StateId = c.StateId
+            });
+
+                                                                @Html.Raw("debugger; citiesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+                                                            @Html.Raw("var zonesList = [];");
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            var zonesListData = zonesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.ZoneName}",
+                Value = c.ZoneId,
+                Data_CityId = c.CityId
+            });
+
+                                                                @Html.Raw("debugger; zonesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+
+        List<PersonTypesVM> personTypesList = new List<PersonTypesVM>();
+
+                                        @Html.Raw("var personTypesList = [];");
+
+        if (ViewData["PersonTypesList"] != null)
+        {
+            /*List<DomainsSettingsVM> */
+            personTypesList = (List<PersonTypesVM>)ViewData["PersonTypesList"];
+
+            var personTypesListData = personTypesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.PersonTypeTitle}",
+                          Value = c.PersonTypeId
+                      });
+
+                                            @Html.Raw("debugger; personTypesList = " +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personTypesListData)) + "; debugger;");
+        }
+
+    }
+</script>
+
+<style type="text/css">
+    #PropertyDescriptions,
+    #PropertyAddressVM_Address {
+        height: 70px !important;
+    }
+
+    .lblNewPerson {
+        margin-bottom: 0;
+        display: inline-flex;
+    }
+
+    .board {
+        padding: 5px;
+    }
+
+        .board img {
+            width: 64px;
+            height: 64px;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .board .board-title {
+            text-align: center;
+            margin-top: 5px;
+        }
+</style>

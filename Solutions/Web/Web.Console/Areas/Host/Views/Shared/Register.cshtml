@@ -1,0 +1,60 @@
+﻿@using Services.Xml.Entities;
+
+@model dynamic
+
+@{
+    string areaName = "";
+    if (ViewData["AreaName"] != null)
+    {
+        areaName = ViewData["AreaName"] as string;
+    }
+
+    string controllerName = "";
+    if (ViewData["ControllerName"] != null)
+    {
+        controllerName = ViewData["ControllerName"] as string;
+    }
+
+    string actionName = "";
+    if (ViewData["ActionName"] != null)
+    {
+        actionName = ViewData["ActionName"] as string;
+    }
+
+    Layout = "_" + "LoginLayout";
+}
+
+@section head{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_headRegister.cshtml");
+    }
+
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="register-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <span>
+                        ثبت نام
+                    </span>
+                </h3>
+            </div>
+            <div class="panel-body">
+                @{
+                    Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_htmlRegister.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_jsRegister.cshtml");
+    }
+
+}

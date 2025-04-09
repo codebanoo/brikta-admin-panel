@@ -1,0 +1,1493 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>APIs.Public</name>
+    </assembly>
+    <members>
+        <member name="T:APIs.Public.Controllers.ActivitiesReportsManagementController">
+            <summary>
+            ActivitiesReportsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.ActivitiesReportsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            ActivitiesReportsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+			<param name="_teniacoApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.ActivitiesReportsManagementController.GetTransactions(VM.PVM.Public.GetTransactionsPVM)">
+            <summary>
+            GetTransactions
+            </summary>
+            <param name="getTransactionsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.ActivitiesReportsManagementController.PayTransaction(VM.PVM.Public.PayTransactionPVM)">
+            <summary>
+            PayTransaction
+            </summary>
+            <param name="payTransactionPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.ActivitiesReportsManagementController.CalculateTotalPrice(VM.PVM.Public.CalculateTotalPricePVM)">
+            <summary>
+            CalculateTotalPrice
+            </summary>
+            <param name="calculateTotalPricePVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.ActivitiesReportsManagementController.GetListOfAllTransactions(VM.PVM.Public.GetTransactionsPVM)">
+            <summary>
+            GetListOfAllTransactions
+            </summary>
+            <param name="getTransactionsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.AgeCategoriesManagementController">
+            <summary>
+            AgeCategoriesManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            AgeCategoriesManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.GetAllAgeCategoriesList(VM.PVM.Public.GetAllAgeCategoriesListPVM)">
+            <summary>
+            GetAllAgeCategoriesList
+            </summary>
+            <param name="getAllAgeCategoriesListPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.GetListOfAgeCategories(VM.PVM.Public.GetListOfAgeCategoriesPVM)">
+            <summary>
+            GetListOfAgeCategories
+            </summary>
+            <param name="getListOfAgeCategoriesPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.AddToAgeCategories(VM.PVM.Public.AddToAgeCategoriesPVM)">
+            <summary>
+            AddToAgeCategories
+            </summary>
+            <param name="addToAgeCategoriesPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.UpdateAgeCategories(VM.PVM.Public.UpdateAgeCategoriesPVM)">
+            <summary>
+            UpdateAgeCategories
+            </summary>
+            <param name="updateAgeCategoriesPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.ToggleActivationAgeCategories(VM.PVM.Public.ToggleActivationAgeCategoriesPVM)">
+            <summary>
+            ToggleActivationAgeCategories
+            </summary>
+            <param name="toggleActivationAgeCategoriesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.TemporaryDeleteAgeCategories(VM.PVM.Public.TemporaryDeleteAgeCategoriesPVM)">
+            <summary>
+            TemporaryDeleteAgeCategories
+            </summary>
+            <param name="temporaryDeleteAgeCategoriesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.AgeCategoriesManagementController.CompleteDeleteAgeCategories(VM.PVM.Public.CompleteDeleteAgeCategoriesPVM)">
+            <summary>
+            CompleteDeleteAgeCategories
+            </summary>
+            <param name="completeDeleteAgeCategoriesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.CallUsManagementController">
+            <summary>
+            CallUsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.CallUsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            CallUsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.CallUsManagementController.GetListOfCallUs(VM.PVM.Public.GetListOfCallUsPVM)">
+            <summary>
+            GetListOfCallUs
+            </summary>
+            <param name="getListOfCallUsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CallUsManagementController.GetCallUs(VM.PVM.Public.GetCallUsPVM)">
+            <summary>
+            GetCallUs
+            </summary>
+            <param name="getCallUsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CallUsManagementController.AddToCallUs(VM.PVM.Public.AddToCallUsPVM)">
+            <summary>
+            AddToCallUs
+            </summary>
+            <param name="addToCallUsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CallUsManagementController.UpdateCallUs(VM.PVM.Public.UpdateCallUsPVM)">
+            <summary>
+            UpdateCallUs
+            </summary>
+            <param name="updateCallUsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CallUsManagementController.DeleteCallUs(VM.PVM.Public.DeleteCallUsPVM)">
+            <summary>
+            DeleteCallUs
+            </summary>
+            <param name="deleteCallUsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.CitiesManagementController">
+            <summary>
+            CitiesManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.CitiesManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            CitiesManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.CitiesManagementController.GetListOfCities(VM.PVM.Public.GetListOfCitiesPVM)">
+            <summary>
+            GetListOfCities
+            </summary>
+            <param name="getListOfCitiesPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.CommentsManagementController">
+            <summary>
+            CommentsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.CommentsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            CommentsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.CommentsManagementController.GetListOfComments(VM.PVM.Public.GetListOfCommentsPVM)">
+            <summary>
+            GetListOfComments
+            </summary>
+            <param name="getListOfCommentsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CommentsManagementController.AddToComments(VM.PVM.Public.AddToCommentsPVM)">
+            <summary>
+            AddToComments
+            </summary>
+            <param name="addToCommentsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CommentsManagementController.UpdateComments(VM.PVM.Public.UpdateCommentsPVM)">
+            <summary>
+            UpdateComments
+            </summary>
+            <param name="updateCommentsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CommentsManagementController.ToggleActivationComments(VM.PVM.Public.ToggleActivationCommentsPVM)">
+            <summary>
+            ToggleActivationComments
+            </summary>
+            <param name="toggleActivationCommentsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CommentsManagementController.TemporaryDeleteComments(VM.PVM.Public.TemporaryDeleteCommentsPVM)">
+            <summary>
+            TemporaryDeleteComments
+            </summary>
+            <param name="temporaryDeleteCommentsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.CommentsManagementController.CompleteDeleteComments(VM.PVM.Public.CompleteDeleteCommentsPVM)">
+            <summary>
+            CompleteDeleteComments
+            </summary>
+            <param name="completeDeleteCommentsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.CountriesManagementController">
+            <summary>
+            CountriesManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.CountriesManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            CountriesManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.CountriesManagementController.GetListOfCountries(VM.PVM.Public.GetListOfCountriesPVM)">
+            <summary>
+            
+            </summary>
+            <param name="getListOfCountriesPVM"></param>
+            <returns></returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.EducationalLevelsManagementController">
+            <summary>
+            EducationalLevelsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            EducationalLevelsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.GetAllEducationalLevelsList(VM.PVM.Public.GetAllEducationalLevelsListPVM)">
+            <summary>
+            GetAllEducationalLevelsList
+            </summary>
+            <param name="getAllEducationalLevelsListPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.GetListOfEducationalLevels(VM.PVM.Public.GetListOfEducationalLevelsPVM)">
+            <summary>
+            GetListOfEducationalLevels
+            </summary>
+            <param name="getListOfEducationalLevelsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.AddToEducationalLevels(VM.PVM.Public.AddToEducationalLevelsPVM)">
+            <summary>
+            AddToEducationalLevels
+            </summary>
+            <param name="addToEducationalLevelsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.UpdateEducationalLevels(VM.PVM.Public.UpdateEducationalLevelsPVM)">
+            <summary>
+            UpdateEducationalLevels
+            </summary>
+            <param name="updateEducationalLevelsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.ToggleActivationEducationalLevels(VM.PVM.Public.ToggleActivationEducationalLevelsPVM)">
+            <summary>
+            ToggleActivationEducationalLevels
+            </summary>
+            <param name="toggleActivationEducationalLevelsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.TemporaryDeleteEducationalLevels(VM.PVM.Public.TemporaryDeleteEducationalLevelsPVM)">
+            <summary>
+            TemporaryDeleteEducationalLevels
+            </summary>
+            <param name="temporaryDeleteEducationalLevelsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationalLevelsManagementController.CompleteDeleteEducationalLevels(VM.PVM.Public.CompleteDeleteEducationalLevelsPVM)">
+            <summary>
+            CompleteDeleteEducationalLevels
+            </summary>
+            <param name="completeDeleteEducationalLevelsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.EducationLevelsManagementController">
+            <summary>
+            EducationLevelsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            EducationLevelsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.GetAllEducationLevelsList(VM.PVM.Public.GetAllEducationLevelsListPVM)">
+            <summary>
+            GetAllEducationLevelsList
+            </summary>
+            <param name="getAllEducationLevelsListPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.GetListOfEducationLevels(VM.PVM.Public.GetListOfEducationLevelsPVM)">
+            <summary>
+            GetListOfEducationLevels
+            </summary>
+            <param name="getListOfEducationLevelsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.AddToEducationLevels(VM.PVM.Public.AddToEducationLevelsPVM)">
+            <summary>
+            AddToEducationLevels
+            </summary>
+            <param name="addToEducationLevelsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.UpdateEducationLevels(VM.PVM.Public.UpdateEducationLevelsPVM)">
+            <summary>
+            UpdateEducationLevels
+            </summary>
+            <param name="updateEducationLevelsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.ToggleActivationEducationLevels(VM.PVM.Public.ToggleActivationEducationLevelsPVM)">
+            <summary>
+            ToggleActivationEducationLevels
+            </summary>
+            <param name="toggleActivationEducationLevelsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.TemporaryDeleteEducationLevels(VM.PVM.Public.TemporaryDeleteEducationLevelsPVM)">
+            <summary>
+            TemporaryDeleteEducationLevels
+            </summary>
+            <param name="temporaryDeleteEducationLevelsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EducationLevelsManagementController.CompleteDeleteEducationLevels(VM.PVM.Public.CompleteDeleteEducationLevelsPVM)">
+            <summary>
+            CompleteDeleteEducationLevels
+            </summary>
+            <param name="completeDeleteEducationLevelsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.EmailPanelManagementController">
+            <summary>
+            EmailPanelManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.EmailPanelManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            EmailPanelManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.EmailPanelManagementController.GetListOfEmailPanel(VM.PVM.Public.GetListOfEmailPanelPVM)">
+            <summary>
+            GetListOfEmailPanel
+            </summary>
+            <param name="getListOfEmailPanelPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EmailPanelManagementController.AddToEmailPanel(VM.PVM.Public.AddToEmailPanelPVM)">
+            <summary>
+            AddToEmailPanel
+            </summary>
+            <param name="addToEmailPanelPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EmailPanelManagementController.UpdateEmailPanel(VM.PVM.Public.UpdateEmailPanelPVM)">
+            <summary>
+            UpdateEmailPanel
+            </summary>
+            <param name="updateEmailPanelPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EmailPanelManagementController.ToggleActivationEmailPanel(VM.PVM.Public.ToggleActivationEmailPanelPVM)">
+            <summary>
+            ToggleActivationEmailPanel
+            </summary>
+            <param name="toggleActivationEmailPanelPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EmailPanelManagementController.TemporaryDeleteEmailPanel(VM.PVM.Public.TemporaryDeleteEmailPanelPVM)">
+            <summary>
+            TemporaryDeleteEmailPanel
+            </summary>
+            <param name="temporaryDeleteEmailPanelPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.EmailPanelManagementController.CompleteDeleteEmailPanel(VM.PVM.Public.CompleteDeleteEmailPanelPVM)">
+            <summary>
+            CompleteDeleteEmailPanel
+            </summary>
+            <param name="completeDeleteEmailPanelPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.FaqCategoriesManagementController">
+            <summary>
+            FaqCategoriesManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.FaqCategoriesManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            FaqCategoriesManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="T:APIs.Public.Controllers.FaqsManagementController">
+            <summary>
+            FaqsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.FaqsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            FaqsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.FaqsManagementController.GetAllFaqsList(VM.PVM.Public.GetAllFaqsListPVM)">
+            <summary>
+            GetAllFaqsList
+            </summary>
+            <param name="getAllFaqsListPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.FormElementsManagementController">
+            <summary>
+            FormElementsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            FormElementsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsManagementController.GetListOfFormElements(VM.PVM.Public.GetListOfFormElementsPVM)">
+            <summary>
+            GetListOfFormElements
+            </summary>
+            <param name="getListOfFormElementsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsManagementController.AddToFormElement(VM.PVM.Public.AddToFormElementPVM)">
+            <summary>
+            AddToFormElement
+            </summary>
+            <param name="addToFormElementPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsManagementController.UpdateFormElement(VM.PVM.Public.UpdateFormElementPVM)">
+            <summary>
+            UpdateFormElement
+            </summary>
+            <param name="updateFormElementPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsManagementController.ToggleActivationFormElement(VM.PVM.Public.ToggleActivationFormElementPVM)">
+            <summary>
+            ToggleActivationFormElement
+            </summary>
+            <param name="toggleActivationFormElementPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsManagementController.DeleteFormElement(VM.PVM.Public.DeleteFormElementPVM)">
+            <summary>
+            DeleteFormElement
+            </summary>
+            <param name="deleteFormElementPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsManagementController.GetFormElementWithFormElementId(VM.PVM.Public.GetFormElementWithFormElementIdPVM)">
+            <summary>
+            GetFormElementWithFormElementId
+            </summary>
+            <param name="getFormElementWithFormElementIdPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.FormElementsOptionsManagementController">
+            <summary>
+            FormElementsOptionsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsOptionsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            FormElementsOptionsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsOptionsManagementController.GetListOfFormElementsOptions(VM.PVM.Public.GetListOfFormElementsOptionsPVM)">
+            <summary>
+            GetListOfFormElementsOptions
+            </summary>
+            <param name="getListOfFormElementsOptionsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsOptionsManagementController.AddToFormElementOption(VM.PVM.Public.AddToFormElementOptionPVM)">
+            <summary>
+            AddToFormElementOption
+            </summary>
+            <param name="addToFormElementOptionPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsOptionsManagementController.UpdateFormElementOption(VM.PVM.Public.UpdateFormElementOptionPVM)">
+            <summary>
+            UpdateFormElementOption
+            </summary>
+            <param name="updateFormElementOptionPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsOptionsManagementController.ToggleActivationFormElementOption(VM.PVM.Public.ToggleActivationFormElementOptionPVM)">
+            <summary>
+            ToggleActivationFormElementOption
+            </summary>
+            <param name="toggleActivationFormElementOptionPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormElementsOptionsManagementController.DeleteFormElementOption(VM.PVM.Public.DeleteFormElementOptionPVM)">
+            <summary>
+            DeleteFormElementOption
+            </summary>
+            <param name="deleteFormElementOptionPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.FormsManagementController">
+            <summary>
+            FormsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            FormsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.GetListOfForms(VM.PVM.Public.GetListOfFormsPVM)">
+            <summary>
+            GetListOfForms
+            </summary>
+            <param name="getListOfFormsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.AddToForm(VM.PVM.Public.AddToFormPVM)">
+            <summary>
+            AddToForm
+            </summary>
+            <param name="addToFormPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.UpdateForm(VM.PVM.Public.UpdateFormPVM)">
+            <summary>
+            UpdateForm
+            </summary>
+            <param name="updateFormPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.ToggleActivationForm(VM.PVM.Public.ToggleActivationFormPVM)">
+            <summary>
+            ToggleActivationForm
+            </summary>
+            <param name="toggleActivationFormPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.DeleteForm(VM.PVM.Public.DeleteFormPVM)">
+            <summary>
+            DeleteForm
+            </summary>
+            <param name="deleteFormPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.GetFormWithFormId(VM.PVM.Public.GetFormWithFormIdPVM)">
+            <summary>
+            GetFormWithFormId
+            </summary>
+            <param name="getFormWithFormIdPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.GetActiveForm(VM.PVM.Public.GetActiveFormPVM)">
+            <summary>
+            GetActiveForm
+            </summary>
+            <param name="getActiveFormPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.FormsManagementController.AddToFormUsersAnswers(VM.PVM.Public.AddToFormUsersAnswersPVM)">
+            <summary>
+            AddToFormUsersAnswers
+            </summary>
+            <param name="addToFormUsersAnswersPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.LocationsManagementController">
+            <summary>
+            LocationsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            LocationsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.GetAllLocationsList(VM.PVM.Public.GetAllLocationsListPVM)">
+            <summary>
+            GetAllLocationsList
+            </summary>
+            <param name="getAllLocationsListPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.GetListOfLocations(VM.PVM.Public.GetListOfLocationsPVM)">
+            <summary>
+            GetListOfLocations
+            </summary>
+            <param name="getListOfLocationsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.AddToLocation(VM.PVM.Public.AddToLocationPVM)">
+            <summary>
+            AddToLocation
+            </summary>
+            <param name="addToLocationPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.UpdateLocation(VM.PVM.Public.UpdateLocationPVM)">
+            <summary>
+            UpdateLocation
+            </summary>
+            <param name="updateLocationPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.ToggleActivationLocation(VM.PVM.Public.ToggleActivationLocationPVM)">
+            <summary>
+            ToggleActivationLocation
+            </summary>
+            <param name="toggleActivationLocationPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.TemporaryDeleteLocation(VM.PVM.Public.TemporaryDeleteLocationPVM)">
+            <summary>
+            TemporaryDeleteLocation
+            </summary>
+            <param name="temporaryDeleteLocationPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.LocationsManagementController.CompleteDeleteLocation(VM.PVM.Public.CompleteDeleteLocationPVM)">
+            <summary>
+            CompleteDeleteLocation
+            </summary>
+            <param name="completeDeleteLocationPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.MainSlidersManagementController">
+            <summary>
+            MainSlidersManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            MainSlidersManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.GetListOfMainSliders(VM.PVM.Public.GetListOfMainSlidersPVM)">
+            <summary>
+            GetListOfMainSliders
+            </summary>
+            <param name="getListOfMainSlidersPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.GetAllMainSliders(VM.PVM.Public.GetAllMainSlidersPVM)">
+            <summary>
+            GetAllMainSliders
+            </summary>
+            <param name="getAllMainSlidersPVM"></param>
+            <returns></returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.AddToMainSliders(VM.PVM.Public.AddToMainSlidersPVM)">
+            <summary>
+            AddToMainSliders
+            </summary>
+            <param name="addToMainSlidersPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.GetMainSliderWithMainSliderId(VM.PVM.Public.GetMainSliderWithMainSliderIdPVM)">
+            <summary>
+            GetMainSliderWithMainSliderId
+            </summary>
+            <param name="getMainSliderWithMainSliderIdPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.UpdateMainSliders(VM.PVM.Public.UpdateMainSlidersPVM)">
+            <summary>
+            UpdateMainSliders
+            </summary>
+            <param name="updateMainSlidersPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.ToggleActivationMainSliders(VM.PVM.Public.ToggleActivationMainSlidersPVM)">
+            <summary>
+            ToggleActivationMainSliders
+            </summary>
+            <param name="toggleActivationMainSlidersPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.TemporaryDeleteMainSliders(VM.PVM.Public.TemporaryDeleteMainSlidersPVM)">
+            <summary>
+            TemporaryDeleteMainSliders
+            </summary>
+            <param name="temporaryDeleteMainSlidersPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.CompleteDeleteMainSliders(VM.PVM.Public.CompleteDeleteMainSlidersPVM)">
+            <summary>
+            CompleteDeleteMainSliders
+            </summary>
+            <param name="completeDeleteMainSlidersPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.GetMainSliderPicture(VM.PVM.Public.GetMainSliderPicturePVM)">
+            <summary>
+            GetMainSliderPicture
+            </summary>
+            <param name="getMainSliderPicturePVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.MainSlidersManagementController.UpdateMainSliderPicture(VM.PVM.Public.UpdateMainSliderPicturePVM)">
+            <summary>
+            UpdateMainSliderPicture
+            </summary>
+            <param name="updateMainSliderPicturePVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.NewsCategoriesManagementController">
+            <summary>
+            NewsCategoriesManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            NewsCategoriesManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.GetListOfNewsCategories(VM.PVM.Public.GetListOfNewsCategoriesPVM)">
+            <summary>
+            GetListOfNewsCategories
+            </summary>
+            <param name="getListOfNewsCategoriesPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.GetAllNewsCategoriesList(VM.PVM.Public.GetAllNewsCategoriesListPVM)">
+            <summary>
+            GetAllNewsCategoriesList
+            </summary>
+            <param name="getAllNewsCategoriesListPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.AddToNewsCategories(VM.PVM.Public.AddToNewsCategoriesPVM)">
+            <summary>
+            AddToNewsCategories
+            </summary>
+            <param name="addToNewsCategoriesPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.UpdateNewsCategories(VM.PVM.Public.UpdateNewsCategoriesPVM)">
+            <summary>
+            UpdateNewsCategories
+            </summary>
+            <param name="updateNewsCategoriesPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.ToggleActivationNewsCategories(VM.PVM.Public.ToggleActivationNewsCategoriesPVM)">
+            <summary>
+            ToggleActivationNewsCategories
+            </summary>
+            <param name="toggleActivationNewsCategoriesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.TemporaryDeleteNewsCategories(VM.PVM.Public.TemporaryDeleteNewsCategoriesPVM)">
+            <summary>
+            TemporaryDeleteNewsCategories
+            </summary>
+            <param name="temporaryDeleteNewsCategoriesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsCategoriesManagementController.CompleteDeleteNewsCategories(VM.PVM.Public.CompleteDeleteNewsCategoriesPVM)">
+            <summary>
+            CompleteDeleteNewsCategories
+            </summary>
+            <param name="completeDeleteNewsCategoriesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.NewsManagementController">
+            <summary>
+            NewsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            NewsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsManagementController.GetListOfNews(VM.PVM.Public.GetListOfNewsPVM)">
+            <summary>
+            GetListOfNews
+            </summary>
+            <param name="getListOfNewsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsManagementController.AddToNews(VM.PVM.Public.AddToNewsPVM)">
+            <summary>
+            AddToNews
+            </summary>
+            <param name="addToNewsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsManagementController.UpdateNews(VM.PVM.Public.UpdateNewsPVM)">
+            <summary>
+            UpdateNews
+            </summary>
+            <param name="updateNewsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsManagementController.ToggleActivationNews(VM.PVM.Public.ToggleActivationNewsPVM)">
+            <summary>
+            ToggleActivationNews
+            </summary>
+            <param name="toggleActivationNewsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsManagementController.TemporaryDeleteNews(VM.PVM.Public.TemporaryDeleteNewsPVM)">
+            <summary>
+            TemporaryDeleteNews
+            </summary>
+            <param name="temporaryDeleteNewsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.NewsManagementController.CompleteDeleteNews(VM.PVM.Public.CompleteDeleteNewsPVM)">
+            <summary>
+            CompleteDeleteNews
+            </summary>
+            <param name="completeDeleteNewsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.PagesManagementController">
+            <summary>
+            PagesManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.PagesManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            PagesManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.PagesManagementController.GetPageContents(VM.PVM.Public.GetPageContentsPVM)">
+            <summary>
+            GetPageContents
+            </summary>
+            <param name="getPageContentsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.PropertyElementsManagementController">
+            <summary>
+            PropertyElementsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            PropertyElementsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.GetListOfPropertyElements(VM.PVM.Public.GetListOfPropertyElementsPVM)">
+            <summary>
+            GetListOfPropertyElements
+            </summary>
+            <param name="getListOfPropertyElementsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.AddToPropertyElements(VM.PVM.Public.AddToPropertyElementsPVM)">
+            <summary>
+            AddToPropertyElements
+            </summary>
+            <param name="addToPropertyElementsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.UpdatePropertyElements(VM.PVM.Public.UpdatePropertyElementsPVM)">
+            <summary>
+            UpdatePropertyElements
+            </summary>
+            <param name="updatePropertyElementsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.ToggleActivationPropertyElements(VM.PVM.Public.ToggleActivationPropertyElementsPVM)">
+            <summary>
+            ToggleActivationPropertyElements
+            </summary>
+            <param name="toggleActivationPropertyElementsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.DeletePropertyElements(VM.PVM.Public.DeletePropertyElementsPVM)">
+            <summary>
+            DeletePropertyElements
+            </summary>
+            <param name="deletePropertyElementsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.GetPropertyElementsWithPropertyElementId(VM.PVM.Public.GetPropertyElementWithPropertyElementIdPVM)">
+            <summary>
+            GetPropertyElementsWithPropertyElementId
+            </summary>
+            <param name="getPropertyElementWithPropertyElementIdPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.GetListOfAllPropertyElements(VM.PVM.Public.GetListOfAllPropertyElementsPVM)">
+            <summary>
+            GetListOfAllPropertyElements
+            </summary>
+            <param name="getListOfAllPropertyElementsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.ExistParentPropertyValue(VM.PVM.Public.ExistParentPropertyValuePVM)">
+            <summary>
+            ExistParentPropertyValue
+            </summary>
+            <param name="existParentPropertyValuePVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.AddToParentPropertyValues(VM.PVM.Public.AddToParentPropertyValuesPVM)">
+            <summary>
+            AddToParentPropertyValues
+            </summary>
+            <param name="addToParentPropertyValuesPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.UpdateParentPropertyValues(VM.PVM.Public.UpdateParentPropertyValuesPVM)">
+            <summary>
+            UpdateParentPropertyValues
+            </summary>
+            <param name="updateParentPropertyValuesPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.ToggleActivationProductsGroupsPropertyValues(VM.PVM.Public.ToggleActivationProductsGroupsPropertyValuesPVM)">
+            <summary>
+            ToggleActivationProductsGroupsPropertyValues
+            </summary>
+            <param name="toggleActivationProductsGroupsPropertyValuesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsManagementController.DeleteProductsGroupsPropertyValues(VM.PVM.Public.DeleteProductsGroupsPropertyValuesPVM)">
+            <summary>
+            DeleteProductsGroupsPropertyValues
+            </summary>
+            <param name="deleteProductsGroupsPropertyValuesPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.PropertyElementsOptionsManagementController">
+            <summary>
+            PropertyElementsOptionsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsOptionsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            PropertyElementsOptionsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsOptionsManagementController.GetListOfPropertyElementsOptions(VM.PVM.Public.GetListOfPropertyElementsOptionsPVM)">
+            <summary>
+            GetListOfPropertyElementsOptions
+            </summary>
+            <param name="getListOfPropertyElementsOptionsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsOptionsManagementController.AddToPropertyElementsOptions(VM.PVM.Public.AddToPropertyElementsOptionsPVM)">
+            <summary>
+            AddToPropertyElementsOptions
+            </summary>
+            <param name="addToPropertyElementsOptionsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsOptionsManagementController.UpdatePropertyElementsOptions(VM.PVM.Public.UpdatePropertyElementsOptionsPVM)">
+            <summary>
+            UpdatePropertyElementsOptions
+            </summary>
+            <param name="updatePropertyElementsOptionsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsOptionsManagementController.ToggleActivationPropertyElementsOptions(VM.PVM.Public.ToggleActivationPropertyElementsOptionsPVM)">
+            <summary>
+            ToggleActivationPropertyElementsOptions
+            </summary>
+            <param name="toggleActivationPropertyElementsOptionsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.PropertyElementsOptionsManagementController.DeletePropertyElementsOptions(VM.PVM.Public.DeletePropertyElementsOptionsPVM)">
+            <summary>
+            DeletePropertyElementsOptions
+            </summary>
+            <param name="deletePropertyElementsOptionsPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.SmsPanelManagementController">
+            <summary>
+            SmsPanelManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.SmsPanelManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            SmsPanelManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.SmsPanelManagementController.GetListOfSmsPanel(VM.PVM.Public.GetListOfSmsPanelPVM)">
+            <summary>
+            GetListOfSmsPanel
+            </summary>
+            <param name="getListOfSmsPanelPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.SmsPanelManagementController.AddToSmsPanel(VM.PVM.Public.AddToSmsPanelPVM)">
+            <summary>
+            AddToSmsPanel
+            </summary>
+            <param name="addToSmsPanelPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.SmsPanelManagementController.UpdateSmsPanel(VM.PVM.Public.UpdateSmsPanelPVM)">
+            <summary>
+            UpdateSmsPanel
+            </summary>
+            <param name="updateSmsPanelPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.SmsPanelManagementController.ToggleActivationSmsPanel(VM.PVM.Public.ToggleActivationSmsPanelPVM)">
+            <summary>
+            ToggleActivationSmsPanel
+            </summary>
+            <param name="toggleActivationSmsPanelPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.SmsPanelManagementController.TemporaryDeleteSmsPanel(VM.PVM.Public.TemporaryDeleteSmsPanelPVM)">
+            <summary>
+            TemporaryDeleteSmsPanel
+            </summary>
+            <param name="temporaryDeleteSmsPanelPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.SmsPanelManagementController.CompleteDeleteSmsPanel(VM.PVM.Public.CompleteDeleteSmsPanelPVM)">
+            <summary>
+            CompleteDeleteSmsPanel
+            </summary>
+            <param name="completeDeleteSmsPanelPVM"></param>
+            <returns>JsonResultObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.StatesManagementController">
+            <summary>
+            StatesManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.StatesManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            StatesManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.StatesManagementController.GetListOfStates(VM.PVM.Public.GetListOfStatesPVM)">
+            <summary>
+            GetListOfStates
+            </summary>
+            <param name="getListOfStatesPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="T:APIs.Public.Controllers.TransactionsManagementController">
+            <summary>
+            TransactionsManagement
+            </summary>
+        </member>
+        <member name="M:APIs.Public.Controllers.TransactionsManagementController.#ctor(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.AspNetCore.Mvc.Infrastructure.IActionContextAccessor,Microsoft.Extensions.Configuration.IConfigurationRoot,Models.Business.ConsoleBusiness.IConsoleBusiness,APIs.Crm.Models.Business.ICrmApiBusiness,APIs.Institution.Models.Business.IInstitutionApiBusiness,APIs.Library.Models.Business.ILibraryApiBusiness,APIs.Monitoring.Models.Business.IMonitoringApiBusiness,APIs.PayingWages.Models.Business.IPayingWagesApiBusiness,APIs.Public.Models.Business.IPublicApiBusiness,APIs.Store.Models.Business.IStoreApiBusiness,APIs.Ticketing.Models.Business.ITicketingApiBusiness,APIs.Majal.Models.Business.IMajalApiBusiness,APIs.Advertisement.Models.Business.IAdvertisementApiBusiness,Microsoft.Extensions.Options.IOptions{APIs.CustomAttributes.Helper.AppSettings})">
+            <summary>
+            TransactionsManagement
+            </summary>
+            <param name="_hostingEnvironment"></param>
+            <param name="_httpContextAccessor"></param>
+            <param name="_actionContextAccessor"></param>
+            <param name="_configurationRoot"></param>
+            <param name="_consoleBusiness"></param>
+            <param name="_automationApiBusiness"></param>
+            <param name="_institutionApiBusiness"></param>
+            <param name="_libraryApiBusiness"></param>
+            <param name="_monitoringApiBusiness"></param>
+            <param name="_payingWagesApiBusiness"></param>
+            <param name="_publicApiBusiness"></param>
+            <param name="_storeApiBusiness"></param>
+            <param name="_ticketingApiBusiness"></param>
+            <param name="_majalApiBusiness"></param>
+            <param name="_advertisementApiBusiness"></param>
+            <param name="_appSettingsSection"></param>
+        </member>
+        <member name="M:APIs.Public.Controllers.TransactionsManagementController.GetListOfTransactions(VM.PVM.Public.GetListOfTransactionsPVM)">
+            <summary>
+            GetListOfTransactions
+            </summary>
+            <param name="getListOfTransactionsPVM"></param>
+            <returns>JsonResultWithRecordsObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.TransactionsManagementController.GetAllTransactions(VM.PVM.Public.GetAllTransactionsPVM)">
+            <summary>
+            GetAllTransactions
+            </summary>
+            <param name="getAllTransactionsPVM"></param>
+            <returns></returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.TransactionsManagementController.AddToTransactions(VM.PVM.Public.AddToTransactionsPVM)">
+            <summary>
+            AddToTransactions
+            </summary>
+            <param name="addToTransactionsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.TransactionsManagementController.UpdateTransactions(VM.PVM.Public.UpdateTransactionsPVM)">
+            <summary>
+            UpdateTransactions
+            </summary>
+            <param name="updateTransactionsPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+        <member name="M:APIs.Public.Controllers.TransactionsManagementController.GetTransactionsWithLocationIdAndProductId(VM.PVM.Public.GetTransactionsWithLocationIdAndProductIdPVM)">
+            <summary>
+            GetTransactionsWithLocationIdAndProductId
+            </summary>
+            <param name="getTransactionsWithLocationIdAndProductIdPVM"></param>
+            <returns>JsonResultWithRecordObjectVM</returns>
+        </member>
+    </members>
+</doc>

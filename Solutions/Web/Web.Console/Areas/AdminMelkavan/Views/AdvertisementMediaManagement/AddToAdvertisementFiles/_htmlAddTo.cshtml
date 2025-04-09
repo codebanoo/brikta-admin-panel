@@ -1,0 +1,67 @@
+﻿@using VM.Teniaco;
+<form class="col-12" data-ajax-complete="OnComplete"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-5 mr-5">
+        <label style="margin-bottom: 1rem;color:gray;">آگهی‌های دارای عکس تا «4 برابر» بیشتر توسط کاربران دیده می‌شوند.</label>
+    </div>
+
+    <div class="row bg-white rounded-4 border-primary-dotted py-3 ps-3 upload-file mb-3 pe-3 mt-4 mr-5 mb-5" style="padding-bottom:0px !important;">
+
+
+        @*<label for="exampleFormControlName" class="form-label mb-1 titles">فایل عکس</label>*@
+
+        <div id="dz-main" class="drop-zone">
+            <label class="form-label mb-1 titles" style="color: gray; cursor:pointer;" id="mainImage">عکس اصلی</label>
+            <span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="drop-zone__prompt"></span>
+            <input accept=".png, .jpg, .jpeg, .webp" type="file" name="myFile" class="main-Image d-none" id="main-img-input">
+            <span class="text-danger"></span>
+        </div>
+        <div class="upload__box">
+            <label class="form-label mb-1 titles" style="color: gray; cursor:pointer;">عکس فرعی</label>
+            <label class="upload__btn">
+                <span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="addMultipleImage"></span>
+            </label>
+
+
+
+            <input type="file" multiple data-max_length="9" id="other-Images">
+            <span class="text-danger"></span>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="upload__img-wrap mr-5" @* style="margin-top:2rem;" *@></div>
+    </div>
+
+
+    <div class="row">
+        <div id="largeImagePreview" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000;">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50%; height: 50%; background-size: contain; background-repeat: no-repeat; background-position: center;" id="largeImageContainer"></div>
+            <a id="downloadImage" href="#" download style="position: absolute; bottom: 10px; left: 10px; background: rgba(0, 0, 0, 0.5); padding: 8px; border-radius: 50%; color: white; text-decoration: none;">
+                &#x1F4E5; <!-- Unicode for a download icon -->
+            </a>
+        </div>
+    </div>
+
+    <div class="ln_solid"></div>
+
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+            <button class="btn btn-primary btn-md" id="btnReset" type="reset">پاک کردن فرم</button>
+        </div>
+    </div>
+</form>
+

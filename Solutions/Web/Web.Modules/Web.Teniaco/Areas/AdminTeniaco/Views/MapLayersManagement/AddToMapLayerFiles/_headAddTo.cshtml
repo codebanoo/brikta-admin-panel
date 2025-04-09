@@ -1,0 +1,22 @@
+﻿
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        MapLayerCategoriesVM mapLayerCategory = new MapLayerCategoriesVM();
+
+        @Html.Raw("var mapLayerCategory ;");
+
+        if (ViewData["MapLayerCategoriesList"] != null)
+        {
+            mapLayerCategory = (MapLayerCategoriesVM)ViewData["MapLayerCategoriesList"];
+
+            @Html.Raw("debugger; mapLayerCategory =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mapLayerCategory))+" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+

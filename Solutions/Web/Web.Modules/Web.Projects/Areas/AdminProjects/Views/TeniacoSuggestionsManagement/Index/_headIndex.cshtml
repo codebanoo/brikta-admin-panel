@@ -1,0 +1,175 @@
+﻿@using Newtonsoft.Json
+@using VM.Console
+@using VM.Projects;
+@using VM.Public
+@using VM.Teniaco
+
+
+<script type="text/javascript">
+    @{
+        long constructionId = 0;
+        @Html.Raw("var constructionProjectId = 0;")
+        ;
+
+        if (ViewData["ConstructionProjectId"] != null)
+        {
+            constructionId = (long)ViewData["ConstructionProjectId"];
+
+
+            @Html.Raw("debugger; constructionProjectId =" + constructionId.ToString() + " ;debugger;")
+            ;
+        }
+    }
+
+</script>
+
+<link rel="stylesheet" href="/dactorapp/vender/materialdesign/css/materialdesignicons.min.css" />
+<link href="~/lib/mobiscroll/css/mobiscroll.jquery.min.css" rel="stylesheet" />
+<script src="~/lib/mobiscroll/js/mobiscroll.jquery.min.js"></script>
+<script src="~/lib/TweenLite/TweenLite.min.js"></script>
+<script src="~/lib/CSSPlugin/CSSPlugin.min.js"></script>
+<script src="~/lib/gsap/gsap.min.js"></script>
+<script src="~/lib/Draggable/Draggable.min.js"></script>
+
+
+
+
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+
+<style>
+
+
+
+    .item-textarea {
+        line-height: 16px;
+        resize: none;
+        white-space: normal;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+    }
+
+
+    .fileInput {
+        position: absolute;
+        opacity: 0;
+    }
+
+
+    #DeleteMainImage {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+        line-height: 24px;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+        #DeleteMainImage:after {
+            content: "✖";
+            font-size: 14px;
+            color: white;
+        }
+
+    .main-Image {
+        display: none;
+    }
+
+    .drop-zone {
+        /* min-width: 100px;*/
+        width: 19rem;
+        padding: 5px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Quicksand", sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        cursor: pointer;
+        color: black;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        margin-left: 20px;
+    }
+
+    .drop-zone--over {
+        border-style: solid;
+    }
+
+    .main-Image {
+        display: none;
+    }
+
+    .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #cccccc;
+        background-size: cover;
+        position: relative;
+    }
+
+
+    .container2 {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/cursor.png),move;
+        cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/cursor.png) 32 32,move;
+    }
+
+    .deleteTemporaryFile {
+        position: absolute;
+        color: red;
+        cursor: pointer;
+        top: -9px;
+        background-color: bisque;
+        border-radius: 20px;
+    }
+
+    .deleteFile {
+        display: flex;
+        align-items: center;
+        color: red;
+        cursor: pointer;
+        margin-left: 0;
+    }
+
+    .list-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 90px;
+        width: 100%;
+    }
+
+    .item-content {
+        height: 100%;
+        border: 0px solid rgba(123, 123, 123, 0.498039);
+        border-radius: 4px;
+        color: rgb(153, 153, 153);
+        line-height: 90px;
+        font-size: 24px;
+        font-weight: 400;
+        background-color: rgb(255, 255, 255);
+        box-shadow: rgba(0,0,0,0.2) 0px 1px 2px 0px;
+    }
+
+    .listImg {
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        margin-right: 6px;
+        width: 127px;
+        min-width: 127px;
+    }
+
+</style>

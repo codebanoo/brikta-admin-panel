@@ -1,0 +1,117 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+
+
+
+        $('#error-alert').hide(100);
+
+
+
+        $('body').on('click', '#btnCancel', function(e) {
+            e.preventDefault();
+            window.location.href = "/AdminProjects/PartnershipAgreementsManagement/Index/"+constructionProjectId;
+        });
+
+
+
+        $('body').on('click', '#btnSubmit', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var filesElm = $('input[type=file]');
+            var file = filesElm[0];
+
+            var partnershipAgreementTitle = $('#PartnershipAgreementTitle').val();
+            var partnershipAgreementNumber = $('#PartnershipAgreementNumber').val();
+            var partnershipAgreementDescription = $('#PartnershipAgreementDescription').val();
+            var partnershipAgreementFileOrder = $('#PartnershipAgreementFileOrder').val();
+    
+                  var missingField = '';
+                  if (
+                      (partnershipAgreementTitle == undefined) ||
+                      (partnershipAgreementTitle == null) ||
+                      (partnershipAgreementTitle.length == "") ||
+                      (partnershipAgreementTitle.length < 1)
+                  ) {
+                      missingField = 'عنوان ';
+                  } else if (
+                      (partnershipAgreementNumber == undefined) ||
+                      (partnershipAgreementNumber == null) ||
+                      (partnershipAgreementNumber.length == "") ||
+                      (partnershipAgreementNumber.length < 1)
+                  ) 
+                  {
+                      missingField = 'شماره قرارداد ';
+                  } else if (
+                      (partnershipAgreementFileOrder == undefined) ||
+                      (partnershipAgreementFileOrder == null) ||
+                      (partnershipAgreementFileOrder.length == "") ||
+                      (partnershipAgreementFileOrder.length < 1)
+                  ) {
+                      missingField = 'اولیت فایل ';
+                  } else if (
+                      (file == null) ||
+                      (file.files[0] == null) ||
+                      (file.files[0].size == 0)
+                  ) {
+                      missingField = 'فایل ';
+                  }
+
+                  if (missingField !== '') {
+                      $('#my-warning-modal').find('.modal-title').html('خطا');
+                      $('#my-warning-modal').find('#error').html('لطفا فیلد ' + missingField + ' را پر کنید');
+                      $('#my-warning-modal').modal("show");
+                      return;
+                  }
+
+
+            var formData = new FormData();
+            if (file != null) {
+                debugger;
+                if (file.files[0] != null) {
+                    if (file.files[0].size > 0) {
+                        formData.append('File', file.files[0]);
+                        formData.append('PartnershipAgreementsVM.PartnershipAgreementTitle', partnershipAgreementTitle);
+                        formData.append('PartnershipAgreementsVM.PartnershipAgreementNumber', partnershipAgreementNumber);
+                        formData.append('PartnershipAgreementsVM.PartnershipAgreementDescription', partnershipAgreementDescription);
+                        formData.append('PartnershipAgreementsVM.ConstructionProjectId', constructionProjectId);
+                        formData.append('PartnershipAgreementsVM.PartnershipAgreementFileOrder', partnershipAgreementFileOrder);
+
+                    }
+                }
+            }
+
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/PartnershipAgreementsManagement/AddToPartnershipAgreements",
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                success: function(result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message);
+                        $('#error-alert').show(500);
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+
+
+        });
+
+    });
+</script>

@@ -1,0 +1,104 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+
+        debugger;
+        var advertisementId = advertisementVM.AdvertisementId;
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            var features = $('.features-input');
+
+
+            debugger;
+            //برای پر کردن مقدار چک باکس ها براساس داشتن یا نداشتن تیک
+            $('input[type="checkbox"][class*="features-input"]').each(function () {
+                let checkbox = $(this);
+                checkbox.val(checkbox.prop('checked') ? '1' : null);
+            });
+
+            debugger;
+
+            var featuresValuesVMList = [];
+
+            for (var i = 0; i < features.length; i++) {
+                debugger;
+                var feature = features[i];
+                var featureId = $(feature).attr('id');
+                var featureValue = $(feature).val();
+
+                var elementTypeId = $(feature).attr('data-ElementTypeId');
+
+                switch (elementTypeId) {
+                    case '1'://متنی
+                        break;
+                    case '2'://تک انتخابی
+                        break;
+                    case '3'://چند انتخابی
+                        featureValue = (featureValue == null) ? '' : featureValue.join(',');
+                        break;
+                    case '4'://توضیحات
+                        break;
+                    case '5'://چک باکس
+                        break;
+                }
+
+                var featuresValues = {
+                    'FeatureId': featureId,
+                    'FeatureValue': featureValue
+                };
+
+                featuresValuesVMList.push(featuresValues);
+                debugger;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementFeaturesManagement/UpdateAdvertisementFeaturesForMelkavanInnerDashBoard",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: {
+                    'AdvertisementId': advertisementId,
+                    'FeaturesValuesVMList': featuresValuesVMList,
+                },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html('با موفقیت ثبت شد.');
+                        $('#error-alert').show(500);
+
+
+                        window.setTimeout(function () { window.location.reload(); }, 2500);
+
+                        $('#moreInfo-modal').modal("show");
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+    });
+</script>

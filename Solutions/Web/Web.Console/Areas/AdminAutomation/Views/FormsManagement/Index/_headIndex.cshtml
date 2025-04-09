@@ -1,0 +1,72 @@
+﻿@using VM.Public;
+@using Newtonsoft.Json
+
+<script type="text/javascript">
+    @{
+
+        List<FormUsagesVM> formUsagesList = new List<FormUsagesVM>();
+
+        @Html.Raw("var formUsagesList = [];")
+        ;
+
+        if (ViewData["FormUsagesList"] != null)
+        {
+            /*List<DomainsSettingsVM> */
+            formUsagesList = (List<FormUsagesVM>)ViewData["FormUsagesList"];
+
+            var formUsagesListData = formUsagesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.FormUsageTitle}",
+                Value = c.FormUsageId
+            });
+
+            @Html.Raw("debugger; formUsagesList = " +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(formUsagesListData)) + "; debugger;")
+            ;
+
+
+
+        }
+
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(4),
+    div.jtable-main-container table.jtable thead th:nth-child(5),
+    div.jtable-main-container table.jtable thead th:nth-child(6),
+    div.jtable-main-container table.jtable thead th:nth-child(7) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(4),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(6),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(7) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .formPreview,
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+</style>

@@ -1,0 +1,488 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#searchBlock').hide(1000);
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'لیست قرارداد های پیمانکاران', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminProjects/ContractorsAgreementsManagement/GetListOfContractorsAgreements',
+                //createAction: '/AdminProjects/ContractorsAgreementsManagement/AddToContractorsAgreements',
+                updateAction: '/AdminProjects/ContractorsAgreementsManagement/UpdateContractorsAgreements',
+                deleteAction: '/AdminProjects/ContractorsAgreementsManagement/CompleteDeleteContractorsAgreements'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function() {
+                            window.location.href = '/AdminProjects/ContractorsAgreementsManagement/AddToContractorsAgreements/' + constructionProjectId;
+                        }
+                    }
+                ]
+            },
+            fields: {
+                ContractorsAgreementId: {
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false,
+                },
+                ContractorsAgreementTitle: {
+                    title: 'عنوان&nbsp;قرارداد',
+                    sorting: true,
+                },
+                ContractorsAgreementFilePath: {
+                    title: 'فایل',
+                    sorting: false,
+                    edit: false,
+                    display: function(data) {
+
+                        switch (data.record.ContractorsAgreementFileExt) {
+                            case ".jpeg":
+                            case ".jpg":
+                            case ".png":
+                            case ".gif":
+                            case ".bmp":
+                                return '<div style="position: relative; display: inline-block;">' +
+                                    '<a class="fancybox mediaThumbImage" href="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractorsAgreementFiles/'+
+                                    data.record.ContractorsAgreementId + '/Image/' + data.record.ContractorsAgreementFilePath + '" data-fancybox-group="gallery" ' +
+                                    'title=""><img src="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractorsAgreementFiles/'+
+                                    data.record.ContractorsAgreementId + '/Image/' + data.record.ContractorsAgreementFilePath + '" alt="" ' +
+                                    'data-caption="' + data.record.ContractorsAgreementTitle + '" data-url="#" /></a>' + '</div>'
+                                break;
+                            case ".pdf":
+                                return '<div class="pdfThumbImage pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractorsAgreementFiles/'+
+                                    data.record.ContractorsAgreementId + '/Image/' + data.record.ContractorsAgreementFilePath + '"><img src="/images/pdf.png" /></div>';
+                                break;
+                            default:
+                                return '<div class="pdfThumbImage pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ContractorsAgreementFiles/'+
+                                    data.record.ContractorsAgreementId + '/Image/' + data.record.ContractorsAgreementFilePath + '"><img src="/images/File.png" /></div>';
+                        }
+                    }/*fileThumbImage*/
+                },
+                ContractorsAgreementFileExt: {
+                    title: 'فرمت&nbsp;فایل',
+                    edit: false,
+                    create: false,
+                    sorting: false,
+                },
+                ContractorsAgreementFileOrder: {
+                    title: 'اولویت&nbsp;فایل',
+                    sorting: false,
+                },
+                ContractorsAgreementNumber: {
+                    title: 'شماره&nbsp;قرارداد',
+                    sorting: false,
+                },
+                NewContractorsAgreementDescription: {
+                    title: 'توضیحات',
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) {
+
+                            return '<textarea class="form-control" id="ContractorsAgreementDescription" rows="10" placeholder="توضیحات تکمیلی" name="ContractorsAgreementDescription">' +
+                                data.record.ContractorsAgreementDescription +
+                                '</textarea>';
+
+                        }
+                        else {
+                            return '<textarea class="form-control" id="ContractorsAgreementDescription" rows="10" placeholder="توضیحات تکمیلی" name="ContractorsAgreementDescription"></textarea>';
+
+
+                        }
+                    },
+                    display: function(data) {
+                        return '<span class="description" data-Description="' + data.record.ContractorsAgreementDescription + '">' + data.record.NewContractorsAgreementDescription + '</span>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                Attachement: {
+                    title: 'پیوست&nbsp;ها',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function(data) {
+                        return '<i class="material-symbols-outlined redirect-icon px-4" '
+                            + 'data-TableName="ContractorsAgreements" data-ParentId="' + data.record.ContractorsAgreementId + '" data-ConstructionProjectId="' + data.record.ConstructionProjectId + '">Article</i>';
+                    }
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-ContractorsAgreementId="' +
+                                data.record.ContractorsAgreementId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-ContractorsAgreementId="' +
+                                data.record.ContractorsAgreementId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-ContractorsAgreementId="' + data.record.ContractorsAgreementId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-ContractorsAgreementId="' + data.record.ContractorsAgreementId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                //EditProperty: {
+                //    title: 'ویرایش',
+                //    sorting: false,
+                //    display: function(data) {
+                //        return '<div class="editBanner pointer" data-BannerId="' + data.record.BannerId + '"><i class="fa fa-edit"></i></div>';
+                //    }
+                //}
+            },
+            formCreated: function(event, data) {
+                debugger;
+                $(".jtable-dialog-form :input").each(function() {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                $("#Edit-IsDeleted").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+                $("#Edit-IsActivated").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+
+
+                data.form.find('input[name="ContractorsAgreementTitle"]').addClass(
+                    'validate[required]');
+
+
+                // data.form.find('input[name="ContractorsAgreementNumber"]').addClass(
+                //     'validate[required]');
+                // data.form.find('#ContractorsAgreementDescription').addClass(
+                //     'validate[required]');
+                // data.form.find('input[name="ContractorsAgreementFileOrder"]').addClass(
+                //     'validate[required]');
+
+
+                $("#ContractorsAgreementDescription").parent().parent().addClass("w-100")
+                data.form.find('input[name="ContractorsAgreementFileOrder"]').attr("type", "number");
+                data.form.find('input[name="ContractorsAgreementNumber"]').attr("type", "number");
+                data.form.validationEngine();
+            },
+            formSubmitting: function(event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function(event, data) {
+                //$('#listContainer').jtable('reload');
+
+            },
+            selectionChanged: function() {
+
+            },
+            recordAdded: function(event, data) {
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', { 'ConstructionProjectId': constructionProjectId });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+        $('body').on('click', '.isActivated', function() {
+            debugger;
+            var _this = $(this);
+            var contractorsAgreementId = _this.attr('data-ContractorsAgreementId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ContractorsAgreementsManagement/ToggleActivationContractorsAgreements",
+
+                data: { 'contractorsAgreementId': contractorsAgreementId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function() {
+            debugger;
+            var _this = $(this);
+            var contractorsAgreementId = _this.attr('data-ContractorsAgreementId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ContractorsAgreementsManagement/TemporaryDeleteContractorsAgreements",
+
+                data: { 'contractorsAgreementId': contractorsAgreementId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+
+        $('body').on('click', '.pdfThumbImage', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var fileUrl = _this.attr('data-file-url');
+
+            window.open(fileUrl, '_blank').focus();
+        });
+
+
+        $('body').on('click', '.description', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            var description = $('<div/>').html(_this.attr('data-Description')).text();
+            description = description.replace(/\n/g, '<br/>').replace(/\r/g, '<br/>');
+
+            //var description = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + description + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('#btnSearch').click(function(e) {
+            e.preventDefault();
+
+            var contractorsAgreementTitle = $('#contractorsAgreementTitleSearch').val();
+
+            if (
+                (contractorsAgreementTitle != null) &&
+                (contractorsAgreementTitle != "")
+            ) {
+
+                $('#listContainer').jtable('load', {
+                    'contractorsAgreementTitle': contractorsAgreementTitle,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function(e) {
+            e.preventDefault();
+            $('#contractorsAgreementTitleSearch').val("");
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function(e) {
+            $('#contractorsAgreementTitleSearch').val("");
+            e.preventDefault();
+        });
+
+
+        $('body').on('click', '.redirect-icon', function(e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var ParentId = _this.attr('data-ParentId');
+            var TableName = _this.attr('data-TableName');
+            var ConstructionProjectId = _this.attr('data-ConstructionProjectId');
+            window.location.href = '/AdminProjects/AttachementFilesManagement/Index?ParentId=' + ParentId + '&TableName=' + TableName + '&ConstructionProjectId=' + ConstructionProjectId;
+        });
+
+    });
+
+
+</script>

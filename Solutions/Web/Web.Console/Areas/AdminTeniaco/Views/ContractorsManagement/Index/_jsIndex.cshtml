@@ -1,0 +1,764 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+
+        for (var i = 0; i < statesList.length; i++) {
+           
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        $('body').on('change', '#slcStateId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#slcCityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+             
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#slcCityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcCityId').trigger("chosen:updated");
+
+            $('#slcCityId').change();
+        });
+
+
+        $('body').on('change', '#slcCityId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#slcZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+             
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#slcZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcZoneId').trigger("chosen:updated");
+        });
+
+
+        $('#listContainer').jtable({
+            title: 'پیمانکاران', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: true,
+            actions: {
+                listAction: '/AdminTeniaco/ContractorsManagement/GetListOfContractors',
+                createAction: '/AdminTeniaco/ContractorsManagement/AddToContractors',
+                updateAction: '/AdminTeniaco/ContractorsManagement/UpdateContractors',
+                deleteAction: '/AdminTeniaco/ContractorsManagement/CompleteDeleteContractors'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                ]
+            },
+            fields: {
+                ContractorId: {
+                    key: true,
+                    list: false,
+                    create:false,
+                    edit:false,
+                },
+                ContractorName: {
+                    title: 'نام&nbsp;پیمانکار',
+                    sorting: false,
+                },
+                Telephone: {
+                    title: 'تلفن',
+                    sorting: false,
+                },
+                StateId: {
+                    title: 'استان',
+                    options: statesList,
+                    sorting: false,
+                },
+                CityId: {
+                    title: 'بخش',
+                    options: citiesList,
+                    sorting: false,
+                },
+                ZoneId: {
+                    title: 'شهر&nbsp;/&nbsp;منطقه',
+                    sorting: false,
+                    options: zonesList,
+ 
+                },
+                Address: {
+                    title: 'آدرس',
+                    sorting: false,
+                    display: function(data){
+                        if(data.record.Address != null){
+                            var sp = data.record.Address.split(",");
+                               
+                            var result = '';
+                            if(sp.length> 1)
+                            {
+                                for(var i =0 ; i < sp.length; i++){
+                                    var item = sp[i];
+                                   
+                                    result += '<span>' + (i + 1) + '_' + sp[i] + '</span><br/>'
+                                }
+                                return result;
+
+                            }
+                            return sp[0];
+                        }
+                    }
+                },
+                Site: {
+                    title: 'سایت',
+                    sorting: false,
+                },
+                SocialNetworks: {
+                    title: 'شبکه&nbsp;اجتماعی',
+                    sorting: false,
+                    display: function (data) {
+                        if (data.record.SocialNetworks != null) {
+                            var sp = data.record.SocialNetworks.split(",");
+
+                            var result = '';
+
+                            if (sp.length > 1) {
+                                for (var i = 0; i < sp.length; i++) {
+                                    var item = sp[i];
+                                    result += '<span>' + (i + 1) + '_' +sp[i] + '</span><br />';
+                                }
+
+                                return result;
+                            }
+                            else
+                                return sp[0];
+                        }
+                    }
+                },
+                GuildCategoryId:{
+                      title: 'اصناف',
+                        sorting: false,
+                    options: guildCategoriesList,
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { 
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-ContractorId="' +
+                                data.record.ContractorId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-ContractorId="' +
+                                data.record.ContractorId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function (data) {
+                        if (data.record != undefined) { 
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function (data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-ContractorId="' + data.record.ContractorId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-ContractorId="' + data.record.ContractorId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+
+            },
+            formCreated: function (event, data) {
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+                      //$('.ui-dialog-titlebar-close').html('X');
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                debugger;
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+
+                if (formName == 'edit') {
+
+                    $('#Edit-StateId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-StateId').val(data.record.StateId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-CityId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-CityId').val(data.record.CityId + '').trigger("chosen:updated");
+
+
+                    $('#Edit-ZoneId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-ZoneId').val(data.record.ZoneId + '').trigger("chosen:updated");
+
+
+                      $('#Edit-GuildCategoryId').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-GuildCategoryId').val(data.record.GuildCategoryId + '').trigger("chosen:updated");
+
+
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+
+                        $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(2) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true" data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                        $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(6) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+                        $('form.jtable-dialog-form div.jtable-input-field-container:nth-child(8) div.jtable-input-label').append('<i class="fa fa-exclamation-circle" aria-hidden="true"  data-toggle="tooltip" title="جدا کننده ویرگول است.">&nbsp;</i>');
+
+                        $('#Edit-StateId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-StateId').val('').trigger("chosen:updated");
+                        $('#Edit-StateId').trigger("chosen:updated");
+
+                        $('#Edit-CityId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        $('#Edit-CityId').val('').trigger("chosen:updated");
+                        $('#Edit-CityId').trigger("chosen:updated");
+
+                        $('#Edit-ZoneId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        $('#Edit-ZoneId').val('').trigger("chosen:updated");
+                        $('#Edit-ZoneId').trigger("chosen:updated");
+
+
+
+                        $('#Edit-GuildCategoryId').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+
+                        $('#Edit-GuildCategoryId').val('').trigger("chosen:updated");
+                        $('#Edit-GuildCategoryId').trigger("chosen:updated");
+
+                       
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+
+                    }
+
+
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+
+
+        });
+
+        $('#listContainer').jtable('load');
+       
+
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('change', '#Edit-StateId', function (e) {
+            e.preventDefault();
+         
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#Edit-CityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="">---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#Edit-CityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-CityId').trigger("chosen:updated");
+            $('#Edit-CityId').change();
+        });
+
+        $('body').on('change', '#Edit-CityId', function (e) {
+            e.preventDefault();
+            
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#Edit-ZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="">---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#Edit-ZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-ZoneId').trigger("chosen:updated");
+        });
+
+
+
+        $('body').on('click', '.isActivated', function () {
+            var _this = $(this);
+            var contractorId = _this.attr('data-ContractorId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/ContractorsManagement/ToggleActivationContractors",
+
+                data: { 'ContractorId': contractorId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        var txtContractorName = $('#txtContractorName').val();
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+
+
+                        if (
+                            (txtContractorName != null) &&
+                            (slcStateId != null) &&
+                            (slcCityId != null) &&
+                            (slcZoneId != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ContractorName': txtContractorName,
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+
+            var _this = $(this);
+            var contractorId = _this.attr('data-ContractorId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/ContractorsManagement/TemporaryDeleteContractors",
+
+                data: { 'ContractorId': contractorId },
+
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+
+                        var txtContractorName = $('#txtContractorName').val();
+                        var slcStateId = $('#slcStateId').val();
+                        var slcCityId = $('#slcCityId').val();
+                        var slcZoneId = $('#slcZoneId').val();
+
+                        if (
+                            (txtContractorName != null) &&
+                            (slcStateId != null) &&
+                            (slcCityId != null) &&
+                            (slcZoneId != null)) {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'ContractorName': txtContractorName,
+                                'StateId': slcStateId,
+                                'CityId': slcCityId,
+                                'ZoneId': slcZoneId,
+
+                            });
+
+                        }
+                        else {
+
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage')
+                            });
+
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+
+          var txtContractorName = $('#txtContractorName').val();
+          var slcStateId = $('#slcStateId').val();
+          var slcCityId = $('#slcCityId').val();
+          var slcZoneId = $('#slcZoneId').val();
+
+
+
+            if (
+                (txtContractorName != null) &&
+                (slcStateId != null) &&
+                (slcCityId != null) &&
+                (slcZoneId != null)) {
+
+                $('#listContainer').jtable('load', {
+                    'ContractorName': txtContractorName,
+                    'StateId': slcStateId,
+                    'CityId': slcCityId,
+                    'ZoneId': slcZoneId,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function (e) {
+            $('#txtContractorName').val(null);
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+
+            e.preventDefault();
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function (e) {
+              e.preventDefault();
+
+            $('#txtContractorName').val(null);
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+
+          
+        });
+    });
+
+
+
+
+</script>

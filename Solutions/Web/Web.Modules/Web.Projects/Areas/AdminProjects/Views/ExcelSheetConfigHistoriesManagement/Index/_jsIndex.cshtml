@@ -1,0 +1,186 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#searchBlock').hide(1000);
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'لیست تاریخچه کانفیگ شیت اکسل', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminProjects/ExcelSheetConfigHistoriesManagement/GetListOfExcelSheetConfigHistories',
+                //createAction: '/AdminProjects/ExcelSheetConfigsManagement/AddToExcelSheetConfigs',
+                //updateAction: '/AdminProjects/ExcelSheetConfigsManagement/UpdateExcelSheetConfigs',
+                //deleteAction: '/AdminProjects/ExcelSheetConfigsManagement/CompleteDeleteExcelSheetConfigs'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+
+                ]
+            },
+            fields: {
+                ExcelSheetConfigHistoryFilePath: {
+                    title: 'فایل',
+                    sorting: false,
+                    edit: false,
+                    display: function(data) {
+
+                        return '<div class="pdfThumbImage pointer" data-file-url="/Files/ExcelSheetConfigHistoryFiles/' + domainName + '/' +
+                            data.record.ExcelSheetConfigHistoryId + '/' + data.record.ExcelSheetConfigHistoryFilePath + '"><img src="/images/File.png" /></div>';
+
+                    }/*fileThumbImage*/
+                },
+                ExcelSheetConfigHistoryId: {
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false,
+                },
+                LastReadRow: {
+                    title: 'آخرین سطر خوانده شده',
+                    sorting: false,
+                },
+                CountOfReadRows: {
+                    title: 'تعداد سطر های خوانده شده',
+                    sorting: false,
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+
+            },
+            formCreated: function(event, data) {
+               
+            },
+            formSubmitting: function(event, data) {
+                //var validate = data.form.validationEngine('validate');
+                //return validate;
+            },
+            formClosed: function(event, data) {
+                //$('#listContainer').jtable('reload');
+
+            },
+            selectionChanged: function() {
+
+            },
+            recordAdded: function(event, data) {
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', { 'ExcelSheetConfigId': excelSheetConfigId });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+
+        $('body').on('click', '.pdfThumbImage', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var fileUrl = _this.attr('data-file-url');
+
+            window.open(fileUrl, '_blank').focus();
+        });
+
+    });
+
+
+</script>

@@ -1,0 +1,150 @@
+﻿@using Services.Xml.Entities;
+
+@{
+    string areaName = "";
+    if (ViewData["AreaName"] != null)
+    {
+        areaName = ViewData["AreaName"] as string;
+    }
+
+    string controllerName = "";
+    if (ViewData["ControllerName"] != null)
+    {
+        controllerName = ViewData["ControllerName"] as string;
+    }
+
+    string actionName = "";
+    if (ViewData["ActionName"] != null)
+    {
+        actionName = ViewData["ActionName"] as string;
+    }
+    Layout = "_" + "Layout";
+
+    string searchTitle = "";
+    if (ViewData["SearchTitle"] != null)
+    {
+        searchTitle = ViewData["SearchTitle"] as string;
+    }
+
+    string excelExport = "";
+    if (ViewData["ExcelExport"] != null)
+    {
+        excelExport = ViewData["ExcelExport"] as string;
+    }
+
+    string multiSelect = "";
+    if (ViewData["MultiSelect"] != null)
+    {
+        multiSelect = ViewData["MultiSelect"] as string;
+    }
+
+    string currentActivityReportSearchChart = "";
+    if (ViewData["CurrentActivityReportSearchChart"] != null)
+    {
+        currentActivityReportSearchChart = ViewData["CurrentActivityReportSearchChart"] as string;
+    }
+
+    string calculateTotalPrice = "";
+    if (ViewData["CalculateTotalPrice"] != null)
+    {
+        calculateTotalPrice = ViewData["CalculateTotalPrice"] as string;
+    }
+}
+
+@section head{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_headIndex.cshtml");
+    }
+
+}
+
+    <div id="wrapper">
+        @await Component.InvokeAsync("AdminNavigation")
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                @await Component.InvokeAsync("AdminDashboard")
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span>
+                                @Html.Raw(ViewData["Title"] as string)
+                            </span>
+                            @{
+                            if (!string.IsNullOrEmpty(searchTitle))
+                            {
+                                <button id="btnSearchBlock" class="btn btn-default btn-info" name="btnSearchBlock"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="جستجو">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            }
+                        }
+                        @{
+                            if (!string.IsNullOrEmpty(currentActivityReportSearchChart))
+                            {
+                                <button id="btnCurrentActivityReportSearchChart" class="btn btn-default btn-warning" name="btnCurrentActivityReportSearchChart"
+                                    data-toggle="tooltip" data-placement="top"
+                                    data-url="@currentActivityReportSearchChart"
+                                    title="گزارش نموداری">
+                                    <i class="fa fa-bar-chart"></i>
+                                </button>
+                            }
+                        }
+                        @{
+                            if (!string.IsNullOrEmpty(excelExport))
+                            {
+                                <button id="btnCreateExcel" class="btn btn-default btn-success" name="btnCreateExcel"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="خروجی اکسل">
+                                    <i class="fa fa-file-excel-o"></i>
+                                </button>
+                            }
+                        }
+                        @{
+                            if (!string.IsNullOrEmpty(calculateTotalPrice))
+                            {
+                                <button id="btnCalculateTotalPrice" class="btn btn-default btn-primary" name="btnCalculateTotalPrice"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="محاسبه مجموع">
+                                    <i class="fa fa-money"></i>
+                                </button>
+                            }
+                        }
+                        @{
+                            if (!string.IsNullOrEmpty(multiSelect))
+                            {
+                                <button type="button" class="btn btn-default" id="btnMultiSelect" name="btnMultiSelect"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="انتخاب چندتایی">
+                                    <i class="fa fa-list-ul"></i>
+                                </button>
+                            }
+                        }
+                    </div>
+                    <div class="panel-body">
+                        @{
+                            Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_htmlIndex.cshtml");
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    @{
+        Html.RenderPartial("~/Areas/" + areaName + "/Views/" + controllerName + "/" + actionName + "/_jsIndex.cshtml");
+    }
+
+}

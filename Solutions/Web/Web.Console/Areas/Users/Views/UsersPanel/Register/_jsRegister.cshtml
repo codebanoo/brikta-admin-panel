@@ -1,0 +1,54 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+    });
+
+    function OnBegin() {
+        $('#error-alert').hide(500);
+
+        if ($("#txtCaptchaCode").length)
+            if ($("#txtCaptchaCode").val() == '') {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('کد اشتباه است');
+                $('#my-warning-modal').modal("show");
+                return false;
+            }
+
+        //$('#AjaxLoading').show();
+        return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+        if (response.Result == 'OK') {
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+        }
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+        $('#error-alert').show(1000);
+        $('#error-alert').html(response.Message);
+        $('#error-alert').show(500);
+        window.setTimeout(function () {
+            window.location.reload();
+        }, 2500);
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        debugger;
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+        window.setTimeout(function () {
+            window.location.reload();
+        }, 2500);
+    };
+</script>

@@ -1,0 +1,62 @@
+﻿@using Newtonsoft.Json
+
+
+
+ <div id="searchBlock">
+    <div class="row">
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                <label>
+                    شاخص:
+                </label>
+            </div>
+            <select id="slcIndiceId" name="slcindicesId" class="form-control input-sm chosen-select"
+                        
+                    placeholder="شاخص">
+                <option value="" selected>---</option>
+            </select>
+        
+        </div>
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                <label>
+                    از تاریخ:
+                </label>
+            </div>
+          <input type="text" id="txtFromDate" name="txtRegisterDateTimeFromSearch"
+                                       class="form-control input-sm" data-mddatetimepicker="true" 
+                                       onkeydown="return false" data-placement="bottom"
+                                       placeholder="از تاریخ" />
+        </div>
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div>
+                <label>
+                  تا تاریخ:
+                </label>
+            </div>
+            <input type="text" id="txtTillDate" name="txtRegisterDateTimeFromSearch"
+                                       class="form-control input-sm" data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom"
+                                       placeholder="تا تاریخ" />
+        </div>
+        <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+            <div class="empty-block">&nbsp;</div>
+            <button id="btnSearch" name="btnSearch" class="btn btn-default input-sm">
+                جستجو
+            </button>
+            <button id="btnReload" name="btnReload" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="بارگذاری مجدد">
+                <i class="fa fa-refresh"></i>
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="خالی کردن فرم">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+        <div class="col col-md-2 col-xs-2 col-sm-2 col-lg-2">
+            &nbsp;
+        </div>
+    </div>
+</div>
+<hr class="full-splitter" />
+<div id="listContainer"></div>
+

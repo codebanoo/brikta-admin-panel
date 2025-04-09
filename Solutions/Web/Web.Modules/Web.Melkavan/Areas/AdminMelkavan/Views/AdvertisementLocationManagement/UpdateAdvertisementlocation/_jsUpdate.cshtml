@@ -1,0 +1,621 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+
+        for (var i = 0; i < statesList.length; i++) {
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.StateId)
+                    .text(item.StateName));
+        }
+
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        // $('#slcDistrictId').chosen({
+        //     placeholder_text_single: ' ',
+        //     placeholder_text_multiple: ' ',
+        //     search_contains: true,
+        //     max_shown_results: numberOfChosenItemsShow,
+        //     rtl: rtl
+        // });
+        //ShowCheckBoxBeforeChosenForSpecificElement($('#slcStateId'));
+
+
+
+
+        $('body').on('change', '#slcStateId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#slcCityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+                if (item.StateId == stateId)
+                    $('#slcCityId')
+                        .append($("<option></option>")
+                            .attr("value", item.CityId)
+                            .text(item.CityName));
+            }
+
+            $('#slcCityId').trigger("chosen:updated");
+
+            $('#slcCityId').change();
+            // ShowCheckBoxBeforeChosenForSpecificElement($('#slcCityId'));
+        });
+
+
+        $('body').on('change', '#slcCityId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#slcZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                var item = zonesList[i];
+                if (item.CityId == cityId)
+                    $('#slcZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.ZoneId)
+                            .text(item.ZoneName));
+            }
+
+            $('#slcZoneId').trigger("chosen:updated");
+            ShowCheckBoxBeforeChosenForSpecificElement($('#slcZoneId'));
+        });
+
+
+        $('body').on('change', '#slcZoneId', function (e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+
+
+            // $('#slcDistrictId').find('option')
+            //     .remove()
+            //     .end()
+            //     .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                var item = districtsList[i];
+                if (item.ZoneId == zoneId) {
+
+                    var districtName = '';
+                    if (item.DistrictName != null)
+                        districtName = item.DistrictName;
+                    else
+                        if (item.VillageName != null)
+                            districtName = item.VillageName;
+                        else
+                            if (item.TownName != null)
+                                districtName = item.TownName;
+
+                    // $('#slcDistrictId')
+                    //     .append($("<option></option>")
+                    //         .attr("value", item.DistrictId)
+                    //         .text(districtName));
+                }
+            }
+
+            // $('#slcDistrictId').trigger("chosen:updated");
+            // ShowCheckBoxBeforeChosenForSpecificElement($('#slcDistrictId'));
+        });
+
+        //var projection = ol.proj.get('EPSG:3857');
+        var raster = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+            //center: ol.proj.fromLonLat([116.5, 40]),
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+        var mapLeft = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+            layers: [raster],
+            target: 'mapLeft',
+            view: view
+        });
+
+        var mapRight = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+            //layers: [raster],
+            target: 'mapRight',
+            view: view
+        });
+
+        var LocationLon = 51.24494;
+        var LocationLat = 36.66517;
+        var stateId = 0;
+        var cityId = 0;
+        var zoneId = 0;
+        var districtId = 0;
+        var address = "";
+        var townName = "";
+
+        if (advertisementVM.AdvertisementAddressVM != null) {
+
+            stateId = advertisementVM.AdvertisementAddressVM.StateId;
+            $('#slcStateId').val(stateId).trigger("chosen:updated");
+            $('#slcStateId').change();
+
+            cityId = advertisementVM.AdvertisementAddressVM.CityId;
+            $('#slcCityId').val(cityId).trigger("chosen:updated");
+            $('#slcCityId').change();
+
+            zoneId = advertisementVM.AdvertisementAddressVM.ZoneId;
+            $('#slcZoneId').val(zoneId).trigger("chosen:updated");
+            $('#slcZoneId').change();
+
+            districtId = advertisementVM.AdvertisementAddressVM.DistrictId;
+            // $('#slcDistrictId').val(districtId).trigger("chosen:updated");
+            // $('#slcDistrictId').change();
+
+            address = advertisementVM.AdvertisementAddressVM.Address;
+            $('#PropertiesVM_PropertyAddressVM_Address').val(address);
+
+            townName = advertisementVM.AdvertisementAddressVM.TownName;
+            $("#slcTownName").val(townName);
+
+            if ((advertisementVM.AdvertisementAddressVM.LocationLat != '') && (advertisementVM.AdvertisementAddressVM.LocationLon != '')) {
+                LocationLon = advertisementVM.AdvertisementAddressVM.LocationLon;
+                LocationLat = advertisementVM.AdvertisementAddressVM.LocationLat;
+            }
+        }
+
+        var tmpEvt = {
+            LocationLon: LocationLon,//51.24494,
+            LocationLat: LocationLat,//36.66517
+        }
+
+        var iconGeometry = new ol.geom.Point(ol.proj.transform([LocationLon, LocationLat], 'EPSG:4326', 'EPSG:3857'));
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [
+                    new ol.Feature({
+                        //geometry: new ol.geom.Point(ol.proj.fromLonLat([4.35247, 50.84673]))
+                        //geometry: new ol.geom.Point(ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'))
+                        geometry: iconGeometry
+                    })
+                ]
+            }),
+            style: new ol.style.Style({
+                image: new ol.style.Icon({
+                    anchor: [0.5, 46],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'pixels',
+                    src: '/images/mapmarker1.png'
+                    //src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+                    //src: '<i class="fa fa-2x fa-map-marker">&nbsp;</i>'
+                })
+            })
+        });
+
+        for (var i = 0; i < zonesList.length; i++) {
+
+            //
+
+            var vectorSource = new ol.source.Vector({
+            });
+
+            var zone = zonesList[i];
+
+            var zoneId = zone.ZoneId;
+            var zoneName = '';
+
+            if (zone.TownName != null)
+                zoneName = zone.TownName;
+            else
+                if (zone.ZoneName != null)
+                    zoneName = zone.ZoneName;
+                else
+                    if (zone.VillageName != null)
+                        zoneName = zone.VillageName;
+
+            //console.log(zoneName);
+
+            if (zone.StrPolygon != null) {
+
+                var coord = $.parseJSON(zone.StrPolygon);
+
+                var points = [];
+                for (var j = 0; j < coord.length - 1; j++) {
+                    points[j] = ol.proj.transform([Number(coord[j][0]), Number(coord[j][1])], 'EPSG:4326', 'EPSG:3857');
+                }
+
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.Polygon([points]),
+                    //featureName: zoneName,
+                    zoneId: zoneId,
+                    type: 'Point',
+                    desc: "Custom objects bound to this description"
+                });
+
+                vectorSource.addFeature(feature);
+                //
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: function (feature) {
+                        //
+                        //var label = 'test ' + i;
+                        var labelStyle = new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                //color: 'blue',
+                                color: 'transparent',
+                                width: 0,
+                            }),
+                            fill: new ol.style.Fill({
+                                //color: 'rgba(0, 0, 255, 0.1)',
+                                color: 'rgba(0, 0, 0, 0)',
+                                //color: 'rgba(174, 189, 221, 0.1)',
+                                //color: 'rgba(85, 128, 168, 0.5)',
+                            }),
+                            text: new ol.style.Text({
+                                font: '12px Calibri,sans-serif',
+                                overflow: true,
+                                fill: new ol.style.Fill({
+                                    color: 'red',
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#fff',
+                                    width: 3,
+                                }),
+                            }),
+                        });
+                        labelStyle.getText().setText(feature.A.featureName);
+                        return labelStyle;
+                    },
+                });
+                mapLeft.addLayer(vectorLayer);
+            }
+        }
+
+        var highlightedFeaturesZone = [];
+
+        mapLeft.on('pointermove', function (e) {
+
+            highlightedFeaturesZone.forEach(f => f.setStyle(null));
+
+            highlightedFeaturesZone = [];
+
+            mapLeft.forEachFeatureAtPixel(e.pixel, f => {
+
+                f.setStyle(new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(46, 109, 164, 0.3)',
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#0d47a1',
+                        width: 2
+                    }),
+                    //image: new ol.style.Circle({
+                    //    radius: 5.5,
+                    //    stroke: new ol.style.Stroke({
+                    //        color: '#0d47a1',
+                    //        width: 2
+                    //    })
+                    //})
+                }));
+
+                highlightedFeaturesZone.push(f);
+            });
+
+        });
+
+        mapLeft.addLayer(layer);
+
+        for (var i = 0; i < districtsList.length; i++) {
+
+
+
+            var vectorSource = new ol.source.Vector({
+            });
+
+            var district = districtsList[i];
+
+            var districtId = district.DistrictId;
+            var districtName = '';
+
+            if (district.DistrictName != null)
+                districtName = district.DistrictName;
+            else
+                if (district.VillageName != null)
+                    districtName = district.VillageName;
+                else
+                    if (district.TownName != null)
+                        districtName = district.TownName;
+
+            //console.log(zoneName);
+
+            if (district.StrPolygon != null) {
+
+                var coord = $.parseJSON(district.StrPolygon);
+
+                var points = [];
+                for (var j = 0; j < coord.length - 1; j++) {
+                    points[j] = ol.proj.transform([Number(coord[j][0]), Number(coord[j][1])], 'EPSG:4326', 'EPSG:3857');
+                }
+
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.Polygon([points]),
+                    featureName: districtName,
+                    districtId: districtId,
+                    type: 'Point',
+                    desc: "Custom objects bound to this description"
+                });
+
+                vectorSource.addFeature(feature);
+
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: function (feature) {
+
+                        //var label = 'test ' + i;
+                        var labelStyle = new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                //color: 'blue',
+                                color: 'transparent',
+                                width: 0,
+                            }),
+                            fill: new ol.style.Fill({
+                                //color: 'rgba(0, 0, 255, 0.1)',
+                                color: 'rgba(0, 0, 0, 0)',
+                                //color: 'rgba(174, 189, 221, 0.1)',
+                                //color: 'rgba(85, 128, 168, 0.5)',
+                            }),
+                            text: new ol.style.Text({
+                                font: '12px Calibri,sans-serif',
+                                overflow: true,
+                                fill: new ol.style.Fill({
+                                    color: 'red',
+                                }),
+                                stroke: new ol.style.Stroke({
+                                    color: '#fff',
+                                    width: 3,
+                                }),
+                            }),
+                        });
+                        labelStyle.getText().setText(feature.A.featureName);
+                        return labelStyle;
+                    },
+                });
+                mapLeft.addLayer(vectorLayer);
+            }
+        }
+
+        mapLeft.on('singleclick', function (evt) {
+
+
+            var coordinate = evt.coordinate;
+
+            var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+            tmpEvt = {
+                LocationLon: lonlat[0],
+                LocationLat: lonlat[1]
+            };
+            iconGeometry.setCoordinates(evt.coordinate);
+
+
+            var feature = mapLeft.forEachFeatureAtPixel(evt.pixel, function (feat, layer) {
+                console.log(feat);
+
+
+
+                var zoneId = feat.A.zoneId;
+
+                if (zoneId == null) {
+                    var districtId = feat.A.districtId;
+                    var districtName = feat.A.featureName;
+
+                    var district = districtsList.filter(function (item) {
+                        return item.DistrictId == districtId;
+                    })[0];
+
+                    $('#slcStateId').val(district.StateId).trigger("chosen:updated");
+                    $('#slcStateId').change();
+
+                    $('#slcCityId').val(district.CityId).trigger("chosen:updated");
+                    $('#slcCityId').change();
+
+                    $('#slcZoneId').val(district.ZoneId).trigger("chosen:updated");
+                    $('#slcZoneId').change();
+
+                    // $('#slcDistrictId').val(district.DistrictId).trigger("chosen:updated");
+                    // $('#slcDistrictId').change();
+                }
+                else {
+                    var zoneName = feat.A.featureName;
+
+                    var zone = zonesList.filter(function (item) {
+                        return item.ZoneId == zoneId;
+                    })[0];
+
+                    $('#slcStateId').val(zone.StateId).trigger("chosen:updated");
+                    $('#slcStateId').change();
+
+                    $('#slcCityId').val(zone.CityId).trigger("chosen:updated");
+                    $('#slcCityId').change();
+
+                    $('#slcZoneId').val(zone.ZoneId).trigger("chosen:updated");
+                    $('#slcZoneId').change();
+
+                    //$('#slcDistrictId').find('option[text="سایر"]').val();
+
+                    // var districtId = $('#slcDistrictId option').filter(function () { return $(this).html() == "سایر"; }).val();
+                    // $('#slcDistrictId').val(districtId).trigger("chosen:updated");
+                    // $('#slcDistrictId').change();
+                }
+
+                return feat;
+            });
+            if (feature && feature.get('type') == 'Point') {
+
+                var tmpCoordinate = ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
+
+                //var coordinate = /*evt.coordinate;//*/feature.getGeometry().getCoordinates();
+                //contentZone.innerHTML = feature.get('desc');
+                //popupZone.setPosition(coordinate);
+            } else {
+                //popupZone.setPosition(undefined);
+            }
+        });
+
+        //mapRight.on('singleclick', function (evt) {
+        //    var lonlat = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+        //    tmpEvt = {
+        //        LocationLon: lonlat[0],
+        //        LocationLat: lonlat[1]
+        //    };
+        //    iconGeometry.setCoordinates(evt.coordinate);
+        //});
+
+
+
+        //good satelite
+        var worldImagery = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                zoom: 12,
+                maxZoom: 17,
+                minZoom: 1,
+            })
+        });
+        mapRight.addLayer(worldImagery);
+
+        //mapRight.addLayer(layer);
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+
+
+            var advertisementId = advertisementVM.AdvertisementId;
+            var stateId = $('#slcStateId').val();
+            var cityId = $('#slcCityId').val();
+            var zoneId = $('#slcZoneId').val();
+            // var districtId = $('#slcDistrictId').val();
+            var address = $('#PropertiesVM_PropertyAddressVM_Address').val();
+            var townName = $('#slcTownName').val();
+
+            debugger;
+
+            if ((stateId != '') &&
+                (cityId != '') &&
+                (zoneId != '')) {
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/AdminMelkavan/AdvertisementLocationManagement/UpdateAdvertisementLocation",
+
+                    data: {
+                        'AdvertisementId': advertisementId,
+                        'StateId': stateId,
+                        'CityId': cityId,
+                        'ZoneId': zoneId,
+                        'Address': address,
+                        'TownName': townName,
+                        'LocationLat': tmpEvt.LocationLat,
+                        'LocationLon': tmpEvt.LocationLon,
+
+                    },
+                    success: function (result) {
+                        if (result.Result == "OK") {
+
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message);
+                            $('#error-alert').show(500);
+                            window.setTimeout(function () { window.location.reload(); }, 2500);
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#my-warning-modal').find('.modal-title').html('خطا');
+                                $('#my-warning-modal').find('#error').html('خطا');
+                                $('#my-warning-modal').modal("show");
+                            }
+                    },
+
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+
+
+        $('#btnReset').click(function (e) {
+
+            e.preventDefault();
+            $('#slcStateId').val(null);
+            $('#slcCityId').val(null);
+            $('#slcZoneId').val(null);
+            $('#slcTownName').val(null);
+            $('#PropertiesVM_PropertyAddressVM_Address').val(null);
+
+        });
+    });
+</script>

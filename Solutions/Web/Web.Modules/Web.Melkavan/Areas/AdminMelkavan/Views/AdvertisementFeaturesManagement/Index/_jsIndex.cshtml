@@ -1,0 +1,247 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+        for (var i = 0; i < propertyTypes.length; i++) {
+            //debugger;
+            var item = propertyTypes[i];
+            $('#slcPropertyType')
+                .append($("<option></option>")
+                    .attr("value", item.PropertyTypeId)
+                    .text(item.PropertyTypeTilte));
+        }
+
+        $('#slcPropertyType').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            rtl: rtl
+        });
+
+
+
+        $('body').on('change', '#slcPropertyType', function () {
+            var _this = $(this);
+            var propertyTypeId = parseInt(_this.val());
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementFeaturesManagement/GetFeaturesListByPropertyTypeId",
+                data: { 'PropertyTypeId': propertyTypeId },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        $('#form-container').empty();
+                        $('#error-alert').hide(100);
+
+                        // sina codes
+                        var featureCategories = [];
+
+                        $.each(result.Record.FeaturesVMList, function (index, item) {
+                            if (
+                                item.FeatureCategoryName &&
+                                item.FeatureCategoryId &&
+                                !featureCategories.some(
+                                    (category) => category.FeatureCategoryName === item.FeatureCategoryName &&
+                                        category.FeatureCategoryId === item.FeatureCategoryId
+                                )
+                            ) {
+                                featureCategories.push({
+                                    FeatureCategoryName: item.FeatureCategoryName,
+                                    FeatureCategoryId: item.FeatureCategoryId
+                                });
+                            }
+                        });
+
+                        var htmlResult = "";
+
+                        htmlResult += '<div class="accordion w-100" id="accordion" role="tablist" aria-multiselectable="true">' +
+                            '<div class="panel">';
+
+                        for (var k = 0; k < featureCategories.length; k++) {
+
+                            htmlResult +=
+                                '<a style="background:#e1e9f1;" class="panel-heading collapsed" role="tab" id="heading' + featureCategories[k].FeatureCategoryId + '" data-toggle="collapse" href="#collapse' + featureCategories[k].FeatureCategoryId + '" aria-expanded="false" aria-controls="collapse' + featureCategories[k].FeatureCategoryId + '">' +
+                                '<h4 class="panel-title">' + featureCategories[k].FeatureCategoryName + '</h4>' +
+                                '</a>' +
+                                '<div id="collapse' + featureCategories[k].FeatureCategoryId + '" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading' + featureCategories[k].FeatureCategoryId + '" aria-expanded="true">' +
+                                '<div class="panel-body row">';
+
+                            $.each(result.Record.FeaturesVMList, function (index, value) {
+                                if (value.FeatureCategoryId != featureCategories[k].FeatureCategoryId)
+                                    return true;
+
+                                var main_div = $('<div class="col-xl-6 col-md-12 col-xs-12 col-sm-12 col-lg-6 my-3"></div>');
+                                //$('#form-container').append(main_div);
+                                var row = $('<div class="row mx-2" style="border-left: 2px solid gray;"></div>');
+                                main_div.append(row);
+
+
+                                var checkboxDiv = $('<div class="checkbox pt-3 px-4 col-2"></div>');
+                                row.append(checkboxDiv);
+
+                                var label = $('<label for="checkbox_' + value.FeatureId + '" id="label_' + value.FeatureId + '" class="checkbox_label" ></label>');
+                                checkboxDiv.append(label);
+
+                                label.append($('<input type="checkbox" data-FeatureId="' + value.FeatureId + '" id="checkbox_' + value.FeatureId + '" class="form-control input-sm ml-2" />'))
+
+                                row.append($('<div class="mt-3 pt-3 px-4 col-3"></div>').text(value.FeatureTitle));
+
+                                var labelforOrderDiv = $('<div class="mx-1 mt-3 pt-3 col-1"></div>');
+                                labelforOrderDiv.append($('<label>اولویت:</label>'));
+                                row.append(labelforOrderDiv);
+                                var orderDiv = $('<div class="mx-1 mt-3 col-2" ></div>');
+                                orderDiv.append($('<input type="number" class="form-control" id="input_' + value.FeatureId + '" />'))
+                                row.append(orderDiv);
+                                var typeDiv = $('<div class="mx-1 mt-3 col-3" ></div>');
+                                typeDiv.append($('<select class="form-control" id="select_' + value.FeatureId + '" >' +
+                                    '<option value="0">هردو</option>' +
+                                    '<option value="1">اجاره</option>' +
+                                    '<option value="2">فروش</option>' +
+                                    '</select>'
+                                ));
+                                row.append(typeDiv);
+                                debugger;
+
+
+
+                                htmlResult += main_div.prop('outerHTML');
+                            });
+                            htmlResult += "</div></div><br>";
+
+
+                        }
+
+                        htmlResult += "</div></div>";
+                        $('#form-container').append(htmlResult);
+
+
+                        // برای اعمال پلاگین chosen
+                        $.each(result.Record.FeaturesVMList, function (index, value) {
+
+                            $('#select_' + value.FeatureId).chosen({
+                                placeholder_text_single: ' ',
+                                placeholder_text_multiple: ' ',
+                                search_contains: true,
+                                max_shown_results: numberOfChosenItemsShow,
+                                rtl: rtl
+                            });
+                            var previouslySelectedFeatureVM = result.Record.AdvertisementFeaturesVMList.filter(obj => obj.FeatureId == value.FeatureId)[0];
+                            if (previouslySelectedFeatureVM != undefined && previouslySelectedFeatureVM != null) {
+                                $('#checkbox_' + value.FeatureId).prop('checked', true);
+                                $('#label_' + value.FeatureId).addClass("selected");
+
+                                $('#input_' + value.FeatureId).val(previouslySelectedFeatureVM.AdvertisementFeatureOrder);
+                                $('#select_' + value.FeatureId).val(previouslySelectedFeatureVM.AdvertisementTypeId)
+                            } else {
+                                $('#input_' + value.FeatureId).val(0);
+                            }
+                            $('#select_' + value.FeatureId).trigger('chosen:updated');
+
+                        });
+
+
+
+                    }
+                    else {
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                    }
+                }
+
+
+            });
+
+        });
+
+        $('body').on('change', 'input[type="checkbox"]', function () {
+            var _this = $(this)[0];
+            var id = _this.id;
+            var label = $('#label_' + id.split('_')[1]);
+            label.toggleClass('selected');
+        });
+
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            debugger;
+            var _this = $(this);
+            var AdvertisementFeaturesVMs = [];
+            var propertyTypeId = $('#slcPropertyType').val();
+
+            var checkedIputs = $('input[type="checkbox"]:checked');
+
+            for (var i = 0; i < checkedIputs.length; i++) {
+                var item = checkedIputs[i];
+                var id = $(item).attr('data-FeatureId');
+                var order = $('#input_' + id).val();
+                var type = $('#select_' + id).val();
+                AdvertisementFeaturesVMs.push({
+                    "FeatureId": id,
+                    "AdvertisementFeatureOrder": order,
+                    "AdvertisementTypeId": type
+                });
+            }
+
+            if (
+                //(featureIds.length == 0) ||
+                (propertyTypeId == undefined) ||
+                (propertyTypeId == null) ||
+                (propertyTypeId.length < 1)
+            ) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('لطفا فیلد های لازم را پر کنید');
+                $('#my-warning-modal').modal("show");
+                return;
+            }
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminMelkavan/AdvertisementFeaturesManagement/UpdateAdvertisementFeatures",
+                data: {
+                    'PropertyTypeId': propertyTypeId,
+                    'AdvertisementFeaturesVMs': AdvertisementFeaturesVMs
+                },
+
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        $('#error-alert').removeClass('alert-danger');
+                        $('#error-alert').addClass('alert-success');
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message);
+                        $('#error-alert').show(500);
+
+                        window.setTimeout(function () {
+                            window.location.reload();
+                        }, 2500);
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+            });
+
+
+        });
+
+        $('body').on('click', '#btnReset', function (e) {
+            $('input[type="checkbox"]').prop('checked', false);
+            $('.checkbox_label').removeClass("selected");
+        });
+
+        $('#slcPropertyType').trigger('change');
+    });
+
+
+</script>

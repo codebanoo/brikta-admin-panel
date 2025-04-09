@@ -1,0 +1,99 @@
+﻿<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    <div class="form-group col col-md-12">
+        @{
+            <div id='error-alert' class="form-group alert alert-danger">
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    دامنه
+                </label>
+            </div>
+            <select class="form-control input-sm" id="slcDomainSettingId" name="slcDomainSettingId"
+                    placeholder="DomainSettingId">
+                <option value="" disabled>---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    نقش
+                </label>
+            </div>
+            <select class="form-control input-sm" id="slcRoleIds" name="slcRoleIds" multiple
+                    placeholder="نقش">
+                <option value="" disabled>---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    دسترسی
+                </label>
+            </div>
+            <select class="form-control input-sm" id="slcLevelIds" name="slcLevelIds" multiple
+                    placeholder="دسترسی ها">
+                <option value="" disabled>---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <span>
+                جایگزینی ماژولهای قبلی
+            </span>
+            <div class="checkbox">
+                <label for="replaceOldModule">
+                    <input type="checkbox" id="replaceOldModule" name="replaceOldModule" value="true" class="form-control input-sm" />
+                    <span>فعال</span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <span>
+                آپدیت ماژولهای قبلی
+            </span>
+            <div class="checkbox">
+                <label for="updateOldModule">
+                    <input type="checkbox" id="updateOldModule" name="updateOldModule"
+                           value="true" class="form-control input-sm" />
+                    <span>فعال</span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-1 col-sm-12">
+            <span>
+                ساخت مجدد منو
+            </span>
+            <div class="checkbox">
+                <label for="reCreateMenus">
+                    <input type="checkbox" id="reCreateMenus" name="reCreateMenus"
+                           value="true" class="form-control input-sm" />
+                    <span>فعال</span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group col col-md-3 col-lg-3 col-xs-12 col-sm-12">
+            <span>
+                ساخت مجدد منو برای کاربر
+            </span>
+            <div class="checkbox">
+                <label for="reCreateMenusForUsers">
+                    <input type="checkbox" id="reCreateMenusForUsers" name="reCreateMenusForUsers" value="true" class="form-control input-sm" />
+                    <span>فعال</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group col col-md-4 col-lg-4 col-xs-6 col-sm-4">
+        <label>
+            &nbsp;
+        </label>
+        <button class="form-control col col-md-2 btn btn-default input-sm" type="submit">ارسال
+        </button>
+    </div>
+</form>

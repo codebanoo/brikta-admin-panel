@@ -1,0 +1,24 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        MyPropertiesVM propertiesVM = new MyPropertiesVM();
+
+        @Html.Raw("var propertiesVM;")
+        ;
+
+        if (ViewData["MyPropertiesVM"] != null)
+        {
+            propertiesVM = ViewData["MyPropertiesVM"] as MyPropertiesVM;
+
+            @Html.Raw(" propertiesVM = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(propertiesVM)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<style type="text/css">
+</style>

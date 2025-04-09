@@ -1,0 +1,84 @@
+﻿@using VM.Automation;
+@using VM.Console;
+@using Newtonsoft.Json;
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<script type="text/javascript">
+    @{
+        List<MyCompaniesVM> myCompaniesList = new List<MyCompaniesVM>();
+        if (ViewData["MyCompaniesList"] != null)
+        {
+            /*List<DomainsSettingsVM> */myCompaniesList =
+                (List<MyCompaniesVM>)ViewData["MyCompaniesList"];
+
+            var myCompaniesListData = myCompaniesList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.MyCompanyName}",
+                          Value = c.MyCompanyId
+                      });
+
+            @Html.Raw("debugger; var myCompaniesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(myCompaniesListData)) + "; debugger;");
+        }
+    }
+</script>
+<script type="text/javascript">
+    @{
+
+        List<CustomUsersVM> usersList = new List<CustomUsersVM>();
+        if (ViewData["UsersList"] != null)
+        {
+            /*List<DomainsSettingsVM> */
+            usersList = (List<CustomUsersVM>)ViewData["UsersList"];
+
+            var usersListData = usersList.Select(c =>
+                      new
+                      {
+                          DisplayText = $"{c.UserName}",
+                          Value = c.UserId
+                      });
+
+            @Html.Raw("debugger; var usersList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(usersListData)) + "; debugger;");
+        }
+
+    }
+</script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(8),
+    div.jtable-main-container table.jtable thead th:nth-child(9) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    /*div.jtable-main-container table.jtable tbody > tr > td:nth-child(5),
+        div.jtable-main-container table.jtable tbody > tr > td:nth-child(6) {
+            direction: ltr;
+        }*/
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+</style>

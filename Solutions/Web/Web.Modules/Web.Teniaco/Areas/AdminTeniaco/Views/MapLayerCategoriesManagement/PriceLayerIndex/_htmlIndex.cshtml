@@ -1,0 +1,100 @@
+﻿@using VM.Teniaco;
+
+    <div class="col-xl-12">
+        <div class="col-xl-2 col-md-2 col-xs-12 col-sm-12 col-lg-2 my-3">
+        <div>
+            پلتفرم
+        </div>
+        <select id="slcPlatform" name="slcPlatform" class="form-control ml-3"
+                placeholder=" پلتفرم">
+            <option value="0">همه</option>
+            <option value="1">تنیاکو <div style="background-color: deepskyblue; width:24px; height:24px;">&nbsp;</div></option>
+            <option value="2">ملکاوان <div style="background-color: indianred; width:24px; height:24px;">&nbsp;</div></option>
+        </select>
+    </div>
+        <div class="col-xl-2 col-md-2 col-xs-12 col-sm-12 col-lg-2 my-3">
+        <div>
+            نوع ملک
+        </div>
+        <select id="slcPropertyTypeId" name="slcPropertyTypeId" class="form-control ml-3"
+                placeholder=" نوع ملک">
+            <option value="">---</option>
+        </select>
+    </div>
+        <div class="col-xl-2 col-md-2 col-xs-12 col-sm-12 col-lg-2 my-3">
+        <div>
+            نوع کاربری
+        </div>
+        <select id="slcTypeOfUseId" name="slcTypeOfUseId" class="form-control ml-3"
+                placeholder=" نوع کاربری">
+            <option value="">---</option>
+        </select>
+    </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3">
+            <div>
+                قیمت از
+            </div>
+            <input id="txtPriceFrom" name="txtPriceFrom" type="number" class="form-control ml-3" />
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3">
+            <div>
+                قیمت تا
+            </div>
+            <input id="txtPriceTo" name="txtPriceTo" type="number" class="form-control ml-3" />
+        </div>
+    </div>
+
+    <div class="col-xl-12">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3">
+        <div>
+            استان
+        </div>
+        <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                placeholder="استان">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3">
+        <div>
+            بخش
+        </div>
+
+        <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                placeholder="بخش">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3">
+        <div>
+            شهر/منطقه
+        </div>
+        <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                placeholder="شهر/منطقه">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3">
+        <div>
+            ناحیه
+        </div>
+        <select id="slcDistrictId" name="slcDistrictId" class="form-control ml-3"
+                placeholder="ناحیه">
+            <option value="" selected>---</option>
+        </select>
+
+    </div>
+    </div>
+
+    <div class="col-xl-12 col-md-12 col-xs-12 col-sm-12 col-lg-12 my-3">
+            <button id="btnGetRecords" type="button" class="btn btn-success btn-md" onclick="return false;">جستجو</button>
+    </div>
+
+<div class="col-xl-12 col-md-12 col-xs-12 col-sm-12 col-lg-12 my-3">
+    <div id="mapContainer"></div>
+</div>
+
+@* <div id="popup" style="display: none;">
+    <div id="popup-content" style="display: none;"></div>
+    <div id="popup-closer" style="display: none;"></div>
+</div> *@
+

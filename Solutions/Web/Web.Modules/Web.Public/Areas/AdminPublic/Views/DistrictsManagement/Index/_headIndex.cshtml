@@ -1,0 +1,199 @@
+﻿@using VM.Public;
+@using Newtonsoft.Json
+
+<script type="text/javascript">
+    @{
+        List<StatesVM> statesList = new List<StatesVM>();
+
+        @Html.Raw("var statesList = [];")
+        ;
+
+        if (ViewData["StatesList"] != null)
+        {
+            statesList = (List<StatesVM>)ViewData["StatesList"];
+
+            var statesListData = statesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.StateName}",
+                Value = c.StateId
+            });
+
+            @Html.Raw(" statesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(statesListData)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<CitiesVM> citiesList = new List<CitiesVM>();
+
+        @Html.Raw("var citiesList = [];")
+        ;
+
+        if (ViewData["CitiesList"] != null)
+        {
+            citiesList = (List<CitiesVM>)ViewData["CitiesList"];
+
+            var citiesListData = citiesList.Select(c =>
+            new
+            {
+                DisplayText = $"{c.CityName}",
+                Value = c.CityId,
+                Data_StateId = c.StateId
+            });
+
+            @Html.Raw(" citiesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(citiesListData)) + "; ")
+            ;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        List<ZonesVM> zonesList = new List<ZonesVM>();
+
+        @Html.Raw("var zonesList = [];")
+        ;
+
+        if (ViewData["ZonesList"] != null)
+        {
+            zonesList = (List<ZonesVM>)ViewData["ZonesList"];
+
+            var zonesListData = zonesList.Select(z =>
+            new
+            {
+                DisplayText = $"{z.ZoneName}",
+                Value = z.ZoneId,
+                Data_CityId = z.CityId
+            });
+
+            @Html.Raw(" zonesList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(zonesListData)) + "; ")
+            ;
+        }
+    }
+</script>
+<script type="text/javascript">
+    @{
+        List<DistrictsVM> districtsList = new List<DistrictsVM>();
+
+        @Html.Raw("var districtsList = [];")
+        ;
+
+        if (ViewData["DistrictsList"] != null)
+        {
+            districtsList = (List<DistrictsVM>)ViewData["DistrictsList"];
+
+            var districtsListData = districtsList.Select(z =>
+           new
+           {
+               DisplayText = $"{z.DistrictName}",
+               Value = z.DistrictId,
+               Data_ZoneId = z.ZoneId
+           });
+
+
+            @Html.Raw(" districtsList = " +
+    JsonConvert.DeserializeObject(JsonConvert.SerializeObject(districtsListData)) + "; ")
+            ;
+        }
+    }
+</script>
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+    div.jtable-main-container table.jtable thead th:nth-child(8),
+    div.jtable-main-container table.jtable thead th:nth-child(9),
+    div.jtable-main-container table.jtable thead th:nth-child(10), 
+    div.jtable-main-container table.jtable thead th:nth-child(11), 
+    div.jtable-main-container table.jtable thead th:nth-child(12), 
+    div.jtable-main-container table.jtable thead th:nth-child(13), 
+    div.jtable-main-container table.jtable thead th:nth-child(14) {
+        width: 1% !important;
+    }
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(8),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(9),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(10),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(11),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(12),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(13), 
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(14){
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+
+    .maps,
+    .media,
+    .docs {
+        width: 47px;
+        height: 35px;
+        text-align: center;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+
+    .details {
+        width: 38px;
+        height: 35px;
+        display: inline-flex;
+        position: relative;
+        overflow: visible;
+    }
+
+    .numberCircle {
+        /* font: 18px Arial, sans-serif; */
+        /* width: 1em; */
+        height: 1em;
+        /* box-sizing: initial; */
+        background: #417bb5;
+        /* border: 0.1em solid #417bb5; */
+        color: #f7f9fb;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 0.5em;
+        /* box-sizing: content-box; */
+        /* outline-width: medium; */
+        font-size: 12px;
+        /* box-sizing: content-box; */
+        margin: auto;
+        /* margin-top: 11px; */
+        width: 22px;
+        height: 22px;
+        position: absolute;
+        vertical-align: middle;
+        line-height: 12px;
+        left: 5px;
+        bottom: -10px;
+        /* z-index: 999;*/
+        background: #1c92c9 !important;
+    }
+</style>

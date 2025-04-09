@@ -1,0 +1,71 @@
+﻿@using VM.Teniaco
+@model List<RootVm>
+<style type="text/css">
+
+    /* .myOption {
+                width: 300px;
+            }*/
+
+    #tabs {
+        font-size: 13px;
+    }
+</style>
+
+<div class="row">
+    <div class="col col-lg-3 col-md-3 col-xs-12 col-sm-12">
+        <span>سرمابه گذار:</span>
+        @Html.DropDownList("DrInvestor", (IEnumerable<SelectListItem>)ViewData["InvestorList"], "--نامشخص--", new { @id = "drInvestorid", @class = "myClasss", @onchange = "InvestChange(this)" })
+
+    </div>
+    <div class="col col-lg-3 col-md-3 col-xs-12 col-sm-12">
+        <div>&nbsp;</div>
+        <input type="button" id="btnSave" value="ثبت" class="btn btn-primary" onclick="SaveAll()" disabled />
+        &nbsp;&nbsp;<input type="button" id="btnClear" class="btn btn-primary" value="پاک کردن پاسخ ها" onclick="clearAll()" />
+    </div>
+
+</div>
+
+    </>
+
+<hr />
+
+<div id="tabs">
+    <ul>
+        @foreach (var mytab in Model)
+        {
+            <li> <a href="@(String.Format("{0}{1}", "#tabs-", mytab.Id))" style="color:#FF0000;"> @mytab.Name</a></li>
+        }
+
+    </ul>
+    <div style="clear:both"></div>
+    @foreach (var mytab in Model)
+    {
+        <div id="@(String.Format("{0}{1}", "tabs-", mytab.Id))" class="row">
+            @{
+                int i = 0;
+            }
+            @if (mytab.EvalQuestions.Count == 0)
+            {
+              <span style="margin:auto;margin-top:30px;font-weight:bold;">رکوردی وجود ندارد</span>
+            }
+            else
+              {
+            @foreach (var question in mytab.EvalQuestions)
+            {
+                i++;
+                <div class="col col-lg-6 col-md-6 col-xs-12 col-sm-12">
+                    <span>@i</span><span> - </span>@question.QuestionTitle
+                    
+                    <br />
+                    @Html.DropDownList("id" + i, (IEnumerable<SelectListItem>)question.QuestionOptions.Select(x => new SelectListItem { Value = x.EvaluationItemId.ToString(), Text = x.EvaluationAnswer }), "--انتخاب--", new { @id = "item" + question.EvalQuestionId, @class = "myReplies" })
+                </div>
+                if (i % 2 == 0)
+                {
+                    <div class="col col-lg-12 col-md-12 col-xs-12 col-sm-12" style="border-bottom: 1px solid #c3c3c3; height: 15px; margin-top:5px; margin-bottom:15px;">&nbsp;</div>
+                }
+            }
+            }
+        </div>
+    }
+
+</div>

@@ -1,0 +1,94 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+
+<script type="text/javascript">
+    @{
+        List<GuildCategoriesVM> guildCategoriesList = new List<GuildCategoriesVM>();
+        @Html.Raw("var guildCategoriesList=[];")
+        ;
+
+        if (ViewData["GuildCategoriesList"] != null)
+        {
+            guildCategoriesList = (List<GuildCategoriesVM>)ViewData["GuildCategoriesList"];
+
+            var guildCategoriesListData = guildCategoriesList.Select(s =>
+            new
+            {
+                DisplayText = $"{s.GuildCategoryName}",
+                Value = s.GuildCategoryId,
+
+            });
+
+            @Html.Raw(" guildCategoriesList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(guildCategoriesListData)) +" ;")
+            ;
+        }
+
+    }
+</script>
+
+<script>
+    @{
+        List<PersonsVM> personsList = new List<PersonsVM>();
+        @Html.Raw("var personsList =[];")
+        ;
+
+        if (ViewData["PersonsList"] != null)
+        {
+            personsList = (List<PersonsVM>)ViewData["PersonsList"];
+
+            var personsListData = personsList.Select(p =>
+
+            new
+            {
+                DisplayText = $"{p.Name}",
+                Value = p.PersonId
+            });
+
+            @Html.Raw(" personsList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(personsListData))+" ;")
+            ;
+        }
+    }
+
+</script>
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .jtable-dialog-form .jtable-input-field-container {
+        width: 50%;
+    }
+
+
+    div.jtable-main-container table.jtable thead th:nth-child(11),
+    div.jtable-main-container table.jtable thead th:nth-child(12) {
+        width: 1% !important;
+    }
+
+
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(11),
+    div.jtable-main-container table.jtable tbody > tr > td:nth-child(12) {
+        width: 1% !important;
+        text-align: center;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+</style>

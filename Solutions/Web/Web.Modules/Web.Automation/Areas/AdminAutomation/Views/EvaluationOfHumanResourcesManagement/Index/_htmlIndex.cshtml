@@ -1,0 +1,72 @@
+﻿@using VM.Teniaco
+
+
+<div class="row col-12">
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            <label>
+                ارزیابی
+            </label>
+        </div>
+        <select id="slcEvaluation" name="slcEvaluation" class="form-control input-sm chosen-select"
+                placeholder="ارزیابی">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+
+    <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+        <div>
+            <label>
+                افراد نیروی انسانی
+            </label>
+        </div>
+        <select id="slcUsers" name="slcUsers" class="form-control input-sm chosen-select"
+                placeholder="افراد نیروی انسانی">
+            <option value="" selected>---</option>
+        </select>
+    </div>
+</div>
+<div class="row col-12">
+    <div class="clearfix"></div>
+    <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+        <div class="empty-block">&nbsp;</div>
+        <input type="button" id="btnSave" value="ثبت" class="btn btn-primary btn-sm" />
+        &nbsp;&nbsp;<input type="button" id="btnClear" class="btn btn-primary btn-sm" value="پاک کردن پاسخ ها" onclick="clearAll()" />
+
+    </div>
+</div>
+
+
+<hr />
+<div class="row col-12">
+</div>
+
+@*<div id="tab" class="row col-12">
+    <ul id="ulTabs" class="nav nav-tabs justify-content-start bar_tabs">
+    </ul>
+    <div style="clear:both"></div>
+
+    <div class="row  col-12">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div id="questionLabel" style="display:none">
+            </div>
+            <div id="items">
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>*@
+
+
+
+<div id="tab" class="row col-12">
+    <ul id="ulTabs" class="nav nav-tabs justify-content-start bar_tabs">
+    </ul>
+    <div style="clear:both"></div>
+
+    <div class="row  col-12" id="items">
+    </div>
+</div>

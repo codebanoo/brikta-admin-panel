@@ -1,0 +1,117 @@
+﻿@using VM.Console;
+
+@model UsersProfileVM
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+          data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+          data-ajax="true" data-ajax-method="POST">
+        <input asp-for="UserId" type="hidden" />
+        @Html.AntiForgeryToken()
+        <fieldset>
+            <div class="form-group col col-md-12">
+                @{
+                    <div id='error-alert' class="form-group alert alert-danger">
+                    </div>
+                }
+            </div>
+            @{
+                if (!string.IsNullOrEmpty(Model.Picture))
+                {
+                        <div class="form-group col col-md-4">
+                            <span>تصویر قبلی</span>
+                            <br />
+                            <img src="@Model.Picture" style="width: 100%;height: 100%;" class="img-responsive img-circle" />
+                        </div>
+                }
+            }
+            <div class="col @{ if (!string.IsNullOrEmpty(Model.Picture)) { @Html.Raw("col-md-8") } else { @Html.Raw("") } } ">
+                <div class="form-group col col-md-4">
+                    <span>نام</span>
+                    <br />
+                    <input asp-for="Name" class="form-control input-sm"
+                           placeholder="نام" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>نام خانوادگی</span>
+                    <br />
+                    <input asp-for="Family" class="form-control input-sm"
+                           placeholder="نام خانوادگی" />
+                    <span asp-validation-for="Family" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>ایمیل</span>
+                    <br />
+                    <input asp-for="Email" class="form-control input-sm"
+                           placeholder="ایمیل" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>تماس</span>
+                    <br />
+                    <input asp-for="Phone" class="form-control input-sm"
+                           placeholder="تلفن" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>همراه</span>
+                    <br />
+                    <input asp-for="Mobile" class="form-control input-sm"
+                           placeholder="همراه" />
+                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>آدرس</span>
+                    <br />
+                    <input asp-for="Address" class="form-control input-sm"
+                           placeholder="آدرس" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>شماره شناسنامه</span>
+                    <br />
+                    <input asp-for="CertificateId" class="form-control input-sm"
+                           placeholder="شماره شناسنامه" />
+                    <span asp-validation-for="CertificateId" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>کد ملی</span>
+                    <br />
+                    <input asp-for="NationalCode" class="form-control input-sm"
+                           placeholder="کد ملی" />
+                    <span asp-validation-for="NationalCode" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>تاریخ تولد</span>
+                    <br />
+                    <input type="text" asp-for="BirthDateTime" class="form-control input-sm" 
+                           data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom"
+                           placeholder="تاریخ تولد" />
+                    <span asp-validation-for="BirthDateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>تصویر</span>
+                    <br />
+                    <input type="file" asp-for="Picture" class="form-control input-sm"
+                           placeholder="تصویر" />
+                    <span asp-validation-for="Picture" class="text-danger"></span>
+                </div>
+                <div class="form-group col col-md-4">
+                    <span>جنسیت</span>
+                    <br />
+                    <div class="checkbox">
+                        <label for="Sexuality">
+                            <input asp-for="Sexuality" class="form-control input-sm"
+                                   placeholder="جنسیت" />
+                            <span>مرد</span>
+                        </label>
+                        <span asp-validation-for="Sexuality" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col col-md-12">
+                    <button class="col col-md-2 btn btn-default input-sm" type="submit">Submit
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>

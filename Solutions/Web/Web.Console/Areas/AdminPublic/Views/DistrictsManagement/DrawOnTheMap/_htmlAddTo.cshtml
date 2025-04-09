@@ -1,0 +1,172 @@
+﻿@using VM.Teniaco;
+<form class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+     <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                استان
+            </div>
+            <select class="form-control ml-3" id="slcStateId" name="slcStateId"
+                    placeholder="استان">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                بخش
+            </div>
+            <select class="form-control ml-3" id="slcCityId" name="slcCityId"
+                    placeholder="بخش">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3">
+            <div>
+                  منطقه/شهر
+            </div>
+            <select class="form-control ml-3" id="slcZoneId" name="slcZoneId"
+                    placeholder="  منطقه/شهر">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+           <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                نام ناحیه
+            </div>
+
+            <input type='text' class="form-control" id="txtDistrictName" name="txtDistrictName" />
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                نام روستا
+            </div>
+
+            <input type='text' class="form-control" id="txtVillageName" name="txtVillageName" />
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                نام شهرک
+            </div>
+
+            <input type='text' class="form-control" id="txtTownName" name="txtTownName" />
+        </div>
+
+
+    </div>
+    <div class="ln_solid"></div>
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button type="submit" id="btnSubmit" class="btn btn-success btn-md">ثبت</button>
+            @*          <button class="btn btn-primary btn-md" type="reset">پاک کردن فرم</button>*@
+            <button type="button" class="btn btn-primary btn-md">لغو</button>
+
+
+        </div>
+    </div>
+
+       <div class="row col-12">
+        <div id="map" class="col col-md-6 col-lg-6"></div>
+        <div id="mapRight" class="col col-md-6 col-lg-6"></div>
+    </div>
+</form>
+@*
+<form onsubmit="return false;">
+    <div class="row">
+        <div class="form-group col col-md-12">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    استان
+                </label>
+            </div>
+            <select id="slcStateId" name="slcStateId" class="form-control input-sm chosen-select"
+                    placeholder="استان">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    بخش
+                </label>
+            </div>
+            <select id="slcCityId" name="slcCityId" class="form-control input-sm chosen-select"
+                    placeholder="بخش">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    منطقه/شهر
+                </label>
+            </div>
+            <select id="slcZoneId" name="slcZoneId" class="form-control input-sm chosen-select"
+                    placeholder="منطقه/شهر">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    نام ناحیه
+                </label>
+            </div>
+            <input type="text" id="txtDistrictName" name="txtDistrictName" class="form-control input-sm" />
+        </div>
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    نام روستا
+                </label>
+            </div>
+            <input type="text" id="txtVillageName" name="txtVillageName" class="form-control input-sm" />
+        </div>
+        <div class="form-group col col-md-3 col-xs-12 col-sm-12 col-lg-3">
+            <div>
+                <label>
+                    نام شهرک
+                </label>
+            </div>
+            <input type="text" id="txtTownName" name="txtTownName" class="form-control input-sm" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <label class="col-lg-12">
+                &nbsp;
+            </label>
+            <button id="btnSubmit" name="btnSubmit" class="btn btn-default input-sm" type="submit">
+                ارسال
+            </button>
+            <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                    title="پاک کردن فرم">
+                <i class="fa fa-undo"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row col-12">
+        <div id="map" class="col col-md-6 col-lg-6"></div>
+        <div id="mapRight" class="col col-md-6 col-lg-6"></div>
+    </div>
+</form>
+*@

@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    <MvcRazorExcludeViewFilesFromBuild>false</MvcRazorExcludeViewFilesFromBuild>
+    <MvcRazorExcludeViewFilesFromPublish>true</MvcRazorExcludeViewFilesFromPublish>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\AdminTeniaco\**" />
+    <Compile Remove="Areas\UserTeniaco\**" />
+    <Content Remove="Areas\AdminTeniaco\**" />
+    <Content Remove="Areas\UserTeniaco\**" />
+    <EmbeddedResource Remove="Areas\AdminTeniaco\**" />
+    <EmbeddedResource Remove="Areas\UserTeniaco\**" />
+    <None Remove="Areas\AdminTeniaco\**" />
+    <None Remove="Areas\UserTeniaco\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ApiCallers.BaseApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.BaseApiCaller\bin\Debug\net6.0\ApiCallers.BaseApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.PublicApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.PublicApiCaller\bin\Debug\net6.0\ApiCallers.PublicApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="ApiCallers.TeniacoApiCaller">
+      <HintPath>..\..\..\ApiCallers\ApiCallers.TeniacoApiCaller\bin\Debug\net6.0\ApiCallers.TeniacoApiCaller.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomAttributes">
+      <HintPath>..\..\..\CustomAttributes\bin\Debug\net6.0\CustomAttributes.dll</HintPath>
+    </Reference>
+    <Reference Include="FrameWork">
+      <HintPath>..\..\..\FrameWork\bin\Debug\net6.0\FrameWork.dll</HintPath>
+    </Reference>
+    <Reference Include="Models.Business">
+      <HintPath>..\..\..\Models.Business\bin\Debug\net6.0\Models.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Business">
+      <HintPath>..\..\..\Services\Services.Business\bin\Debug\net6.0\Services.Business.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Public">
+      <HintPath>..\..\..\Services\Services.Public\bin\Debug\net6.0\Services.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="Services.Xml">
+      <HintPath>..\..\..\Services\Services.Xml\bin\Debug\net6.0\Services.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Base">
+      <HintPath>..\..\..\VM\VM.Base\bin\Debug\net6.0\VM.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Console">
+      <HintPath>..\..\..\VM\VM.Console\bin\Debug\net6.0\VM.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Crm">
+      <HintPath>..\..\..\VM\VM.Crm\bin\Debug\net6.0\VM.Crm.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Public">
+      <HintPath>..\..\..\VM\VM.Public\bin\Debug\net6.0\VM.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="VM.Teniaco">
+      <HintPath>..\..\..\VM\VM.Teniaco\bin\Debug\net6.0\VM.Teniaco.dll</HintPath>
+    </Reference>
+    <Reference Include="Web.Core">
+      <HintPath>..\..\Web.Core\bin\Debug\net6.0\Web.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot; mkdir &quot;$(SolutionDir)\..\..\..\Web\Web.Console\Modules&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminConfigSite&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminConfigSite&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserConfigSite&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserConfigSite&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminConfigSite/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminConfigSite\Views&quot;&#xD;&#xA;if not exist &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserConfigSite/Views&quot; mkdir &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserConfigSite\Views&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.References\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Modules&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)\..\..\..\AllRef&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.ConfigSite\Areas\AdminConfigSite\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminConfigSite\Accesses.xml&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.ConfigSite\Areas\UserConfigSite\Accesses.xml&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserConfigSite\Accesses.xml&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.ConfigSite\Areas\AdminConfigSite\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\AdminConfigSite\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.ConfigSite\Areas\UserConfigSite\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Areas\UserConfigSite\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.ConfigSite\Views&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\Views&quot;&#xD;&#xA;xcopy /E /Y &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Modules\Web.ConfigSite\wwwroot&quot; &quot;$(SolutionDir)\..\..\..\ArashCmsSolution\Web\Web.Console\wwwroot&quot;" />
+  </Target>
+
+</Project>

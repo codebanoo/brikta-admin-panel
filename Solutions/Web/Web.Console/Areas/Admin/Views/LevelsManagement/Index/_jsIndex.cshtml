@@ -1,0 +1,643 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        debugger;
+        //for (var i = 0; i < domainsSettingsList.length; i++) {
+        //    var item = domainsSettingsList[i];
+        //    $('#slcDomainSearch')
+        //        .append($("<option></option>")
+        //            .attr("value", item.Value)
+        //            .text(item.DisplayText));
+        //}
+
+        //$('#slcDomainSearch').chosen({
+        //    placeholder_text_single: ' ',
+        //    placeholder_text_multiple: ' ',
+        //    search_contains: true,
+        //    max_shown_results: 10
+        //});
+
+        for (var i = 0; i < rolesList.length; i++) {
+            var item = rolesList[i];
+            $('#slcRoleIdsSearch')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcRoleIdsSearch').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        //$('#slcDomainSearch').change(function () {
+        //    debugger;
+        //    var _this = $(this);
+        //    var domainSettingId = _this.val();
+        //    $('#slcRoleIdsSearch').find('option')
+        //        .remove()
+        //        .end();
+        //    $('#slcRoleIdsSearch')
+        //        .append($("<option></option>")
+        //            .attr("value", "")
+        //            .attr("data-DomainSettingId", "0")
+        //            .text("---"));
+        //    for (var i = 0; i < rolesList.length; i++) {
+        //        var item = rolesList[i];
+        //        if (item.DomainSettingId == domainSettingId) {
+        //            $('#slcRoleIdsSearch')
+        //                .append($("<option></option>")
+        //                    .attr("value", item.Value)
+        //                    .attr("data-DomainSettingId", item.DomainSettingId)
+        //                    .text(item.DisplayText));
+        //        }
+        //    }
+        //    $('#slcRoleIdsSearch').chosen({
+        //        placeholder_text_single: ' ',
+        //        placeholder_text_multiple: ' ',
+        //        search_contains: true,
+        //        max_shown_results: 10
+        //    });
+        //    $('#slcRoleIdsSearch').trigger("chosen:updated");
+        //});
+
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: 'لیست', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/Admin/LevelsManagement/GetListOfLevels',
+                createAction: '/Admin/LevelsManagement/AddToLevels',
+                updateAction: '/Admin/LevelsManagement/UpdateLevel',
+                deleteAction: '/Admin/LevelsManagement/CompleteDeleteLevel'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    }]
+            },
+            fields: {
+                LevelId: {
+                    key: true,
+                    list: false
+                },
+                RoleId: {
+                    title: 'نقش',
+                    options: rolesList,
+                    sorting: false,
+                    inputClass: 'validate[required]',
+                    //input: function (data) {
+                    //    return '<select id="Edit-RoleId" name="RoleId"></select>'
+                    //}
+                    //inputClass: 'validate[required]'
+                },
+                LevelName: {
+                    title: 'دسترسی',
+                    inputClass: 'validate[required]'
+                },
+                //DefaultPage: {
+                //    title: 'صفحه&nbsp;پیش&nbsp;فرض&nbsp;ورود',
+                //    options: defaultPagesList,
+                //    //input: function (data) {
+                //    //    return '<select id="Edit-DefaultPage" name="DefaultPage"></select>'
+                //    //}
+                //},
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیرفعال',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-LevelId="' + data.record.LevelId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-LevelId="' + data.record.LevelId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-LevelId="' + data.record.LevelId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-LevelId="' + data.record.LevelId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                LevelDetails: {
+                    title: 'جزئیات',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<div class="levelDetails pointer" data-LevelId="' + data.record.LevelId + '"><i class="fa fa-sitemap"></i></div>';
+                    }
+                },
+                LevelShortCutImages: {
+                    title: 'میانبر',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function (data) {
+                        return '<div class="levelShortCutImages pointer" data-LevelId="' + data.record.LevelId + '"><i class="fa fa-th"></i></div>';
+                    }
+                }
+            },
+            formCreated: function (event, data) {
+                title:'رکورد جدید'
+                //data.form.find('select[name="DomainSettingId"]').addClass(
+                //    'validate[required]');
+                data.form.find('select[name="RoleId"]').addClass(
+                    'validate[required]');
+                data.form.find('input[name="LevelName"]').addClass(
+                    'validate[required]');
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                    //prettySelect: true,
+                    //useSuffix: "chosen-"
+                    //updatePromptsPosition: true,
+                    //autoPositionUpdate: true,
+                    //updatePromptsPosition: true,
+                    //inlineValidation: true,
+                    //prettySelect: true,
+                    //useSuffix: "_chosen"
+                });
+                //data.form.validationEngine('updatePromptsPosition');
+                //var validatore = data.form.validationEngine();
+                //data.form.validationEngine({
+                //    validateNonVisibleFields: true
+                //});
+                //data.form.validationEngine({
+                //    validateNonVisibleFields: true,
+                //    settings:
+                //        {ignore : []}
+                //});
+                //data.form.validationEngine({
+                //    settings:
+                //        {
+                //            ignore: [],
+                //            validateNonVisibleFields: true
+                //        }
+                //});
+                //if ($("form").data("validator"))
+                //    if ($("form").data("validator").settings != undefined) {
+                //        $("form").data("validator").settings.ignore = "";
+                //        $("form").data("validator").validateNonVisibleFields = true;
+                //        $("form").data("validator").settings.validateNonVisibleFields = true;
+                //    }
+                //data.form.data("validator").settings.ignore = "";
+
+                //$('.ui-button').text('');
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+                      //$('.ui-dialog-titlebar-close').html('X');
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                debugger;
+
+                //$('#Edit-RoleId')
+                //    .append($("<option></option>")
+                //        .attr("value", "")
+                //        .attr("data-DomainSettingId", "0")
+                //        .text("---"));
+
+                $('#Edit-DefaultPage').find('option')
+                    .remove()
+                    .end()
+                    .append($("<option></option>")
+                        .attr("value", "")
+                        //.attr("data-DomainSettingId", "0")
+                        .attr("data-RoleId", "0")
+                        .text("---"));
+
+                var roleId = $('#Edit-RoleId').val();
+                //for (var i = 0; i < defaultPagesList.length; i++) {
+                //    var item = defaultPagesList[i];
+                //    if (item.RoleId == roleId) {
+                //        $('#Edit-DefaultPage')
+                //            .append($("<option></option>")
+                //                .attr("value", item.Value)
+                //                //.attr("data-DomainSettingId", item.DomainSettingId)
+                //                .attr("data-RoleId", item.RoleId)
+                //                .text(item.DisplayText));
+                //    }
+                //}
+
+                if (formName == 'edit') {
+                    //$('#Edit-DefaultPage').chosen({
+                    //    placeholder_text_single: ' ',
+                    //    placeholder_text_multiple: ' ',
+                    //    search_contains: true,
+                    //    max_shown_results: numberOfChosenItemsShow,
+                    //    rtl: rtl
+                    //});
+                    //$('#Edit-DefaultPage').val(data.record.DefaultPage).trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+                        //$('#Edit-DefaultPage').chosen({
+                        //    placeholder_text_single: ' ',
+                        //    placeholder_text_multiple: ' ',
+                        //    rtl: rtl
+                        //    /*search_contains: true,
+                        //    max_shown_results: 10*/
+                        //});
+                        //$('#Edit-DefaultPage').trigger("chosen:updated");
+                    }
+
+                ShowCheckBoxBeforeChosenFoJtable();
+            },
+            formSubmitting: function (event, data) {
+                //data.form.validationEngine('updatePromptsPosition');
+
+                var validate = data.form.validationEngine('validate');
+                //data.form.validationEngine('updatePromptsPosition');
+
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+            debugger;
+            //var domainSettingIdSearch = $('#slcDomainSearch').val();
+            var txtLevelNameSearch = $('#txtLevelNameSearch').val();
+            var roleIdSearch = $('#slcRoleIdsSearch').val();
+            if (/*domainSettingIdSearch != '' ||*/ txtLevelNameSearch != '' || roleIdSearch != '') {
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    //'domainSettingIdSearch': domainSettingIdSearch,
+                    'levelNameSearch': txtLevelNameSearch,
+                    'roleIdSearch': roleIdSearch
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('راهنمایی');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+        $('#btnReload').click(function () {
+            $('#btnReset').click();
+            $('#slcRoleSearch').val('').trigger("chosen:updated");
+            $('#txtLevelNameSearch').val('');
+            $('#listContainer').jtable('load');
+        });
+
+        $('body').on('click', '.levelShortCutImages', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var levelId = _this.attr('data-LevelId');
+            window.location.href = '/Admin/LevelsManagement/LevelShortCutImages/' + levelId;
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            debugger;
+            var _this = $(this);
+            var levelId = _this.attr('data-LevelId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/LevelsManagement/ToggleActivationLevel",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'LevelId': levelId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var slcRoleSearch = $('#slcRoleSearch').val();
+                        var txtLevelNameSearch = $('#txtLevelNameSearch').val();
+                        var roleIdSearch = $('#slcRoleIdsSearch').val();
+                        if (slcRoleSearch != '' || txtLevelNameSearch != '' || roleIdSearch != '') {
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'roleIdSearch': slcRoleSearch,
+                                'levelNameSearch': txtLevelNameSearch,
+                                'roleIdSearch': roleIdSearch
+                            });
+                        }
+                        else {
+                            $('#listContainer').jtable('load');
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            var _this = $(this);
+            var levelId = _this.attr('data-LevelId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/LevelsManagement/ToggleTemporaryDeleteLevel",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'LevelId': levelId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        var slcRoleSearch = $('#slcRoleSearch').val();
+                        var txtLevelNameSearch = $('#txtLevelNameSearch').val();
+                        if (slcRoleSearch != '' || txtLevelNameSearch != '') {
+                            $('#listContainer').jtable('load', {
+                                currentPage: $('#listContainer').jtable('getCurrentPage'),
+                                'roleIdSearch': slcRoleSearch,
+                                'levelNameSearch': txtLevelNameSearch
+                            });
+                        }
+                        else {
+                            $('#listContainer').jtable('load');
+                        }
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.levelDetails', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var levelId = _this.attr('data-LevelId');
+            window.location.href = '/Admin/LevelsManagement/LevelDetails/' + levelId;
+        });
+
+        //$('body').on('change', '#Edit-DomainSettingId', function () {
+        //    debugger;
+        //    var _this = $(this);
+        //    var domainSettingId = _this.val();
+        //    $('#Edit-RoleId').find('option')
+        //        .remove()
+        //        .end();
+        //    $('#Edit-RoleId')
+        //        .append($("<option></option>")
+        //            .attr("value", "")
+        //            .attr("data-DomainSettingId", "0")
+        //            .text("---"));
+        //    for (var i = 0; i < rolesList.length; i++) {
+        //        var item = rolesList[i];
+        //        if (item.DomainSettingId == domainSettingId) {
+        //            $('#Edit-RoleId')
+        //                .append($("<option></option>")
+        //                    .attr("value", item.Value)
+        //                    .attr("data-DomainSettingId", item.DomainSettingId)
+        //                    .text(item.DisplayText));
+        //        }
+        //    }
+        //    $('#Edit-RoleId').chosen({
+        //        placeholder_text_single: ' ',
+        //        placeholder_text_multiple: ' ',
+        //        search_contains: true,
+        //        max_shown_results: 10
+        //    });
+        //    $('#Edit-RoleId').trigger("chosen:updated");
+        //    $('#Edit-RoleId').change();
+        //});
+
+        $('body').on('change', '#Edit-RoleId', function () {
+            debugger;
+            //$('#Edit-DefaultPage').find('option')
+            //    .remove()
+            //    .end();
+            $('#Edit-DefaultPage').find('option')
+                .remove()
+                .end()
+                .append($("<option></option>")
+                    .attr("value", "")
+                    //.attr("data-DomainSettingId", "0")
+                    .attr("data-RoleId", "0")
+                    .text("---"));
+
+            var roleId = $('#Edit-RoleId').val();
+            for (var i = 0; i < defaultPagesList.length; i++) {
+                var item = defaultPagesList[i];
+                if (item.RoleId == roleId) {
+                    $('#Edit-DefaultPage')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            //.attr("data-DomainSettingId", item.DomainSettingId)
+                            .attr("data-RoleId", item.RoleId)
+                            .text(item.DisplayText));
+                }
+            }
+            $('#Edit-DefaultPage').chosen({
+                placeholder_text_single: ' ',
+                placeholder_text_multiple: ' ',
+                rtl: rtl
+                /*search_contains: true,
+                max_shown_results: 10*/
+            });
+            $('#Edit-DefaultPage').trigger("chosen:updated");
+        });
+          $('#searchBlock').hide();
+    });
+</script>

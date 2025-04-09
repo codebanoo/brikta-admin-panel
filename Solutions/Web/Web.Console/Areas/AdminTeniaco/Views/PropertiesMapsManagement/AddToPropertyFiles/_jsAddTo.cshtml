@@ -1,0 +1,239 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+
+        debugger;
+        var propertyId = propertiesVM.PropertyId;
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+
+            var PropertyFileTitle1 = $('#PropertyFileTitle1').val();
+            var PropertyFileTitle2 = $('#PropertyFileTitle2').val();
+            var PropertyFileTitle3 = $('#PropertyFileTitle3').val();
+            var PropertyFileTitle4 = $('#PropertyFileTitle4').val();
+            var PropertyFileTitle5 = $('#PropertyFileTitle5').val();
+
+
+            var formData = new FormData();
+
+            debugger;
+            var filesElm = $('input[type=file]');
+
+            var propertyFileUploadPVMList = [];
+
+            if (filesElm.length > 0) {
+                for (var i = 0; i < filesElm.length; i++) {
+                    var file = filesElm[i];
+                    if (file != null)
+                        if (file.files[0] != null)
+                            if (file.files[0].size > 0) {
+
+
+                                if (file.name == 'file1') {
+
+                                    if (
+
+                                        (PropertyFileTitle1 == undefined) ||
+                                        (PropertyFileTitle1 == null) ||
+                                        (PropertyFileTitle1.length == "") ||
+                                        (PropertyFileTitle1.length < 1) ||
+                                        (PropertyFileTitle1 == "")
+
+                                    ) {
+
+
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html('لطفا فیلد عنوان را پر کنید.');
+                                        $('#my-warning-modal').modal("show");
+                                        return;
+                                    }
+                                }
+
+
+                                if (file.name == 'file2') {
+
+                                    if (
+
+                                        (PropertyFileTitle2 == undefined) ||
+                                        (PropertyFileTitle2 == null) ||
+                                        (PropertyFileTitle2.length == "") ||
+                                        (PropertyFileTitle2.length < 1) ||
+                                        (PropertyFileTitle2 == "")
+                                    ) {
+
+
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html('لطفا فیلد عنوان را پر کنید.');
+                                        $('#my-warning-modal').modal("show");
+                                        return;
+                                    }
+
+                                }
+
+
+                                if (file.name == 'file3') {
+
+                                    if (
+
+                                        (PropertyFileTitle3 == undefined) ||
+                                        (PropertyFileTitle3 == null) ||
+                                        (PropertyFileTitle3.length == "") ||
+                                        (PropertyFileTitle3.length < 1) ||
+                                        (PropertyFileTitle3 == "")
+                                    ) {
+
+
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html('لطفا فیلد عنوان را پر کنید.');
+                                        $('#my-warning-modal').modal("show");
+                                        return;
+                                    }
+                                }
+
+
+
+
+                                if (file.name == 'file4') {
+
+                                    if (
+
+                                        (PropertyFileTitle4 == undefined) ||
+                                        (PropertyFileTitle4 == null) ||
+                                        (PropertyFileTitle4.length == "") ||
+                                        (PropertyFileTitle4.length < 1) ||
+                                        (PropertyFileTitle4 == "")
+
+                                    ) {
+
+
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html('لطفا فیلد عنوان را پر کنید.');
+                                        $('#my-warning-modal').modal("show");
+                                        return;
+                                    }
+                                }
+
+
+
+                                if (file.name == 'file5') {
+
+                                    if (
+
+                                        (PropertyFileTitle5 == undefined) ||
+                                        (PropertyFileTitle5 == null) ||
+                                        (PropertyFileTitle5.length == "") ||
+                                        (PropertyFileTitle5.length < 1) ||
+                                        (PropertyFileTitle5 == "")
+                                    ) {
+
+
+                                        $('#my-warning-modal').find('.modal-title').html('خطا');
+                                        $('#my-warning-modal').find('#error').html('لطفا فیلد عنوان را پر کنید.');
+                                        $('#my-warning-modal').modal("show");
+                                        return;
+                                    }
+                                }
+
+
+                                propertyFileUploadPVMList.push({
+                                    PropertyFileTitle: $('#PropertyFileTitle' + (i + 1)).val(),
+                                    File: file.files[0]
+                                });
+
+                                formData.append("PropertyFileUploadPVMList[" + i + "].PropertyFileTitle", $('#PropertyFileTitle' + (i + 1)).val());
+                                formData.append("PropertyFileUploadPVMList[" + i + "].PropertyFileOrder", $('#PropertyFileOrder' + (i + 1)).val());
+                                formData.append("PropertyFileUploadPVMList[" + i + "].File", file.files[0]);
+
+                                //propertyFileUploadPVMList.PropertyFileTitle = $('#PropertyFileTitle' + i).val();
+                                //propertyFileUploadPVMList.File = file.files[0];
+                            }
+                }
+
+                if (propertyFileUploadPVMList.length > 0) {
+
+                    //for (var key in propertyFileUploadPVMList) {
+                    //    formData.append(key, propertyFileUploadPVMList[key]);
+                    //}
+
+                    //formData.append('PropertyFileUploadPVMList', propertyFileUploadPVMList);
+                    formData.append('PropertyId', propertyId);
+
+                    $.ajax({
+                        url: '/AdminTeniaco/PropertiesMapsManagement/AddToPropertyFiles',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            debugger;
+                           
+                           
+
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                            $('#error-alert').show(500);
+                        },
+                        error: function (jqXHR) {
+                            $('#error-alert').removeClass('alert-success');
+                            $('#error-alert').addClass('alert-danger');
+
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message);
+                            $('#error-alert').show(500);
+                            //$('#AjaxLoading').hide();
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+                else {
+
+
+                    $('#my-warning-modal').find('.modal-title').html('خطا');
+                    $('#my-warning-modal').find('#error').html('لطفا حداقل یک فایل را برای آپلود انتخاب کنید.');
+                    $('#my-warning-modal').modal("show");
+                    return;
+
+                }
+            }
+        });
+
+
+
+        $('#btnReset').click(function (e) {
+
+            e.preventDefault();
+            $('#PropertyFileTitle1').val(null);
+            $('#PropertyFileTitle2').val(null);
+            $('#PropertyFileTitle3').val(null);
+            $('#PropertyFileTitle4').val(null);
+            $('#PropertyFileTitle5').val(null);
+
+
+            $('#file1').val(null);
+            $('#file2').val(null);
+            $('#file3').val(null);
+            $('#file4').val(null);
+            $('#file5').val(null);
+
+
+            $('#PropertyFileOrder1').val(null);
+            $('#PropertyFileOrder2').val(null);
+            $('#PropertyFileOrder3').val(null);
+            $('#PropertyFileOrder4').val(null);
+            $('#PropertyFileOrder5').val(null);
+
+        });
+
+    });
+</script>

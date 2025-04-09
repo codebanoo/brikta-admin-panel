@@ -1,0 +1,460 @@
+﻿@using VM.Console;
+
+@model DomainsSettingsVM
+
+@{
+    string domainName = "";
+    if (ViewData["DomainName"] != null)
+    {
+        domainName = ViewData["DomainName"] as string;
+    }
+}
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    <input asp-for="DomainSettingId" type="hidden" />
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-group col col-md-12">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    دامنه
+                </label>
+            </div>
+            <input asp-for="DomainName" class="form-control input-sm"
+                   placeholder="دامنه" />
+            <span asp-validation-for="DomainName" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    تعریف کننده
+                </label>
+            </div>
+            <select asp-for="UserIdCreator" class="form-control input-sm"
+                    placeholder="تعریف کننده">
+                <option value="">---</option>
+            </select>
+            @*<span asp-validation-for="UserIdCreator" class="text-danger"></span>*@
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    کلیدهای میانبر
+                </label>
+            </div>
+            <select asp-for="ShortCutKeysIsActivated" class="form-control input-sm"
+                    placeholder="کلیدهای میانبر">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    فرمان صوتی
+                </label>
+            </div>
+            <select asp-for="VoiceCommandsIsActivated" class="form-control input-sm" 
+                    placeholder="فرمان صوتی">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    نوتیفیکیشن
+                </label>
+            </div>
+            <select asp-for="PushNotificationsIsActivated" class="form-control input-sm"
+                    placeholder="نوتیفیکیشن">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    هشدارها
+                </label>
+            </div>
+            <select asp-for="AlertIsActivated" class="form-control input-sm"
+                    placeholder="منوی راست">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    منوی راست
+                </label>
+            </div>
+            <select asp-for="RightMenuIsActivated" class="form-control input-sm"
+                    placeholder="منوی راست">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    منوی بالا
+                </label>
+            </div>
+            <select asp-for="TopMenuIsActivated" class="form-control input-sm"
+                    placeholder="منوی بالا">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    منوی دایره ای
+                </label>
+            </div>
+            <select asp-for="CircleMenuIsActivated" class="form-control input-sm"
+                    placeholder="منوی دایره ای">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    راست کلیک
+                </label>
+            </div>
+            <select asp-for="RightClickMenuIsActivated" class="form-control input-sm"
+                    placeholder="راست کلیک">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    داشبورد
+                </label>
+            </div>
+            <select asp-for="DashboardBoxesIsActivated" class="form-control input-sm"
+                    placeholder="داشبورد">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    باکس گزارش
+                </label>
+            </div>
+            <select asp-for="ReportBoxesIsActivated" class="form-control input-sm"
+                    placeholder="باکس گزارش">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    tooltip
+                </label>
+            </div>
+            <select asp-for="ToolTipIsActivated" class="form-control input-sm"
+                    placeholder="tooltip">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                     <span>تصویر پس زمینه</span> (500Kb)
+                </label>
+            </div>
+            <input type="file" asp-for="BackGroundImagePath" class="form-control input-sm"
+                   onchange="ImageCheck(this, 'فایل با فرمتهای (jpeg, jpg, png, gif, bmp) انتخاب کنید', 'فایل ورودی را مجدد انتخاب کنید', 'حجم فایل انتخابی کمتر از 500 k باشد', 500);"
+                   placeholder="تصویر پس زمینه" />
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    <span>لوگو</span> (500Kb)
+                </label>
+            </div>
+            <input type="file" asp-for="LogoImagePath" class="form-control input-sm"
+                   onchange="ImageCheck(this, 'فایل با فرمتهای (jpeg, jpg, png, gif, bmp) انتخاب کنید', 'فایل ورودی را مجدد انتخاب کنید', 'حجم فایل انتخابی کمتر از 500 k باشد', 500);"
+                   placeholder="لوگو" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    فعال
+                </label>
+            </div>
+            <select asp-for="IsActivated" class="form-control input-sm"
+                    placeholder="فعال">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    حذف شده
+                </label>
+            </div>
+            <select asp-for="IsDeleted" class="form-control input-sm"
+                    placeholder="حذف شده">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    ساخت زیر دامنه
+                </label>
+            </div>
+            <select asp-for="CreateSubDomainPerNewUser" class="form-control input-sm"
+                    placeholder="ساخت زیر دامنه">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    صفحه ثبت نام
+                </label>
+            </div>
+            <select asp-for="RegisterPageIsActivated" class="form-control input-sm"
+                    placeholder="صفحه ثبت نام">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    ساخت اتوماتیک منو
+                </label>
+            </div>
+            <select asp-for="CreateMenuAutomatically" class="form-control input-sm"
+                    placeholder="ساخت اتوماتیک منو">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    نوع تصویر پس زمینه
+                </label>
+            </div>
+            <select asp-for="BackGroundImageType" class="form-control input-sm"
+                    placeholder="نوع تصویر پس زمینه">
+                <option value="" disabled>---</option>
+                <option value="Fill">Fill</option>
+                <option value="Fit">Fit</option>
+                <option value="Stretch">Stretch</option>
+                <option value="Tile">Tile</option>
+                <option value="Center">Center</option>
+            </select>
+        </div>
+        @*<div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                <div>
+                    <label>
+                        @Html.Raw(pageTexts.FirstOrDefault(p => p.PropertyName.Equals("NumberOfUsers")).Value)
+                    </label>
+                </div>
+                <input asp-for="NumberOfUsers" class="form-control input-sm"
+                       placeholder="@Html.Raw(pageTexts.FirstOrDefault(p => p.PropertyName.Equals("NumberOfUsers")).Value)" />
+                <span asp-validation-for="NumberOfUsers" class="text-danger"></span>
+            </div>*@
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    آیتمهای نمایشی
+                </label>
+            </div>
+            <input asp-for="NumberOfChosenItemsShow" class="form-control input-sm"
+                   placeholder="آیتمهای نمایشی" />
+            <span asp-validation-for="NumberOfChosenItemsShow" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    انتخاب همه
+                </label>
+            </div>
+            <select asp-for="CheckAllChosenItemsShow" class="form-control input-sm"
+                    placeholder="انتخاب همه">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    نمایش صفحه انتخاب دسترسی
+                </label>
+            </div>
+            <select asp-for="ShowLevelPageAfterLogin" class="form-control input-sm"
+                    placeholder="نمایش صفحه انتخاب دسترسی">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    تعداد رمز اشتباه
+                </label>
+            </div>
+            <input asp-for="CountOfEnterWrongPassword" class="form-control input-sm"
+                   placeholder="تعداد رمز اشتباه" />
+            <span asp-validation-for="CountOfEnterWrongPassword" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    تعداد اشتباه برای قفل شدن
+                </label>
+            </div>
+            <input asp-for="CountOfEnterWrongPasswordForUserLocked" class="form-control input-sm"
+                   placeholder="تعداد اشتباه برای قفل شدن" />
+            <span asp-validation-for="CountOfEnterWrongPasswordForUserLocked" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    تغییر رمز بعد از اولین ورود
+                </label>
+            </div>
+            <select asp-for="ChangePasswordAfterFirstLogin" class="form-control input-sm"
+                    placeholder="تغییر رمز بعد از اولین ورود">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    تاریخ تغییر رمز
+                </label>
+            </div>
+            <input asp-for="DateFaForChangePassword" class="form-control input-sm"
+                   data-mddatetimepicker="true" onkeydown="return false" data-placement="top"
+                   placeholder="تاریخ تغییر رمز" />
+            <span asp-validation-for="DateFaForChangePassword" class="text-danger"></span>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    ثبت نام پیش فرض
+                </label>
+            </div>
+            <select asp-for="DefaultRegisterPage" class="form-control input-sm"
+                    placeholder="ثبت نام پیش فرض">
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    نوع نمایش داده ها برای کاربر
+                </label>
+            </div>
+            <select asp-for="TypeOfLoadDataForSubUsers" class="form-control input-sm"
+                    placeholder="نوع نمایش داده ها برای کاربر">
+                <option value="" disabled>---</option>
+                <option value="All">همه</option>
+                <option value="TheSiteAdminOnly">فقط مدیر سایت</option>
+                <option value="TheParentUserOnly">فقط والد</option>
+                <option value="TheParentUserAndSubUsers">والد و زیر گروهها</option>
+                <option value="TheUserHimself">خود کاربر</option>
+                <option value="TheSameLevel">کاربران هم سطح</option>
+                <option value="TheUserHimselfAndSubUsers">خود کاربر و زیر گروهها</option>
+                <option value="TheSubUsersOnly">فقط زیر گروهها</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        @{
+            if (!string.IsNullOrEmpty(Model.BackGroundImagePath) || !string.IsNullOrEmpty(Model.LogoImagePath))
+            {
+                <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                    <span>تصویر پس زمینه قبلی</span> / <span>تصویر لوگوی قبلی</span>
+                    <br />
+                    @if (!string.IsNullOrEmpty(Model.BackGroundImagePath))
+                    {
+                        <a class="fancybox"
+                           href="/Files/UserFiles/@Model.DomainName/@Model.BackGroundImagePath"
+                           data-fancybox-group="gallery" title="">
+                            <img class="domainThumbImage" src="/Files/UserFiles/@Model.DomainName/@Model.BackGroundImagePath"
+                                 alt="" />
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.LogoImagePath))
+                    {
+                        <a class="fancybox"
+                           href="/Files/UserFiles/@Model.DomainName/@Model.LogoImagePath"
+                           data-fancybox-group="gallery" title="">
+                            <img class="domainThumbImage" src="/Files/UserFiles/@Model.DomainName/@Model.LogoImagePath"
+                                 alt="" />
+                        </a>
+                    }
+                </div>
+            }
+        }
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <div>
+                <label>
+                    نمایش رنگی لیست
+                </label>
+            </div>
+            <select asp-for="ShowColoredRowsInList" class="form-control input-sm"
+                    placeholder="نمایش رنگی لیست">
+                <option value="True">بله</option>
+                <option value="False">خیر</option>
+            </select>
+        </div>
+        <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+            <label>
+                &nbsp;
+            </label>
+            <button class="form-control col col-md-2 btn btn-default input-sm" type="submit">ارسال
+            </button>
+        </div>
+    </div>
+</form>

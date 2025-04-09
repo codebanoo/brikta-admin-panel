@@ -1,0 +1,92 @@
+﻿@using VM.Teniaco;
+<form class="col-12">
+    <div class="row col-12">
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div>
+                استان
+            </div>
+            <select id="slcStateId" name="slcStateId" class="form-control ml-3"
+                    placeholder="استان">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div>
+                بخش
+            </div>
+            <select id="slcCityId" name="slcCityId" class="form-control ml-3"
+                    placeholder="بخش">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div>
+                منطقه/شهر
+            </div>
+            <select id="slcZoneId" name="slcZoneId" class="form-control ml-3"
+                    placeholder="منطقه/شهر">
+                <option value="">---</option>
+            </select>
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3'>
+            <div>
+                ناحیه
+            </div>
+            <select id="slcDistrictId" name="slcDistrictId" class="form-control ml-3"
+                    placeholder="ناحیه">
+                <option value="" selected>---</option>
+            </select>
+        </div>
+
+
+    </div>
+    <div class="row col-12">
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3' style="right:116rem;margin-bottom: 0px !important;margin-top: 10rem !important;">
+            <div>
+                ارزش منطقه
+            </div>
+            <select id="slcPropertyValues" name="slcPropertyValues" class="form-control ml-3"
+                    placeholder="ارزش منطقه">
+                <option value="">---</option>
+            </select>
+        </div>
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-3 my-3' style="margin-bottom: 0px !important;margin-top: 10rem !important;left: 39rem;">
+            <div>
+                لایه های نقشه
+            </div>
+            <select id="slcMapLayerCategories" name="slcMapLayerCategories" class="form-control ml-3"
+                    placeholder="لایه های نقشه" multiple>
+                <option value="">---</option>
+
+            </select>
+        </div>
+    </div>
+    <div style="width:153rem;height:56rem;">
+
+        <div class="map-container" style="width:100% !important">
+            <div id="compare" class="compare">
+                <div id="map"></div>
+                <div id="map2"></div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+@*--Map-block--*@
+
+
+
+
+
+@*<div class="map-container" style="">
+    <div class="panel-container" style="direction: ltr !important;">
+        <div class="panel-left" id="mapLeft"></div>
+        <div class="splitter"></div>
+        <div class="panel-right" id="mapRight"></div>
+    </div>
+</div>*@
+

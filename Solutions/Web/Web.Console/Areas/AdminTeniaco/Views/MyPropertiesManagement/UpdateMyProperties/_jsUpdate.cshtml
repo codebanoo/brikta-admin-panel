@@ -1,0 +1,385 @@
+﻿<script type="text/javascript">
+
+    var propertyId = propertiesVM.PropertyId;
+
+    $(document).ready(function () {
+        $('#error-alert').hide(100);
+
+        for (var i = 0; i < propertyTypesList.length; i++) {
+
+            var item = propertyTypesList[i];
+
+            $('#PropertyTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#PropertyTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#PropertyTypeId').val(propertiesVM.PropertyTypeId).trigger("chosen:updated");
+
+        for (var i = 0; i < typeOfUsesList.length; i++) {
+            debugger;
+            var item = typeOfUsesList[i];
+            $('#TypeOfUseId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#TypeOfUseId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#TypeOfUseId').val(propertiesVM.TypeOfUseId).trigger("chosen:updated");
+
+        for (var i = 0; i < documentTypesList.length; i++) {
+            debugger;
+            var item = documentTypesList[i];
+            $('#DocumentTypeId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#DocumentTypeId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#DocumentTypeId').val(propertiesVM.DocumentTypeId).trigger("chosen:updated");
+
+        for (var i = 0; i < personsList.length; i++) {
+            debugger;
+            var item = personsList[i];
+            $('#ConsultantUserId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#ConsultantUserId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#ConsultantUserId').val(propertiesVM.ConsultantUserId).trigger("chosen:updated");
+
+        $('#OwnerId').html($('#ConsultantUserId').html());
+
+        $('#OwnerId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#OwnerId').val(propertiesVM.OwnerId).trigger("chosen:updated");
+
+        $('#OfferPriceType').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+          $('#PriceTypeRegister').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#CalculatedOfferPrice').val(propertiesVM.MyPropertiesPricesHistoriesVM.CalculatedOfferPrice).trigger("chosen:updated");
+
+            $('body').on('change', '#MyPropertyAddressVM_StateId', function (e) {
+            e.preventDefault();
+
+
+        //    var _this = $(this);
+        //    var stateId = _this.val();
+
+            $('#MyPropertyAddressVM_CityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                debugger;
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#MyPropertyAddressVM_CityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#MyPropertyAddressVM_CityId').val(propertiesVM.MyPropertyAddressVM.CityId).trigger("chosen:updated");
+
+            $('#MyPropertyAddressVM_CityId').change();
+        });
+
+        
+        $('body').on('change', '#MyPropertyAddressVM_CityId', function (e) {
+            e.preventDefault();
+
+        //    debugger;
+
+        //    var _this = $(this);
+        //    var cityId = _this.val();
+            $('#MyPropertyAddressVM_ZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                debugger;
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#MyPropertyAddressVM_ZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#MyPropertyAddressVM_ZoneId').trigger("chosen:updated");
+
+            $('#MyPropertyAddressVM_ZoneId').val(propertiesVM.MyPropertyAddressVM.ZoneId).trigger("chosen:updated");
+        });
+
+        //for (var i = 0; i < statesList.length; i++) {
+        //    debugger;
+        //    var item = statesList[i];
+        //    $('#MyPropertyAddressVM_StateId')
+        //        .append($("<option></option>")
+        //            .attr("value", item.Value)
+        //            .text(item.DisplayText));
+        //}
+
+        $('#MyPropertyAddressVM_StateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+                $('#MyPropertyAddressVM_StateId').val(propertiesVM.MyPropertyAddressVM.StateId).trigger("chosen:updated");
+
+        //        debugger;
+
+        $('#MyPropertyAddressVM_StateId').change();
+
+        $('#MyPropertyAddressVM_CityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+    
+
+        $('#MyPropertyAddressVM_ZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+
+        $('body').on('change', '#Area', function (e) {
+            var _this = $(this);
+            debugger;
+
+            var area = _this.val();
+
+            var offerPrice = $('#OfferPrice').val().trim();
+            var offerPriceType = $('#OfferPriceType').val().trim();
+
+            if ((offerPrice != '') &&
+                (offerPriceType != null) &&
+                (area != '')) {
+                switch (offerPriceType) {
+                    case '0'://متری
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) * parseFloat(area));
+                        $('#spnOfferPrice').html('(متری)');
+                        $('#spnCalculatedOfferPrice').html('(کل)');
+                        break;
+                    case '1'://کل
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) / parseFloat(area));
+                        $('#spnOfferPrice').html('(کل)');
+                        $('#spnCalculatedOfferPrice').html('(متری)');
+                        break;
+                }
+            }
+            else
+                $('#CalculatedOfferPrice').val('');
+        });
+
+        $('body').on('change', '#OfferPrice', function (e) {
+            var _this = $(this);
+
+            debugger;
+
+            var offerPrice = _this.val();
+
+            var offerPriceType = $('#OfferPriceType').val().trim();
+            var area = $('#Area').val().trim();
+
+            if ((offerPrice != '') &&
+                (offerPriceType != null) &&
+                (area != '')) {
+                switch (offerPriceType) {
+                    case '0'://متری
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) * parseFloat(area));
+                        $('#spnOfferPrice').html('(متری)');
+                        $('#spnCalculatedOfferPrice').html('(کل)');
+                        break;
+                    case '1'://کل
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) / parseFloat(area));
+                        $('#spnOfferPrice').html('(کل)');
+                        $('#spnCalculatedOfferPrice').html('(متری)');
+                        break;
+                }
+            }
+            else
+                $('#CalculatedOfferPrice').val('');
+        });
+
+        $('#OfferPrice').change();
+
+        $('body').on('change', '#OfferPriceType', function (e) {
+            var _this = $(this);
+
+            debugger;
+
+            var offerPriceType = _this.val();
+
+            var offerPrice = $('#OfferPrice').val().trim();
+            var area = $('#Area').val().trim();
+
+            if ((offerPrice != '') &&
+                (offerPriceType != null) &&
+                (area != '')) {
+                switch (offerPriceType) {
+                    case '0'://متری
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) * parseFloat(area));
+                        $('#spnOfferPrice').html('(متری)');
+                        $('#spnCalculatedOfferPrice').html('(کل)');
+                        break;
+                    case '1'://کل
+                        $('#CalculatedOfferPrice').val(parseFloat(offerPrice) / parseFloat(area));
+                        $('#spnOfferPrice').html('(کل)');
+                        $('#spnCalculatedOfferPrice').html('(متری)');
+                        break;
+                }
+            }
+            else
+                $('#CalculatedOfferPrice').val('');
+        });
+
+    });
+
+    
+
+    $('body').on('click', '.maps', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/MyPropertiesMapsManagement/Index/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.features', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/MyPropertiesFeaturesManagement/UpdateMyPropertyFeatures/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.location', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/MyPropertiesLocationManagement/UpdateMyPropertyLocation/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.docs', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/MyPropertiesDocsManagement/Index/" + propertyId, '_blank').focus();
+    });
+
+    $('body').on('click', '.media', function (e) {
+        e.preventDefault();
+
+        window.open("/AdminTeniaco/MyPropertiesMediaManagement/Index/" + propertyId, '_blank').focus();
+    });
+
+
+
+
+    function OnBegin(e) {
+        debugger;
+        return true;
+    }
+
+    function OnSuccess(response, status, xhr) {
+        debugger;
+
+        if (response.Result == 'OK') {
+            $('#error-alert').removeClass('alert-danger');
+            $('#error-alert').addClass('alert-success');
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(500);
+
+            console.log(response.Record);
+
+            propertyId = propertiesVM.PropertyId;
+
+            $('#moreInfo-modal').modal("show");
+        }
+        else {
+            $('#error-alert').removeClass('alert-success');
+            $('#error-alert').addClass('alert-danger');
+
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $('#error-alert').show(1000);
+            $('#error-alert').html(response.Message);
+            $('#error-alert').show(500);
+
+        }
+    }
+
+    function OnComplete() {
+        clearValidationSummary();
+    };
+
+    function OnFailed(context) {
+        console.log("virayesh");
+        debugger;
+        $('#error-alert').removeClass('alert-success');
+        $('#error-alert').addClass('alert-danger');
+        $('#error-alert').html(context.Message);
+        $('#error-alert').show(500);
+    };
+
+</script>

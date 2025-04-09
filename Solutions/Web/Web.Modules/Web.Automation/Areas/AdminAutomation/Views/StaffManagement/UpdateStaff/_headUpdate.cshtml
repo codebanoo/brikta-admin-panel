@@ -1,0 +1,56 @@
+﻿@using VM.Public;
+@using Newtonsoft.Json;
+@using VM.Console
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<script type="text/javascript">
+    @{
+
+        List<CustomUsersVM> usersList = new List<CustomUsersVM>();
+        if (ViewData["UsersList"] != null)
+        {
+            /*List<DomainsSettingsVM> */
+            usersList = (List<CustomUsersVM>)ViewData["UsersList"];
+
+            //var citiesListData = citiesList.Select(c =>
+            //          new
+            //          {
+            //              DisplayText = $"{c.NewsCategoryTitle}",
+            //              Value = c.NewsCategoryId
+            //          });
+
+            @Html.Raw("debugger; var usersList = " + JsonConvert.DeserializeObject(JsonConvert.SerializeObject(usersList)) + "; debugger;");
+        }
+
+    }
+</script>
+
+<style type="text/css">
+    .error {
+        color: red;
+    }
+
+    span {
+        display: inline-block;
+        /*width: 150px;*/
+    }
+
+    /*input, select {
+            width: 150px;
+        }*/
+
+    .with-select > span,
+    .with-select > label.error {
+        vertical-align: top;
+        margin-top: 5px;
+        display: inline-block;
+    }
+
+    .ck-editor__editable_inline {
+        min-height: 250px;
+    }
+</style>

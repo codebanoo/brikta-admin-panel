@@ -1,0 +1,247 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#error-alert').hide(100);
+        
+        debugger;
+       
+    
+        var raster = new ol.layer.Tile({
+            source: new ol.source.OSM,
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+        });
+
+        var vectorSource = new ol.source.Vector({
+            wrapX: false
+        });
+
+        var coordinates;
+        var strPolygon = '';
+
+        var vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            style: [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)'
+                    })
+                }),
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        fill: new ol.style.Fill({
+                            color: 'darkblue'
+                        })
+                    }),
+
+                })
+            ]
+        });
+
+        var view = new ol.View({
+            center: ol.proj.transform([51.24494, 36.66517], 'EPSG:4326', 'EPSG:3857'),
+
+            zoom: 12,
+            maxZoom: 17,
+            minZoom: 1,
+            constrainOnlyCenter: true,
+        });
+
+        var map = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+
+            layers: [raster],
+            target: 'map',
+            view: view
+        });
+
+        debugger;
+        var coord2 = JSON.parse(mapLayersVM.StrPolygon);
+
+        var points = [];
+        for (var j = 0; j < coord2.length; j++) {
+            points[j] = ol.proj.transform([Number(coord2[j][0]), Number(coord2[j][1])], 'EPSG:4326', 'EPSG:3857');
+        }
+        var feature = new ol.Feature({
+            geometry: new ol.geom.Polygon([points]),
+            featureName: 'test',
+            type: 'Point',
+            desc: "Custom objects bound to this description"
+        });
+
+        vectorSource.addFeature(feature);
+        map.addLayer(vectorLayer);
+
+        var mapSatellite = new ol.Map({
+            logo: false,
+            controls: ol.control.defaults({
+                attributionOptions: ({
+                    collapsible: false
+                })
+            }),
+
+            target: 'mapSatellite',
+            view: view
+        });
+
+        var worldImagery = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                zoom: 12,
+                maxZoom: 17,
+                minZoom: 1,
+            })
+        });
+        mapSatellite.addLayer(worldImagery);
+
+
+        debugger;
+
+        $('#btnReset').click(function (e) {
+            e.preventDefault();
+
+            window.location.reload();
+        });
+
+        var modify = new ol.interaction.Modify({
+            source: vectorSource,
+
+        });
+
+        map.addInteraction(modify);
+
+
+        var draw;
+
+        function addInteraction() {
+            debugger;
+            var value = 'Polygon';
+            if (value !== 'None') {
+                var geometryFunction, maxPoints;
+                if (value === 'Square') {
+                    value = 'Circle';
+                    geometryFunction = ol.interaction.Draw.createRegularPolygon(4);
+                } else if (value === 'Box') {
+                    value = 'LineString';
+                    maxPoints = 2;
+                    geometryFunction = function (coordinates, geometry) {
+                        debugger;;
+                        if (!geometry) {
+                            geometry = new ol.geom.Polygon(null);
+                        }
+                        var start = coordinates[0];
+                        var end = coordinates[1];
+                        geometry.setCoordinates([
+                            [start, [start[0], end[1]], end, [end[0], start[1]], start]
+                        ]);
+                        debugger;
+                        return geometry;
+                    };
+                }
+                draw = new ol.interaction.Draw({
+                    source: vectorSource,
+                    type: ('Polygon'),
+                    geometryFunction: geometryFunction,
+                    maxPoints: maxPoints
+                });
+
+                map.addInteraction(draw);
+                snap = new ol.interaction.Snap({ source: vectorSource });
+                map.addInteraction(snap);
+
+            }
+        }
+
+        addInteraction();
+
+
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            debugger;
+
+            var mapLayerId = mapLayersVM.MapLayerId;
+            var mapLayerCategoryId = mapLayersVM.MapLayerCategoryId;
+
+            var coords = feature.getGeometry().getCoordinates()[0];
+
+            if (coords == null) {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('ناحیه روی نقشه مشخص نشده است');
+                $('#my-warning-modal').modal("show");
+                return;
+            }
+
+            var points = [];
+            for (var j = 0; j < coords.length; j++) {
+                points[j] = ol.proj.transform([Number(coords[j][0]), Number(coords[j][1])], 'EPSG:3857', 'EPSG:4326');
+            }
+
+            strPolygon = JSON.stringify(points);
+
+
+            if ((mapLayerId != '') &&
+                (mapLayerCategoryId != '') &&
+                (strPolygon != '')) {
+                $.ajax({
+                    cache: false,
+                    type: "Post",
+                    url: "/AdminTeniaco/MapLayersManagement/UpdateMapLayers",
+
+                    data: {
+                        'MapLayerId': mapLayerId,
+                        'MapLayerCategoryId': mapLayerCategoryId,
+                        'StrPolygon': strPolygon,
+                        'IsActivated': true,
+                        'IsDeleted': false
+                    },
+                    success: function (result) {
+                        debugger;
+                        if (result.Result == "OK") {
+
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $('#error-alert').show(1000);
+                            $('#error-alert').html(result.Message);
+                            $('#error-alert').show(500);
+
+                            window.setTimeout(function () { window.location.reload(); }, 2500);
+                        }
+                        else
+                            if (result.Result == "ERROR") {
+                                $('#error-alert').removeClass('alert-success');
+                                $('#error-alert').addClass('alert-danger');
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
+                                $('#error-alert').show(1000);
+                                $('#error-alert').html(result.Message);
+                                $('#error-alert').show(500);
+                            }
+                    },
+
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('خطا');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+
+    });
+</script>

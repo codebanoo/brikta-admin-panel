@@ -1,0 +1,564 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#searchBlock').hide(1000);
+        $('#listContainer').jtable({
+            //messages: persianMessages,
+            // title: 'لیست تصاویر پیشرفت', 
+            title: 'لیست تصاویر ماهانه',
+            toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/AdminProjects/ProgressPicturesManagement/GetListOfProgressPictures',
+                //createAction: '/AdminProjects/ProgressPicturesManagement/AddToProgressPictures',
+                updateAction: '/AdminProjects/ProgressPicturesManagement/UpdateProgressPictures',
+                deleteAction: '/AdminProjects/ProgressPicturesManagement/CompleteDeleteProgressPictures'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: 'افزودن',
+                        click: function() {
+                            window.location.href = '/AdminProjects/ProgressPicturesManagement/AddToProgressPictures/' + constructionProjectId;
+                        }
+                    }
+                ]
+            },
+            fields: {
+                ProgressPictureId: {
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false,
+                },
+                ProgressPictureTitle: {
+                    title: 'عنوان&nbsp;قرارداد',
+                    sorting: true,
+                },
+                // ProgressPictureFilePath: {
+                //     title: 'فایل',
+                //     sorting: false,
+                //     edit: false,
+                //     display: function(data) {
+
+                //         switch (data.record.ProgressPictureFileExt) {
+                //             case ".jpeg":
+                //             case ".jpg":
+                //             case ".png":
+                //             case ".gif":
+                //             case ".bmp":
+                //                 return '<div style="position: relative; display: inline-block;">' +
+                //                     '<a class="fancybox mediaThumbImage" href="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/'+
+                //                     data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-fancybox-group="gallery" ' +
+                //                     'title=""><img src="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/'+
+                //                     data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" alt="" ' +
+                //                     'data-caption="' + data.record.ProgressPictureTitle + '" data-url="#" /></a>' + '</div>'
+                //                 break;
+                //             case ".pdf":
+                //                 return '<div class="pdfThumbImage pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/'+
+                //                     data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '"><img src="/images/pdf.png" /></div>';
+                //                 break;
+                //             default:
+                //                 return '<div class="pdfThumbImage pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/'+
+                //                     data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '"><img src="/images/File.png" /></div>';
+                //         }
+                //     }/*fileThumbImage*/
+                // },
+
+                ProgressPictureFilePath: {
+                    title: 'فایل',
+                    sorting: false,
+                    edit: false,
+                    display: function (data) {
+
+                        switch (data.record.ProgressPictureFileExt) {
+                            case ".jpeg":
+                            case ".jpg":
+                            case ".png":
+                                return '<div style="position: relative; display: inline-block;">' +
+                                    '<a class="fancybox mediaThumbImage" href="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-fancybox-group="gallery" ' +
+                                    'title=""><img class="downloadFile" src="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" alt="" ' +
+                                    'data-caption="' + data.record.ProgressPictureTitle + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '" data-constructionProjectId="' + data.record.ConstructionProjectId + '" data-url="#" /></a>' + '</div>'
+                                break;
+
+                            case ".mp4":
+                            case ".mkv":
+                            case ".mov":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/Video.png" /></div>';
+                                break;
+
+                            case ".pptx":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/powerPoint.png" /></div>';
+                                break;
+
+                            case ".xls":
+                            case ".xlsx":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/xls.png" /></div>';
+                                break;
+
+                            case ".docx":
+                            case ".doc":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/word.png" /></div>';
+                                break;
+
+                            case ".mpp":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/mpp.jpg" /></div>';
+                                break;
+
+                            case ".pdf":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/pdf.png" /></div>';
+                                break;
+
+                            case ".txt":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/txt.png" /></div>';
+                                break;
+                            case ".rar":
+                            case ".zip":
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/DWG.png" /></div>';
+                                break;
+
+                            default:
+                                return '<div class="downloadFile pointer" data-file-url="/Files/ConstructionProjectFiles/' + domainName + '/' + data.record.ConstructionProjectId + '/ProgressPictureFiles/' +
+                                    data.record.ProgressPictureId + '/Image/' + data.record.ProgressPictureFilePath + '" data-FileId ="' + data.record.ProgressPictureId + '" data-filename ="' + data.record.ProgressPictureFilePath + '"  data-constructionProjectId="' + data.record.ConstructionProjectId + '"><img src="/images/File.png" /></div>';
+                        }
+                    }
+                },
+                ProgressPictureFileExt: {
+                    title: 'فرمت&nbsp;فایل',
+                    edit: false,
+                    create: false,
+                    sorting: false,
+                },
+                ProgressPictureFileOrder: {
+                    title: 'اولویت&nbsp;فایل',
+                    sorting: false,
+                },
+                ProgressPictureNumber: {
+                    title: 'شماره&nbsp;قرارداد',
+                    sorting: false,
+                },
+                NewProgressPictureDescription: {
+                    title: 'توضیحات',
+                    sorting: false,
+                    input: function(data) {
+                        if (data.record != undefined) {
+                            if (data.record.ProgressPictureDescription != null) {
+                                return '<textarea class="form-control" id="ProgressPictureDescription" rows="10" placeholder="توضیحات تکمیلی" name="ProgressPictureDescription">' +
+                                    data.record.ProgressPictureDescription +
+                                    '</textarea>';
+
+                            }else{
+                                return '<textarea class="form-control" id="ProgressPictureDescription" rows="10" placeholder="توضیحات تکمیلی" name="ProgressPictureDescription"></textarea>';
+                            }
+                        }
+                        else {
+                            return '<textarea class="form-control" id="ProgressPictureDescription" rows="10" placeholder="توضیحات تکمیلی" name="ProgressPictureDescription"></textarea>';
+
+
+                        }
+                    },
+                    display: function(data) {
+                        return '<span class="description" data-Description="' + data.record.ProgressPictureDescription + '">' + data.record.NewProgressPictureDescription + '</span>';
+                    }
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-ProgressPictureId="' +
+                                data.record.ProgressPictureId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-ProgressPictureId="' +
+                                data.record.ProgressPictureId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    //create: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-ProgressPictureId="' + data.record.ProgressPictureId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-ProgressPictureId="' + data.record.ProgressPictureId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function(event, data) {
+                debugger;
+                $(".jtable-dialog-form :input").each(function() {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                $("#Edit-IsDeleted").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+                $("#Edit-IsActivated").chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    search_contains: true,
+                    //max_shown_results: numberOfChosenItemsShow,
+                    rtl: rtl
+                });
+
+
+                data.form.find('input[name="ProgressPictureTitle"]').addClass(
+                    'validate[required]');
+
+
+                // data.form.find('input[name="ProgressPictureNumber"]').addClass(
+                //     'validate[required]');
+                // data.form.find('#ProgressPictureDescription').addClass(
+                //     'validate[required]');
+                // data.form.find('input[name="ProgressPictureFileOrder"]').addClass(
+                //     'validate[required]');
+
+
+                $("#ProgressPictureDescription").parent().parent().addClass("w-100")
+                data.form.find('input[name="ProgressPictureFileOrder"]').attr("type", "number");
+                data.form.find('input[name="ProgressPictureNumber"]').attr("type", "number");
+                data.form.validationEngine();
+            },
+            formSubmitting: function(event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function(event, data) {
+                //$('#listContainer').jtable('reload');
+
+            },
+            selectionChanged: function() {
+
+            },
+            recordAdded: function(event, data) {
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load', { 'ConstructionProjectId': constructionProjectId });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+        $('body').on('click', '.isActivated', function() {
+            debugger;
+            var _this = $(this);
+            var progressPictureId = _this.attr('data-ProgressPictureId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ProgressPicturesManagement/ToggleActivationProgressPictures",
+
+                data: { 'progressPictureId': progressPictureId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+        $('body').on('click', '.isDeleted', function() {
+            debugger;
+            var _this = $(this);
+            var progressPictureId = _this.attr('data-ProgressPictureId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminProjects/ProgressPicturesManagement/TemporaryDeleteProgressPictures",
+
+                data: { 'progressPictureId': progressPictureId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+
+                        $('#listContainer').jtable('reload');
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+        //#region DownloadFile ACtion
+        $('body').on('click', '.downloadFile', function (e) {
+            debugger;
+            var _this = $(this);
+            var FileId = _this.attr('data-FileId');
+            var FileName = _this.attr('data-filename');
+            var ConstructionProjectId = _this.attr('data-constructionProjectId');
+            var Type = "ProgressPicture";
+
+            var url = '/AdminProjects/ProgressPicturesManagement/Download?fileName=' + FileName +
+                '&constructionProjectId=' + ConstructionProjectId +
+                '&fileId=' + FileId +
+                '&type=' + Type;
+            window.open(url, '_parent');
+            $('.agreementIco[data-AgreementId="' + FileId + '"]').html('visibility')
+        });
+        //#endregion
+
+
+        $('body').on('click', '.pdfThumbImage', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var fileUrl = _this.attr('data-file-url');
+
+            window.open(fileUrl, '_blank').focus();
+        });
+
+
+        $('body').on('click', '.description', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+
+            var description = $('<div/>').html(_this.attr('data-Description')).text();
+            description = description.replace(/\n/g, '<br/>').replace(/\r/g, '<br/>');
+
+            //var description = _this.attr('data-Description');
+
+            $('#my-warning-modal').find('.modal-title').html('جزئیات');
+            $('#my-warning-modal').find('#error').html('<div class="aShowMoreInfo">' + description + '</div>');
+            $('#my-warning-modal').modal("show");
+
+        });
+
+        $('#btnSearch').click(function(e) {
+            e.preventDefault();
+
+            var progressPictureTitle = $('#progressPictureTitleSearch').val();
+
+            if (
+                (progressPictureTitle != null) &&
+                (progressPictureTitle != "")
+            ) {
+
+                $('#listContainer').jtable('load', {
+                    'progressPictureTitle': progressPictureTitle,
+                });
+
+            }
+            else {
+
+                $('#listContainer').jtable('load');
+
+            }
+        });
+
+        $('#btnReload').click(function(e) {
+            e.preventDefault();
+            $('#progressPictureTitleSearch').val("");
+            $('#btnSearch').click();
+
+        });
+
+        $('#btnReset').click(function(e) {
+            $('#progressPictureTitleSearch').val("");
+            e.preventDefault();
+        });
+
+                
+        $('body').on('click', '.redirect-icon', function(e) {
+            debugger;
+            e.preventDefault();
+            var _this = $(this);
+            var ParentId = _this.attr('data-ParentId');
+            var TableName = _this.attr('data-TableName');
+            var ConstructionProjectId = _this.attr('data-ConstructionProjectId');
+            window.location.href = '/AdminProjects/AttachementFilesManagement/Index?ParentId=' + ParentId + '&TableName=' + TableName + '&ConstructionProjectId=' + ConstructionProjectId;
+        });
+
+    });
+
+
+</script>

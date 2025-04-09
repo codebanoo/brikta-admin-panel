@@ -1,0 +1,543 @@
+﻿<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+
+        //set array for storing id of deleted photos
+        let RemovedPhotosIDs = [];
+        let RemovedPhotosPaths = [];
+
+
+        // Load Advertisement photos
+
+        //load Advertisement main photo
+        if (advertisementVM.AdvertisementFilesVM[0]) {
+
+            const dropZoneElement = document.querySelector(".drop-zone");
+            let serverImagePath;
+
+            serverImagePath = '/Files/AdvertisementsFiles/melkavan.com/' + advertisementVM.AdvertisementId + '/Media/' + advertisementVM.AdvertisementFilesVM[0].AdvertisementFilePath;
+
+
+            if (serverImagePath) {
+                updateThumbnailWithUrl(dropZoneElement, serverImagePath);
+            }
+
+            function updateThumbnailWithUrl(dropZoneElement, imageUrl) {
+                let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+                if (dropZoneElement.querySelector("#drop-zone__prompt")) {
+                    dropZoneElement.querySelector("#drop-zone__prompt").remove();
+                    dropZoneElement.querySelector("#mainImage").remove();
+                }
+
+                if (!thumbnailElement) {
+                    thumbnailElement = document.createElement("div");
+                    thumbnailElement.classList.add("drop-zone__thumb");
+                    dropZoneElement.appendChild(thumbnailElement);
+                }
+
+                thumbnailElement.style.backgroundImage = `url('${imageUrl}')`;
+            }
+
+            $($(".drop-zone__thumb")[0]).append($('<div fileurl="' + serverImagePath + '" fileid="' + advertisementVM.AdvertisementFilesVM[0].AdvertisementFileId + '" id="DeleteMainImage"></div>'));
+
+        }
+
+
+        // Load side photos
+        const imgWrap2 = $('.upload__img-wrap');
+        const serverImages = [];
+
+        // Load images and videos from advertisement
+        for (let i = 1; i < advertisementVM.AdvertisementFilesVM.length; i++) {
+            const filePath = advertisementVM.AdvertisementFilesVM[i].AdvertisementFilePath;
+            const fileId = advertisementVM.AdvertisementFilesVM[i].AdvertisementFileId;
+
+            serverImages.push({
+                imageUrl: '/Files/AdvertisementsFiles/melkavan.com/' + advertisementVM.AdvertisementId + '/Media/' + filePath,
+                fileId: fileId
+            });
+        }
+
+        // Process each image/video URL and fileId
+        serverImages.forEach((imageData) => {
+            const fileType = getFileType(imageData.imageUrl); // Helper to determine if the file is an image or video
+            if (fileType === 'video') {
+                let videoUrl = imageData.imageUrl;
+                createVideoThumbnail(imageData.imageUrl, (thumbnailUrl) => {
+                    updateMultipleThumbnailWithUrl(imgWrap2, thumbnailUrl, imageData.fileId, videoUrl);
+                });
+            } else {
+                updateMultipleThumbnailWithUrl(imgWrap2, imageData.imageUrl, imageData.fileId);
+            }
+        });
+
+        function getFileType(url) {
+            const extension = url.split('.').pop().toLowerCase();
+            return (['mp4', 'webm', 'ogg'].includes(extension)) ? 'video' : 'image';
+        }
+
+        function createVideoThumbnail(videoUrl, callback) {
+            const video = document.createElement('video');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            video.src = videoUrl;
+            video.currentTime = 1; // Capture the thumbnail at 1 second
+
+            video.addEventListener('loadeddata', function () {
+                // Set canvas size to match video dimensions (scaled down if needed)
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const thumbnailUrl = canvas.toDataURL();
+                callback(thumbnailUrl); // Pass the thumbnail URL to the callback
+            });
+        }
+
+        function updateMultipleThumbnailWithUrl(imgWrap2, imageUrl, fileId, VideoUrl) {
+            const html = `
+                    <div class='upload__img-box'>
+                            <div videoUrl="${VideoUrl}" style='background-image: url("${imageUrl}")'
+                             data-file='${imageUrl}'
+                             class='img-bg'>
+                            <div class='upload__img-close' videoUrl="${VideoUrl}" fileurl='${imageUrl}' fileid='${fileId}'></div>
+                        </div>
+                    </div>`;
+            imgWrap2.append(html);
+        }
+
+
+
+
+
+        let IsMainChanged = false;
+        //#region SingleUploadImage
+        document.querySelectorAll(".main-Image").forEach((inputElement) => {
+            debugger;
+            const dropZoneElement = inputElement.closest(".drop-zone");
+
+            dropZoneElement.addEventListener("click", (e) => {
+                if ($(".drop-zone__thumb")[0] == undefined) {
+                    inputElement.click();
+                }
+            });
+
+            inputElement.addEventListener("change", (e) => {
+                debugger;
+                if (inputElement.files.length) {
+                    IsMainChanged = true;
+
+                    updateThumbnail(dropZoneElement, inputElement.files[0]);
+                    if ($(".drop-zone__thumb")[0] != undefined) {
+                        if ($("#DeleteMainImage").html() == undefined)
+                            $($(".drop-zone__thumb")[0]).append($('<div id="DeleteMainImage"></div>'));
+                    }
+                }
+            });
+
+            dropZoneElement.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZoneElement.classList.add("drop-zone--over");
+            });
+
+            ["dragleave", "dragend"].forEach((type) => {
+                dropZoneElement.addEventListener(type, (e) => {
+                    dropZoneElement.classList.remove("drop-zone--over");
+                });
+            });
+
+            dropZoneElement.addEventListener("drop", (e) => {
+                e.preventDefault();
+
+                if (e.dataTransfer.files.length) {
+                    inputElement.files = e.dataTransfer.files;
+                    updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+                }
+
+                dropZoneElement.classList.remove("drop-zone--over");
+            });
+
+
+        });
+
+
+        function updateThumbnail(dropZoneElement, file) {
+            let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+            // First time - remove the prompt
+            if (dropZoneElement.querySelector("#drop-zone__prompt")) {
+                dropZoneElement.querySelector("#drop-zone__prompt").remove();
+                dropZoneElement.querySelector("#mainImage").remove();
+            }
+
+            // First time - there is no thumbnail element, so lets create it
+            if (!thumbnailElement) {
+                thumbnailElement = document.createElement("div");
+                thumbnailElement.classList.add("drop-zone__thumb");
+                dropZoneElement.appendChild(thumbnailElement);
+            }
+
+            thumbnailElement.dataset.label = file.name;
+
+            // Show thumbnail for image files
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+                };
+            } else {
+                thumbnailElement.style.backgroundImage = null;
+            }
+        }
+
+        $('body').on('click', '#DeleteMainImage', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            debugger;
+            var _this = $(this);
+            $("#main-img-input").val("");
+            $($(".drop-zone__thumb")[0]).remove();
+            var label = $('<label class="form-label mb-1 titles" style="color: gray;" id="mainImage"></label>');
+            label.html('عکس اصلی');
+            var span = $('<span class="mdi mdi-image-plus footer-bottom-nav-span-mdi" style="font-size:5rem;color: gray;" id="drop-zone__prompt"></span>');
+            $("#dz-main").append(label);
+            $("#dz-main").append(span);
+
+
+            //add main photo id to removedIDs
+            let removedId = $(this).attr('fileid');
+            if (removedId) {
+                RemovedPhotosIDs.push(removedId);
+            }
+
+
+            let removedPath = $(this).attr('fileurl');
+            if (removedPath) {
+                RemovedPhotosPaths.push(removedPath);
+            }
+
+            $("#main-img-input").val('');
+        });
+        //#endregion
+
+
+
+        //#region MultipleUploadImage
+
+        var imgWrap = "";
+        var imgArray = [];
+        var AdvertisementFileUploadPVMList = [];
+        $('body').on('click', '#addMultipleImage', function (e) {
+            e.preventDefault();
+            $('#other-Images').click();
+        });
+
+        $('#other-Images').each(function () {
+            $(this).on('change', function (e) {
+
+                debugger;
+                imgWrap = $('.upload__img-wrap');
+                var maxLength = $(this).attr('data-max_length');
+                var files = e.target.files;
+
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    AdvertisementFileUploadPVMList.push({ File: file });
+                }
+
+                var filesArr = Array.prototype.slice.call(files);
+                var iterator = 0;
+                filesArr.forEach(function (f, index) {
+                    if (imgArray.length > maxLength) {
+                        return false;
+                    }
+
+                    if (!f.type.match('image.*') && !f.type.match('video.*')) {
+                        return;
+                    }
+
+                    imgArray.push(f);
+
+                    var reader = new FileReader();
+                    if (f.type.match('image.*')) {
+                        // For image files
+                        reader.onload = function (e) {
+                            var html = "<div class='upload__img-box'><div style='background-image: url(" + e.target.result + ")' data-number='" + $(".upload__img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload__img-close' data-file='" + f.name + "'></div></div></div>";
+                            imgWrap.append(html);
+                            iterator++;
+                        };
+                        reader.readAsDataURL(f);
+                    } else if (f.type.match('video.*')) {
+                        // For video files
+                        var url = URL.createObjectURL(f);
+                        var video = document.createElement('video');
+                        var canvas = document.createElement('canvas');
+                        var context = canvas.getContext('2d');
+
+                        video.src = url;
+                        video.currentTime = 1; // Set time to capture thumbnail at 1 second
+
+                        video.addEventListener('loadeddata', function () {
+                            // Set canvas size to video dimensions (scaled down)
+                            canvas.width = video.videoWidth;
+                            canvas.height = video.videoHeight;
+                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                            // Convert canvas to data URL and use it as background
+                            var thumbnailUrl = canvas.toDataURL();
+                            var html = "<div class='upload__img-box'><div style='background-image: url(" + thumbnailUrl + ")' data-number='" + $(".upload__img-close").length + "' data-file='" + f.name + "' class='img-bg'><div class='upload__img-close' data-file='" + f.name + "'></div></div></div>";
+                            imgWrap.append(html);
+                            iterator++;
+
+                            // Revoke the URL after thumbnail is created
+                            URL.revokeObjectURL(url);
+                        });
+                    }
+                });
+            });
+        });
+
+        $('body').on('click', ".upload__img-close", function (e) {
+            $('#other-Images').val('');
+            var file = $(this).parent().data("file");
+            for (var i = 0; i < imgArray.length; i++) {
+                if (imgArray[i].name === file) {
+                    imgArray.splice(i, 1);
+                    break;
+                }
+            }
+            $(this).parent().parent().remove();
+
+            var fileName = $(this).attr('data-file');
+            var index = AdvertisementFileUploadPVMList.findIndex(fileObj => fileObj.File.name === fileName);
+            if (index !== -1) {
+                AdvertisementFileUploadPVMList.splice(index, 1);
+            }
+
+
+            //add side photos ids to removedIDs
+            let removedId = $(this).attr('fileid');
+            if (removedId) {
+                RemovedPhotosIDs.push(removedId);
+            }
+
+            let removedPath = '';
+            if ($(this).attr('videoUrl')) {
+                removedPath = $(this).attr('videoUrl');
+            }
+            else {
+                removedPath = $(this).attr('fileurl');
+            }
+            if (removedPath) {
+                RemovedPhotosPaths.push(removedPath);
+            }
+
+        });
+
+        //#endregion
+
+
+
+        $('#dz-main').on("click", function (event) {
+
+
+            if ($(event.target).is("#DeleteMainImage")) {
+                // Skip showing the large preview if the close icon was clicked
+                return;
+            }
+
+            // Get the background image URL from the thumbnail
+            const bgImage = $('.drop-zone__thumb').css('background-image');
+
+
+            //put link for download
+            const imageUrl = bgImage.slice(5, -2);
+            $('#downloadImage').attr('href', imageUrl);
+
+            if (bgImage != undefined) {
+
+                $('#largeImageContainer').css('background-image', bgImage);
+                $('#largeImagePreview').fadeIn();
+
+            }
+        });
+
+
+
+        $('.upload__img-wrap').on('click', '.upload__img-box', function (event) {
+
+
+            if ($(event.target).hasClass('upload__img-close')) {
+                // Skip showing the large preview if the close icon was clicked
+                return;
+            }
+
+            // Get the background image URL from the thumbnail
+            const bgImage = $(this).children(":first").css('background-image');
+            //put link for download
+            const background = $(this).children(":first");
+
+            //اگر تامبنیل ویدیو بود خود ویدیو رو دانلود بکنه
+            if (background.attr('videoUrl') != 'undefined') {
+                $('#downloadImage').attr('href', background.attr('videoUrl'));
+            }
+            //اگگه عکس بود خود عکس
+            else {
+                const imageUrl = bgImage.slice(5, -2);
+                $('#downloadImage').attr('href', imageUrl);
+            }
+
+
+
+            if (bgImage != undefined) {
+
+                $('#largeImageContainer').css('background-image', bgImage);
+                $('#largeImagePreview').fadeIn();
+
+            }
+        });
+
+
+        // Hide the overlay when clicking outside the large image container
+        $('#largeImagePreview').click(function (event) {
+            if ($(event.target).is('#largeImageContainer') || $(event.target).closest('#largeImageContainer').length === 0) {
+                $(this).fadeOut();
+            }
+        });
+
+
+        $('#btnReset').click(function (e) {
+
+            e.preventDefault();
+
+
+            $("#DeleteMainImage").click();
+            $(".upload__img-close").each(function () {
+
+                $(this).click();
+
+            })
+        });
+
+
+
+
+
+        $('#error-alert').hide(100);
+
+
+        var AdvertisementId = advertisementVM.AdvertisementId;
+
+        $('body').on('click', '#btnSubmit', function (e) {
+            e.preventDefault();
+            debugger;
+
+            //اگر عکس اصلی انتخاب نکرده بود
+            if ($('.drop-zone__thumb').length == 0)
+                if ($('.upload__img-box').length != 0) {
+
+                    $('#error-alert').addClass('alert-danger');
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $('#error-alert').show(1000);
+                    $('#error-alert').html('انتخاب عکس اصلی ضروری است');
+                    window.setTimeout(function () { $('#error-alert').hide(1000); }, 4000);
+
+                    return;
+                }
+
+
+
+            debugger;
+
+            var formData = new FormData();
+
+
+            var mainFile = $('#main-img-input');
+            if (mainFile.val()) {
+                AdvertisementFileUploadPVMList.push({
+                    File: mainFile[0].files[0]
+                });
+            }
+
+
+
+            if (AdvertisementFileUploadPVMList.length > 0) {
+                for (var i = 0; i < AdvertisementFileUploadPVMList.length; i++) {
+
+
+                    var file = AdvertisementFileUploadPVMList[i].File;
+                    if (file) {
+
+                        if (i + 1 == AdvertisementFileUploadPVMList.length) {
+                            formData.append("AdvertisementFileUploadPVMList[" + i + "].AdvertisementFileOrder", 1);
+                        }
+                        else {
+                            formData.append("AdvertisementFileUploadPVMList[" + i + "].AdvertisementFileOrder", i + 2);
+                        }
+                        formData.append("AdvertisementFileUploadPVMList[" + i + "].AdvertisementFileTitle", file.name);
+                        formData.append("AdvertisementFileUploadPVMList[" + i + "].File", file);
+                    }
+
+                }
+            }
+
+
+            if (AdvertisementFileUploadPVMList.length > 0 || RemovedPhotosIDs.length > 0) {
+
+
+                formData.append('AdvertisementId', AdvertisementId);
+                RemovedPhotosPaths.forEach(id => formData.append('DeletedPhotosPaths', id));
+                RemovedPhotosIDs.forEach(id => formData.append('DeletedPhotosIDs', id));
+                formData.append('IsMainChanged', IsMainChanged);
+
+                $.ajax({
+                    url: '/AdminMelkavan/AdvertisementMediaManagement/AddToAdvertisementFiles',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+
+                        if (result.Message != 'خطا') {
+                            $('#error-alert').removeClass('alert-danger');
+                            $('#error-alert').addClass('alert-success');
+                        }
+
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message); window.setTimeout(function () { window.location.reload(); }, 2500);
+                        $('#error-alert').show(500);
+                        //$('#AjaxLoading').hide();
+                    },
+                    error: function (jqXHR) {
+                        $('#error-alert').removeClass('alert-success');
+                        $('#error-alert').addClass('alert-danger');
+
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $('#error-alert').show(1000);
+                        $('#error-alert').html(result.Message);
+                        $('#error-alert').show(500);
+                        //$('#AjaxLoading').hide();
+                    },
+                    complete: function (jqXHR, status) {
+                    }
+                });
+            }
+            else {
+                $('#error-alert').addClass('alert-danger');
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                $('#error-alert').show(1000);
+                $('#error-alert').html('فایل جدید یا حذف شده ای یافت نشد');
+                window.setTimeout(function () { $('#error-alert').hide(1000); }, 4000);
+
+            }
+        });
+
+    });
+</script>

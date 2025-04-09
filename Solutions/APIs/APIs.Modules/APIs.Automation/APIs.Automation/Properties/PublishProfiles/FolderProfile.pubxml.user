@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\projects\Teniaco\ArashCmsSolution\APIs\APIs.Modules\APIs.Automation\APIs.Automation\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <History>True|2024-01-16T06:19:50.6376382Z;True|2023-12-03T11:04:53.6511960+03:30;True|2023-10-08T13:07:47.0583302+03:30;True|2023-09-27T16:34:50.3557706+03:30;True|2023-09-19T14:18:50.8558198+03:30;True|2023-06-20T15:53:47.0497470+03:30;True|2023-06-14T13:12:05.5838749+03:30;True|2023-06-07T16:38:18.7024599+03:30;True|2023-05-23T12:14:51.3035674+03:30;True|2023-05-22T14:06:21.0055175+03:30;True|2023-05-17T12:35:43.7391025+03:30;True|2023-05-17T12:34:14.5079842+03:30;True|2023-05-08T14:49:16.5723264+03:30;True|2023-04-24T10:38:09.7301112+03:30;True|2023-04-19T09:40:16.9686132+03:30;True|2023-04-19T09:18:19.5568217+03:30;True|2023-04-15T11:38:34.7530706+03:30;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,207 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+        for (var i = 0; i < languagesList.length; i++) {
+            var item = languagesList[i];
+            $('#slcLanguageNameSearch')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcLanguageNameSearch').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        //for (var i = 0; i < sList.length; i++) {
+        //    var item = sList[i];
+        //    $('#slcNameSearch')
+        //        .append($("<option></option>")
+        //            .attr("value", item.Value)
+        //            .text(item.DisplayText));
+        //}
+
+        //$('#slcNameSearch').chosen({
+        //    placeholder_text_single: ' ',
+        //    placeholder_text_multiple: ' ',
+        //    search_contains: true,
+        //    max_shown_results: numberOfChosenItemsShow,
+        //    rtl: rtl
+        //});
+
+        $('#slcIsActivatedFontSearch').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#listContainer').jtable({
+            title: 'لیست', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            sorting: false,
+            actions: {
+                listAction: '/Admin/FontsManagement/GetListOfFonts',
+            },
+            fields: {
+                FontName: {
+                    key: true,
+                    title: FontName,
+                },
+                Language: {
+                    key: true,
+                    title: LanguageName,
+                },
+                IsDefaultFont: {
+                    title: IsDefaultFont,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsDefaultFont)
+                            return '<div><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDefaultFont" data-FontName="' + data.record.FontName +
+                                '" data-Language="' + data.record.Language + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsActivatedFont: {
+                    title: IsActivatedFont,
+                    display: function (data) {
+                        debugger;
+                        if (data.record.IsActivatedFont)
+                            return '<div class="isActivatedFont" data-FontName="' + data.record.FontName +
+                                '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivatedFont" data-FontName="' + data.record.FontName +
+                                '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+            },
+            formCreated: function (event, data) {
+
+            },
+            formSubmitting: function (event, data) {
+
+            },
+            formClosed: function (event, data) {
+
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        $('body').on('click', '.isActivatedFont', function () {
+            debugger;
+            var _this = $(this);
+            var fontName = _this.attr('data-FontName');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/FontsManagement/ToggleActivationFont",
+                data: {
+                    'FontName': fontName,
+                },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDefaultFont', function () {
+            debugger;
+            var _this = $(this);
+            var fontName = _this.attr('data-FontName');
+            var language = _this.attr('data-Language');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/Admin/FontsManagement/ChangeIsDefaultFont",
+                data: {
+                    'FontName': fontName,
+                    'Language': language
+                },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        location.reload(true);
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html('خطا');
+                //    $('#my-warning-modal').find('#error').html('خطا');
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+            debugger;
+            var txtFontNameSearch = $('#txtFontNameSearch').val();
+            var languageNameSearch = $('#slcLanguageNameSearch').val();
+            var isActivatedFontSearch = $('#slcIsActivatedFontSearch').val();
+            if (txtFontNameSearch != '' || isActivatedFontSearch != '' || languageNameSearch != '') {
+                $('#listContainer').jtable('load', {
+                    currentPage: $('#listContainer').jtable('getCurrentPage'),
+                    'languageNameSearch': languageNameSearch,
+                    'fontNameSearch': txtFontNameSearch,
+                    'isActivatedFontSearch': isActivatedFontSearch
+                });
+            }
+            else {
+                $('#my-warning-modal').find('.modal-title').html('راهنمایی');
+                $('#my-warning-modal').find('#error').html('مقادیر را وارد کنید');
+                $('#my-warning-modal').modal("show");
+            }
+        });
+
+        $('#btnReload').click(function () {
+            $('#btnReset').click();
+            $('#txtFontNameSearch').val('');
+            $('#slcLanguageNameSearch').val('').trigger("chosen:updated");
+            $('#slcIsActivatedFontSearch').val('').trigger("chosen:updated");
+            $('#listContainer').jtable('load');
+        });
+    });
+</script>

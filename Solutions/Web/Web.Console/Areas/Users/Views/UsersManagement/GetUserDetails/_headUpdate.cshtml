@@ -1,0 +1,99 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<DomainsSettingsVM> domainsSettingsList = new List<DomainsSettingsVM>();
+        if (ViewData["DomainsSettingsList"] != null)
+        {
+            /*List<DomainsSettingsVM> */domainsSettingsList =
+                (List<DomainsSettingsVM>)ViewData["DomainsSettingsList"];
+
+            var domainsSettingsListData = domainsSettingsList.Select(c =>
+                      new
+                      {
+                          /*text = c.FullNumber + " - " + c.FarsiName,
+                          slug = c.FullNumber + " - " + c.FarsiName,
+                          id = c.Id*/
+                          DisplayText = $"{c.DomainName}",
+                          Value = c.DomainSettingId
+                      });
+
+            @Html.Raw("debugger; var domainsSettingsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(domainsSettingsListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        if (ViewData["RolesList"] != null)
+        {
+            List<RolesVM> rolesList =
+                (List<RolesVM>)ViewData["RolesList"];
+
+            //var rolesListData = rolesList.Select(c =>
+            //          new
+            //          {
+            //              /*text = c.FullNumber + " - " + c.FarsiName,
+            //              slug = c.FullNumber + " - " + c.FarsiName,
+            //              id = c.Id*/
+            //              DisplayText = $"{c.DomainName + c.RoleName}",
+            //              Value = c.RoleId
+            //          });
+
+            @Html.Raw("debugger; var rolesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(rolesList)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        if (ViewData["LevelsList"] != null)
+        {
+            List<LevelsVM> levelsList =
+                (List<LevelsVM>)ViewData["LevelsList"];
+
+            //var levelsListData = levelsList.Select(c =>
+            //          new
+            //          {
+            //              /*text = c.FullNumber + " - " + c.FarsiName,
+            //              slug = c.FullNumber + " - " + c.FarsiName,
+            //              id = c.Id*/
+            //              DisplayText = $"{c.DomainName + " - " + c.LevelName}",
+            //              Value = c.LevelId
+            //          });
+
+            @Html.Raw("debugger; var levelsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(levelsList)) + "; debugger;");
+        }
+    }
+</script>
+
+@{
+    //@await Component.InvokeAsync("JTableCssJs")
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+
+<style type="text/css">
+    .error {
+        color: red;
+    }
+
+    span {
+        display: inline-block;
+        /*width: 150px;*/
+    }
+
+    /*input, select {
+            width: 150px;
+        }*/
+
+    .with-select > span,
+    .with-select > label.error {
+        vertical-align: top;
+        margin-top: 5px;
+        display: inline-block;
+    }
+</style>

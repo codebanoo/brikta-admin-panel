@@ -1,0 +1,397 @@
+﻿@using Newtonsoft.Json;
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#error-alert').hide(100);
+
+            debugger;
+            var root = @{ @Html.Raw(JsonConvert.DeserializeObject(JsonConvert.SerializeObject(ViewData["Root"]))) };
+
+            $("#tree").fancytree({
+                source: root,
+                //source: {
+                //    url: "/Host/UsersManagement/GetChildUsers",
+                //    cache: false
+                //},
+                extensions: [
+                    "edit",
+                    //"glyph",
+                    "dnd",
+                    //"table",
+                    //"gridnav"
+                ],
+                //glyph: {
+                //    preset: "bootstrap3"
+                //},
+                clickFolderMode: 4,
+                autoCollapse: false,
+                autoActivate: true,
+                aria: true,
+                activeVisible: true,
+                rtl: rtl,
+                icon: true,
+                tooltip: true,
+                dnd: {
+                    autoExpandMS: 400,
+                    focusOnClick: true,
+                    preventVoidMoves: true, // Prevent dropping nodes 'before self', etc.
+                    preventRecursiveMoves: true, // Prevent dropping nodes on own descendants
+                    dragStart: function (node, data) {
+                        //debugger;
+                        /** This function MUST be defined to enable dragging for the tree.
+                         *  Return false to cancel dragging of node.
+                         */
+                        return true;
+                    },
+                    dragEnter: function (node, data) {
+                        //debugger;
+                        /** data.otherNode may be null for non-fancytree droppables.
+                         *  Return false to disallow dropping on node. In this case
+                         *  dragOver and dragLeave are not called.
+                         *  Return 'over', 'before, or 'after' to force a hitMode.
+                         *  Return ['before', 'after'] to restrict available hitModes.
+                         *  Any other return value will calc the hitMode from the cursor position.
+                         */
+                        // Prevent dropping a parent below another parent (only sort
+                        // nodes under the same parent)
+                        /*           if(node.parent !== data.otherNode.parent){
+                                    return false;
+                                  }
+                                  // Don't allow dropping *over* a node (would create a child)
+                                  return ["before", "after"];
+                        */
+                        return true;
+                    },
+                    dragDrop: function (node, data) {
+                        debugger;
+                        /** This function MUST be defined to enable dropping of items on
+                         *  the tree.
+                         */
+                        if (data.node.expanded === undefined) {
+                            //$('#myModal').find('.modal-title').html('هشدار');
+                            //$('#myModal').find('#error').html('لطفا نود مورد نظر را باز کنید');
+                            //$('#myModal').modal("show");
+
+                            $('#my-warning-modal').find('.modal-title').html('هشدار');
+                            $('#my-warning-modal').find('#error').html('ابتدا نود مقصد را باز کنید');
+                            $('#my-warning-modal').modal("show");
+                        }
+                        else {
+                            if (confirm(Areyousure)) {
+                                var childUserId = data.otherNode.key;
+                                var newParentUserId = node.key;
+
+                                $.ajax({
+                                    cache: false,
+                                    type: "Post",
+                                    url: '/Host/UsersManagement/ChangeParentId',
+                                    //data: JSON.stringify({ 'UserId': data.node.key }),
+                                    data: {
+                                        'childUserId': childUserId,
+                                        'newParentUserId': newParentUserId
+                                    },
+                                    //contentType: 'application/json',
+                                    dataType: "json",
+                                    success: function (result) {
+                                        debugger;
+                                        data.result = result;
+                                        //data.node.children = result;
+                                        //var data = JSON.parse(result.replace(/&quot;/g, '"'));
+                                        //cb(data);
+                                        //cb(result);
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        $('#myModal').find('.modal-title').html('خطا');
+                                        $('#myModal').find('#error').html(xhr.responseText);
+                                        $('#myModal').modal("show");
+                                    }
+                                });
+
+                                data.otherNode.moveTo(node, data.hitMode);
+                            }
+                        }
+
+                        //if (node.expanded === undefined) {
+                        //    $.ajax({
+                        //        cache: false,
+                        //        type: "Post",
+                        //        url: '/Host/UsersManagement/GetChildUsers',
+                        //        //data: JSON.stringify({ 'UserId': data.node.key }),
+                        //        data: {
+                        //            'UserId': node.key
+                        //        },
+                        //        //contentType: 'application/json',
+                        //        dataType: "json",
+                        //        success: function (result) {
+                        //            debugger;
+                        //            if (node.children === undefined) {
+                        //                node.children = result;
+                        //                node.expanded = true;
+                        //            }
+                        //            else {
+                        //                for (var i = 0; i < result.length; i++) {
+                        //                    var oldChild = result[i];
+                        //                    node.children.push(oldChild);
+                        //                    node.expanded = true;
+                        //                }
+                        //            }
+                        //            //data.node.children = result;
+                        //            //var data = JSON.parse(result.replace(/&quot;/g, '"'));
+                        //            //cb(data);
+                        //            //cb(result);
+                        //        },
+                        //        error: function (xhr, ajaxOptions, thrownError) {
+                        //            $('#myModal').find('.modal-title').html('خطا');
+                        //            $('#myModal').find('#error').html(xhr.responseText);
+                        //            $('#myModal').modal("show");
+                        //        }
+                        //    });
+                        //    //data.result = {
+                        //    //    url: "/Host/UsersManagement/GetChildUsers",
+                        //    //    data: {
+                        //    //        mode: "children",
+                        //    //        UserId: node.key,
+                        //    //        cache: false
+                        //    //    },
+                        //    //};
+                        //}
+                    }
+                },
+                //checkbox: true,
+                // --- Tree events -------------------------------------------------
+                //blurTree: function (event, data) {
+                //    //logEvent(event, data);
+                //},
+                //create: function (event, data) {
+                //    //logEvent(event, data);
+                //},
+                //init: function (event, data, flag) {
+                //    //logEvent(event, data, "flag=" + flag);
+                //},
+                //focusTree: function (event, data) {
+                //    //logEvent(event, data);
+                //},
+                //restore: function (event, data) {
+                //    //logEvent(event, data);
+                //},
+                //// --- Node events -------------------------------------------------
+                activate: function (event, data) {
+                    debugger;
+                    //logEvent(event, data);
+                    //var node = data.node;
+                    /*data.node.tooltip = data.node.data.tooltipText;
+                    data.options.tooltip();
+                    alert('ok');*/
+                    // acces node attributes
+                    //$("#echoActive").text(node.title);
+                    //if (!$.isEmptyObject(node.data)) {
+                    //    //          alert("custom node data: " + JSON.stringify(node.data));
+                    //}
+                },
+                //beforeActivate: function (event, data) {
+                //    //logEvent(event, data, "current state=" + data.node.isActive());
+                //    // return false to prevent default behavior (i.e. activation)
+                //    //              return false;
+                //},
+                beforeExpand: function (event, data) {
+                    debugger;
+                    //logEvent(event, data, "current state=" + data.node.isExpanded());
+                    // return false to prevent default behavior (i.e. expanding or collapsing)
+                    //        return false;
+                },
+                //beforeSelect: function (event, data) {
+                //    //        console.log("select", event.originalEvent);
+                //    //logEvent(event, data, "current state=" + data.node.isSelected());
+                //    // return false to prevent default behavior (i.e. selecting or deselecting)
+                //    //        if( data.node.isFolder() ){
+                //    //          return false;
+                //    //        }
+                //},
+                //blur: function (event, data) {
+                //    //logEvent(event, data);
+                //    $("#echoFocused").text("-");
+                //},
+                //click: function (event, data) {
+                //    //logEvent(event, data, ", targetType=" + data.targetType);
+                //    // return false to prevent default behavior (i.e. activation, ...)
+                //    //return false;
+                //},
+                //collapse: function (event, data) {
+                //    //logEvent(event, data);
+                //},
+                //createNode: function (event, data) {
+                //    // Optionally tweak data.node.span or bind handlers here
+                //    //logEvent(event, data);
+                //},
+                //dblclick: function (event, data) {
+                //    //logEvent(event, data);
+                //    //        data.node.toggleSelect();
+                //},
+                //deactivate: function (event, data) {
+                //    //logEvent(event, data);
+                //    $("#echoActive").text("-");
+                //},
+                expand: function (event, data) {
+                    debugger;
+                    //logEvent(event, data);
+                },
+                //enhanceTitle: function (event, data) {
+                //    //logEvent(event, data);
+                //},
+                //focus: function (event, data) {
+                //    //logEvent(event, data);
+                //    $("#echoFocused").text(data.node.title);
+                //},
+                //keydown: function (event, data) {
+                //    //logEvent(event, data);
+                //    switch (event.which) {
+                //        case 32: // [space]
+                //            data.node.toggleSelected();
+                //            return false;
+                //    }
+                //},
+                //keypress: function (event, data) {
+                //    // currently unused
+                //    //logEvent(event, data);
+                //},
+                lazyLoad: function (event, data) {
+                    //logEvent(event, data);
+                    // return children or any other node source
+                    debugger;
+
+                    data.result = {
+                        url: "/Host/UsersManagement/GetChildUsers",
+                        data: {
+                            mode: "children",
+                            UserId: data.node.key,
+                            cache: false
+                        },
+                    };
+                    //$.ajax({
+                    //    cache: false,
+                    //    type: "Post",
+                    //    url: '/Host/UsersManagement/GetChildUsers',
+                    //    //data: JSON.stringify({ 'UserId': data.node.key }),
+                    //    data: {
+                    //        'UserId': data.node.key
+                    //    },
+                    //    //contentType: 'application/json',
+                    //    dataType: "json",
+                    //    success: function (result) {
+                    //        debugger;
+                    //        data.result = result;
+                    //        //data.node.children = result;
+                    //        //var data = JSON.parse(result.replace(/&quot;/g, '"'));
+                    //        //cb(data);
+                    //        //cb(result);
+                    //    },
+                    //    error: function (xhr, ajaxOptions, thrownError) {
+                    //        $('#myModal').find('.modal-title').html('خطا');
+                    //        $('#myModal').find('#error').html(xhr.responseText);
+                    //        $('#myModal').modal("show");
+                    //    }
+                    //});
+
+
+                    //data.result = {
+                    //    url: "/Host/UsersManagement/GetChildUsers"
+                    //};
+                            //data.result = [
+                            //  {title: "A Lazy node", lazy: true},
+                            //  {title: "Another node", selected: true}
+                            //  ];
+                },
+                tooltip: function (event, data) {
+                    //debugger;
+                    //return data.node.data.tooltipText;
+                },
+                //loadChildren: function (event, data) {
+                //    debugger;
+                //    $.ajax({
+                //        cache: false,
+                //        type: "Post",
+                //        url: '/Host/UsersManagement/GetChildUsers',
+                //        data: JSON.stringify({ 'UserId': 0 }),
+                //        contentType: 'application/json',
+                //        dataType: "json",
+                //        success: function (result) {
+                //            debugger;
+                //            //var data = JSON.parse(result.replace(/&quot;/g, '"'));
+                //            //cb(data);
+                //            //cb(result);
+                //            data.node.children = result;
+                //        },
+                //        error: function (xhr, ajaxOptions, thrownError) {
+                //            $('#myModal').find('.modal-title').html('خطا');
+                //            $('#myModal').find('#error').html(xhr.responseText);
+                //            $('#myModal').modal("show");
+                //        }
+                //    });
+                //    //logEvent(event, data);
+                //},
+                //loadError: function (event, data) {
+                //    //logEvent(event, data);
+                //},
+                //modifyChild: function (event, data) {
+                //    //logEvent(event, data, "operation=" + data.operation +
+                //      //", child=" + data.childNode);
+                //},
+                //postProcess: function (event, data) {
+                //    debugger;
+
+                //    $.ajax({
+                //        cache: false,
+                //        type: "Post",
+                //        url: '/Host/UsersManagement/GetChildUsers',
+                //        data: JSON.stringify({ 'UserId': 0 }),
+                //        contentType: 'application/json',
+                //        dataType: "json",
+                //        success: function (result) {
+                //            debugger;
+                //            //var data = JSON.parse(result.replace(/&quot;/g, '"'));
+                //            //cb(data);
+                //            //cb(result);
+                //            data.node.children = result;
+                //        },
+                //        error: function (xhr, ajaxOptions, thrownError) {
+                //            $('#myModal').find('.modal-title').html('خطا');
+                //            $('#myModal').find('#error').html(xhr.responseText);
+                //            $('#myModal').modal("show");
+                //        }
+                //    });
+
+                //    //logEvent(event, data);
+                //    // either modify the Ajax response directly
+                //    //data.response[0].title += " - hello from postProcess";
+                //    // or setup and return a new response object
+                //    //        data.result = [{title: "set by postProcess"}];
+                //},
+                //renderNode: function (event, data) {
+                //    // Optionally tweak data.node.span
+                //    //              $(data.node.span).text(">>" + data.node.title);
+                //    //logEvent(event, data);
+                //},
+                //renderTitle: function (event, data) {
+                //    // NOTE: may be removed!
+                //    // When defined, must return a HTML string for the node title
+                //    //logEvent(event, data);
+                //    //        return "new title";
+                //},
+                //select: function (event, data) {
+                //    //logEvent(event, data, "current state=" + data.node.isSelected());
+                //    var s = data.tree.getSelectedNodes().join(", ");
+                //    $("#echoSelected").text(s);
+                //}
+            }).on("fancytreeactivate", function (event, data) {
+                // alternative way to bind to 'activate' event
+                //        //logEvent(event, data);
+            }).on("mouseenter mouseleave", ".fancytree-title", function (event) {
+                // Add a hover handler to all node titles (using event delegation)
+                //var node = $.ui.fancytree.getNode(event);
+                //node.info(event.type);
+            });
+
+            $(".fancytree-container").addClass("fancytree-connectors");
+
+        });
+</script>

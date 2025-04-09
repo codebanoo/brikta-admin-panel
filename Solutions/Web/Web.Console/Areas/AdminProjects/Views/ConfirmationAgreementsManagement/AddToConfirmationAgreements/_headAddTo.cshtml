@@ -1,0 +1,53 @@
+﻿@using VM.Public;
+@*@using VM.Melkavan;*@
+@using Newtonsoft.Json;
+@using VM.Teniaco;
+@using VM.Projects;
+
+
+<script type="text/javascript">
+
+    @{
+        List<ConfirmationTypesVM> confirmationTypesVM = new List<ConfirmationTypesVM>();
+        @Html.Raw("var confirmationTypes =[];")
+        ;
+
+        if (ViewData["ConfirmationTypesVMList"] != null)
+        {
+            confirmationTypesVM = (List<ConfirmationTypesVM>)ViewData["ConfirmationTypesVMList"];
+
+            var typesListData = confirmationTypesVM.Select(a =>
+
+            new
+            {
+                DisplayText = $"{a.ConfirmationTypeTitle}",
+                Value = a.ConfirmationTypeId
+            });
+
+            @Html.Raw("confirmationTypes =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(typesListData))+" ;")
+            ;
+        }
+    }
+</script>
+<script type="text/javascript">
+    @{
+        long constructionId = 0;
+        @Html.Raw("var constructionProjectId = 0;")
+        ;
+
+        if (ViewData["ConstructionProjectId"] != null)
+        {
+            constructionId = (long)ViewData["ConstructionProjectId"];
+
+
+            @Html.Raw("debugger; constructionProjectId =" + constructionId.ToString() +" ;debugger;")
+            ;
+        }
+    }
+
+</script>
+<style type="text/css">
+    .no-top-margin {
+        margin-top: 0px !important;
+    }
+</style>

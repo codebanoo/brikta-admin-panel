@@ -1,0 +1,262 @@
+﻿@using VM.Console;
+
+@model CustomUsersVM
+
+<div id="searchBlock">
+    <form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+          data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+          data-ajax="true" data-ajax-method="POST">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
+        <fieldset>
+            <div class="row">
+                <div class="form-group col col-md-12">
+                    @{
+                        <div id='error-alert' class="form-group alert alert-danger">
+                        </div>
+                    }
+                </div>
+                <div class="clearfix"></div>
+                <div class="panel-group" id="accordion" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                                   aria-controls="collapseOne">
+                                   اطلاعات پایه
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12 with-select">
+                                        <span>دامنه</span>
+                                        <br />
+                                        <select asp-for="DomainSettingId"
+                                                class="form-control input-sm chosen-select input-validation-error"></select>
+                                        <span asp-validation-for="DomainSettingId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>نقش</span>
+                                        <br />
+                                        <select asp-for="RoleIds" multiple
+                                                class="form-control input-sm"></select>
+                                        <span asp-validation-for="RoleIds" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>دسترسی</span>
+                                        <br />
+                                        <select asp-for="LevelIds" multiple
+                                                class="form-control input-sm"></select>
+                                        <span asp-validation-for="LevelIds" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>کاربر والد</span>
+                                        <br />
+                                        <select asp-for="ParentUserId"
+                                                class="form-control input-sm"></select>
+                                        <span asp-validation-for="ParentUserId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>نام  کاربری</span>
+                                        <br />
+                                        <input asp-for="UserName" class="form-control input-sm"
+                                               placeholder="نام کاربری" />
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>ایمیل</span>
+                                        <br />
+                                        <input asp-for="Email" class="form-control input-sm"
+                                               placeholder="ایمیل" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>رمز عبور</span>
+                                        <br />
+                                        <input asp-for="Password" class="form-control input-sm" type="password"
+                                               placeholder="رمز" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>فعال/غیر فعال</span>
+                                        <br />
+                                        <select asp-for="IsActivated" class="form-control input-sm">
+                                            <option value="true">بله
+                                            </option>
+                                            <option value="false">خیر
+                                            </option>
+                                        </select>
+                                        @*<select asp-for="IsActivated" class="form-control input-sm">
+            <option value="true">
+                @Html.Raw(publicTexts.FirstOrDefault(p => p.PropertyName.Equals("Yes")).Value)
+            </option>
+            <option value="false">
+                @Html.Raw(publicTexts.FirstOrDefault(p => p.PropertyName.Equals("No")).Value)
+            </option>
+        </select>*@
+                                        @*<div class="checkbox">
+            <label for="IsActivated_Value">
+                <input asp-for="IsActivated.Value" class="form-control input-sm" checked value="true"
+                       placeholder="@Html.Raw(pageTexts.FirstOrDefault(p=>p.PropertyName.Equals("IsActivated")).Value)" />
+                @Html.Raw(pageTexts.FirstOrDefault(p => p.PropertyName.Equals("IsActivated")).Value)
+            </label>
+            <span asp-validation-for="IsActivated" class="text-danger"></span>
+        </div>*@
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>حذف شده</span>
+                                        <br />
+                                        <select asp-for="IsDeleted" class="form-control input-sm">
+                                            <option value="true">بله
+                                            </option>
+                                            <option value="false" selected>خیر
+                                            </option>
+                                        </select>
+                                        @*<select asp-for="IsDeleted" class="form-control input-sm">
+            <option value="true">
+                @Html.Raw(publicTexts.FirstOrDefault(p => p.PropertyName.Equals("Yes")).Value)
+            </option>
+            <option value="false">
+                @Html.Raw(publicTexts.FirstOrDefault(p => p.PropertyName.Equals("No")).Value)
+            </option>
+        </select>*@
+                                        @*<div class="checkbox">
+            <label for="IsDeleted_Value">
+                <input asp-for="IsDeleted.Value" class="form-control input-sm"
+                       placeholder="@Html.Raw(pageTexts.FirstOrDefault(p=>p.PropertyName.Equals("IsDeleted")).Value)" />
+                @Html.Raw(pageTexts.FirstOrDefault(p => p.PropertyName.Equals("IsDeleted")).Value)
+            </label>
+            <span asp-validation-for="IsDeleted" class="text-danger"></span>
+        </div>*@
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>تکرار رمز</span>
+                                        <br />
+                                        <input asp-for="ReplyPassword" class="form-control input-sm" type="password"
+                                               placeholder="تکرار رمز" />
+                                        <span asp-validation-for="ReplyPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                                   aria-expanded="false" aria-controls="collapseTwo">
+                                   اطلاعات بیشتر
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>کد ملی</span>
+                                        <br />
+                                        <input asp-for="NationalCode" class="form-control input-sm"
+                                               placeholder="کد ملی" />
+                                        <span asp-validation-for="NationalCode" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>نام</span>
+                                        <br />
+                                        <input asp-for="Name" class="form-control input-sm"
+                                               placeholder="نام" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>نام خانوادگی</span>
+                                        <br />
+                                        <input asp-for="Family" class="form-control input-sm"
+                                               placeholder="نام خانوادگی" />
+                                        <span asp-validation-for="Family" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>تماس</span>
+                                        <br />
+                                        <input asp-for="Phone" class="form-control input-sm"
+                                               placeholder="تلفن" />
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>همراه</span>
+                                        <br />
+                                        <input asp-for="Mobile" class="form-control input-sm"
+                                               placeholder="همراه" />
+                                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>تصویر</span> (500Kb)
+                                        <br />
+                                        <input type="file" asp-for="Picture" class="form-control input-sm"
+                                               onchange="ImageCheck(this, 'فایل با فرمتهای (jpeg, jpg, png, gif, bmp) انتخاب کنید', 'فایل ورودی را مجدد انتخاب کنید', 'حجم فایل انتخابی کمتر از 500 k باشد', 500);"
+                                               placeholder="تصویر" />
+                                        <span asp-validation-for="Picture" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>شماره شناسنامه</span>
+                                        <br />
+                                        <input asp-for="CertificateId" class="form-control input-sm"
+                                               placeholder="شماره شناسنامه" />
+                                        <span asp-validation-for="CertificateId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>تاریخ تولد</span>
+                                        <br />
+                                        <input type="text" asp-for="BirthDateTime" class="form-control input-sm"
+                                               data-mddatetimepicker="true" onkeydown="return false" data-placement="bottom"
+                                               placeholder="تاریخ تولد" />
+                                        <span asp-validation-for="BirthDateTime" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>جنسیت</span>
+                                        <br />
+                                        <select asp-for="Sexuality" class="form-control input-sm" data-val="false">
+                                            <option value="true">مرد
+                                            </option>
+                                            <option value="false">زن
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col col-md-4 col-lg-4 col-xs-12 col-sm-12">
+                                        <span>آدرس</span>
+                                        <br />
+                                        <textarea asp-for="Address" class="form-control"
+                                                  placeholder="آدرس"></textarea>
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                <div class="empty-block">&nbsp;</div>
+                <button class="btn btn-default input-sm" type="submit">ارسال
+                </button>
+                <button id="btnReset" name="btnReset" class="btn btn-default input-sm" data-toggle="tooltip" data-placement="top"
+                        title="پاک کردن فرم">
+                    <i class="fa fa-undo"></i>
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</div>

@@ -1,0 +1,280 @@
+﻿@using VM.Public;
+@using VM.Teniaco;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        List<EvaluationsVM> evaluationsVMList = new List<EvaluationsVM>();
+        @Html.Raw("var evaluationsVMList =[];")
+        ;
+
+        if (ViewData["EvaluationsList"] != null)
+        {
+            evaluationsVMList = (List<EvaluationsVM>)ViewData["EvaluationsList"];
+
+            var evaluationsVMListData = evaluationsVMList.Select(s =>
+            new
+            {
+                DisplayText = $"{s.EvaluationTitle}   {s.PlanDate}   {s.Version}",
+                Value = s.EvaluationId,
+                SubjectId = s.EvaluationSubjectId,
+            });
+
+            @Html.Raw(" evaluationsVMList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationsVMListData))+" ;")
+            ;
+        }
+    }
+
+</script>
+
+
+<script>
+    var json = {};
+</script>
+
+<script type="text/javascript">
+    @{
+        List<EvaluationItemValuesVM> evaluationItemValuesVMList = new List<EvaluationItemValuesVM>();
+        @Html.Raw("var evaluationItemValuesVMList =[];")
+        ;
+
+        if (ViewData["EvaluationItemValuesList"] != null)
+        {
+            evaluationItemValuesVMList = (List<EvaluationItemValuesVM>)ViewData["EvaluationItemValuesList"];
+
+            @Html.Raw(" evaluationItemValuesVMList =" +JsonConvert.DeserializeObject(JsonConvert.SerializeObject(evaluationItemValuesVMList))+" ;")
+            ;
+        }
+    }
+
+</script>
+
+<script language="javascript" type="text/javascript" src="~/lib/jit2/jit2.js"></script>
+
+
+@{
+    await Html.RenderPartialAsync("jTableCssJs");
+}
+<link href="~/css/basictable/basictable.css" rel="stylesheet" />
+<script src="~/js/basictable/jquery.basictable.js"></script>
+
+<style type="text/css">
+    .ui-dialog {
+        width: 40% !important;
+    }
+
+    .formError {
+        top: inherit !important;
+    }
+
+    .isActivated,
+    .isDeleted {
+        cursor: pointer;
+    }
+
+    //html, body {
+        // margin: 0;
+        // padding: 0;
+        // font-family: "Lucida Grande", Verdana;
+        // font-size: 0.9em;
+        // text-align: center;
+        // background-color: #F2F2F2;
+        //
+   // }
+
+    input, select {
+        font-size: 0.9em;
+    }
+
+    table {
+        margin-top: -10px;
+        margin-left: 7px;
+    }
+
+    h4 {
+        font-size: 1.1em;
+        text-decoration: none;
+        font-weight: normal;
+        color: #23A4FF;
+    }
+
+    a {
+        color: #23A4FF;
+    }
+
+    #container {
+        width: 1000px;
+        height: 600px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    #left-container,
+    #right-container,
+    #center-container {
+        height: 600px;
+        position: absolute;
+        top: 0;
+    }
+
+    #left-container, #right-container {
+        width: 200px;
+        color: #686c70;
+        text-align: left;
+        overflow: auto;
+        //background-color: #fff;
+        //background-repeat: no-repeat;
+        //border-bottom: 1px solid #ddd;
+    }
+
+    #left-container {
+        left: 0;
+        background-image: url('col2.png');
+        background-position: center right;
+        //border-left: 1px solid #ddd;
+    }
+
+    #right-container {
+        right: 0;
+        background-image: url('col1.png');
+        background-position: center left;
+        border-right: 1px solid #ddd;
+    }
+
+        #right-container h4 {
+            text-indent: 8px;
+        }
+
+    #center-container {
+        width: 600px;
+        left: 200px;
+        //background-color: #1a1a1a;
+        color: #ccc;
+    }
+
+    .text {
+        margin: 7px;
+    }
+
+    #inner-details {
+        font-size: 0.8em;
+        list-style: none;
+        margin: 7px;
+    }
+
+    #log {
+        position: absolute;
+        top: 10px;
+        font-size: 1.0em;
+        font-weight: bold;
+        color: #23A4FF;
+    }
+
+
+    #infovis {
+        position: relative;
+        width: 600px;
+        height: 600px;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    /*TOOLTIPS*/
+    .tip {
+        color: #111;
+        width: 139px;
+        background-color: white;
+        border: 1px solid #ccc;
+        -moz-box-shadow: #555 2px 2px 8px;
+        -webkit-box-shadow: #555 2px 2px 8px;
+        -o-box-shadow: #555 2px 2px 8px;
+        box-shadow: #555 2px 2px 8px;
+        opacity: 0.9;
+        filter: alpha(opacity=90);
+        font-size: 10px;
+        font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+        padding: 7px;
+    }
+
+
+    #update {
+        margin: 10px 40px;
+        font-family: inherit;
+    }
+
+    .button {
+        display: inline-block;
+        outline: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        font: 14px / 100% Arial, Helvetica, sans-serif;
+        padding: 0.5em 1em 0.55em;
+        text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+        -webkit-border-radius: 0.5em;
+        -moz-border-radius: 0.5em;
+        border-radius: 0.5em;
+        -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+        .button:hover {
+            text-decoration: none;
+        }
+
+        .button:active {
+            position: relative;
+            top: 1px;
+        }
+
+    /* white */
+    .white {
+        color: #606060;
+        border: solid 1px #b7b7b7;
+        background: #fff;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+        background: -moz-linear-gradient(top, #fff, #ededed);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+    }
+
+        .white:hover {
+            background: #ededed;
+            background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+            background: -moz-linear-gradient(top, #fff, #dcdcdc);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
+        }
+
+        .white:active {
+            color: #999;
+            background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
+            background: -moz-linear-gradient(top, #ededed, #fff);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
+        }
+
+
+    .tip {
+        text-align: left;
+        width: auto;
+        max-width: 500px;
+    }
+
+    .tip-title {
+        font-size: 11px;
+        text-align: center;
+        margin-bottom: 2px;
+    }
+
+    #right-container {
+        display: none;
+    }
+
+    #center-container {
+        width: 800px;
+    }
+
+    #infovis {
+        width: 800px;
+    }
+
+</style>

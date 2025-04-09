@@ -1,0 +1,72 @@
+﻿@using VM.Console;
+@using Newtonsoft.Json;
+
+<script type="text/javascript">
+    @{
+        if (ViewData["DomainsSettingsList"] != null)
+        {
+            List<DomainsSettingsVM> domainsSettingsList =
+                (List<DomainsSettingsVM>)ViewData["DomainsSettingsList"];
+
+            //var domainsSettingsListData = domainsSettingsList.Select(c =>
+            //          new
+            //          {
+            //              /*text = c.FullNumber + " - " + c.FarsiName,
+            //              slug = c.FullNumber + " - " + c.FarsiName,
+            //              id = c.Id*/
+            //              DisplayText = $"{c.DomainName}",
+            //              Value = c.DomainSettingId
+            //          });
+
+            @Html.Raw("debugger; var domainsSettingsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(domainsSettingsList)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        if (ViewData["RolesList"] != null)
+        {
+            List<RolesVM> rolesList =
+                (List<RolesVM>)ViewData["RolesList"];
+
+            var rolesListData = rolesList.Select(c =>
+                      new
+                      {
+                                  /*text = c.FullNumber + " - " + c.FarsiName,
+                                  slug = c.FullNumber + " - " + c.FarsiName,
+                                  id = c.Id*/
+                          DisplayText = $"{/*c.DomainName + */c.RoleName}",
+                          Value = c.RoleId,
+                          //DomainSettingId = c.DomainSettingId
+                      });
+
+            @Html.Raw("debugger; var rolesList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(rolesListData)) + "; debugger;");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    @{
+        if (ViewData["LevelsList"] != null)
+        {
+            List<LevelsVM> levelsList =
+                (List<LevelsVM>)ViewData["LevelsList"];
+
+            //var domainsSettingsListData = domainsSettingsList.Select(c =>
+            //          new
+            //          {
+            //              /*text = c.FullNumber + " - " + c.FarsiName,
+            //              slug = c.FullNumber + " - " + c.FarsiName,
+            //              id = c.Id*/
+            //              DisplayText = $"{c.DomainName}",
+            //              Value = c.DomainSettingId
+            //          });
+
+            @Html.Raw("debugger; var levelsList = " +
+                JsonConvert.DeserializeObject(JsonConvert.SerializeObject(levelsList)) + "; debugger;");
+        }
+    }
+</script>

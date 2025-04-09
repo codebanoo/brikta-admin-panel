@@ -1,0 +1,588 @@
+﻿<script type="text/javascript">
+
+    var json = {
+        "id": 0,
+        "name": '',
+        "data": {
+            "$area": 0,
+            "$dim": 0,
+            "$color": "",
+            "level": 1
+        },
+        "children": []
+    };
+
+
+    var ItemValues = [];
+
+    $(document).ready(function () {
+
+        $('#searchBlock').hide(1000);
+
+        for (var i = 0; i < evaluationsVMList.length; i++) {
+
+            var item = evaluationsVMList[i];
+            $('#slcEvaluation')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+        }
+
+        $('#slcEvaluation').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        var records;
+
+        var EvaluationTitle = "";
+        $('body').on('change', '#slcEvaluation', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var evaluationId = _this.val();
+            var evaluationTitle = "";
+
+            $("#slcEvaluation option:selected").each(function () {
+                evaluationTitle += $(this).text() + " ";
+                EvaluationTitle += evaluationTitle;
+            });
+
+            if (evaluationId !== 0 && parentId !== 0) {
+                createEvaluationChart(parentId, evaluationId);
+            }
+            $('#container').css("display", "none");
+
+        });
+
+
+
+        function createEvaluationChart(parentId, evaluationId) {
+            debugger;
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/EvaluationChartManagement/GetAllDivisionOfEvaluationsListByParentId",
+
+                data: {
+                    'parentId': parentId,
+                    'evaluationId': evaluationId,
+
+                },
+                success: function (result) {
+                    if (result.Result == "OK") {
+                        debugger;
+                        records = result.records;
+
+                        records.EvaluationQuestionsVMList.filter(function (ques) {
+
+                            if (records.EvaluationItemValuesVMList.filter(f => f.EvaluationQuestionId == ques.EvaluationQuestionId).length > 0) {
+
+                                if (records.EvaluationItemsVMList.filter(i => i.EvaluationQuestionId == ques.EvaluationQuestionId).length > 0) {
+
+                                    var x = records.EvaluationItemsVMList.filter(c => c.EvaluationQuestionId == ques.EvaluationQuestionId).find(f => f.EvaluationScore).EvaluationScore;
+                                    var y = ques.EvaluationScore;
+                                    var xy = (x / 100) * y;
+                                }
+
+                                if (records.EvaluationCategoriesVMList.filter(c => c.EvaluationCategoryId == ques.EvaluationCategoryId).length > 0) {
+
+                                    var EvaluationCategoryScore = records.EvaluationCategoriesVMList.filter(c => c.EvaluationCategoryId == ques.EvaluationCategoryId).find(f => f.EvaluationCategoryScore).EvaluationCategoryScore;
+
+                                    ItemValues.push({
+                                        "xy": xy,
+                                        "EvaluationQuestionId": ques.EvaluationQuestionId,
+                                        "EvalutionCategoryId": ques.EvaluationCategoryId,
+                                        "EvaluationCategoryScore": EvaluationCategoryScore
+                                    });
+
+                                }
+
+                            }
+                        });
+                        var parents = records.EvaluationCategoriesVMList.filter(f => f.EvaluationParentCategoryId == null);
+
+                        json = null;
+
+                        json = {
+                            "id": 0,
+                            "name": '',
+                            "w": 0,
+                            "data": {
+                                "$area": 0,
+                                "$dim": 0,
+                                "$color": "",
+                                "$eachScore": 0
+                            },
+                            "children": []
+                        };
+
+                        var children = [];
+
+                        var level = 1;
+                        for (var i = 0; i < parents.length; i++) {
+                            var parent = parents[i];
+
+                            var tmpChild = [];
+
+                            tmpChild = GetChilds(parent.EvaluationCategoryId, 1);
+
+                            debugger;
+
+                            var totalWeigth = 0;
+                            if (tmpChild.length > 0) {
+                                for (var i = 0; i < tmpChild.length; i++) {
+                                    var childWeigth = tmpChild[i].w;
+                                    var childEachscore = tmpChild[i].data.eachScore;
+                                    if (childWeigth != null) {
+                                        var singleChildWeigth = (childWeigth / 100) * childEachscore;
+                                        totalWeigth += (singleChildWeigth / 100) * parent.EvaluationCategoryScore;
+                                    }
+                                }
+                            }
+
+
+
+
+                            tmpName = '<span style="font-size:15px;color:black !important;font-family: DubaiRegular !important;">' + parent.EvaluationCategoryTitle + '</span>';
+
+                            tmpW = '<span style="font-size:3rem;color:black !important;font-weight: bold;">' + totalWeigth + '</span><span style="font-size:3rem;color:black !important;font-weight: bold;">%</span>';
+
+                            tmpScore = '<span style="font-size:15px;color:black !important;font-weight: bold;">' + parent.EvaluationCategoryScore + '</span>';
+
+
+                            if (totalWeigth == 0) {
+                                tmpW = '<span style="font-size:3rem;color:black !important;font-family: DubaiRegular !important;">----</span>';
+                            }
+
+                            var tempParentTitle = '<div class="centerText"><div style="margin:auto;"> ' + tmpName + '<br/> ' + tmpW + '<br/>' + tmpScore + '</div></div>';
+
+
+                            children.push({
+                                "id": parent.EvaluationCategoryId,
+                                "name": tempParentTitle,
+                                "data": {
+                                    "$area": 8,
+                                    "$dim": 8,
+                                    "$color": "#a872ff",
+                                    "w": totalWeigth,
+                                    "score": parent.EvaluationCategoryScore,
+                                    "level": 1,
+                                    "name": parent.EvaluationCategoryTitle
+                                },
+                                "children": tmpChild
+                            });
+                        }
+
+
+
+                        json.children = [];
+                        json.id = evaluationId;
+
+                        json.name = '<div class="centerText"><div style="margin:auto;font-size:2rem;color:white !important;"> ' + EvaluationTitle + '</div></div>';
+
+                        //var dataName = EvaluationTitle;
+                        json.data = {
+                            "$area": 8,
+                            "$dim": 8,
+                            "$color": "#001eff",
+                            "level": 1,
+                            "name": EvaluationTitle
+                    };
+
+                        json.children = children;
+
+                        $('#container').css("display", "flex");
+
+                        selectColor = -1;
+                        init();
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        }
+
+
+
+
+        $('#btnSearch').click(function (e) {
+            e.preventDefault();
+            var slcEvaluation = $('#slcEvaluation').val();
+
+        });
+
+        //#region icicle chart
+
+        var labelType, useGradients, nativeTextSupport, animate;
+
+        (function () {
+            var ua = navigator.userAgent,
+                iStuff = ua.match(/iPhone/i) || ua.match(/iPad/i),
+                typeOfCanvas = typeof HTMLCanvasElement,
+                nativeCanvasSupport = (typeOfCanvas == 'object' || typeOfCanvas == 'function'),
+                textSupport = nativeCanvasSupport
+                    && (typeof document.createElement('canvas').getContext('2d').fillText == 'function');
+            //labelType = (!nativeCanvasSupport || (textSupport && !iStuff)) ? 'Native' : 'HTML';
+            labelType = 'HTML';
+            nativeTextSupport = labelType == 'Native';
+            useGradients = nativeCanvasSupport;
+            animate = !(iStuff || !nativeCanvasSupport);
+        })();
+
+        var Log = {
+            elem: false,
+            write: function (text) {
+                if (!this.elem)
+                    this.elem = document.getElementById('log');
+                this.elem.innerHTML = text;
+                this.elem.style.left = (500 - this.elem.offsetWidth / 2) + 'px';
+            }
+        };
+
+        var icicle;
+
+        function init() {
+
+
+            controls();
+
+            $("#infovis").html("");
+
+            controls();
+
+            //var i = 0;
+
+            icicle = new $jit.Icicle({
+
+                injectInto: 'infovis',
+
+                animate: animate,
+
+                offset: 1,
+
+                cushion: true,
+
+                constrained: false,
+                levelsToShow: 5,
+
+                Tips: {
+                    enable: true,
+                    type: 'Native',
+
+                    offsetX: 20,
+                    offsetY: 20,
+                    onShow: function (tip, node) {
+                        var count = 0;
+                        node.eachSubnode(function () {
+                            count++;
+                        });
+
+
+
+                        var w = node.data.w;
+                        var eachScore = node.data.eachScore;
+
+                        var score = node.data.score;
+
+                        if (score == "undefined" || score == null) {
+
+                            score = node.data.eachScore;
+                        }
+
+                        debugger;
+                        var tempFinalW = (w / 100) * score;
+
+                        if (w == "undefined" || w == null || w == 0) {
+                            w = "امتیاز ندارد";
+                        }
+
+                        if (tempFinalW == "undefined" || tempFinalW == null || isNaN(tempFinalW) || tempFinalW == 0) {
+                            debugger;
+                            tempFinalW = "امتیاز قابل محاسبه نیست";
+                        }
+
+
+                        tip.innerHTML = "<div><b>نام گروه:</b> " + node.data.name + "</div><div><b>امتیاز گروه: </b>%" + w + "</div><div><b>امتیاز گروه*ضریب: </b>" + tempFinalW + "</div>";
+
+                        //tip.innerHTML = "<div class=\"tip-title\"><b>نام گروه:</b> " + node.name + "</div><div class=\"tip-text\">" + count + ":تعداد زیر گروه</div class=\"tip-text\">" + score + " / " + w + ":امتیاز زیر گروه<div></div>";
+
+
+                        //tip.innerHTML = "<div class=\"tip-title\"><b>نام:</b> " + node.name + "</div><div class=\"tip-text\">" + count + ":تعداد زیر گروه</div class=\"tip-text\">" + w + ":امتیاز<div></div>";
+                    }
+                },
+                Events: {
+                    enable: true,
+                    onMouseEnter: function (node) {
+                        node.setData('border', '#33dddd');
+                        icicle.fx.plotNode(node, icicle.canvas);
+                        icicle.labels.plotLabel(icicle.canvas, node, icicle.controller);
+                    },
+                    onMouseLeave: function (node) {
+                        node.removeData('border');
+                        icicle.fx.plot();
+                    },
+                    onClick: function (node) {
+                        if (node) {
+                            icicle.tips.hide();
+                            if (icicle.events.hovered)
+                                this.onMouseLeave(icicle.events.hovered);
+                            icicle.enter(node);
+                        }
+                    },
+                    onRightClick: function () {
+                        icicle.tips.hide();
+                        if (icicle.events.hovered)
+                            this.onMouseLeave(icicle.events.hovered);
+                        icicle.out();
+                    }
+                },
+                Label: {
+                    type: labelType
+                },
+                onCreateLabel: function (domElement, node) {
+                    //i++;
+                    debugger;
+                    node.name;
+                    debugger;
+                    var opacity = node.data.opacity;
+
+                    var name = node.data.name;
+
+
+
+                    //if (opacity == "undefined" && node.data.level == 1){
+                    //      domElement.innerHTML = '<div class="centerText" style="width:100%; height:100%; opacity:' + node.data.opacity + ';  background-color:' + node.data.$color + '">' + node.name + '</div>';
+                    //}
+
+
+                    if (opacity == undefined && node.data.level !== 1) {
+                        domElement.innerHTML = '<div class="centerText" style="width:100%; height:100%; opacity:' + node.data.opacity + ';  background-color:gray; color: white !important; ">' + node.name + '</div>';
+                    } else {
+                        domElement.innerHTML = '<div class="centerText" style="width:100%; height:100%; opacity:' + node.data.opacity + ';  background-color:' + node.data.$color + ' background: border-box">' + node.name + '</div>';
+                    }
+
+
+                    var style = domElement.style;
+                    style.fontSize = '0.9em';
+                    style.display = '';
+                    style.cursor = 'pointer';
+                    //style.color = '#333';
+                    style.overflow = 'hidden';
+                    style.textAlign = 'center';
+                },
+                onPlaceLabel: function (domElement, node) {
+                    var style = domElement.style,
+                        width = node.getData('width'),
+                        height = node.getData('height');
+                    if (width < 7 || height < 7) {
+                        style.display = 'none';
+                    } else {
+                        style.display = '';
+                        style.width = width + 'px';
+                        style.height = height + 'px';
+                    }
+                }
+            });
+
+
+            icicle.loadJSON(json);
+
+            icicle.layout.orientation = 'v';
+
+            icicle.config.constrained = true;
+            icicle.config.levelsToShow = 5;
+
+            icicle.refresh();
+
+        }
+
+        function controls() {
+            var jit = $jit;
+            var gotoparent = jit.id('update');
+            jit.util.addEvent(gotoparent, 'click', function () {
+                icicle.out();
+            });
+
+        }
+
+        var colors = ["purple", "green", "#7CB9E8", "#D8BFD8", "#ec60ff", "#EC6279", "#F32547", "#F32547", "#6C5AC8", "#6C5AC8", "#0B6815"];
+
+        let selectColor = -1;
+
+        //#endregion
+
+
+        function GetChilds(evaluationCategoryId, level) {
+            var children = [];
+
+            if (records.EvaluationCategoriesVMList.filter(c => c.EvaluationParentCategoryId == evaluationCategoryId).length == 0) {
+                return children;
+            }
+
+            var evalCategories = records.EvaluationCategoriesVMList.filter(c => c.EvaluationParentCategoryId == evaluationCategoryId);
+
+            var tmpLevel = ++level;
+
+            for (var i = 0; i < evalCategories.length; i++) {
+
+                var evaluationCategoryId = evalCategories[i].EvaluationCategoryId;
+                var z = evalCategories[i].EvaluationCategoryScore;
+
+
+                selectColor++;
+
+                children.push({
+                    "id": evalCategories[i].EvaluationCategoryId,
+                    "name": evalCategories[i].EvaluationCategoryTitle,
+                    "data": {
+                        "$area": 8,
+                        "$dim": 8,
+                        "$color": colors[level],
+                        "eachScore": z,
+                        "level": level
+                    },
+                    "children": GetChilds(evaluationCategoryId, tmpLevel)
+                });
+
+
+
+
+            }
+
+
+            if (children.length > 0) {
+                debugger;
+                for (var t = 0; t < children.length; t++) {
+
+                    if (ItemValues.filter(q => q.EvalutionCategoryId == children[t].id).length == 0) {
+
+
+                        var childEvalCategories = records.EvaluationCategoriesVMList.filter(c => c.EvaluationParentCategoryId == children[t].id);
+
+                        if (childEvalCategories.length > 0) {
+
+                            for (var i = 0; i < childEvalCategories.length; i++) {
+
+                                var parentCategory = records.EvaluationCategoriesVMList.filter(c => c.EvaluationCategoryId == children[t].id);
+
+                                var w = 0;
+                                for (var i = 0; i < parentCategory.length; i++) {
+                                    var ChildrenScore = children[t].data.eachScore;
+                                    var ParentScore = parentCategory[i].EvaluationCategoryScore;
+
+                                    if (ItemValues.filter(f => f.EvalutionCategoryId == childEvalCategories[i].EvaluationCategoryId).length > 0) {
+                                        var xy = 0;
+                                        var tmpItemValues = ItemValues.filter(f => f.EvalutionCategoryId == childEvalCategories[i].EvaluationCategoryId);
+                                        for (var k = 0; k < tmpItemValues.length; k++) {
+                                            debugger;
+                                            var evaluationCategoryScore = tmpItemValues[0].EvaluationCategoryScore;
+                                            xy += tmpItemValues[k].xy;
+
+                                        }
+
+                                        var tempXY = (xy / 100) * evaluationCategoryScore;
+                                        //var z = (tempXY / 100) * ParentScore;
+                                        var z = (tempXY / 100) * 100;
+                                        w += z;
+                                        //var xy = ItemValues.filter(f => f.EvalutionCategoryId == childEvalCategories[i].EvaluationCategoryId).find(f => f.EvalutionCategoryId).xy;
+                                        //var z = (xy / 100) * ParentScore;
+                                        //w += z;
+
+                                    } else {
+                                        var xy = 0;
+                                        w = 0;
+                                    }
+
+                                    children[t].w = w;
+                                    children[t].data.w = w;
+
+                                    //children[t].data.opacity = ((w * 100) / ChildrenScore) / 100;
+                                    children[t].data.opacity = ((w * 100) / ChildrenScore);
+
+                                    tmpChildrenScore = '<span style="font-size:15px;color:black !important;font-weight: bold;">' + ChildrenScore + '</span>';
+
+                                    //if(children[t].name.length > 15){
+                                    //    var tempName = children[t].name.substring(0,15);
+                                    //    console.log(tempName);
+                                    //    tmpChildrenName = '<span style="font-size:15px;color:black !important;font-family: DubaiRegular !important;">' + tempName + '</span>';
+                                    //}
+
+
+                                    tmpChildrenName = '<span style="font-size:15px;color:black !important;font-family: DubaiRegular !important;">' + children[t].name + '</span>';
+
+                                    tmpChildrenW = '<span style="font-size:3rem;color:black !important;font-weight: bold;">' + w + '</span><span style="font-size:3rem;color:black !important;font-weight: bold;">%</span>';
+
+                                    //children[t].name = '<div class="centerText"><div style="margin:auto;"> ' + tmpChildrenName + '<br/> ' + tmpChildrenW + '<br/>' + tmpChildrenScore + '</div></div>';
+                                    children[t].name = '<div class="centerText"><div style="margin:auto;"> ' + tmpChildrenName + '<br/> ' + tmpChildrenW + '<br/>' + tmpChildrenScore + '</div></div>';
+
+                                    children[t].data.name = tmpChildrenName;
+
+                                }
+                            }
+                        } else {
+                            debugger;
+                            var ChildrenScore = children[t].data.eachScore;
+
+                            tmpChildrenScore = '<span style="font-size:15px;color:black !important;font-weight: bold;">' + ChildrenScore + '</span>';
+
+                            tmpChildrenName = '<span style="font-size:15px;color:black !important;font-family: DubaiRegular !important;">' + children[t].name + '</span>';
+
+                            tmpChildrenW = '<span style="font-size:3rem;color:black !important;font-family: DubaiRegular !important;">----</span>';
+
+                            children[t].name = '<div class="centerText"><div style="margin:auto;"> ' + tmpChildrenName + '<br/> ' + tmpChildrenW + '<br/>' + tmpChildrenScore + '</div></div>';
+
+                            children[t].data.name = tmpChildrenName;
+
+                        }
+                    } else if (ItemValues.filter(q => q.EvalutionCategoryId == children[t].id).length > 0) {
+                        debugger;
+                        var ChildrenScore = children[t].data.eachScore;
+
+                        tmpItemValues = ItemValues.filter(q => q.EvalutionCategoryId == children[t].id);
+
+                        var w = 0;
+
+                        for (var i = 0; i < tmpItemValues.length; i++) {
+                            var xy = tmpItemValues[i].xy;
+                            //var z = (xy / 100) * ChildrenScore;
+                            var z = (xy / 100) * 100;
+                            w += z;
+                        }
+
+                        children[t].w = w;
+                        children[t].data.w = w;
+
+
+                        //children[t].data.opacity = ((w * 100) / ChildrenScore) / 100;
+
+                        children[t].data.opacity = ((w * 100) / ChildrenScore);
+                        tmpChildrenScore = '<span style="font-size:15px;color:black !important;font-weight: bold;">' + ChildrenScore + '</span>';
+
+                        tmpChildrenName = '<span style="font-size:15px;color:black !important;font-family: DubaiRegular !important;">' + children[t].name + '</span>';
+
+                        tmpChildrenW = '<span style="font-size:3rem;color:black !important;font-weight: bold;">' + w + '</span><span style="font-size:3rem;color:black !important;font-weight: bold;">%</span>';
+
+
+                        children[t].name = '<div class="centerText"><div style="margin:auto;"> ' + tmpChildrenName + '<br/> ' + tmpChildrenW + '<br/>' + tmpChildrenScore + '</div></div>';
+
+                        children[t].data.name = tmpChildrenName;
+
+                    }
+                }
+
+            }
+
+
+            return children;
+        }
+    });
+
+</script>

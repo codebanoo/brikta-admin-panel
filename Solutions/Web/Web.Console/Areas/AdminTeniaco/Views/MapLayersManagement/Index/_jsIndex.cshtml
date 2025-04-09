@@ -1,0 +1,767 @@
+﻿<script type="text/javascript">
+
+
+    $(document).ready(function() {
+        for (var i = 0; i < statesList.length; i++) {
+            var item = statesList[i];
+            $('#slcStateId')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+
+            $('#slcStates')
+                .append($("<option></option>")
+                    .attr("value", item.Value)
+                    .text(item.DisplayText));
+
+        }
+        $('#slcStateId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+        $('#slcStates').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcCityId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+        $('#slcCities').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('#slcZoneId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+        $('#slcZones').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+        $('#slcDistrictId').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+        $('#slcDistricts').chosen({
+            placeholder_text_single: ' ',
+            placeholder_text_multiple: ' ',
+            search_contains: true,
+            max_shown_results: numberOfChosenItemsShow,
+            rtl: rtl
+        });
+
+        $('body').on('change', '#Edit-StateId', function(e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var stateId = _this.val();
+
+            $('#Edit-CityId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+                if (item.Data_StateId == stateId)
+                    $('#Edit-CityId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-CityId').trigger("chosen:updated");
+
+            $('#Edit-CityId').change();
+        });
+        $('body').on('change', '#Edit-CityId', function(e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#Edit-ZoneId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#Edit-ZoneId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-ZoneId').trigger("chosen:updated");
+        });
+        $('body').on('change', '#Edit-ZoneId', function(e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+            $('#Edit-DistrictId').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                var item = districtsList[i];
+                if (item.Data_ZoneId == zoneId)
+                    $('#Edit-DistrictId')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#Edit-DistrictId').trigger("chosen:updated");
+        });
+       
+        $('body').on('change', '#slcStates', function(e) {
+            e.preventDefault();
+
+
+            let _this = $(this);
+            let stateId = _this.val();
+
+            $('#slcCities').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < citiesList.length; i++) {
+                var item = citiesList[i];
+
+                if (item.Data_StateId == stateId) {
+
+                    $('#slcCities')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+                }
+            }
+            $('#slcCities').trigger("chosen:updated");
+            $('#slcCities').change();
+
+            $('#slcDistricts').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+            $('#slcDistricts').trigger("chosen:updated");
+        });
+        $('body').on('change', '#slcCities', function(e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var cityId = _this.val();
+
+            $('#slcZones').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < zonesList.length; i++) {
+                var item = zonesList[i];
+                if (item.Data_CityId == cityId)
+                    $('#slcZones')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+            }
+
+            $('#slcZones').trigger("chosen:updated");
+            $('#slcDistricts').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+            $('#slcDistricts').trigger("chosen:updated");
+        });
+        $('body').on('change', '#slcZones', function(e) {
+            e.preventDefault();
+
+            var _this = $(this);
+            var zoneId = _this.val();
+
+
+            $('#slcDistricts').find('option')
+                .remove()
+                .end()
+                .append('<option value="" selected>---</option>');
+
+            for (var i = 0; i < districtsList.length; i++) {
+                var item = districtsList[i];
+                if (item.Data_ZoneId == zoneId) {
+
+                    var districtName = '';
+                    if (item.DistrictName != null)
+                        districtName = item.DistrictName;
+                    else
+                        if (item.VillageName != null)
+                            districtName = item.VillageName;
+                        else
+                            if (item.TownName != null)
+                                districtName = item.TownName;
+
+                    $('#slcDistricts')
+                        .append($("<option></option>")
+                            .attr("value", item.Value)
+                            .text(item.DisplayText));
+                }
+            }
+            $('#slcDistricts').trigger("chosen:updated");
+
+
+        });
+
+        
+        var mapLayerCategoryId = mapLayerCategory.MapLayerCategoryId;
+        $("#btnRemoveSelectedRows").click(function() {
+            let _selected = $('#listContainer').jtable('selectedRows');
+            console.log(_selected);
+            if (!_selected || _selected.lenght == 0) {
+                alert("رکوردی انتخاب نشده است");
+                return false;
+            }
+            if (!confirm("آیا اطلاعات پاک شود ؟")) {
+                return false;
+            }
+        });
+
+        $('#btn_upload').on('click', function() {
+            var fd = new FormData();
+            var files = $('#file')[0].files;
+             var mapLayerCategoryId2 = mapLayerCategory.MapLayerCategoryId;
+            
+            if (files.length > 0) {
+                fd.append('MapLayerCategoryId', mapLayerCategoryId2);
+                fd.append('File', files[0]);
+                let $City = $('#slcCities', '#uploadModal').val();
+                let $ZoneId = $('#slcZones', '#uploadModal').val();
+                let $DistrictId = $('#slcDistricts', '#uploadModal').val();
+                fd.append('CityId', $City);
+                fd.append('ZoneId', $ZoneId);
+                fd.append('DistrictId', $DistrictId);
+                $.ajax({
+                    url: '/AdminTeniaco/MapLayersManagement/UploadJsonFile',
+                    type: 'POST',
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    success: function(_data) {
+
+                        if (_data.Result == "OK") {
+                            $("#uploadModal").modal("hide");
+                            $('#listContainer').jtable('load', {
+            'MapLayerCategoryId': mapLayerCategoryId
+        });
+                        }
+
+                    },
+                    error: function(jqXHR) {
+
+                    },
+                    complete: function(jqXHR, status) {
+                    }
+                });
+            }
+            else {
+                alert('لطفا فایلهای مورد نظر را انتخاب کنید');
+            }
+        });
+
+
+
+
+        $('#listContainer').jtable({
+            title: 'لیست نقشه ها', toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+
+
+
+            selecting: true,
+            multiselect: (($.cookie("MultiSelect") != "true") ? false : true),
+            selectingCheckboxes: ($.cookie("MultiSelect") != "true") ? false : true,
+
+            sorting: true,
+            actions: {
+                listAction: '/AdminTeniaco/MapLayersManagement/GetListOfMapLayers',
+                createAction: '/AdminTeniaco/MapLayersManagement/AddToMapLayers',
+                updateAction: '/AdminTeniaco/MapLayersManagement/UpdateMapLayers',
+                deleteAction: '/AdminTeniaco/MapLayersManagement/CompleteDeleteMapLayers'
+            },
+            toolbar: {
+                items: [
+                    {
+                        icon: '',
+                        text: 'تغییر نمایش',
+                        click: function() {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/Admin/AdminPanel/ChangeViewMode',
+                                success: function(result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function() {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        },
+                    },
+                    //{
+                    //    icon: '/images/add.png',
+                    //    text: 'رسم روی نقشه',
+                    //    click: function () {
+                    //        window.location.href = '/AdminTeniaco/MapLayersManagement/DrawOnTheMap';
+                    //    }
+                    //},
+                    {
+                        text: 'آپلود اطلاعات جئوگرافیک',
+                        click: function() {
+                            $('#uploadModal').modal();
+                        }
+                    }
+                ]
+            },
+            fields: {
+                MapLayerId: {
+                    title: 'کد&nbsp;دسته&nbsp;بندی',
+                    key: true,
+                    create: false,
+                    edit: false,
+                    sorting: false
+                },
+                StateId: {
+                    title: 'استان',
+                    sorting: false,
+                    options: statesList
+                },
+                CityId: {
+                    title: 'بخش',
+                    sorting: false,
+                    options: citiesList
+
+                },
+                ZoneId: {
+                    title: 'منطقه',
+                    sorting: false,
+                    options: zonesList
+
+                },
+                DistrictId: {
+                    title: 'ناحیه',
+                    sorting: false,
+                    options: districtsList
+
+                },
+                //MapLayerCategoryTitle: {
+                //    title: 'نام&nbsp;دسته&nbsp;بندی',
+                //    sorting: false,
+                //    create :false,
+                //    edit:false,
+                //    display: function (data) {
+                //        
+                //        if (mapLayerCategory.MapLayerCategoryId !== null) {
+                //            return mapLayerCategory.MapLayerCategoryTitle;
+                //        }
+                //    }
+                //},
+                StrPolygon: {
+                    title: 'نقاط',
+                    sorting: false,
+                    list: false,
+                    type: 'textarea'
+                },
+                UserCreatorName: {
+                    title: 'ایجاد&nbsp;کننده',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                IsActivated: {
+                    title: 'فعال&nbsp;/&nbsp;غیر&nbsp;فعال',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsActivated == true) {
+                                return '<input type="hidden" id="Edit-MapLayerCategoryId" name="MapLayerCategoryId" value="' + mapLayerCategory.MapLayerCategoryId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<input type="hidden" id="Edit-MapLayerCategoryId" name="MapLayerCategoryId" value="' + mapLayerCategory.MapLayerCategoryId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<input type="hidden" id="Edit-MapLayerCategoryId" name="MapLayerCategoryId" value="' + mapLayerCategory.MapLayerCategoryId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" selected>بله</option>' +
+                                '<option value="false">خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated pointer" data-MapLayerId ="' +
+                                data.record.MapLayerId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated pointer" data-MapLayerId ="' +
+                                data.record.MapLayerId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: 'حذف&nbsp;شده',
+                    sorting: false,
+                    options: {
+                        true: 'بله',
+                        false: 'خیر'
+                    },
+                    input: function(data) {
+                        if (data.record != undefined) {
+                            if (data.record.IsDeleted == true) {
+                                return '<input type="hidden" id="Edit-MapLayerCategoryId" name="MapLayerCategoryId" value="' + mapLayerCategory.MapLayerCategoryId + '" /><select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>بله</option>' +
+                                    '<option value="false">خیر</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<input type="hidden" id="Edit-MapLayerCategoryId" name="MapLayerCategoryId" value="' + mapLayerCategory.MapLayerCategoryId + '" /><select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">بله</option>' +
+                                    '<option value="false" selected>خیر</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<input type="hidden" id="Edit-MapLayerCategoryId" name="MapLayerCategoryId" value="' + mapLayerCategory.MapLayerCategoryId + '" /><select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true" >بله</option>' +
+                                '<option value="false" selected>خیر</option>' +
+                                '</select>';
+                        }
+                    },
+                    display: function(data) {
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-MapLayerId ="' + data.record.MapLayerId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-MapLayerId ="' + data.record.MapLayerId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditMapLayer: {
+                    title: 'ویرایش&nbsp;روی&nbsp;نقشه',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function(data) {
+                        return '<div class="EditMapLayer pointer" data-MapLayerId="' + data.record.MapLayerId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                },
+                MapLayerFeatures: {
+                    title: 'انتقال&nbsp;و&nbsp;چرخش&nbsp;لایه',
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    display: function(data) {
+                        return '<div class="MapLayerFeatures pointer" data-MapLayerId="' + data.record.MapLayerId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                }
+            },
+            formCreated: function(event, data) {
+
+                $('.ui-dialog-titlebar-close').contents().filter(function() {
+                    return this.nodeType === 3;
+                }).remove();
+
+                //$('.ui-dialog-titlebar-close').html('X');
+                $(".jtable-dialog-form .jtable-input-field-container").each(function() {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+
+                $(".jtable-dialog-form :input").each(function() {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                var latlonBlock;
+
+                if (formName == 'edit') {
+
+                    latlonBlock = $(".jtable-dialog-form .jtable-input-field-container:nth-child(6)");
+
+                    $('#Edit-IsActivated').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsActivated').val(data.record.IsActivated + '').trigger("chosen:updated");
+
+                    $('#Edit-IsDeleted').chosen({
+                        placeholder_text_single: ' ',
+                        placeholder_text_multiple: ' ',
+                        search_contains: true,
+                        max_shown_results: numberOfChosenItemsShow,
+                        rtl: rtl
+                    });
+                    $('#Edit-IsDeleted').val(data.record.IsDeleted + '').trigger("chosen:updated");
+                }
+                else
+                    if (formName == 'create') {
+
+                        latlonBlock = $(".jtable-dialog-form .jtable-input-field-container:nth-child(5)");
+
+                        $('#Edit-IsActivated').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsActivated').trigger("chosen:updated");
+
+                        $('#Edit-IsDeleted').chosen({
+                            placeholder_text_single: ' ',
+                            placeholder_text_multiple: ' ',
+                            search_contains: true,
+                            max_shown_results: numberOfChosenItemsShow,
+                            rtl: rtl
+                        });
+                        $('#Edit-IsDeleted').trigger("chosen:updated");
+
+                    }
+                latlonBlock.removeAttr('class');
+                latlonBlock.attr('class', 'jtable-input-field-container col col-md-12 col-sm-12 col-xs-12');
+                latlonBlock.css('width', '100%');
+                latlonBlock.css('height', '90px');
+                latlonBlock.find('textarea').css('width', '100%');
+                latlonBlock.find('textarea').css('height', '165px !important');
+
+            },
+            formSubmitting: function(event, data) {
+                var validate = data.form.validationEngine('validate');
+                return validate;
+            },
+            formClosed: function(event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function() {
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                selectedRows.SelectedRowsForDelete = [];
+                if ($selectedRows.length > 0) {
+
+                    $selectedRows.each(function() {
+                        var record = $(this).data('record');
+                        selectedRows.SelectedRowsForDelete.push(record.MapLayerId);
+                    });
+
+                    selectedRows.ParamName = 'Ids';
+                } else {
+                }
+            },
+
+            recordAdded: function(event, data) {
+
+
+            },
+            recordUpdated: function(event, data) {
+
+            },
+            recordDeleted: function(event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    $('.jtable').basictable({
+
+                        breakpoint: 1024
+                    });
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+
+        });
+
+
+        $('#listContainer').jtable('load', {
+            'MapLayerCategoryId': mapLayerCategoryId
+        });
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+
+        $('body').on('click', '.EditMapLayer', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var mapLayerId = _this.attr('data-MapLayerId');
+            window.location.href = '/AdminTeniaco/MapLayersManagement/ReDrawOnTheMap/' + mapLayerId;
+        });
+
+
+        $('body').on('click', '.MapLayerFeatures', function(e) {
+            e.preventDefault();
+            var _this = $(this);
+            var mapLayerId = _this.attr('data-MapLayerId');
+            window.location.href = '/AdminTeniaco/MapLayersManagement/FeaturesOnTheMap/' + mapLayerId;
+        });
+
+
+        $('body').on('click', '.isActivated', function() {
+            var _this = $(this);
+            var mapLayerId = _this.attr('data-MapLayerId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/MapLayersManagement/ToggleActivationMapLayers",
+                data: { 'MapLayerId': mapLayerId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'MapLayerCategoryId': mapLayerCategoryId
+                        });
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                }
+
+            });
+        });
+
+
+
+
+        $('body').on('click', '.isDeleted', function() {
+            var _this = $(this);
+            var mapLayerId = _this.attr('data-MapLayerId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/AdminTeniaco/MapLayersManagement/TemporaryDeleteMapLayers",
+
+                data: { 'MapLayerId': mapLayerId },
+
+                success: function(result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load', {
+                            currentPage: $('#listContainer').jtable('getCurrentPage'),
+                            'MapLayerCategoryId': mapLayerCategoryId
+                        });
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html('خطا');
+                            $('#my-warning-modal').find('#error').html('خطا');
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+
+            });
+        });
+
+    });
+
+
+</script>

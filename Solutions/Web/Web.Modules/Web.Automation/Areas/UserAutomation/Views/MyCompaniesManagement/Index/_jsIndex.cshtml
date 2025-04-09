@@ -1,0 +1,584 @@
+﻿<script type="text/javascript">
+    $(document).ready(function () {
+
+             $('#listContainer').jtable({
+            //messages: persianMessages,
+            title: ListTitle, toolbarType: 'both',
+            paging: true,
+            pageSize: 10, selecting: true,
+            //selecting: true,
+            sorting: true,
+            //defaultSorting: 'Name ASC',
+            actions: {
+                listAction: '/Userautomation/MyCompaniesManagement/GetListOfMyCompanies',
+                //createAction: '/Userautomation/MyCompaniesManagement/AddToMyCompanies',
+                //updateAction: '/Userautomation/MyCompaniesManagement/UpdateMyCompanies',
+                deleteAction: '/Userautomation/MyCompaniesManagement/CompleteDeleteMyCompanies'
+            },
+            toolbar: {
+                /*hoverAnimation: true,
+                hoverAnimationDuration: 60,
+                hoverAnimationEasing: 'swing',*/
+                items: [
+                    {
+                        icon: '',
+                        text: ChangeViewMode,
+                        click: function () {
+                            $.ajax({
+                                cache: false,
+                                type: "Post",
+                                url: '/User/UserPanel/ChangeViewMode',
+                                //data: /*JSON.stringify(*/{
+                                //    'lang': lang
+                                //}/*)*/,
+                                //contentType: 'application/json',
+                                //dataType: "json",
+                                success: function (result) {
+                                    if (result.Result == "OK") {
+                                        window.setTimeout(function () {
+                                            location.reload(true);
+                                        }, 500);
+                                    }
+                                    else
+                                        if (result.Result == "ERROR") {
+                                            alert('error');
+                                        }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                }
+                            });
+                        }
+                    },
+                    {
+                        icon: '/images/add.png',
+                        text: CreateNewMyCompanyTitle,
+                        click: function () {
+                            window.location.href = '/UserAutomation/MyCompaniesManagement/AddToMyCompanies';
+                        }
+                    }
+                ]
+            },
+            fields: {
+                MyCompanyId: {
+                    key: true,
+                    list: false
+                },
+                CompanyLogo: {
+                    title: CompanyLogo,
+                    display: function (data) {
+                        if (data.record.CompanyLogo != null) {
+                            if (data.record.CompanyLogo != '') {
+                                return '<div><img src="/Files/MyCompanies/localhost/' + data.record.MyCompanyId + '/thumb_' + data.record.CompanyLogo + '"/></div>';
+                            }
+                        }
+                    }
+                },
+                WaterMarkImage: {
+                    title: WaterMarkImage,
+                    display: function (data) {
+
+                        if (data.record.WaterMarkImage != null) {
+                            if (data.record.WaterMarkImage != '') {
+                                return '<img src="/Files/MyCompanies/localhost/' + data.record.MyCompanyId + '/thumb_' + data.record.WaterMarkImage + '"/></div>';
+
+                            }
+                        }
+                    }
+                },
+                MyCompanyName: {
+                    title: MyCompanyName,
+                    inputClass: 'validate[required]',
+                },
+                MyCompanyRealName: {
+                    title: MyCompanyRealName,
+                },
+                RegisterNumber: {
+                    title: RegisterNumber,
+                },
+                PostalCode: {
+                    title: PostalCode,
+                },
+                StateName: {
+                    title: StateName,
+                },
+                CityName: {
+                    title: CityName,
+                },
+                Phones: {
+                    title: Phones,
+                },
+                //Address: {
+                //    title: Address,
+                //    sorting: false,
+                //    type: 'textarea',
+                //    display: function (data) {
+                //        return '<a class="showMoreInfo" data-toggle="popover" tabindex="0" data-trigger="focus" data-html="True" ' +
+                //            'data-placement="top" data-container="body" data-original-title="" data-content="' +
+                //            data.record.Address + '"><i class="fa fa-fw fa-3x fa-info-circle">&nbsp;</i></a>';
+                //    }
+                //},
+                UserCreatorName: {
+                    title: UserIdCreatorName,
+                    sorting: false,
+                    create: false,
+                    edit: false,
+                    //list: false
+                },
+                CentralOffice: {
+                    title: CentralOffice,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.CentralOffice == true) {
+                                return '<select id="Edit-CentralOffice" name="CentralOffice">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-CentralOffice" name="CentralOffice">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-CentralOffice" name="CentralOffice">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.CentralOffice)
+                            return '<div class="centralOffice" data-MyCompanyId="' + data.record.MyCompanyId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="centralOffice" data-MyCompanyId="' + data.record.MyCompanyId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsActivated: {
+                    title: IsActivated,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsActivated == true) {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsActivated" name="IsActivated">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsActivated)
+                            return '<div class="isActivated" data-MyCompanyId="' + data.record.MyCompanyId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isActivated" data-MyCompanyId="' + data.record.MyCompanyId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                IsDeleted: {
+                    title: IsDeleted,
+                    sorting: false,
+                    input: function (data) {
+                        if (data.record != undefined) { //if (data.record != '') {
+                            if (data.record.IsDeleted == true) {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true" selected>' + OptionsYes + '</option>' +
+                                    '<option value="false">' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                            else {
+                                return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                    '<option value="true">' + OptionsYes + '</option>' +
+                                    '<option value="false" selected>' + OptionsNo + '</option>' +
+                                    '</select>';
+                            }
+                        }
+                        else {
+                            return '<select id="Edit-IsDeleted" name="IsDeleted">' +
+                                '<option value="true">' + OptionsYes + '</option>' +
+                                '<option value="false">' + OptionsNo + '</option>' +
+                                '</select>';
+                        }
+                    },
+                    options: {
+                        true: OptionsYes,
+                        false: OptionsNo
+                    },
+                    display: function (data) {
+                        ////debugger;
+                        if (data.record.IsDeleted)
+                            return '<div class="isDeleted" data-MyCompanyId="' + data.record.MyCompanyId + '"><i class="fa fa-check-square"></i></div>';
+                        else
+                            return '<div class="isDeleted" data-MyCompanyId="' + data.record.MyCompanyId + '"><i class="fa fa-square-o"></i></div>';
+                    }
+                },
+                EditMyCompany: {
+                    title: EditMyCompany,
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="editMyCompany pointer" data-MyCompanyId="' + data.record.MyCompanyId + '"><i class="fa fa-edit"></i></div>';
+                    }
+                },
+                DetailsCompany: {
+                    title: Details,
+                    sorting: false,
+                    display: function (data) {
+                        return '<div class="detailsCompany pointer" data-toggle="modal" data-target="#exampleModal" data-MyCompanyId=" ' + data.record.MyCompanyId + '"><i class="fa fa-eye"></i></div>';
+                    }
+                }
+            },
+            formCreated: function (event, data) {
+
+                data.form.find('input[name="NewsImageTitle"]').addClass(
+                    'validate[required]');
+                data.form.validationEngine({
+                    validateNonVisibleFields: true,
+                    updatePromptsPosition: true,
+                    autoPositionUpdate: true,
+                });
+
+                $('.ui-dialog-titlebar-close').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).remove();
+
+                $(".jtable-dialog-form .jtable-input-field-container").each(function () {
+                    var block = $(this);
+                    block.addClass('col col-md-6 col-sm-12 col-xs-12');
+                });
+
+                $(".jtable-dialog-form :input").each(function () {
+                    var input = $(this);
+                    input.addClass('form-control input-sm');
+                });
+
+                var formName = '';
+                if (data.formType == 'create')
+                    formName = 'create';
+                else
+                    formName = 'edit';
+
+                $('#jtable-' + formName + '-form select').chosen({
+                    placeholder_text_single: ' ',
+                    placeholder_text_multiple: ' ',
+                    rtl: rtl
+                });
+
+                if (formName == 'edit') {
+
+                }
+                else
+                    if (formName == 'create') {
+
+                    }
+            },
+            formSubmitting: function (event, data) {
+                var validate = data.form.validationEngine('validate');
+                //data.form.validationEngine('updatePromptsPosition');
+
+                return validate;
+            },
+            formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            },
+            selectionChanged: function () {
+
+            },
+            recordAdded: function (event, data) {
+
+            },
+            recordUpdated: function (event, data) {
+
+            },
+            recordDeleted: function (event, data) {
+
+            },
+            recordsLoaded(event, data) {
+
+                var isResponsiveList = $.cookie("IsResponsiveList");
+
+                if (isResponsiveList == "") {
+
+                    if ($('.jtable').data('basictable') != null)
+                        $('.jtable').basictable('destroy');
+
+                    //$('.jtable').basictable({
+                    //    breakpoint: 2000
+                    //});
+
+                    $('.jtable').basictable({
+                        //containerBreakpoint: 1024
+                        breakpoint: 1024
+                    });
+
+                    //$('div.jtable-main-container').css('display', 'inherit');
+
+                }
+                else
+                    if (isResponsiveList == 'True') {
+                        if ($('.jtable').data('basictable') != null)
+                            $('.jtable').basictable('destroy');
+
+                        $('.jtable').basictable({
+                            breakpoint: 2000
+                        });
+
+                        $('div.jtable-main-container').css('width', '100%');
+                        $('div.jtable-main-container').css('display', 'inline-block');
+
+                        //$('.jtable').basictable({
+                        //    containerBreakpoint: 800
+                        //});
+                    }
+                    else
+                        if (isResponsiveList == 'False') {
+                            $('.jtable').css('overflow-x', 'scroll');
+                            $('.jtable').css('width', 'inherit');
+                            $('div.jtable-main-container').css('display', 'inline-block');
+                        }
+
+                var $selectedRows = $('#listContainer').jtable('selectedRows');
+                if ($selectedRows.length > 0) {
+                    $selectedRows.click();
+                }
+            }
+        });
+
+        $('#listContainer').jtable('load');
+
+        var isResponsiveList = $.cookie("IsResponsiveList");
+
+        if (isResponsiveList == 'True')
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-on"></i>&nbsp;&nbsp;</div>');
+        else
+            $('.jtable-toolbar-item:nth-child(1) .jtable-toolbar-item-text').prepend('<div style="display: inline-block;vertical-align: middle;line-height: 0;"><i class="fa fa-toggle-off"></i>&nbsp;&nbsp;</div>');
+
+        $('body').on('click', '.editMyCompany', function (e) {
+            e.preventDefault();
+            var _this = $(this);
+            var myCompanyId = _this.attr('data-MyCompanyId');
+            window.location.href = '/UserAutomation/MyCompaniesManagement/UpdateMyCompanies/' + myCompanyId;
+
+        });
+
+        $('body').on('click', '.isActivated', function () {
+            ////debugger;
+            var _this = $(this);
+            var MyCompanyId = _this.attr('data-MyCompanyId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/UserAutomation/MyCompaniesManagement/ToggleActivationMyCompanies",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'MyCompanyId': MyCompanyId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                            $('#my-warning-modal').find('#error').html(ErrorMessage);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                //    $('#my-warning-modal').find('#error').html(ErrorMessage);
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.isDeleted', function () {
+            var _this = $(this);
+            var MyCompanyId = _this.attr('data-MyCompanyId');
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/UserAutomation/MyCompaniesManagement/TemporaryDeleteMyCompanies",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'MyCompanyId': MyCompanyId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    if (result.Result == "OK") {
+
+                        $('#listContainer').jtable('load');
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                            $('#my-warning-modal').find('#error').html(ErrorMessage);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                //    $('#my-warning-modal').find('#error').html(ErrorMessage);
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.detailsCompany', function () {
+            debugger;
+            var _this = $(this);
+            var MyCompanyId = _this.attr('data-MyCompanyId');
+
+            $.ajax({
+                cache: false,
+                type: "Post",
+                url: "/UserAutomation/MyCompaniesManagement/GetMyCompanyWithMyCompanyId",
+                //data: JSON.stringify({ 'LevelId': levelId }),
+                data: { 'MyCompanyId': MyCompanyId },
+                //contentType: 'application/json',
+                //dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (result.Result == "OK") {
+
+                        let logoImg = "";
+                        let waterMarkImage = "";
+
+                        if (result.MyCompaniesVM.CompanyLogo != null) {
+                            if (result.MyCompaniesVM.CompanyLogo != '') {
+                                logoImg = '<img class="center" style=" width: 100px;" src="/Files/MyCompanies/localhost/' + result.MyCompaniesVM.MyCompanyId + '/' + result.MyCompaniesVM.CompanyLogo + '"/>';
+
+                            }
+                        }
+                        if (result.MyCompaniesVM.WaterMarkImage != null) {
+                            if (result.MyCompaniesVM.WaterMarkImage != '') {
+                                waterMarkImage ='<img class="center" style=" width: 100px;" src="/Files/MyCompanies/localhost/' + result.MyCompaniesVM.MyCompanyId + '/' + result.MyCompaniesVM.WaterMarkImage + '"/>';
+
+                            }
+                        }
+
+                        var str = '<div class="wrapper">'
+                            + '<div class="left">'
+                            + '<div class="front">'
+                            + '<div class="sectionWrap">'
+                            + logoImg
+                            + '<h1>' + result.MyCompaniesVM.MyCompanyName + '</h1><hr>'
+                            + '<h2>' + result.MyCompaniesVM.MyCompanyRealName + '</h2>'
+                            + '<button class="openB"><p>'+ReadMore+'</p></button>'
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="back">'
+                            + ' <div class="sectionWrap">'
+                            + '<p><b>' + Header + ':   </b>' + result.MyCompaniesVM.Header + '</p>'
+                            + '<p><b>' + RealHeader + ':   </b>' + result.MyCompaniesVM.RealHeader + '</p>'
+                            + waterMarkImage
+                            + '<p><b>' + WaterMarkText + ':  </b>' + result.MyCompaniesVM.WaterMarkText + '</p>'
+
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
+
+                            + ' <div class="middle">'
+                            + '<div class="sectionWrap">'
+                            + '<p><b>' + RegisterNumber + ':   </b>' + result.MyCompaniesVM.RegisterNumber + '</p>'
+                            + '<p><b>' + CommercialCode1 + ':   </b>' + result.MyCompaniesVM.CommercialCode1 + '</p>'
+                            + '<p><b>' + CommercialCode2 + ':   </b>' + result.MyCompaniesVM.CommercialCode2 + '</p>'
+                            + '<p><b>' + Footer + ':  </b>' + result.MyCompaniesVM.Footer + '</p>'
+                            + '<p><b>' + RealFooter + ':  </b>' + result.MyCompaniesVM.RealFooter + '</p>'
+                            + '<b>' + CentralOffice + ':   </b>';
+
+                        if (result.MyCompaniesVM.CentralOffice)
+                            str = str + Existent;
+                        else
+                            str = str + IsNot
+                                + '<p><b>' + DirectorName + ':   </b>' + result.MyCompaniesVM.DirectorName + '</p>'
+                                + '<p><b>' + NationalCode + ':   </b>' + result.MyCompaniesVM.NationalCode + '</p>'
+                                + '<p><b>' + Industry + ':   </b>' + result.MyCompaniesVM.Industry + '</p>'
+                            + '</div>'
+                            + '</div>'
+
+                            + '<div class="right">'
+                            + '<div class="sectionWrap">'
+                            + '<p><b>' + StateName + ':   </b>' + result.MyCompaniesVM.StateName + '</p>'
+                            + '<p><b>' + CityName + ':   </b>' + result.MyCompaniesVM.CityName + '</p>'
+                            + '<p><b>' + PostalCode + ':   </b>' + result.MyCompaniesVM.PostalCode + '</p>'
+                            + '<p><b>' + Address + ':   </b>' + result.MyCompaniesVM.Address + '</p>'
+                            + '<p><b>' + Phones + ':   </b>' + result.MyCompaniesVM.Phones + '</p>'
+                            + '<p><b>' + Faxes + ':   </b>' + result.MyCompaniesVM.Faxes + '</p>'
+                            + '</div>'
+                            +'<button class="closeB">✕</button>'
+                            + '</div>'
+
+                            + '</div>';
+
+                        $("#modal_body").html(str);
+
+
+
+                    }
+                    else
+                        if (result.Result == "ERROR") {
+                            $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                            $('#my-warning-modal').find('#error').html(ErrorMessage);
+                            $('#my-warning-modal').modal("show");
+                        }
+                },
+                //error: function (xhr, ajaxOptions, thrownError) {
+                //    $('#my-warning-modal').find('.modal-title').html(ErrorTitle);
+                //    $('#my-warning-modal').find('#error').html(ErrorMessage);
+                //    $('#my-warning-modal').modal("show");
+                // }
+            });
+        });
+
+        $('body').on('click', '.openB', function () {
+            debugger;
+            $(".left").addClass("open");
+            setTimeout(function () {
+                $(".right").addClass("open");
+            }, 250);
+            setTimeout(function () {
+                $(".back").addClass("open");
+            }, 350);
+            $(".closeB").delay(1000).fadeIn();
+        });
+
+        $('body').on('click', '.closeB', function () {
+            setTimeout(function () {
+                $(".left").removeClass("open");
+            }, 250);
+            $(".right").removeClass("open");
+            setTimeout(function () {
+                $(".back").removeClass("open");
+            }, 600);
+            $(".closeB").fadeOut();
+        });           
+
+
+
+
+    });
+</script>

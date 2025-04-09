@@ -1,0 +1,38 @@
+﻿@{ 
+    int LevelId = 0;
+}
+
+<form data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="strIds" name="strIds" value="" />
+    <input type="hidden" id="LevelId" name="LevelId" value="@LevelId" />
+    <fieldset>
+        <div class="form-group">
+            @{
+                <div id='error-alert' class="form-group alert alert-danger">
+                </div>
+            }
+        </div>
+        <div class="col col-md-3 col-xs-3 col-lg-3 col-sm-3">
+            <button class="btn btn-default btn-block input-sm" id="btnAccess" name="btnAccess">انتخاب
+            </button>
+        </div>
+    </fieldset>
+</form>
+<div class="row">
+    @{
+        @*foreach (var icon in Model)
+        {
+            <div class="col col-md-4 col-xs-12 col-sm-12 col-lg-4">
+                <label class="lblChecker">
+                    <input type="checkbox" data-MenuId="@icon.MenuId"
+                           id="@icon.MenuId" name="@icon.MenuId" class="form-control chkChecker" />
+                    <i class="fa @icon.CssClass"></i>
+                    @icon.Title
+                </label>
+            </div>
+        }*@
+    }
+</div>

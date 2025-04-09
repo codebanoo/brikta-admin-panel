@@ -1,0 +1,174 @@
+﻿@using VM.Projects;
+
+@model ConstructionProjectsVM
+
+<form id="formCreateConstructionProject" class="col-12" data-ajax-begin="OnBegin" data-ajax-complete="OnComplete"
+      data-ajax-failure="OnFailed" data-ajax-success="OnSuccess"
+      data-ajax="true" data-ajax-method="POST">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row text-center justify-content-center">
+        <div class="form-group w-100">
+            @{
+                <input type="hidden" asp-for="ConstructionProjectId" />
+                <input type="hidden" asp-for="StrConstructionProjectOwnerUsersVM" />
+                <input type="hidden" asp-for="StrConstructionProjectRepresentativesVM" />
+                <div class="alert alert-danger alert-dismissible " id="error-alert" style="display: block;" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close">  <span aria-hidden="true">×</span></button> </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                عنوان پروژه
+            </div>
+            <input asp-for="ConstructionProjectTitle" class="form-control" id="ConstructionProjectTitle" />
+            <span asp-validation-for="ConstructionProjectTitle" class="text-danger"></span>
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                نوع پروژه
+            </div>
+            <select asp-for="ConstructionProjectTypeId" class="form-control ml-3" id="ConstructionProjectTypeId"
+                    placeholder="نوع پروژه">
+                <option value="">---</option>
+            </select>
+            <span asp-validation-for="ConstructionProjectTypeId" class="text-danger"></span>
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div>
+                ملک
+            </div>
+            <select asp-for="PropertyId" class="form-control ml-3" id="PropertyId"
+                    placeholder="  ملک">
+                <option value="">---</option>
+            </select>
+            <span asp-validation-for="PropertyId" class="text-danger"></span>
+        </div>
+
+
+
+    </div>
+    <div class="row">
+        @*         <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+        <div>
+        نماینده
+        </div>
+        <select asp-for="UserId" class="form-control ml-3" id="UserId"
+        placeholder="نماینده">
+        <option value="">---</option>
+        </select>
+        <span asp-validation-for="UserId" class="text-danger"></span>
+        </div> *@
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div>
+                زیر بنا پروژه
+            </div>
+            <input asp-for="Foundation" class="form-control" id="Foundation" />
+            <span asp-validation-for="Foundation" class="text-danger"></span>
+        </div>
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div>
+                کارگاه
+            </div>
+            <input asp-for="WorkshopName" class="form-control" id="WorkshopName" />
+            <span asp-validation-for="WorkshopName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                ارزش جاری ملک
+            </div>
+            <input asp-for="StrCurrentValueOfProject" class="form-control" id="CurrentValueOfProject" type="text" disabled />
+            <span asp-validation-for="StrCurrentValueOfProject" class="text-danger"></span>
+        </div>
+
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                برآورد هزینه ساخت
+            </div>
+            <input asp-for="StrPrevisionOfCost" class="form-control" id="PrevisionOfCost" type="text" />
+            <span asp-validation-for="StrPrevisionOfCost" class="text-danger"></span>
+        </div>
+
+        <div class='col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3'>
+            <div class="mx-2">
+                ارزش برآورد پایان پروژه
+            </div>
+            <input asp-for="StrProjectEstimate" class="form-control" id="ProjectEstimate" type="text" />
+            <span asp-validation-for="StrProjectEstimate" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                تاریخ شروع پروژه
+            </div>
+            <input type="text" asp-for="StartDate" class="form-control" data-MdDateTimePicker="true" data-EnableTimePicker="false" data-Placement="bottom"
+                   onkeydown="return false" placeholder="تاریخ شروع پروژه" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+
+        <div class="col-xl-3 col-md-4 col-xs-12 col-sm-12 col-lg-4 my-3 ">
+            <div class="mx-2">
+                مدت پروژه(ماه)
+            </div>
+            <input asp-for="MonthsLeftUntilTheEnd" class="form-control" id="MonthsLeftUntilTheEnd" type="number" />
+            <span asp-validation-for="MonthsLeftUntilTheEnd" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="x_content ConstructionProjectOwnerUsersVM">
+            <div class="col-xl-3 col-md-8  my-3">
+                <div>
+                    سهامدار
+                </div>
+                <select class="form-control ml-3 OwnerUserId"
+                        placeholder=" سهامدار">
+                    <option value="">---</option>
+                </select>
+            </div>
+            <div class='col-xl-1 col-md-1 col-xs-12 col-sm-12 col-lg-1 my-3'>
+                <div class="mx-2">
+                    سهم (درصد)
+                </div>
+                <input class="form-control sharePercent" type="number" value="100.00" max="100.00" min="0.01" step="0.01" />
+            </div>
+
+
+            <div class='col-xl-3 col-md-1 col-xs-12 col-sm-12 col-lg-1' style="margin-top:1.5px">
+                <div class="mx-2">
+                    نماینده
+                </div>
+                <select class="form-control ml-3 RepresentativeId" multiple
+                        placeholder=" نماینده">
+                    <option value="">---</option>
+                </select>
+            </div>
+
+        </div>
+        <div class='col-12  my-3'>
+            <div class="">
+                توضیحات تکمیلی
+            </div>
+            <textarea asp-for="ConstructionProjectDescription" class="form-control " rows="10" id="ConstructionProjectDescription"
+                      placeholder="توضیحات تکمیلی"></textarea>
+        </div>
+    </div>
+    <div class="ln_solid"></div>
+    <div class="form-group row">
+        <div class="col-md-9 col-sm-9  offset-md-3">
+            <button id="creatConstructionProject" type="submit" class="btn btn-success btn-md" onclick="return false;">ثبت</button>
+            <button class="btn btn-primary btn-md" type="reset" id="btnReset">پاک کردن فرم</button>
+
+
+        </div>
+    </div>
+</form>
+
+
